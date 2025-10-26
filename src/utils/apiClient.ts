@@ -96,6 +96,60 @@ export interface OrderDetailsResponse {
   error?: string;
 }
 
+export interface OrdersListResponse {
+  success: boolean;
+  orders: Array<{
+    id: string;
+    street: string;
+    house_number: string;
+    postal_code: string;
+    city: string;
+    property_type: string;
+    build_year: string;
+    note: string;
+    created_at: string;
+    updated_at: string;
+    upload_count: number;
+    text_count: number;
+  }>;
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  };
+  error?: string;
+}
+
+export interface OrdersListParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  propertyType?: string;
+  city?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface DeleteOrderResponse {
+  success: boolean;
+  message: string;
+  error?: string;
+}
+
+export interface UpdateOrderNoteRequest {
+  note: string;
+}
+
+export interface UpdateOrderNoteResponse {
+  success: boolean;
+  orderId: string;
+  updatedAt: string;
+  error?: string;
+}
+
 class ApiClient {
   private baseUrl: string;
 
@@ -266,6 +320,113 @@ class ApiClient {
       return {
         success: false,
         order: {} as any,
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Get list of all orders with pagination and filters
+   */
+  async fetchOrders(params: OrdersListParams = {}): Promise<OrdersListResponse> {
+    try {
+      const searchParams = new URLSearchParams();
+      
+      if (params.page) searchParams.append('page', params.page.toString());
+      if (params.limit) searchParams.append('limit', params.limit.toString());
+      if (params.search) searchParams.append('search', params.search);
+      if (params.propertyType) searchParams.append('propertyType', params.propertyType);
+      if (params.city) searchParams.append('city', params.city);
+      if (params.sortBy) searchParams.append('sortBy', params.sortBy);
+      if (params.sortOrder) searchParams.append('sortOrder', params.sortOrder);
+
+      const response = await fetch(`${this.baseUrl}/api/orders?${searchParams}`);
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      return {
+        success: false,
+        orders: [],
+        pagination: {
+          page: 1,
+          limit: 20,
+          total: 0,
+          totalPages: 0,
+          hasNext: false,
+          hasPrev: false,
+        },
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Delete an order and all associated data
+   */
+  async deleteOrder(orderId: string): Promise<DeleteOrderResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/order/${orderId}`, {
+        method: 'DELETE',
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      return {
+        success: false,
+        message: '',
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Export order as ZIP file
+   */
+  async exportOrder(orderId: string): Promise<void> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/export/${orderId}`);
+      
+      if (!response.ok) {
+        throw new Error('Export failed');
+      }
+
+      // Create blob and download
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `order-${orderId}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error exporting order:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update admin notes for an order
+   */
+  async updateOrderNote(orderId: string, data: UpdateOrderNoteRequest): Promise<UpdateOrderNoteResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/order/${orderId}/note`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error updating order note:', error);
+      return {
+        success: false,
+        orderId: '',
+        updatedAt: '',
         error: 'Network error',
       };
     }

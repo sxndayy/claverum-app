@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import archiver from 'archiver';
 import { query } from './db.js';
 import { generatePresignedUploadUrl, getPublicUrl } from './s3-client.js';
 
@@ -329,6 +330,272 @@ app.get('/api/order/:orderId', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch order'
+    });
+  }
+});
+
+/**
+ * GET /api/orders
+ * List all orders with pagination, search, and filters
+ * Query params: page, limit, search, propertyType, city, sortBy, sortOrder
+ */
+app.get('/api/orders', async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 20,
+      search = '',
+      propertyType = '',
+      city = '',
+      sortBy = 'created_at',
+      sortOrder = 'desc'
+    } = req.query;
+
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const searchTerm = `%${search}%`;
+    const propertyFilter = propertyType ? `AND property_type = '${propertyType}'` : '';
+    const cityFilter = city ? `AND city ILIKE '%${city}%'` : '';
+    const orderBy = `${sortBy} ${sortOrder.toUpperCase()}`;
+
+    // Build search condition
+    const searchCondition = search ? 
+      `AND (street ILIKE $1 OR city ILIKE $1 OR id::text ILIKE $1)` : 
+      '';
+
+    // Get orders with upload counts
+    const ordersQuery = `
+      SELECT 
+        o.*,
+        COUNT(DISTINCT u.id) as upload_count,
+        COUNT(DISTINCT at.id) as text_count
+      FROM orders o
+      LEFT JOIN uploads u ON o.id = u.order_id
+      LEFT JOIN area_texts at ON o.id = at.order_id
+      WHERE 1=1 ${searchCondition} ${propertyFilter} ${cityFilter}
+      GROUP BY o.id
+      ORDER BY ${orderBy}
+      LIMIT $${search ? '2' : '1'} OFFSET $${search ? '3' : '2'}
+    `;
+
+    const queryParams = search ? [searchTerm, parseInt(limit), offset] : [parseInt(limit), offset];
+
+    const ordersResult = await query(ordersQuery, queryParams);
+
+    // Get total count for pagination
+    const countQuery = `
+      SELECT COUNT(DISTINCT o.id) as total
+      FROM orders o
+      WHERE 1=1 ${searchCondition} ${propertyFilter} ${cityFilter}
+    `;
+    const countParams = search ? [searchTerm] : [];
+    const countResult = await query(countQuery, countParams);
+
+    const total = parseInt(countResult.rows[0].total);
+    const totalPages = Math.ceil(total / parseInt(limit));
+
+    res.json({
+      success: true,
+      orders: ordersResult.rows,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+        totalPages,
+        hasNext: parseInt(page) < totalPages,
+        hasPrev: parseInt(page) > 1
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch orders'
+    });
+  }
+});
+
+/**
+ * DELETE /api/order/:orderId
+ * Delete an order and all associated data
+ */
+app.delete('/api/order/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    // Verify order exists
+    const orderCheck = await query('SELECT id FROM orders WHERE id = $1', [orderId]);
+    if (orderCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      });
+    }
+
+    // Delete order (cascade will handle uploads and texts)
+    await query('DELETE FROM orders WHERE id = $1', [orderId]);
+
+    res.json({
+      success: true,
+      message: 'Order deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting order:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to delete order'
+    });
+  }
+});
+
+/**
+ * GET /api/export/:orderId
+ * Generate ZIP export with all order data
+ */
+app.get('/api/export/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    // Get order details
+    const orderResult = await query('SELECT * FROM orders WHERE id = $1', [orderId]);
+    if (orderResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      });
+    }
+
+    const order = orderResult.rows[0];
+
+    // Get all uploads
+    const uploadsResult = await query(
+      'SELECT * FROM uploads WHERE order_id = $1 ORDER BY area, created_at',
+      [orderId]
+    );
+
+    // Get all area texts
+    const textsResult = await query(
+      'SELECT * FROM area_texts WHERE order_id = $1 ORDER BY area',
+      [orderId]
+    );
+
+    // Set response headers for ZIP download
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', `attachment; filename="order-${orderId}.zip"`);
+
+    // Create ZIP archive
+    const archive = archiver('zip', { zlib: { level: 9 } });
+    archive.pipe(res);
+
+    // Add order info file
+    const orderInfo = `
+Claverum Auftrag Export
+======================
+
+Auftrags-ID: ${order.id}
+Erstellt am: ${new Date(order.created_at).toLocaleString('de-DE')}
+Aktualisiert am: ${new Date(order.updated_at).toLocaleString('de-DE')}
+
+Adresse:
+${order.street || ''} ${order.house_number || ''}
+${order.postal_code || ''} ${order.city || ''}
+
+Immobilientyp: ${order.property_type || 'Nicht angegeben'}
+Baujahr: ${order.build_year || 'Nicht angegeben'}
+
+Notizen:
+${order.note || 'Keine Notizen'}
+
+Statistiken:
+- Hochgeladene Bilder: ${uploadsResult.rows.length}
+- Bereiche mit Texten: ${textsResult.rows.length}
+`;
+
+    archive.append(orderInfo, { name: 'order-info.txt' });
+
+    // Group uploads by area
+    const uploadsByArea = {};
+    uploadsResult.rows.forEach(upload => {
+      if (!uploadsByArea[upload.area]) {
+        uploadsByArea[upload.area] = [];
+      }
+      uploadsByArea[upload.area].push(upload);
+    });
+
+    // Add photos organized by area
+    for (const [area, uploads] of Object.entries(uploadsByArea)) {
+      for (const upload of uploads) {
+        const filename = upload.file_path.split('/').pop();
+        archive.append(null, { name: `photos/${area}/${filename}` });
+      }
+    }
+
+    // Add texts
+    if (textsResult.rows.length > 0) {
+      // Combined summary
+      let summaryText = 'Bereichstexte Zusammenfassung\n============================\n\n';
+      textsResult.rows.forEach(text => {
+        summaryText += `${text.area.toUpperCase()}:\n${text.content}\n\n`;
+      });
+      archive.append(summaryText, { name: 'texts/summary.txt' });
+
+      // Individual area texts
+      textsResult.rows.forEach(text => {
+        archive.append(text.content, { name: `texts/${text.area}.txt` });
+      });
+    }
+
+    // Finalize archive
+    await archive.finalize();
+
+  } catch (error) {
+    console.error('Error exporting order:', error);
+    if (!res.headersSent) {
+      res.status(500).json({
+        success: false,
+        error: 'Failed to export order'
+      });
+    }
+  }
+});
+
+/**
+ * PUT /api/order/:orderId/note
+ * Add/update admin notes
+ */
+app.put('/api/order/:orderId/note', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { note } = req.body;
+
+    if (!note) {
+      return res.status(400).json({
+        success: false,
+        error: 'Note content is required'
+      });
+    }
+
+    const result = await query(
+      'UPDATE orders SET note = $1, updated_at = NOW() WHERE id = $2 RETURNING id, updated_at',
+      [note, orderId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      orderId: result.rows[0].id,
+      updatedAt: result.rows[0].updated_at
+    });
+  } catch (error) {
+    console.error('Error updating order note:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to update order note'
     });
   }
 });

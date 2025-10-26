@@ -3,6 +3,7 @@ import Index from "./pages/Index";
 import Evaluation from "./pages/Evaluation";
 import Success from "./pages/Success";
 import NotFound from "./pages/NotFound";
+import Admin from "./pages/Admin";
 
 // Route Error Component
 const RouteError = () => {
@@ -42,6 +43,7 @@ const App = () => (
       <Route path="/" element={<Index />} errorElement={<RouteError />} />
       <Route path="/evaluation" element={<Evaluation />} errorElement={<RouteError />} />
       <Route path="/success" element={<Success />} errorElement={<RouteError />} />
+      <Route path="/admin" element={<Admin />} errorElement={<RouteError />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
