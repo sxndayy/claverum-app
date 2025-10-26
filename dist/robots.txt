@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://baucheck-ki.de/sitemap.xml
