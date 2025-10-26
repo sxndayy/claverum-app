@@ -253,12 +253,12 @@ const Admin: React.FC = () => {
                 />
               </div>
               
-              <Select value={propertyType} onValueChange={setPropertyType}>
+              <Select value={propertyType || "all"} onValueChange={(value) => setPropertyType(value === "all" ? "" : value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Property Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Types</SelectItem>
+                  <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="Einfamilienhaus">Einfamilienhaus</SelectItem>
                   <SelectItem value="Reihenhaus">Reihenhaus</SelectItem>
                   <SelectItem value="Bungalow">Bungalow</SelectItem>
