@@ -24,24 +24,24 @@
 
 ## 🚂 Phase 2: Backend Deployment (Railway)
 ### ✅ Vorbereitung
-- [ ] **Gehe zu [railway.app](https://railway.app)**
-- [ ] **Logge dich ein mit GitHub**
+- [x] **Gehe zu [railway.app](https://railway.app)**
+- [x] **Logge dich ein mit GitHub**
 
 ### 📦 Project Setup
-- [ ] **Klicke "New Project"**
-- [ ] **Wähle "Deploy from GitHub repo"**
-- [ ] **Forke oder erstelle Repository mit deinem Code**
-- [ ] **Wähle das Repository aus**
+- [x] **Klicke "New Project"**
+- [x] **Wähle "Deploy from GitHub repo"**
+- [x] **Forke oder erstelle Repository mit deinem Code**
+- [x] **Wähle das Repository aus**
 
 ### ⚙️ Service Configuration
-- [ ] **Railway erkennt automatisch Node.js**
-- [ ] **Root Directory:** `api/` (wichtig!)
-- [ ] **Build Command:** `npm install`
-- [ ] **Start Command:** `npm start`
+- [x] **Railway erkennt automatisch Node.js**
+- [x] **Root Directory:** `api/` (wichtig!)
+- [x] **Build Command:** `npm install`
+- [x] **Start Command:** `npm start`
 
 ### 🔐 Environment Variables (Railway)
-- [ ] **Gehe zu "Variables" Tab**
-- [ ] **Füge hinzu:**
+- [x] **Gehe zu "Variables" Tab**
+- [x] **Füge hinzu:**
   - **DATABASE_URL:** `postgresql://neondb_owner:npg_v4WnJ7LhjPbT@ep-aged-hill-aeykv76s-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require`
   - **AWS_ACCESS_KEY_ID:** `[dein-access-key]`
   - **AWS_SECRET_ACCESS_KEY:** `[dein-secret-key]`
@@ -53,19 +53,19 @@
   - **PORT:** `3001`
 
 ### 🚀 Deployment
-- [ ] **Klicke "Deploy"**
-- [ ] **Warte auf Build (ca. 2-3 Minuten)**
-- [ ] **Notiere die URL:** `https://[project-name].up.railway.app`
+- [x] **Klicke "Deploy"**
+- [x] **Warte auf Build (ca. 2-3 Minuten)**
+- [x] **Notiere die URL:** `https://claverum-app-production.up.railway.app`
 
 ---
 
 ## 🔗 Phase 3: Frontend-Backend Verbindung
 ### 🔄 Environment Variables Update
-- [ ] **Gehe zurück zu Netlify**
-- [ ] **Environment Variables → VITE_API_BASE**
-- [ ] **Ändere Value zu:** `https://[deine-railway-url].up.railway.app`
-- [ ] **Klicke "Save"**
-- [ ] **Trigger Redeploy** (automatisch)
+- [x] **Gehe zurück zu Netlify**
+- [x] **Environment Variables → VITE_API_BASE**
+- [x] **Ändere Value zu:** `https://claverum-app-production.up.railway.app`
+- [x] **Klicke "Save"**
+- [x] **Trigger Redeploy** (automatisch)
 
 ### 🧪 Connection Test
 - [ ] **Öffne deine Netlify URL**

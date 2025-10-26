@@ -10,7 +10,14 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://test-johannes.netlify.app',
+    'http://localhost:3000',
+    'http://localhost:8080'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Health check endpoint
