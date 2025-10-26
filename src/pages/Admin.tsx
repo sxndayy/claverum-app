@@ -79,7 +79,11 @@ const Admin: React.FC = () => {
     }
     
     setUser(authManager.getUser());
-    loadOrders();
+    
+    // Verify token and get CSRF token
+    apiClient.verifyToken().then(() => {
+      loadOrders();
+    });
   }, [navigate]);
 
   const handleLogout = async () => {

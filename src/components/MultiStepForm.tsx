@@ -12,7 +12,7 @@ import AreaUpload from '@/components/AreaUpload';
 import UploadStatus from '@/components/UploadStatus';
 import { apiClient } from '@/utils/apiClient';
 import { uploadQueue } from '@/utils/uploadQueue';
-import { getCurrentOrderId, setCurrentOrderId, hasActiveOrder } from '@/utils/orderManager';
+import { getCurrentOrderId, setCurrentOrder, hasActiveOrder } from '@/utils/orderManager';
 
 interface FormData {
   // Step 1: Objekt-Basics
@@ -76,12 +76,12 @@ const MultiStepForm: React.FC = () => {
         if (response.success) {
           console.log('Order created:', response.orderId);
           setOrderId(response.orderId);
-          setCurrentOrderId(response.orderId);
+          setCurrentOrder(response.orderId, response.sessionToken);
         } else {
           toast({
             variant: 'destructive',
             title: 'Fehler',
-            description: 'Auftrag konnte nicht erstellt werden.',
+            description: response.error || 'Fehler beim Erstellen des Auftrags'
           });
         }
       }

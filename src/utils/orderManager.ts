@@ -6,9 +6,11 @@
 
 const ORDER_ID_KEY = 'claverum_order_id';
 const ORDER_DATA_KEY = 'claverum_order_data';
+const ORDER_SESSION_TOKEN_KEY = 'claverum_order_session_token';
 
 export interface OrderData {
   orderId: string;
+  sessionToken: string;
   createdAt: string;
   lastUpdated: string;
 }
@@ -26,15 +28,29 @@ export function getCurrentOrderId(): string | null {
 }
 
 /**
- * Set order ID in session storage
+ * Get current order session token
  */
-export function setCurrentOrderId(orderId: string): void {
+export function getCurrentOrderSessionToken(): string | null {
+  try {
+    return sessionStorage.getItem(ORDER_SESSION_TOKEN_KEY);
+  } catch (error) {
+    console.error('Error reading session token:', error);
+    return null;
+  }
+}
+
+/**
+ * Set order ID and session token in session storage
+ */
+export function setCurrentOrder(orderId: string, sessionToken: string): void {
   try {
     sessionStorage.setItem(ORDER_ID_KEY, orderId);
+    sessionStorage.setItem(ORDER_SESSION_TOKEN_KEY, sessionToken);
     
     // Also store order metadata
     const orderData: OrderData = {
       orderId,
+      sessionToken,
       createdAt: new Date().toISOString(),
       lastUpdated: new Date().toISOString(),
     };
@@ -79,6 +95,7 @@ export function clearOrderSession(): void {
   try {
     sessionStorage.removeItem(ORDER_ID_KEY);
     sessionStorage.removeItem(ORDER_DATA_KEY);
+    sessionStorage.removeItem(ORDER_SESSION_TOKEN_KEY);
   } catch (error) {
     console.error('Error clearing order session:', error);
   }
@@ -88,6 +105,6 @@ export function clearOrderSession(): void {
  * Check if order session exists
  */
 export function hasActiveOrder(): boolean {
-  return getCurrentOrderId() !== null;
+  return getCurrentOrderId() !== null && getCurrentOrderSessionToken() !== null;
 }
 

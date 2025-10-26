@@ -2,10 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import archiver from 'archiver';
+import helmet from 'helmet';
 import { query } from './db.js';
 import { generatePresignedUploadUrl, getPublicUrl } from './s3-client.js';
 import authRoutes from './routes/auth.js';
 import { requireAuth, optionalAuth } from './middleware/auth.js';
+import { requireOrderOwnership } from './middleware/orderOwnership.js';
+import { requireCSRF, generateCSRFForUser } from './middleware/csrf.js';
 import { 
   publicLimiter, 
   loginLimiter, 
@@ -24,6 +27,7 @@ import {
   isValidSortOrder
 } from './utils/validation.js';
 import { validateFileUpload, checkUploadLimits } from './middleware/fileValidation.js';
+import { generateOrderSessionToken } from './middleware/orderOwnership.js';
 
 dotenv.config();
 
@@ -31,6 +35,23 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false, // Disable for S3 uploads
+}));
+
 app.use(cors({
   origin: [
     'https://test-johannes.netlify.app',
@@ -43,6 +64,9 @@ app.use(express.json({ limit: '10mb' })); // Limit request body size
 
 // Auth routes
 app.use('/api/auth', loginLimiter, authRoutes);
+
+// Add CSRF token generation for authenticated requests
+app.use(generateCSRFForUser);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -113,9 +137,13 @@ app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
 
     const order = result.rows[0];
 
+    // Generate session token for order ownership
+    const sessionToken = generateOrderSessionToken(order.id);
+
     res.status(201).json({
       success: true,
       orderId: order.id,
+      sessionToken: sessionToken,
       createdAt: order.created_at
     });
   } catch (error) {
@@ -131,7 +159,7 @@ app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
  * PUT /api/update-order/:orderId
  * Updates order details (address, property info, etc.)
  */
-app.put('/api/update-order/:orderId', publicLimiter, async (req, res) => {
+app.put('/api/update-order/:orderId', publicLimiter, requireOrderOwnership, async (req, res) => {
   try {
     const { orderId } = req.params;
     const {
@@ -218,7 +246,7 @@ app.put('/api/update-order/:orderId', publicLimiter, async (req, res) => {
  * Generates pre-signed URL for direct S3 upload
  * Query params: orderId, area, filename, mimeType
  */
-app.get('/api/upload-url', uploadLimiter, async (req, res) => {
+app.get('/api/upload-url', uploadLimiter, requireOrderOwnership, async (req, res) => {
   try {
     const { orderId, area, filename, mimeType } = req.query;
 
@@ -299,7 +327,7 @@ app.get('/api/upload-url', uploadLimiter, async (req, res) => {
  * Records successful upload metadata in database
  * Body: { orderId, area, filePath, mimeType, fileSize }
  */
-app.post('/api/record-upload', uploadLimiter, async (req, res) => {
+app.post('/api/record-upload', uploadLimiter, requireOrderOwnership, async (req, res) => {
   try {
     const { orderId, area, filePath, mimeType, fileSize } = req.body;
 
@@ -310,11 +338,44 @@ app.post('/api/record-upload', uploadLimiter, async (req, res) => {
       });
     }
 
+    // Validate inputs
+    if (!isValidUUID(orderId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid order ID format'
+      });
+    }
+
+    if (!isValidArea(area)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid area'
+      });
+    }
+
+    // Validate MIME type
+    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedMimeTypes.includes(mimeType)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid MIME type'
+      });
+    }
+
+    // Sanitize file path to prevent path traversal
+    const sanitizedFilePath = sanitizeString(filePath, 500);
+    if (!sanitizedFilePath || sanitizedFilePath.includes('..') || sanitizedFilePath.includes('//')) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid file path'
+      });
+    }
+
     const result = await query(
       `INSERT INTO uploads (order_id, area, file_path, mime_type, file_size)
        VALUES ($1, $2, $3, $4, $5)
        RETURNING id, created_at`,
-      [orderId, area, filePath, mimeType, fileSize || null]
+      [orderId, area, sanitizedFilePath, mimeType, fileSize || null]
     );
 
     const upload = result.rows[0];
@@ -323,7 +384,7 @@ app.post('/api/record-upload', uploadLimiter, async (req, res) => {
       success: true,
       uploadId: upload.id,
       createdAt: upload.created_at,
-      publicUrl: getPublicUrl(filePath)
+      publicUrl: getPublicUrl(sanitizedFilePath)
     });
   } catch (error) {
     console.error('Error recording upload:', error);
@@ -339,7 +400,7 @@ app.post('/api/record-upload', uploadLimiter, async (req, res) => {
  * Saves area text description
  * Body: { orderId, area, content }
  */
-app.post('/api/save-texts', publicLimiter, async (req, res) => {
+app.post('/api/save-texts', publicLimiter, requireOrderOwnership, async (req, res) => {
   try {
     const { orderId, area, content } = req.body;
 
@@ -350,6 +411,30 @@ app.post('/api/save-texts', publicLimiter, async (req, res) => {
       });
     }
 
+    // Validate inputs
+    if (!isValidUUID(orderId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid order ID format'
+      });
+    }
+
+    if (!isValidArea(area)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid area'
+      });
+    }
+
+    // Sanitize content
+    const sanitizedContent = sanitizeString(content, 5000);
+    if (!sanitizedContent) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid content'
+      });
+    }
+
     // Use INSERT ... ON CONFLICT to handle updates
     const result = await query(
       `INSERT INTO area_texts (order_id, area, content)
@@ -357,7 +442,7 @@ app.post('/api/save-texts', publicLimiter, async (req, res) => {
        ON CONFLICT (order_id, area)
        DO UPDATE SET content = EXCLUDED.content, updated_at = NOW()
        RETURNING id, created_at, updated_at`,
-      [orderId, area, content]
+      [orderId, area, sanitizedContent]
     );
 
     const areaText = result.rows[0];
@@ -546,7 +631,7 @@ app.get('/api/orders', adminLimiter, requireAuth, async (req, res) => {
  * DELETE /api/order/:orderId
  * Delete an order and all associated data
  */
-app.delete('/api/order/:orderId', adminLimiter, requireAuth, async (req, res) => {
+app.delete('/api/order/:orderId', adminLimiter, requireAuth, requireCSRF, async (req, res) => {
   try {
     const { orderId } = req.params;
 
@@ -690,7 +775,7 @@ Statistiken:
  * PUT /api/order/:orderId/note
  * Add/update admin notes
  */
-app.put('/api/order/:orderId/note', adminLimiter, requireAuth, async (req, res) => {
+app.put('/api/order/:orderId/note', adminLimiter, requireAuth, requireCSRF, async (req, res) => {
   try {
     const { orderId } = req.params;
     const { note } = req.body;

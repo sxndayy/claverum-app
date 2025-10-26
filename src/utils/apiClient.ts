@@ -5,6 +5,7 @@
 
 import { getApiBase } from '@/constants/config';
 import { authManager } from './authManager';
+import { getCurrentOrderSessionToken } from './orderManager';
 
 const API_BASE = getApiBase();
 
@@ -36,6 +37,7 @@ export interface VerifyResponse {
 export interface CreateOrderResponse {
   success: boolean;
   orderId: string;
+  sessionToken: string;
   createdAt: string;
   error?: string;
 }
@@ -178,9 +180,24 @@ export interface UpdateOrderNoteResponse {
 
 class ApiClient {
   private baseUrl: string;
+  private csrfToken: string | null = null;
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
+  }
+
+  /**
+   * Set CSRF token from response headers
+   */
+  setCSRFToken(token: string): void {
+    this.csrfToken = token;
+  }
+
+  /**
+   * Get CSRF token for requests
+   */
+  getCSRFToken(): string | null {
+    return this.csrfToken;
   }
 
   /**
@@ -195,6 +212,12 @@ class ApiClient {
         },
         body: JSON.stringify({ username, password }),
       });
+
+      // Extract CSRF token from response headers
+      const csrfToken = response.headers.get('X-CSRF-Token');
+      if (csrfToken) {
+        this.setCSRFToken(csrfToken);
+      }
 
       return await response.json();
     } catch (error) {
@@ -218,6 +241,12 @@ class ApiClient {
           ...authHeader,
         },
       });
+
+      // Extract CSRF token from response headers
+      const csrfToken = response.headers.get('X-CSRF-Token');
+      if (csrfToken) {
+        this.setCSRFToken(csrfToken);
+      }
 
       return await response.json();
     } catch (error) {
@@ -268,6 +297,7 @@ class ApiClient {
       return {
         success: false,
         orderId: '',
+        sessionToken: '',
         createdAt: '',
         error: 'Network error',
       };
@@ -279,10 +309,12 @@ class ApiClient {
    */
   async updateOrder(orderId: string, data: UpdateOrderRequest): Promise<{ success: boolean; error?: string }> {
     try {
+      const sessionToken = getCurrentOrderSessionToken();
       const response = await fetch(`${this.baseUrl}/api/update-order/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'X-Order-Session': sessionToken || '',
         },
         body: JSON.stringify(data),
       });
@@ -307,6 +339,7 @@ class ApiClient {
     mimeType: string
   ): Promise<UploadUrlResponse> {
     try {
+      const sessionToken = getCurrentOrderSessionToken();
       const params = new URLSearchParams({
         orderId,
         area,
@@ -314,7 +347,11 @@ class ApiClient {
         mimeType,
       });
 
-      const response = await fetch(`${this.baseUrl}/api/upload-url?${params}`);
+      const response = await fetch(`${this.baseUrl}/api/upload-url?${params}`, {
+        headers: {
+          'X-Order-Session': sessionToken || '',
+        },
+      });
       return await response.json();
     } catch (error) {
       console.error('Error getting upload URL:', error);
@@ -353,10 +390,12 @@ class ApiClient {
    */
   async recordUpload(data: RecordUploadRequest): Promise<RecordUploadResponse> {
     try {
+      const sessionToken = getCurrentOrderSessionToken();
       const response = await fetch(`${this.baseUrl}/api/record-upload`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Order-Session': sessionToken || '',
         },
         body: JSON.stringify(data),
       });
@@ -379,10 +418,12 @@ class ApiClient {
    */
   async saveTexts(data: SaveTextsRequest): Promise<SaveTextsResponse> {
     try {
+      const sessionToken = getCurrentOrderSessionToken();
       const response = await fetch(`${this.baseUrl}/api/save-texts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Order-Session': sessionToken || '',
         },
         body: JSON.stringify(data),
       });
@@ -464,12 +505,20 @@ class ApiClient {
   async deleteOrder(orderId: string): Promise<DeleteOrderResponse> {
     try {
       const authHeader = authManager.getAuthHeader();
+      const csrfToken = this.getCSRFToken();
+      
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...authHeader,
+      };
+      
+      if (csrfToken) {
+        headers['X-CSRF-Token'] = csrfToken;
+      }
+      
       const response = await fetch(`${this.baseUrl}/api/order/${orderId}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          ...authHeader,
-        },
+        headers,
       });
 
       return await response.json();
@@ -521,12 +570,20 @@ class ApiClient {
   async updateOrderNote(orderId: string, data: UpdateOrderNoteRequest): Promise<UpdateOrderNoteResponse> {
     try {
       const authHeader = authManager.getAuthHeader();
+      const csrfToken = this.getCSRFToken();
+      
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...authHeader,
+      };
+      
+      if (csrfToken) {
+        headers['X-CSRF-Token'] = csrfToken;
+      }
+      
       const response = await fetch(`${this.baseUrl}/api/order/${orderId}/note`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...authHeader,
-        },
+        headers,
         body: JSON.stringify(data),
       });
 

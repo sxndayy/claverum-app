@@ -9,6 +9,11 @@ if (!JWT_SECRET) {
   throw new Error('JWT_SECRET environment variable is required');
 }
 
+// Validate JWT secret strength
+if (JWT_SECRET.length < 32) {
+  throw new Error('JWT_SECRET must be at least 32 characters for security');
+}
+
 /**
  * Generate JWT token for authenticated user
  */
@@ -37,20 +42,22 @@ export function verifyToken(token) {
 
 /**
  * Authenticate user with username and password
+ * Fixed timing attack by always performing bcrypt comparison
  */
 export async function authenticateUser(username, password) {
+  // Always perform bcrypt comparison to prevent timing attacks
+  const dummyHash = '$2b$12$dummy.hash.for.timing.attack.prevention';
+  
   const user = users.find(u => u.username === username);
+  const hashToCompare = user ? user.passwordHash : dummyHash;
   
-  if (!user) {
+  const isValidPassword = await bcrypt.compare(password, hashToCompare);
+  
+  // Only return user if both user exists AND password is valid
+  if (!user || !isValidPassword) {
     return null;
   }
-
-  const isValidPassword = await bcrypt.compare(password, user.passwordHash);
   
-  if (!isValidPassword) {
-    return null;
-  }
-
   return {
     username: user.username,
     role: user.role
