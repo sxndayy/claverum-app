@@ -4,6 +4,26 @@ import dotenv from 'dotenv';
 import archiver from 'archiver';
 import { query } from './db.js';
 import { generatePresignedUploadUrl, getPublicUrl } from './s3-client.js';
+import authRoutes from './routes/auth.js';
+import { requireAuth, optionalAuth } from './middleware/auth.js';
+import { 
+  publicLimiter, 
+  loginLimiter, 
+  adminLimiter, 
+  uploadLimiter, 
+  orderCreationLimiter 
+} from './middleware/rateLimiter.js';
+import { 
+  sanitizeString, 
+  isValidUUID, 
+  isValidPropertyType, 
+  isValidBuildYear,
+  isValidPostalCode,
+  isValidArea,
+  isValidSortField,
+  isValidSortOrder
+} from './utils/validation.js';
+import { validateFileUpload, checkUploadLimits } from './middleware/fileValidation.js';
 
 dotenv.config();
 
@@ -19,7 +39,10 @@ app.use(cors({
   ],
   credentials: true
 }));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' })); // Limit request body size
+
+// Auth routes
+app.use('/api/auth', loginLimiter, authRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -31,7 +54,7 @@ app.get('/health', (req, res) => {
  * Creates a new order and returns order_id
  * Body: { street?, houseNumber?, postalCode?, city?, propertyType?, buildYear?, note? }
  */
-app.post('/api/create-order', async (req, res) => {
+app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
   try {
     const {
       street,
@@ -43,11 +66,49 @@ app.post('/api/create-order', async (req, res) => {
       note
     } = req.body;
 
+    // Validate and sanitize inputs
+    const sanitizedStreet = sanitizeString(street, 255);
+    const sanitizedHouseNumber = sanitizeString(houseNumber, 50);
+    const sanitizedCity = sanitizeString(city, 100);
+    const sanitizedNote = sanitizeString(note, 1000);
+
+    // Validate postal code if provided
+    if (postalCode && !isValidPostalCode(postalCode)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid postal code format'
+      });
+    }
+
+    // Validate property type if provided
+    if (propertyType && !isValidPropertyType(propertyType)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid property type'
+      });
+    }
+
+    // Validate build year if provided
+    if (buildYear && !isValidBuildYear(buildYear)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid build year'
+      });
+    }
+
     const result = await query(
       `INSERT INTO orders (street, house_number, postal_code, city, property_type, build_year, note)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id, created_at`,
-      [street || null, houseNumber || null, postalCode || null, city || null, propertyType || null, buildYear || null, note || null]
+      [
+        sanitizedStreet || null, 
+        sanitizedHouseNumber || null, 
+        postalCode || null, 
+        sanitizedCity || null, 
+        propertyType || null, 
+        buildYear || null, 
+        sanitizedNote || null
+      ]
     );
 
     const order = result.rows[0];
@@ -70,7 +131,7 @@ app.post('/api/create-order', async (req, res) => {
  * PUT /api/update-order/:orderId
  * Updates order details (address, property info, etc.)
  */
-app.put('/api/update-order/:orderId', async (req, res) => {
+app.put('/api/update-order/:orderId', publicLimiter, async (req, res) => {
   try {
     const { orderId } = req.params;
     const {
@@ -157,7 +218,7 @@ app.put('/api/update-order/:orderId', async (req, res) => {
  * Generates pre-signed URL for direct S3 upload
  * Query params: orderId, area, filename, mimeType
  */
-app.get('/api/upload-url', async (req, res) => {
+app.get('/api/upload-url', uploadLimiter, async (req, res) => {
   try {
     const { orderId, area, filename, mimeType } = req.query;
 
@@ -165,6 +226,40 @@ app.get('/api/upload-url', async (req, res) => {
       return res.status(400).json({
         success: false,
         error: 'Missing required parameters: orderId, area, filename, mimeType'
+      });
+    }
+
+    // Validate UUID
+    if (!isValidUUID(orderId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid order ID format'
+      });
+    }
+
+    // Validate area
+    if (!isValidArea(area)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid area specified'
+      });
+    }
+
+    // Validate file upload
+    const fileValidation = validateFileUpload(mimeType, 0, filename); // Size will be validated on actual upload
+    if (!fileValidation.isValid) {
+      return res.status(400).json({
+        success: false,
+        error: fileValidation.errors.join('; ')
+      });
+    }
+
+    // Check upload limits for this order
+    const uploadLimits = await checkUploadLimits(query, orderId);
+    if (!uploadLimits.allowed) {
+      return res.status(400).json({
+        success: false,
+        error: uploadLimits.error
       });
     }
 
@@ -180,7 +275,7 @@ app.get('/api/upload-url', async (req, res) => {
     const { uploadUrl, filePath } = await generatePresignedUploadUrl(
       orderId,
       area,
-      filename,
+      fileValidation.sanitizedFilename,
       mimeType
     );
 
@@ -188,7 +283,7 @@ app.get('/api/upload-url', async (req, res) => {
       success: true,
       uploadUrl,
       filePath,
-      publicUrl: getPublicUrl(filePath)
+      remainingUploads: 100 - uploadLimits.currentCount
     });
   } catch (error) {
     console.error('Error generating upload URL:', error);
@@ -204,7 +299,7 @@ app.get('/api/upload-url', async (req, res) => {
  * Records successful upload metadata in database
  * Body: { orderId, area, filePath, mimeType, fileSize }
  */
-app.post('/api/record-upload', async (req, res) => {
+app.post('/api/record-upload', uploadLimiter, async (req, res) => {
   try {
     const { orderId, area, filePath, mimeType, fileSize } = req.body;
 
@@ -244,7 +339,7 @@ app.post('/api/record-upload', async (req, res) => {
  * Saves area text description
  * Body: { orderId, area, content }
  */
-app.post('/api/save-texts', async (req, res) => {
+app.post('/api/save-texts', publicLimiter, async (req, res) => {
   try {
     const { orderId, area, content } = req.body;
 
@@ -286,7 +381,7 @@ app.post('/api/save-texts', async (req, res) => {
  * GET /api/order/:orderId
  * Get order details with all uploads and texts
  */
-app.get('/api/order/:orderId', async (req, res) => {
+app.get('/api/order/:orderId', adminLimiter, requireAuth, async (req, res) => {
   try {
     const { orderId } = req.params;
 
@@ -339,7 +434,7 @@ app.get('/api/order/:orderId', async (req, res) => {
  * List all orders with pagination, search, and filters
  * Query params: page, limit, search, propertyType, city, sortBy, sortOrder
  */
-app.get('/api/orders', async (req, res) => {
+app.get('/api/orders', adminLimiter, requireAuth, async (req, res) => {
   try {
     const {
       page = 1,
@@ -351,16 +446,50 @@ app.get('/api/orders', async (req, res) => {
       sortOrder = 'desc'
     } = req.query;
 
-    const offset = (parseInt(page) - 1) * parseInt(limit);
-    const searchTerm = `%${search}%`;
-    const propertyFilter = propertyType ? `AND property_type = '${propertyType}'` : '';
-    const cityFilter = city ? `AND city ILIKE '%${city}%'` : '';
-    const orderBy = `${sortBy} ${sortOrder.toUpperCase()}`;
+    // Validate and sanitize inputs
+    const safePage = Math.max(1, parseInt(page) || 1);
+    const safeLimit = Math.min(100, Math.max(1, parseInt(limit) || 20)); // Max 100 per page
+    const safeSearch = sanitizeString(search, 100);
+    const safeCity = sanitizeString(city, 100);
 
-    // Build search condition
-    const searchCondition = search ? 
-      `AND (street ILIKE $1 OR city ILIKE $1 OR id::text ILIKE $1)` : 
-      '';
+    // Validate sort parameters
+    const safeSortBy = isValidSortField(sortBy) ? sortBy : 'created_at';
+    const safeSortOrder = isValidSortOrder(sortOrder) ? sortOrder.toUpperCase() : 'DESC';
+
+    // Validate property type
+    if (propertyType && !isValidPropertyType(propertyType)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid property type'
+      });
+    }
+
+    const offset = (safePage - 1) * safeLimit;
+
+    // Build filters with parameterized queries
+    const filters = [];
+    const params = [];
+    let paramCount = 1;
+
+    if (safeSearch) {
+      filters.push(`(street ILIKE $${paramCount} OR city ILIKE $${paramCount} OR id::text ILIKE $${paramCount})`);
+      params.push(`%${safeSearch}%`);
+      paramCount++;
+    }
+
+    if (propertyType) {
+      filters.push(`property_type = $${paramCount}`);
+      params.push(propertyType);
+      paramCount++;
+    }
+
+    if (safeCity) {
+      filters.push(`city ILIKE $${paramCount}`);
+      params.push(`%${safeCity}%`);
+      paramCount++;
+    }
+
+    const whereClause = filters.length > 0 ? `WHERE ${filters.join(' AND ')}` : '';
 
     // Get orders with upload counts
     const ordersQuery = `
@@ -371,38 +500,37 @@ app.get('/api/orders', async (req, res) => {
       FROM orders o
       LEFT JOIN uploads u ON o.id = u.order_id
       LEFT JOIN area_texts at ON o.id = at.order_id
-      WHERE 1=1 ${searchCondition} ${propertyFilter} ${cityFilter}
+      ${whereClause}
       GROUP BY o.id
-      ORDER BY ${orderBy}
-      LIMIT $${search ? '2' : '1'} OFFSET $${search ? '3' : '2'}
+      ORDER BY ${safeSortBy} ${safeSortOrder}
+      LIMIT $${paramCount} OFFSET $${paramCount + 1}
     `;
 
-    const queryParams = search ? [searchTerm, parseInt(limit), offset] : [parseInt(limit), offset];
-
-    const ordersResult = await query(ordersQuery, queryParams);
+    params.push(safeLimit, offset);
+    const ordersResult = await query(ordersQuery, params);
 
     // Get total count for pagination
     const countQuery = `
       SELECT COUNT(DISTINCT o.id) as total
       FROM orders o
-      WHERE 1=1 ${searchCondition} ${propertyFilter} ${cityFilter}
+      ${whereClause}
     `;
-    const countParams = search ? [searchTerm] : [];
+    const countParams = params.slice(0, -2); // Remove limit and offset
     const countResult = await query(countQuery, countParams);
 
     const total = parseInt(countResult.rows[0].total);
-    const totalPages = Math.ceil(total / parseInt(limit));
+    const totalPages = Math.ceil(total / safeLimit);
 
     res.json({
       success: true,
       orders: ordersResult.rows,
       pagination: {
-        page: parseInt(page),
-        limit: parseInt(limit),
+        page: safePage,
+        limit: safeLimit,
         total,
         totalPages,
-        hasNext: parseInt(page) < totalPages,
-        hasPrev: parseInt(page) > 1
+        hasNext: safePage < totalPages,
+        hasPrev: safePage > 1
       }
     });
   } catch (error) {
@@ -418,7 +546,7 @@ app.get('/api/orders', async (req, res) => {
  * DELETE /api/order/:orderId
  * Delete an order and all associated data
  */
-app.delete('/api/order/:orderId', async (req, res) => {
+app.delete('/api/order/:orderId', adminLimiter, requireAuth, async (req, res) => {
   try {
     const { orderId } = req.params;
 
@@ -451,7 +579,7 @@ app.delete('/api/order/:orderId', async (req, res) => {
  * GET /api/export/:orderId
  * Generate ZIP export with all order data
  */
-app.get('/api/export/:orderId', async (req, res) => {
+app.get('/api/export/:orderId', adminLimiter, requireAuth, async (req, res) => {
   try {
     const { orderId } = req.params;
 
@@ -562,7 +690,7 @@ Statistiken:
  * PUT /api/order/:orderId/note
  * Add/update admin notes
  */
-app.put('/api/order/:orderId/note', async (req, res) => {
+app.put('/api/order/:orderId/note', adminLimiter, requireAuth, async (req, res) => {
   try {
     const { orderId } = req.params;
     const { note } = req.body;

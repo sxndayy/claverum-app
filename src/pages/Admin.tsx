@@ -30,9 +30,11 @@ import {
   MapPin,
   Home,
   FileText,
-  Image
+  Image,
+  LogOut
 } from 'lucide-react';
 import { apiClient, OrdersListParams } from '@/utils/apiClient';
+import { authManager } from '@/utils/authManager';
 import AdminOrderDetail from '@/components/AdminOrderDetail';
 
 interface Order {
@@ -57,6 +59,7 @@ const Admin: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [showDetail, setShowDetail] = useState(false);
+  const [user, setUser] = useState(authManager.getUser());
   
   // Pagination and filters
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,6 +70,22 @@ const Admin: React.FC = () => {
   const [city, setCity] = useState('');
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
+  // Check authentication on mount
+  useEffect(() => {
+    if (!authManager.isAuthenticated()) {
+      navigate('/admin/login');
+      return;
+    }
+    
+    setUser(authManager.getUser());
+    loadOrders();
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    await apiClient.logout();
+    navigate('/admin/login');
+  };
 
   const loadOrders = async () => {
     try {
@@ -92,16 +111,19 @@ const Admin: React.FC = () => {
       } else {
         setError(response.error || 'Failed to load orders');
       }
-    } catch (err) {
-      setError('Network error');
-      console.error('Error loading orders:', err);
+    } catch (error) {
+      console.error('Error loading orders:', error);
+      setError('Failed to load orders');
     } finally {
       setLoading(false);
     }
   };
 
+  // Reload orders when filters change
   useEffect(() => {
-    loadOrders();
+    if (authManager.isAuthenticated()) {
+      loadOrders();
+    }
   }, [currentPage, search, propertyType, city, sortBy, sortOrder]);
 
   const handleSearch = (value: string) => {
@@ -179,13 +201,22 @@ const Admin: React.FC = () => {
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
               <p className="text-gray-600">Manage all orders and customer data</p>
+              {user && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Logged in as: <span className="font-medium">{user.username}</span>
+                </p>
+              )}
             </div>
-            <Button 
-              onClick={() => navigate('/')}
-              variant="outline"
-            >
-              Back to Website
-            </Button>
+            <div className="flex items-center gap-4">
+              <Button
+                variant="outline"
+                onClick={handleLogout}
+                className="flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
 

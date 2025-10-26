@@ -4,8 +4,34 @@
  */
 
 import { getApiBase } from '@/constants/config';
+import { authManager } from './authManager';
 
 const API_BASE = getApiBase();
+
+// Authentication interfaces
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  success: boolean;
+  token?: string;
+  user?: {
+    username: string;
+    role: string;
+  };
+  error?: string;
+}
+
+export interface VerifyResponse {
+  success: boolean;
+  user?: {
+    username: string;
+    role: string;
+  };
+  error?: string;
+}
 
 export interface CreateOrderResponse {
   success: boolean;
@@ -155,6 +181,72 @@ class ApiClient {
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
+  }
+
+  /**
+   * Login with username and password
+   */
+  async login(username: string, password: string): Promise<LoginResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Login error:', error);
+      return {
+        success: false,
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Verify current token
+   */
+  async verifyToken(): Promise<VerifyResponse> {
+    try {
+      const authHeader = authManager.getAuthHeader();
+      const response = await fetch(`${this.baseUrl}/api/auth/verify`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeader,
+        },
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Token verification error:', error);
+      return {
+        success: false,
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Logout (client-side only)
+   */
+  async logout(): Promise<void> {
+    try {
+      const authHeader = authManager.getAuthHeader();
+      await fetch(`${this.baseUrl}/api/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeader,
+        },
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      authManager.logout();
+    }
   }
 
   /**
@@ -330,6 +422,7 @@ class ApiClient {
    */
   async fetchOrders(params: OrdersListParams = {}): Promise<OrdersListResponse> {
     try {
+      const authHeader = authManager.getAuthHeader();
       const searchParams = new URLSearchParams();
       
       if (params.page) searchParams.append('page', params.page.toString());
@@ -340,7 +433,12 @@ class ApiClient {
       if (params.sortBy) searchParams.append('sortBy', params.sortBy);
       if (params.sortOrder) searchParams.append('sortOrder', params.sortOrder);
 
-      const response = await fetch(`${this.baseUrl}/api/orders?${searchParams}`);
+      const response = await fetch(`${this.baseUrl}/api/orders?${searchParams}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeader,
+        },
+      });
       return await response.json();
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -365,8 +463,13 @@ class ApiClient {
    */
   async deleteOrder(orderId: string): Promise<DeleteOrderResponse> {
     try {
+      const authHeader = authManager.getAuthHeader();
       const response = await fetch(`${this.baseUrl}/api/order/${orderId}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeader,
+        },
       });
 
       return await response.json();
@@ -385,7 +488,12 @@ class ApiClient {
    */
   async exportOrder(orderId: string): Promise<void> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/export/${orderId}`);
+      const authHeader = authManager.getAuthHeader();
+      const response = await fetch(`${this.baseUrl}/api/export/${orderId}`, {
+        headers: {
+          ...authHeader,
+        },
+      });
       
       if (!response.ok) {
         throw new Error('Export failed');
@@ -412,10 +520,12 @@ class ApiClient {
    */
   async updateOrderNote(orderId: string, data: UpdateOrderNoteRequest): Promise<UpdateOrderNoteResponse> {
     try {
+      const authHeader = authManager.getAuthHeader();
       const response = await fetch(`${this.baseUrl}/api/order/${orderId}/note`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          ...authHeader,
         },
         body: JSON.stringify(data),
       });
