@@ -284,8 +284,14 @@ class ApiClient {
    * Create a new order
    */
   async createOrder(data?: Partial<UpdateOrderRequest>): Promise<CreateOrderResponse> {
+    console.log('[apiClient] createOrder called with data:', data);
+    console.log('[apiClient] Base URL:', this.baseUrl);
+    
     try {
-      const response = await fetch(`${this.baseUrl}/api/create-order`, {
+      const url = `${this.baseUrl}/api/create-order`;
+      console.log('[apiClient] Making request to:', url);
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -293,15 +299,27 @@ class ApiClient {
         body: JSON.stringify(data || {}),
       });
 
-      return await response.json();
+      console.log('[apiClient] Response status:', response.status);
+      console.log('[apiClient] Response ok:', response.ok);
+      
+      if (!response.ok) {
+        console.error('[apiClient] HTTP Error:', response.status, response.statusText);
+        const errorText = await response.text();
+        console.error('[apiClient] Error response body:', errorText);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('[apiClient] Response data:', result);
+      return result;
     } catch (error) {
-      console.error('Error creating order:', error);
+      console.error('[apiClient] Network Error:', error);
       return {
         success: false,
         orderId: '',
         sessionToken: '',
         createdAt: '',
-        error: 'Network error',
+        error: error instanceof Error ? error.message : 'Network error',
       };
     }
   }

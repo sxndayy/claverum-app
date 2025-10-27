@@ -165,11 +165,15 @@ const MultiStepForm: React.FC = () => {
   };
 
   const handleStartNewOrder = async () => {
+    console.log('[handleStartNewOrder] Starting...');
     try {
       // Clear existing order session
+      console.log('[handleStartNewOrder] Clearing session...');
       clearOrderSession();
+      console.log('[handleStartNewOrder] Session cleared');
       
       // Reset form state
+      console.log('[handleStartNewOrder] Resetting form state...');
       setOrderId(null);
       setCurrentStep(1);
       setFormData({
@@ -189,10 +193,15 @@ const MultiStepForm: React.FC = () => {
         selectedProduct: '',
         selectedPackage: ''
       });
+      console.log('[handleStartNewOrder] Form state reset');
       
       // Create new order
+      console.log('[handleStartNewOrder] Creating new order...');
       const response = await apiClient.createOrder();
+      console.log('[handleStartNewOrder] API Response:', response);
+      
       if (response.success && response.orderId && response.sessionToken) {
+        console.log('[handleStartNewOrder] Order created successfully:', response.orderId);
         setOrderId(response.orderId);
         setCurrentOrder(response.orderId, response.sessionToken);
         toast({
@@ -200,6 +209,7 @@ const MultiStepForm: React.FC = () => {
           description: "Sie können jetzt mit der Bewertung beginnen."
         });
       } else {
+        console.error('[handleStartNewOrder] Order creation failed:', response);
         toast({
           variant: 'destructive',
           title: 'Fehler',
@@ -207,7 +217,7 @@ const MultiStepForm: React.FC = () => {
         });
       }
     } catch (error) {
-      console.error('Error starting new order:', error);
+      console.error('[handleStartNewOrder] Error:', error);
       toast({
         variant: 'destructive',
         title: 'Fehler',
