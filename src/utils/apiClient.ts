@@ -50,6 +50,7 @@ export interface UpdateOrderRequest {
   propertyType?: string;
   buildYear?: string;
   note?: string;
+  email?: string;
 }
 
 export interface UploadUrlResponse {
@@ -156,6 +157,7 @@ export interface OrdersListParams {
   limit?: number;
   search?: string;
   propertyType?: string;
+  paymentStatus?: string;
   city?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
@@ -470,6 +472,7 @@ class ApiClient {
       if (params.limit) searchParams.append('limit', params.limit.toString());
       if (params.search) searchParams.append('search', params.search);
       if (params.propertyType) searchParams.append('propertyType', params.propertyType);
+      if (params.paymentStatus) searchParams.append('paymentStatus', params.paymentStatus);
       if (params.city) searchParams.append('city', params.city);
       if (params.sortBy) searchParams.append('sortBy', params.sortBy);
       if (params.sortOrder) searchParams.append('sortOrder', params.sortOrder);
@@ -595,6 +598,52 @@ class ApiClient {
         orderId: '',
         updatedAt: '',
         error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Create Stripe checkout session
+   */
+  async createCheckoutSession(orderId: string): Promise<{success: boolean; url?: string; error?: string}> {
+    try {
+      const sessionToken = getCurrentOrderSessionToken();
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      
+      if (sessionToken) {
+        headers['X-Order-Session'] = sessionToken;
+      }
+      
+      const response = await fetch(`${this.baseUrl}/api/create-checkout-session`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ orderId })
+      });
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      return {
+        success: false,
+        error: 'Network error'
+      };
+    }
+  }
+
+  /**
+   * Verify payment status
+   */
+  async verifyPayment(sessionId: string): Promise<{success: boolean; paid?: boolean; paymentStatus?: string; paymentAmount?: number; paidAt?: string; error?: string}> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/verify-payment?session_id=${sessionId}`);
+      return await response.json();
+    } catch (error) {
+      console.error('Error verifying payment:', error);
+      return {
+        success: false,
+        error: 'Network error'
       };
     }
   }

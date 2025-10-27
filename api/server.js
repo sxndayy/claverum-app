@@ -5,6 +5,7 @@ import archiver from 'archiver';
 import helmet from 'helmet';
 import { query } from './db.js';
 import { generatePresignedUploadUrl, getPublicUrl } from './s3-client.js';
+import { stripe } from './stripe-client.js';
 import authRoutes from './routes/auth.js';
 import { requireAuth, optionalAuth } from './middleware/auth.js';
 import { requireOrderOwnership } from './middleware/orderOwnership.js';
@@ -19,12 +20,16 @@ import {
 import { 
   sanitizeString, 
   isValidUUID, 
+  isValidEmail,
   isValidPropertyType, 
   isValidBuildYear,
   isValidPostalCode,
   isValidArea,
   isValidSortField,
-  isValidSortOrder
+  isValidSortOrder,
+  isValidPaymentStatus,
+  isValidStripeSessionId,
+  isValidStripePaymentIntentId
 } from './utils/validation.js';
 import { validateFileUpload, checkUploadLimits } from './middleware/fileValidation.js';
 import { generateOrderSessionToken } from './middleware/orderOwnership.js';
@@ -76,7 +81,7 @@ app.get('/health', (req, res) => {
 /**
  * POST /api/create-order
  * Creates a new order and returns order_id
- * Body: { street?, houseNumber?, postalCode?, city?, propertyType?, buildYear?, note? }
+ * Body: { street?, houseNumber?, postalCode?, city?, propertyType?, buildYear?, note?, email? }
  */
 app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
   try {
@@ -87,7 +92,8 @@ app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
       city,
       propertyType,
       buildYear,
-      note
+      note,
+      email
     } = req.body;
 
     // Validate and sanitize inputs
@@ -95,6 +101,15 @@ app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
     const sanitizedHouseNumber = sanitizeString(houseNumber, 50);
     const sanitizedCity = sanitizeString(city, 100);
     const sanitizedNote = sanitizeString(note, 1000);
+    const sanitizedEmail = sanitizeString(email, 255);
+
+    // Validate email if provided
+    if (email && !isValidEmail(sanitizedEmail)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid email format'
+      });
+    }
 
     // Validate postal code if provided
     if (postalCode && !isValidPostalCode(postalCode)) {
@@ -121,8 +136,8 @@ app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
     }
 
     const result = await query(
-      `INSERT INTO orders (street, house_number, postal_code, city, property_type, build_year, note)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `INSERT INTO orders (street, house_number, postal_code, city, property_type, build_year, note, email)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING id, created_at`,
       [
         sanitizedStreet || null, 
@@ -131,7 +146,8 @@ app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
         sanitizedCity || null, 
         propertyType || null, 
         buildYear || null, 
-        sanitizedNote || null
+        sanitizedNote || null,
+        sanitizedEmail || null
       ]
     );
 
@@ -517,7 +533,7 @@ app.get('/api/order/:orderId', adminLimiter, requireAuth, async (req, res) => {
 /**
  * GET /api/orders
  * List all orders with pagination, search, and filters
- * Query params: page, limit, search, propertyType, city, sortBy, sortOrder
+ * Query params: page, limit, search, propertyType, city, paymentStatus, sortBy, sortOrder
  */
 app.get('/api/orders', adminLimiter, requireAuth, async (req, res) => {
   try {
@@ -527,6 +543,7 @@ app.get('/api/orders', adminLimiter, requireAuth, async (req, res) => {
       search = '',
       propertyType = '',
       city = '',
+      paymentStatus = '',
       sortBy = 'created_at',
       sortOrder = 'desc'
     } = req.query;
@@ -546,6 +563,14 @@ app.get('/api/orders', adminLimiter, requireAuth, async (req, res) => {
       return res.status(400).json({
         success: false,
         error: 'Invalid property type'
+      });
+    }
+
+    // Validate payment status
+    if (paymentStatus && !isValidPaymentStatus(paymentStatus)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid payment status'
       });
     }
 
@@ -571,6 +596,12 @@ app.get('/api/orders', adminLimiter, requireAuth, async (req, res) => {
     if (safeCity) {
       filters.push(`city ILIKE $${paramCount}`);
       params.push(`%${safeCity}%`);
+      paramCount++;
+    }
+
+    if (paymentStatus) {
+      filters.push(`payment_status = $${paramCount}`);
+      params.push(paymentStatus);
       paramCount++;
     }
 
@@ -812,6 +843,260 @@ app.put('/api/order/:orderId/note', adminLimiter, requireAuth, requireCSRF, asyn
     });
   }
 });
+
+/**
+ * POST /api/create-checkout-session
+ * Creates a Stripe Checkout session for payment
+ * Body: { orderId }
+ */
+app.post('/api/create-checkout-session', publicLimiter, requireOrderOwnership, async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    if (!orderId || !isValidUUID(orderId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Valid order ID is required'
+      });
+    }
+
+    // Get order details
+    const orderResult = await query(
+      'SELECT id, email, payment_status FROM orders WHERE id = $1',
+      [orderId]
+    );
+
+    if (orderResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      });
+    }
+
+    const order = orderResult.rows[0];
+
+    // Check if order is already paid
+    if (order.payment_status === 'paid') {
+      return res.status(400).json({
+        success: false,
+        error: 'Order is already paid'
+      });
+    }
+
+    // Check if email is provided
+    if (!order.email) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email is required for payment'
+      });
+    }
+
+    // Create Stripe Checkout Session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price: process.env.STRIPE_PRICE_ID,
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      customer_email: order.email,
+      success_url: `${process.env.FRONTEND_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL}/evaluation?step=8`,
+      metadata: {
+        orderId: orderId
+      },
+      allow_promotion_codes: true,
+      billing_address_collection: 'required',
+    });
+
+    // Update order with Stripe session ID
+    await query(
+      'UPDATE orders SET stripe_checkout_session_id = $1 WHERE id = $2',
+      [session.id, orderId]
+    );
+
+    res.json({
+      success: true,
+      url: session.url
+    });
+
+  } catch (error) {
+    console.error('Error creating checkout session:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to create checkout session'
+    });
+  }
+});
+
+/**
+ * POST /api/webhook/stripe
+ * Handles Stripe webhook events
+ */
+app.post('/api/webhook/stripe', express.raw({type: 'application/json'}), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  try {
+    // Handle the event
+    switch (event.type) {
+      case 'checkout.session.completed':
+        const session = event.data.object;
+        await handleCheckoutSessionCompleted(session);
+        break;
+      
+      case 'payment_intent.succeeded':
+        const paymentIntent = event.data.object;
+        await handlePaymentIntentSucceeded(paymentIntent);
+        break;
+      
+      case 'payment_intent.payment_failed':
+        const failedPaymentIntent = event.data.object;
+        await handlePaymentIntentFailed(failedPaymentIntent);
+        break;
+      
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    res.json({received: true});
+  } catch (error) {
+    console.error('Error processing webhook:', error);
+    res.status(500).json({error: 'Webhook processing failed'});
+  }
+});
+
+/**
+ * GET /api/verify-payment
+ * Verifies payment status for a Stripe session
+ */
+app.get('/api/verify-payment', publicLimiter, async (req, res) => {
+  try {
+    const { session_id } = req.query;
+
+    if (!session_id || !isValidStripeSessionId(session_id)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Valid session ID is required'
+      });
+    }
+
+    // Get order by session ID
+    const orderResult = await query(
+      'SELECT id, payment_status, payment_amount, paid_at FROM orders WHERE stripe_checkout_session_id = $1',
+      [session_id]
+    );
+
+    if (orderResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      });
+    }
+
+    const order = orderResult.rows[0];
+
+    res.json({
+      success: true,
+      paid: order.payment_status === 'paid',
+      paymentStatus: order.payment_status,
+      paymentAmount: order.payment_amount,
+      paidAt: order.paid_at
+    });
+
+  } catch (error) {
+    console.error('Error verifying payment:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to verify payment'
+    });
+  }
+});
+
+// Helper functions for webhook processing
+async function handleCheckoutSessionCompleted(session) {
+  try {
+    const orderId = session.metadata.orderId;
+    
+    if (!orderId) {
+      console.error('No order ID in session metadata');
+      return;
+    }
+
+    // Update order with payment status
+    await query(
+      `UPDATE orders 
+       SET payment_status = 'paid', 
+           payment_amount = $1,
+           paid_at = NOW()
+       WHERE id = $2`,
+      [session.amount_total, orderId]
+    );
+
+    console.log(`Order ${orderId} marked as paid`);
+  } catch (error) {
+    console.error('Error handling checkout session completed:', error);
+  }
+}
+
+async function handlePaymentIntentSucceeded(paymentIntent) {
+  try {
+    // Find order by payment intent ID
+    const orderResult = await query(
+      'SELECT id FROM orders WHERE stripe_payment_intent_id = $1',
+      [paymentIntent.id]
+    );
+
+    if (orderResult.rows.length > 0) {
+      const orderId = orderResult.rows[0].id;
+      
+      // Update order with payment intent ID if not already set
+      await query(
+        'UPDATE orders SET stripe_payment_intent_id = $1 WHERE id = $2 AND stripe_payment_intent_id IS NULL',
+        [paymentIntent.id, orderId]
+      );
+
+      console.log(`Payment intent ${paymentIntent.id} linked to order ${orderId}`);
+    }
+  } catch (error) {
+    console.error('Error handling payment intent succeeded:', error);
+  }
+}
+
+async function handlePaymentIntentFailed(paymentIntent) {
+  try {
+    // Find order by payment intent ID
+    const orderResult = await query(
+      'SELECT id FROM orders WHERE stripe_payment_intent_id = $1',
+      [paymentIntent.id]
+    );
+
+    if (orderResult.rows.length > 0) {
+      const orderId = orderResult.rows[0].id;
+      
+      // Update order payment status to failed
+      await query(
+        'UPDATE orders SET payment_status = $1 WHERE id = $2',
+        ['failed', orderId]
+      );
+
+      console.log(`Order ${orderId} payment marked as failed`);
+    }
+  } catch (error) {
+    console.error('Error handling payment intent failed:', error);
+  }
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {

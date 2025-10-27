@@ -22,6 +22,7 @@ interface FormData {
   city: string;
   propertyType: string;
   buildYear: string;
+  email: string;
   
   // Steps 2-7: Building Areas
   keller: { photos: string[]; files: File[]; text: string; };
@@ -49,6 +50,7 @@ const MultiStepForm: React.FC = () => {
     city: '',
     propertyType: '',
     buildYear: '',
+    email: '',
     keller: { photos: [], files: [], text: '' },
     elektro: { photos: [], files: [], text: '' },
     heizung: { photos: [], files: [], text: '' },
@@ -59,9 +61,15 @@ const MultiStepForm: React.FC = () => {
     selectedPackage: '',
   });
 
+  // Auto-select product when reaching Step 8
+  useEffect(() => {
+    if (currentStep === 8 && !formData.selectedProduct) {
+      updateFormData('selectedProduct', 'basic');
+    }
+  }, [currentStep]);
+
   // Initialize order on component mount
   useEffect(() => {
-    const initializeOrder = async () => {
       // Check if order already exists in session
       const existingOrderId = getCurrentOrderId();
       
@@ -123,6 +131,7 @@ const MultiStepForm: React.FC = () => {
           city: formData.city,
           propertyType: formData.propertyType,
           buildYear: formData.buildYear,
+          email: formData.email,
         });
       }
       return;
@@ -166,7 +175,7 @@ const MultiStepForm: React.FC = () => {
 
     // Validate step 1
     if (currentStep === 1) {
-      if (!formData.street || !formData.city || !formData.propertyType || !formData.buildYear) {
+      if (!formData.street || !formData.city || !formData.propertyType || !formData.buildYear || !formData.email) {
         toast({
           variant: 'destructive',
           title: 'Fehlende Angaben',
@@ -174,6 +183,42 @@ const MultiStepForm: React.FC = () => {
         });
         return;
       }
+    }
+
+    // Handle Step 8 - Stripe checkout
+    if (currentStep === 8) {
+      if (!formData.selectedProduct) {
+        toast({
+          variant: 'destructive',
+          title: 'Produktauswahl',
+          description: 'Bitte wählen Sie ein Produkt aus.',
+        });
+        return;
+      }
+
+      setIsSaving(true);
+      try {
+        const response = await apiClient.createCheckoutSession(orderId!);
+        if (response.success && response.url) {
+          window.location.href = response.url; // Redirect to Stripe
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Fehler',
+            description: response.error || 'Zahlung konnte nicht gestartet werden',
+          });
+        }
+      } catch (error) {
+        console.error('Error creating checkout session:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Fehler',
+          description: 'Zahlung konnte nicht gestartet werden',
+        });
+      } finally {
+        setIsSaving(false);
+      }
+      return;
     }
 
     setIsSaving(true);
@@ -229,22 +274,18 @@ const MultiStepForm: React.FC = () => {
     'Sonstiges'
   ];
 
-  const products = [
-    {
-      id: 'basic',
-      name: 'Basis-Bewertung',
-      description: 'Grundlegende Bauschadensbewertung',
-      price: '299',
-      features: ['Visuelle Inspektion', 'Schadensdokumentation', 'Bewertungsbericht']
-    },
-    {
-      id: 'premium',
-      name: 'Premium-Bewertung',
-      description: 'Umfassende Bauschadensbewertung mit Empfehlungen',
-      price: '499',
-      features: ['Detaillierte Analyse', 'Sanierungsempfehlungen', 'Kostenschätzung', 'Prioritätenliste']
-    }
-  ];
+  const product = {
+    id: 'basic',
+    name: 'Bauschadensbewertung',
+    description: 'Professionelle KI-gestützte Analyse Ihrer Immobilie',
+    price: '299',
+    features: [
+      'Detaillierte Schadensdokumentation',
+      'KI-gestützte Bewertung',
+      'Professioneller Bewertungsbericht',
+      'Sanierungsempfehlungen'
+    ]
+  };
 
 
   // Show loading state while initializing
@@ -316,6 +357,23 @@ const MultiStepForm: React.FC = () => {
                     }}
                     required
                   />
+                </div>
+
+                <div>
+                  <Label htmlFor="email">E-Mail-Adresse *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="ihre@email.de"
+                    value={formData.email || ''}
+                    onChange={(e) => {
+                      updateFormData('email', e.target.value);
+                    }}
+                    required
+                  />
+                  <p className="text-xs text-text-200 mt-1">
+                    Für die Bewertung und Rechnung benötigen wir Ihre E-Mail-Adresse.
+                  </p>
                 </div>
                 
                 <div>
@@ -513,30 +571,35 @@ const MultiStepForm: React.FC = () => {
               </div>
               
               <div className="space-y-6">
-                <div className="grid gap-4">
-                  {products.map((product) => (
-                    <div key={product.id} className="border border-border rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium">{product.name}</h4>
-                        <span className="text-lg font-bold text-primary">{product.price}€</span>
-                      </div>
-                      <p className="text-sm text-text-200 mb-3">{product.description}</p>
-                      <ul className="text-sm text-text-200 space-y-1">
-                        {product.features.map((feature, index) => (
-                          <li key={index} className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-primary rounded-full"></span>
-                            {feature}
-                          </li>
-                                ))}
-                              </ul>
-                      <Button
-                        className={`w-full mt-4 ${formData.selectedProduct === product.id ? 'bg-primary text-primary-foreground hover:bg-primary/90' : 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'}`}
-                        onClick={() => updateFormData('selectedProduct', product.id)}
-                      >
-                        {formData.selectedProduct === product.id ? 'Ausgewählt' : 'Auswählen'}
-                      </Button>
+                <div className="border border-primary rounded-lg p-6 bg-primary/5">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <h4 className="font-medium text-lg">{product.name}</h4>
+                      {formData.selectedProduct === product.id && (
+                        <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                          <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                      )}
                     </div>
-                  ))}
+                    <span className="text-2xl font-bold text-primary">{product.price}€</span>
+                  </div>
+                  <p className="text-text-200 mb-4">{product.description}</p>
+                  <ul className="text-text-200 space-y-2">
+                    {product.features.map((feature, index) => (
+                      <li key={index} className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-sm text-blue-800">
+                    <strong>Ihr ausgewähltes Produkt:</strong> {product.name} für {product.price}€
+                  </p>
                 </div>
               </div>
             </div>
