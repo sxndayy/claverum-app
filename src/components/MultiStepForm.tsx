@@ -70,6 +70,7 @@ const MultiStepForm: React.FC = () => {
 
   // Initialize order on component mount
   useEffect(() => {
+    const initializeOrder = async () => {
       // Check if order already exists in session
       const existingOrderId = getCurrentOrderId();
       
@@ -98,7 +99,7 @@ const MultiStepForm: React.FC = () => {
     };
 
     initializeOrder();
-  }, [toast]);
+  }, []);
 
   const updateFormData = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
