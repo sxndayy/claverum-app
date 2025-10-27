@@ -12,7 +12,7 @@ import AreaUpload from '@/components/AreaUpload';
 import UploadStatus from '@/components/UploadStatus';
 import { apiClient } from '@/utils/apiClient';
 import { uploadQueue } from '@/utils/uploadQueue';
-import { getCurrentOrderId, setCurrentOrder, hasActiveOrder } from '@/utils/orderManager';
+import { getCurrentOrderId, setCurrentOrder, hasActiveOrder, clearOrderSession } from '@/utils/orderManager';
 
 interface FormData {
   // Step 1: Objekt-Basics
@@ -160,6 +160,58 @@ const MultiStepForm: React.FC = () => {
       }).catch(error => {
         console.error('Error saving text:', error);
         // Don't block navigation on text save error
+      });
+    }
+  };
+
+  const handleStartNewOrder = async () => {
+    try {
+      // Clear existing order session
+      clearOrderSession();
+      
+      // Reset form state
+      setOrderId(null);
+      setCurrentStep(1);
+      setFormData({
+        street: '',
+        houseNumber: '',
+        postalCode: '',
+        city: '',
+        propertyType: '',
+        buildYear: '',
+        email: '',
+        keller: { photos: [], files: [], text: '' },
+        elektro: { photos: [], files: [], text: '' },
+        heizung: { photos: [], files: [], text: '' },
+        fassade: { photos: [], files: [], text: '' },
+        dach: { photos: [], files: [], text: '' },
+        innenraeume: { photos: [], files: [], text: '' },
+        selectedProduct: '',
+        selectedPackage: ''
+      });
+      
+      // Create new order
+      const response = await apiClient.createOrder();
+      if (response.success && response.orderId && response.sessionToken) {
+        setOrderId(response.orderId);
+        setCurrentOrder(response.orderId, response.sessionToken);
+        toast({
+          title: "Neuer Auftrag gestartet",
+          description: "Sie können jetzt mit der Bewertung beginnen."
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Fehler',
+          description: 'Fehler beim Erstellen des neuen Auftrags'
+        });
+      }
+    } catch (error) {
+      console.error('Error starting new order:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Fehler',
+        description: 'Fehler beim Starten des neuen Auftrags'
       });
     }
   };
@@ -314,9 +366,18 @@ const MultiStepForm: React.FC = () => {
               <p className="text-sm text-text-200 mt-2">Schritt {currentStep} von 8</p>
             </div>
             {orderId && (
-              <p className="text-xs text-muted-foreground mt-2">
-                Auftrag: {orderId.slice(0, 8)}...
-              </p>
+              <div className="flex items-center justify-between mt-2">
+                <p className="text-xs text-muted-foreground">
+                  Auftrag: {orderId.slice(0, 8)}...
+                </p>
+                <Button 
+                  size="sm" 
+                  onClick={handleStartNewOrder}
+                  className="text-xs h-6 px-2 bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                >
+                  Neuer Auftrag
+                </Button>
+              </div>
             )}
           </CardHeader>
         
