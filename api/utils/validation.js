@@ -150,6 +150,13 @@ export function isValidSortField(sortField) {
 }
 
 /**
+ * Validate sort order
+ */
+export function isValidSortOrder(sortOrder) {
+  return ['asc', 'desc'].includes(sortOrder.toLowerCase());
+}
+
+/**
  * Validate payment status against whitelist
  */
 export function isValidPaymentStatus(status) {
