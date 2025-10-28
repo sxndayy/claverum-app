@@ -138,7 +138,7 @@ app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
     const order = result.rows[0];
 
     // Generate session token for order ownership
-    const sessionToken = generateOrderSessionToken(order.id);
+    const sessionToken = await generateOrderSessionToken(order.id);
 
     res.status(201).json({
       success: true,

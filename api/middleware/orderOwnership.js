@@ -1,57 +1,87 @@
 import crypto from 'crypto';
+import { query } from '../db.js';
 
 /**
- * Session-based order ownership validation
- * Each order gets a unique session token that must be provided for modifications
+ * Database-backed order ownership validation
+ * Each order gets a unique session token that persists across deployments
  */
-
-// In-memory store for order sessions (in production, use Redis)
-const orderSessions = new Map();
 
 /**
  * Generate a secure session token for an order
  */
-export function generateOrderSessionToken(orderId) {
+export async function generateOrderSessionToken(orderId) {
   const token = crypto.randomBytes(32).toString('hex');
-  orderSessions.set(token, {
-    orderId,
-    createdAt: Date.now(),
-    expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
-  });
+  const expiresAt = new Date(Date.now() + (24 * 60 * 60 * 1000)); // 24 hours
   
-  // Clean up expired tokens
-  cleanupExpiredTokens();
-  
-  return token;
+  try {
+    // Insert session token into database
+    await query(
+      'INSERT INTO order_sessions (session_token, order_id, expires_at) VALUES ($1, $2, $3)',
+      [token, orderId, expiresAt]
+    );
+    
+    // Clean up expired sessions periodically
+    await cleanupExpiredSessions();
+    
+    return token;
+  } catch (error) {
+    console.error('Error creating order session token:', error);
+    throw new Error('Failed to create session token');
+  }
 }
 
 /**
  * Validate order session token and return order ID
  */
-export function validateOrderSessionToken(token) {
+export async function validateOrderSessionToken(token) {
   if (!token) return null;
   
-  const session = orderSessions.get(token);
-  if (!session) return null;
-  
-  // Check if expired
-  if (Date.now() > session.expiresAt) {
-    orderSessions.delete(token);
+  try {
+    const result = await query(
+      'SELECT order_id, expires_at FROM order_sessions WHERE session_token = $1',
+      [token]
+    );
+    
+    if (result.rows.length === 0) {
+      return null;
+    }
+    
+    const session = result.rows[0];
+    
+    // Check if expired
+    if (new Date() > new Date(session.expires_at)) {
+      // Clean up expired token
+      await query(
+        'DELETE FROM order_sessions WHERE session_token = $1',
+        [token]
+      );
+      return null;
+    }
+    
+    // Update last_used_at
+    await query(
+      'UPDATE order_sessions SET last_used_at = NOW() WHERE session_token = $1',
+      [token]
+    );
+    
+    return session.order_id;
+  } catch (error) {
+    console.error('Error validating order session token:', error);
     return null;
   }
-  
-  return session.orderId;
 }
 
 /**
  * Clean up expired tokens
  */
-function cleanupExpiredTokens() {
-  const now = Date.now();
-  for (const [token, session] of orderSessions.entries()) {
-    if (now > session.expiresAt) {
-      orderSessions.delete(token);
-    }
+async function cleanupExpiredSessions() {
+  try {
+    const result = await query(
+      'DELETE FROM order_sessions WHERE expires_at < NOW()'
+    );
+    console.log(`Cleaned up ${result.rowCount} expired session tokens`);
+  } catch (error) {
+    console.error('Error cleaning up expired sessions:', error);
   }
 }
 
@@ -69,27 +99,41 @@ export function requireOrderOwnership(req, res, next) {
     });
   }
   
-  const validOrderId = validateOrderSessionToken(sessionToken);
-  
-  if (!validOrderId || validOrderId !== orderId) {
-    return res.status(403).json({
-      success: false,
-      error: 'Invalid or expired order session'
+  // Use async validation
+  validateOrderSessionToken(sessionToken)
+    .then(validOrderId => {
+      if (!validOrderId || validOrderId !== orderId) {
+        return res.status(403).json({
+          success: false,
+          error: 'Invalid or expired order session'
+        });
+      }
+      
+      req.orderId = orderId;
+      next();
+    })
+    .catch(error => {
+      console.error('Error in order ownership validation:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Internal server error'
+      });
     });
-  }
-  
-  req.orderId = orderId;
-  next();
 }
 
 /**
  * Get order session token for an order (for testing/admin purposes)
  */
-export function getOrderSessionToken(orderId) {
-  for (const [token, session] of orderSessions.entries()) {
-    if (session.orderId === orderId && Date.now() <= session.expiresAt) {
-      return token;
-    }
+export async function getOrderSessionToken(orderId) {
+  try {
+    const result = await query(
+      'SELECT session_token FROM order_sessions WHERE order_id = $1 AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1',
+      [orderId]
+    );
+    
+    return result.rows.length > 0 ? result.rows[0].session_token : null;
+  } catch (error) {
+    console.error('Error getting order session token:', error);
+    return null;
   }
-  return null;
 }
