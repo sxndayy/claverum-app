@@ -12,7 +12,7 @@ import AreaUpload from '@/components/AreaUpload';
 import UploadStatus from '@/components/UploadStatus';
 import { apiClient } from '@/utils/apiClient';
 import { uploadQueue } from '@/utils/uploadQueue';
-import { getCurrentOrderId, setCurrentOrder, hasActiveOrder, clearOrderSession } from '@/utils/orderManager';
+import { getCurrentOrderId, setCurrentOrder, hasActiveOrder } from '@/utils/orderManager';
 
 interface FormData {
   // Step 1: Objekt-Basics
@@ -22,7 +22,6 @@ interface FormData {
   city: string;
   propertyType: string;
   buildYear: string;
-  email: string;
   
   // Steps 2-7: Building Areas
   keller: { photos: string[]; files: File[]; text: string; };
@@ -50,7 +49,6 @@ const MultiStepForm: React.FC = () => {
     city: '',
     propertyType: '',
     buildYear: '',
-    email: '',
     keller: { photos: [], files: [], text: '' },
     elektro: { photos: [], files: [], text: '' },
     heizung: { photos: [], files: [], text: '' },
@@ -60,13 +58,6 @@ const MultiStepForm: React.FC = () => {
     selectedProduct: '',
     selectedPackage: '',
   });
-
-  // Auto-select product when reaching Step 8
-  useEffect(() => {
-    if (currentStep === 8 && !formData.selectedProduct) {
-      updateFormData('selectedProduct', 'basic');
-    }
-  }, [currentStep]);
 
   // Initialize order on component mount
   useEffect(() => {
@@ -99,7 +90,7 @@ const MultiStepForm: React.FC = () => {
     };
 
     initializeOrder();
-  }, []);
+  }, [toast]);
 
   const updateFormData = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -132,7 +123,6 @@ const MultiStepForm: React.FC = () => {
           city: formData.city,
           propertyType: formData.propertyType,
           buildYear: formData.buildYear,
-          email: formData.email,
         });
       }
       return;
@@ -164,68 +154,6 @@ const MultiStepForm: React.FC = () => {
     }
   };
 
-  const handleStartNewOrder = async () => {
-    console.log('[handleStartNewOrder] Starting...');
-    try {
-      // Clear existing order session
-      console.log('[handleStartNewOrder] Clearing session...');
-      clearOrderSession();
-      console.log('[handleStartNewOrder] Session cleared');
-      
-      // Reset form state
-      console.log('[handleStartNewOrder] Resetting form state...');
-      setOrderId(null);
-      setCurrentStep(1);
-      setFormData({
-        street: '',
-        houseNumber: '',
-        postalCode: '',
-        city: '',
-        propertyType: '',
-        buildYear: '',
-        email: '',
-        keller: { photos: [], files: [], text: '' },
-        elektro: { photos: [], files: [], text: '' },
-        heizung: { photos: [], files: [], text: '' },
-        fassade: { photos: [], files: [], text: '' },
-        dach: { photos: [], files: [], text: '' },
-        innenraeume: { photos: [], files: [], text: '' },
-        selectedProduct: '',
-        selectedPackage: ''
-      });
-      console.log('[handleStartNewOrder] Form state reset');
-      
-      // Create new order
-      console.log('[handleStartNewOrder] Creating new order...');
-      const response = await apiClient.createOrder();
-      console.log('[handleStartNewOrder] API Response:', response);
-      
-      if (response.success && response.orderId && response.sessionToken) {
-        console.log('[handleStartNewOrder] Order created successfully:', response.orderId);
-        setOrderId(response.orderId);
-        setCurrentOrder(response.orderId, response.sessionToken);
-        toast({
-          title: "Neuer Auftrag gestartet",
-          description: "Sie können jetzt mit der Bewertung beginnen."
-        });
-      } else {
-        console.error('[handleStartNewOrder] Order creation failed:', response);
-        toast({
-          variant: 'destructive',
-          title: 'Fehler',
-          description: 'Fehler beim Erstellen des neuen Auftrags'
-        });
-      }
-    } catch (error) {
-      console.error('[handleStartNewOrder] Error:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Fehler',
-        description: 'Fehler beim Starten des neuen Auftrags'
-      });
-    }
-  };
-
   const nextStep = async () => {
     if (!orderId && currentStep > 1) {
       toast({
@@ -238,7 +166,7 @@ const MultiStepForm: React.FC = () => {
 
     // Validate step 1
     if (currentStep === 1) {
-      if (!formData.street || !formData.city || !formData.propertyType || !formData.buildYear || !formData.email) {
+      if (!formData.street || !formData.city || !formData.propertyType || !formData.buildYear) {
         toast({
           variant: 'destructive',
           title: 'Fehlende Angaben',
@@ -246,42 +174,6 @@ const MultiStepForm: React.FC = () => {
         });
         return;
       }
-    }
-
-    // Handle Step 8 - Stripe checkout
-    if (currentStep === 8) {
-      if (!formData.selectedProduct) {
-        toast({
-          variant: 'destructive',
-          title: 'Produktauswahl',
-          description: 'Bitte wählen Sie ein Produkt aus.',
-        });
-        return;
-      }
-
-      setIsSaving(true);
-      try {
-        const response = await apiClient.createCheckoutSession(orderId!);
-        if (response.success && response.url) {
-          window.location.href = response.url; // Redirect to Stripe
-        } else {
-          toast({
-            variant: 'destructive',
-            title: 'Fehler',
-            description: response.error || 'Zahlung konnte nicht gestartet werden',
-          });
-        }
-      } catch (error) {
-        console.error('Error creating checkout session:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Fehler',
-          description: 'Zahlung konnte nicht gestartet werden',
-        });
-      } finally {
-        setIsSaving(false);
-      }
-      return;
     }
 
     setIsSaving(true);
@@ -337,18 +229,22 @@ const MultiStepForm: React.FC = () => {
     'Sonstiges'
   ];
 
-  const product = {
-    id: 'basic',
-    name: 'Bauschadensbewertung',
-    description: 'Professionelle KI-gestützte Analyse Ihrer Immobilie',
-    price: '299',
-    features: [
-      'Detaillierte Schadensdokumentation',
-      'KI-gestützte Bewertung',
-      'Professioneller Bewertungsbericht',
-      'Sanierungsempfehlungen'
-    ]
-  };
+  const products = [
+    {
+      id: 'basic',
+      name: 'Basis-Bewertung',
+      description: 'Grundlegende Bauschadensbewertung',
+      price: '299',
+      features: ['Visuelle Inspektion', 'Schadensdokumentation', 'Bewertungsbericht']
+    },
+    {
+      id: 'premium',
+      name: 'Premium-Bewertung',
+      description: 'Umfassende Bauschadensbewertung mit Empfehlungen',
+      price: '499',
+      features: ['Detaillierte Analyse', 'Sanierungsempfehlungen', 'Kostenschätzung', 'Prioritätenliste']
+    }
+  ];
 
 
   // Show loading state while initializing
@@ -376,18 +272,9 @@ const MultiStepForm: React.FC = () => {
               <p className="text-sm text-text-200 mt-2">Schritt {currentStep} von 8</p>
             </div>
             {orderId && (
-              <div className="flex items-center justify-between mt-2">
-                <p className="text-xs text-muted-foreground">
-                  Auftrag: {orderId.slice(0, 8)}...
-                </p>
-                <Button 
-                  size="sm" 
-                  onClick={handleStartNewOrder}
-                  className="text-xs h-6 px-2 bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                >
-                  Neuer Auftrag
-                </Button>
-              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Auftrag: {orderId.slice(0, 8)}...
+              </p>
             )}
           </CardHeader>
         
@@ -429,23 +316,6 @@ const MultiStepForm: React.FC = () => {
                     }}
                     required
                   />
-                </div>
-
-                <div>
-                  <Label htmlFor="email">E-Mail-Adresse *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="ihre@email.de"
-                    value={formData.email || ''}
-                    onChange={(e) => {
-                      updateFormData('email', e.target.value);
-                    }}
-                    required
-                  />
-                  <p className="text-xs text-text-200 mt-1">
-                    Für die Bewertung und Rechnung benötigen wir Ihre E-Mail-Adresse.
-                  </p>
                 </div>
                 
                 <div>
@@ -643,35 +513,30 @@ const MultiStepForm: React.FC = () => {
               </div>
               
               <div className="space-y-6">
-                <div className="border border-primary rounded-lg p-6 bg-primary/5">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <h4 className="font-medium text-lg">{product.name}</h4>
-                      {formData.selectedProduct === product.id && (
-                        <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                          <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        </div>
-                      )}
+                <div className="grid gap-4">
+                  {products.map((product) => (
+                    <div key={product.id} className="border border-border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium">{product.name}</h4>
+                        <span className="text-lg font-bold text-primary">{product.price}€</span>
+                      </div>
+                      <p className="text-sm text-text-200 mb-3">{product.description}</p>
+                      <ul className="text-sm text-text-200 space-y-1">
+                        {product.features.map((feature, index) => (
+                          <li key={index} className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-primary rounded-full"></span>
+                            {feature}
+                          </li>
+                                ))}
+                              </ul>
+                      <Button
+                        className={`w-full mt-4 ${formData.selectedProduct === product.id ? 'bg-primary text-primary-foreground hover:bg-primary/90' : 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'}`}
+                        onClick={() => updateFormData('selectedProduct', product.id)}
+                      >
+                        {formData.selectedProduct === product.id ? 'Ausgewählt' : 'Auswählen'}
+                      </Button>
                     </div>
-                    <span className="text-2xl font-bold text-primary">{product.price}€</span>
-                  </div>
-                  <p className="text-text-200 mb-4">{product.description}</p>
-                  <ul className="text-text-200 space-y-2">
-                    {product.features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-blue-800">
-                    <strong>Ihr ausgewähltes Produkt:</strong> {product.name} für {product.price}€
-                  </p>
+                  ))}
                 </div>
               </div>
             </div>

@@ -1,46 +1,57 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import crypto from 'crypto';
 
 /**
- * JWT-based order ownership validation
- * Each order gets a JWT token that contains the order ID and expiry
+ * Session-based order ownership validation
+ * Each order gets a unique session token that must be provided for modifications
  */
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET environment variable is required');
-}
+// In-memory store for order sessions (in production, use Redis)
+const orderSessions = new Map();
 
 /**
- * Generate a JWT session token for an order
+ * Generate a secure session token for an order
  */
 export function generateOrderSessionToken(orderId) {
-  const payload = {
+  const token = crypto.randomBytes(32).toString('hex');
+  orderSessions.set(token, {
     orderId,
-    type: 'order_session',
-    iat: Math.floor(Date.now() / 1000)
-  };
-  
-  return jwt.sign(payload, JWT_SECRET, { 
-    expiresIn: '24h' 
+    createdAt: Date.now(),
+    expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
   });
+  
+  // Clean up expired tokens
+  cleanupExpiredTokens();
+  
+  return token;
 }
 
 /**
- * Validate JWT session token and return order ID
+ * Validate order session token and return order ID
  */
 export function validateOrderSessionToken(token) {
   if (!token) return null;
   
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    return decoded.orderId;
-  } catch (error) {
-    // Token is invalid or expired
+  const session = orderSessions.get(token);
+  if (!session) return null;
+  
+  // Check if expired
+  if (Date.now() > session.expiresAt) {
+    orderSessions.delete(token);
     return null;
+  }
+  
+  return session.orderId;
+}
+
+/**
+ * Clean up expired tokens
+ */
+function cleanupExpiredTokens() {
+  const now = Date.now();
+  for (const [token, session] of orderSessions.entries()) {
+    if (now > session.expiresAt) {
+      orderSessions.delete(token);
+    }
   }
 }
 
@@ -48,7 +59,8 @@ export function validateOrderSessionToken(token) {
  * Middleware to validate order ownership
  */
 export function requireOrderOwnership(req, res, next) {
-  const sessionToken = req.headers['x-order-session'];
+  const { orderId } = req.params;
+  const sessionToken = req.headers['x-order-session'] || req.body.sessionToken;
   
   if (!sessionToken) {
     return res.status(401).json({
@@ -57,32 +69,27 @@ export function requireOrderOwnership(req, res, next) {
     });
   }
   
-  // Extract orderId from multiple possible sources
-  const orderId = req.params.orderId || req.query.orderId || req.body.orderId;
-  
-  if (!orderId) {
-    return res.status(400).json({
-      success: false,
-      error: 'Order ID missing in request'
-    });
-  }
-  
   const validOrderId = validateOrderSessionToken(sessionToken);
   
-  if (!validOrderId) {
+  if (!validOrderId || validOrderId !== orderId) {
     return res.status(403).json({
       success: false,
       error: 'Invalid or expired order session'
     });
   }
   
-  if (validOrderId !== orderId) {
-    return res.status(403).json({
-      success: false,
-      error: 'Order session mismatch'
-    });
-  }
-  
   req.orderId = orderId;
   next();
+}
+
+/**
+ * Get order session token for an order (for testing/admin purposes)
+ */
+export function getOrderSessionToken(orderId) {
+  for (const [token, session] of orderSessions.entries()) {
+    if (session.orderId === orderId && Date.now() <= session.expiresAt) {
+      return token;
+    }
+  }
+  return null;
 }

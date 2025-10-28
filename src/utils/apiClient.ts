@@ -50,7 +50,6 @@ export interface UpdateOrderRequest {
   propertyType?: string;
   buildYear?: string;
   note?: string;
-  email?: string;
 }
 
 export interface UploadUrlResponse {
@@ -157,7 +156,6 @@ export interface OrdersListParams {
   limit?: number;
   search?: string;
   propertyType?: string;
-  paymentStatus?: string;
   city?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
@@ -284,14 +282,8 @@ class ApiClient {
    * Create a new order
    */
   async createOrder(data?: Partial<UpdateOrderRequest>): Promise<CreateOrderResponse> {
-    console.log('[apiClient] createOrder called with data:', data);
-    console.log('[apiClient] Base URL:', this.baseUrl);
-    
     try {
-      const url = `${this.baseUrl}/api/create-order`;
-      console.log('[apiClient] Making request to:', url);
-      
-      const response = await fetch(url, {
+      const response = await fetch(`${this.baseUrl}/api/create-order`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -299,27 +291,15 @@ class ApiClient {
         body: JSON.stringify(data || {}),
       });
 
-      console.log('[apiClient] Response status:', response.status);
-      console.log('[apiClient] Response ok:', response.ok);
-      
-      if (!response.ok) {
-        console.error('[apiClient] HTTP Error:', response.status, response.statusText);
-        const errorText = await response.text();
-        console.error('[apiClient] Error response body:', errorText);
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      console.log('[apiClient] Response data:', result);
-      return result;
+      return await response.json();
     } catch (error) {
-      console.error('[apiClient] Network Error:', error);
+      console.error('Error creating order:', error);
       return {
         success: false,
         orderId: '',
         sessionToken: '',
         createdAt: '',
-        error: error instanceof Error ? error.message : 'Network error',
+        error: 'Network error',
       };
     }
   }
@@ -490,7 +470,6 @@ class ApiClient {
       if (params.limit) searchParams.append('limit', params.limit.toString());
       if (params.search) searchParams.append('search', params.search);
       if (params.propertyType) searchParams.append('propertyType', params.propertyType);
-      if (params.paymentStatus) searchParams.append('paymentStatus', params.paymentStatus);
       if (params.city) searchParams.append('city', params.city);
       if (params.sortBy) searchParams.append('sortBy', params.sortBy);
       if (params.sortOrder) searchParams.append('sortOrder', params.sortOrder);
@@ -616,52 +595,6 @@ class ApiClient {
         orderId: '',
         updatedAt: '',
         error: 'Network error',
-      };
-    }
-  }
-
-  /**
-   * Create Stripe checkout session
-   */
-  async createCheckoutSession(orderId: string): Promise<{success: boolean; url?: string; error?: string}> {
-    try {
-      const sessionToken = getCurrentOrderSessionToken();
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      };
-      
-      if (sessionToken) {
-        headers['X-Order-Session'] = sessionToken;
-      }
-      
-      const response = await fetch(`${this.baseUrl}/api/create-checkout-session`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({ orderId })
-      });
-      
-      return await response.json();
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
-      return {
-        success: false,
-        error: 'Network error'
-      };
-    }
-  }
-
-  /**
-   * Verify payment status
-   */
-  async verifyPayment(sessionId: string): Promise<{success: boolean; paid?: boolean; paymentStatus?: string; paymentAmount?: number; paidAt?: string; error?: string}> {
-    try {
-      const response = await fetch(`${this.baseUrl}/api/verify-payment?session_id=${sessionId}`);
-      return await response.json();
-    } catch (error) {
-      console.error('Error verifying payment:', error);
-      return {
-        success: false,
-        error: 'Network error'
       };
     }
   }

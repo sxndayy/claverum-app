@@ -46,12 +46,6 @@ interface Order {
   property_type: string;
   build_year: string;
   note: string;
-  email: string;
-  payment_status: string;
-  payment_amount: number;
-  paid_at: string;
-  stripe_checkout_session_id: string;
-  stripe_payment_intent_id: string;
   created_at: string;
   updated_at: string;
   upload_count: number;
@@ -73,7 +67,6 @@ const Admin: React.FC = () => {
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState('');
   const [propertyType, setPropertyType] = useState('');
-  const [paymentStatus, setPaymentStatus] = useState('');
   const [city, setCity] = useState('');
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
@@ -108,7 +101,6 @@ const Admin: React.FC = () => {
         limit: 20,
         search: search || undefined,
         propertyType: propertyType || undefined,
-        paymentStatus: paymentStatus || undefined,
         city: city || undefined,
         sortBy,
         sortOrder,
@@ -136,7 +128,7 @@ const Admin: React.FC = () => {
     if (authManager.isAuthenticated()) {
       loadOrders();
     }
-  }, [currentPage, search, propertyType, paymentStatus, city, sortBy, sortOrder]);
+  }, [currentPage, search, propertyType, city, sortBy, sortOrder]);
 
   const handleSearch = (value: string) => {
     setSearch(value);
@@ -188,21 +180,6 @@ const Admin: React.FC = () => {
   const formatAddress = (order: Order) => {
     const parts = [order.street, order.house_number, order.postal_code, order.city];
     return parts.filter(Boolean).join(' ');
-  };
-
-  const getPaymentStatusBadge = (status: string) => {
-    switch (status) {
-      case 'paid':
-        return <Badge variant="default" className="bg-green-100 text-green-800">Bezahlt</Badge>;
-      case 'pending':
-        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Ausstehend</Badge>;
-      case 'failed':
-        return <Badge variant="destructive">Fehlgeschlagen</Badge>;
-      case 'cancelled':
-        return <Badge variant="outline" className="bg-gray-100 text-gray-800">Abgebrochen</Badge>;
-      default:
-        return <Badge variant="secondary">Unbekannt</Badge>;
-    }
   };
 
   if (showDetail && selectedOrder) {
@@ -324,19 +301,6 @@ const Admin: React.FC = () => {
                 </SelectContent>
               </Select>
 
-              <Select value={paymentStatus || "all"} onValueChange={(value) => setPaymentStatus(value === "all" ? "" : value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Payment Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Statuses</SelectItem>
-                  <SelectItem value="paid">Bezahlt</SelectItem>
-                  <SelectItem value="pending">Ausstehend</SelectItem>
-                  <SelectItem value="failed">Fehlgeschlagen</SelectItem>
-                  <SelectItem value="cancelled">Abgebrochen</SelectItem>
-                </SelectContent>
-              </Select>
-
               <Input
                 placeholder="City"
                 value={city}
@@ -395,7 +359,6 @@ const Admin: React.FC = () => {
                         <TableHead>Property Type</TableHead>
                         <TableHead>Build Year</TableHead>
                         <TableHead>Created</TableHead>
-                        <TableHead>Payment</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Actions</TableHead>
                       </TableRow>
@@ -420,9 +383,6 @@ const Admin: React.FC = () => {
                           </TableCell>
                           <TableCell>{order.build_year || 'N/A'}</TableCell>
                           <TableCell>{formatDate(order.created_at)}</TableCell>
-                          <TableCell>
-                            {getPaymentStatusBadge(order.payment_status)}
-                          </TableCell>
                           <TableCell>
                             <div className="flex gap-2">
                               <Badge variant={order.upload_count > 0 ? 'default' : 'secondary'}>

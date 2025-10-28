@@ -146,10 +146,9 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  const getPublicImageUrl = (filePath: string) => {
-    // Extract filename from path and construct public URL
-    const filename = filePath.split('/').pop();
-    return `https://claverum-bucket.s3.eu-north-1.amazonaws.com/${filePath}`;
+  const getPublicImageUrl = (upload: any) => {
+    // Use the publicUrl from backend if available, otherwise fallback to constructing it
+    return upload.publicUrl || `https://claverum-bucket.s3.eu-north-1.amazonaws.com/${upload.file_path}`;
   };
 
   const groupUploadsByArea = () => {
@@ -359,7 +358,7 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
                           {uploads.map((upload) => (
                             <div key={upload.id} className="relative group">
                               <img
-                                src={getPublicImageUrl(upload.file_path)}
+                                src={getPublicImageUrl(upload)}
                                 alt={`${area} photo`}
                                 className="w-full h-32 object-cover rounded-lg border"
                                 onError={(e) => {

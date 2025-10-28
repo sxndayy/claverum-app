@@ -155,27 +155,3 @@ export function isValidSortField(sortField) {
 export function isValidSortOrder(sortOrder) {
   return ['asc', 'desc'].includes(sortOrder.toLowerCase());
 }
-
-/**
- * Validate payment status against whitelist
- */
-export function isValidPaymentStatus(status) {
-  const allowedStatuses = ['pending', 'paid', 'failed', 'cancelled'];
-  return allowedStatuses.includes(status);
-}
-
-/**
- * Validate Stripe session ID format
- */
-export function isValidStripeSessionId(sessionId) {
-  // Stripe session IDs start with 'cs_' and are 64 characters long
-  return /^cs_[a-zA-Z0-9]{61}$/.test(sessionId);
-}
-
-/**
- * Validate Stripe payment intent ID format
- */
-export function isValidStripePaymentIntentId(paymentIntentId) {
-  // Stripe payment intent IDs start with 'pi_' and are 64 characters long
-  return /^pi_[a-zA-Z0-9]{61}$/.test(paymentIntentId);
-}

@@ -29,7 +29,7 @@ const FAQSection: React.FC = () => {
     },
     {
       question: "Wie läuft die Zahlung ab?",
-      answer: "Die Zahlung erfolgt sicher über Stripe Checkout mit Kreditkarte, SEPA-Lastschrift, Apple Pay oder Google Pay. Der Betrag wird erst nach erfolgreicher Übermittlung aller Unterlagen belastet. Sie erhalten sofort eine Zahlungsbestätigung und Rechnung per E-Mail."
+      answer: "Die Zahlung erfolgt sicher über einen etablierten Zahlungsanbieter mit Kreditkarte, SEPA-Lastschrift, Apple Pay oder Google Pay. Der Betrag wird erst nach erfolgreicher Übermittlung aller Unterlagen belastet. Sie erhalten sofort eine Zahlungsbestätigung und Rechnung per E-Mail."
     },
     {
       question: "Kann ich stornieren?",
