@@ -89,8 +89,27 @@ async function cleanupExpiredSessions() {
  * Middleware to validate order ownership
  */
 export function requireOrderOwnership(req, res, next) {
-  const { orderId } = req.params;
-  const sessionToken = req.headers['x-order-session'] || req.body.sessionToken;
+  // Allow CORS preflight to pass through
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+
+  // Accept orderId from params, query or body
+  const rawOrderId = (req.params && req.params.orderId)
+    || (req.query && req.query.orderId)
+    || (req.body && req.body.orderId);
+
+  if (!rawOrderId) {
+    return res.status(400).json({
+      success: false,
+      error: 'orderId required'
+    });
+  }
+
+  const orderId = String(rawOrderId);
+
+  // Read header robustly
+  const sessionToken = req.get('X-Order-Session') || req.headers['x-order-session'] || req.body.sessionToken;
   
   if (!sessionToken) {
     return res.status(401).json({
@@ -102,7 +121,7 @@ export function requireOrderOwnership(req, res, next) {
   // Use async validation
   validateOrderSessionToken(sessionToken)
     .then(validOrderId => {
-      if (!validOrderId || validOrderId !== orderId) {
+      if (!validOrderId || String(validOrderId) !== orderId) {
         return res.status(403).json({
           success: false,
           error: 'Invalid or expired order session'
