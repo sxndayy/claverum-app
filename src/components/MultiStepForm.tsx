@@ -154,6 +154,38 @@ const MultiStepForm: React.FC = () => {
     }
   };
 
+  const handleCheckout = async () => {
+    if (!orderId || !formData.selectedProduct) {
+      toast({
+        variant: 'destructive',
+        title: 'Fehler',
+        description: 'Bitte wählen Sie ein Produkt aus'
+      });
+      return;
+    }
+
+    try {
+      const response = await apiClient.createCheckoutSession(orderId);
+      
+      if (response.success && response.url) {
+        window.location.href = response.url;
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Fehler',
+          description: response.error || 'Fehler beim Erstellen der Zahlung'
+        });
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Fehler',
+        description: 'Fehler beim Weiterleiten zur Zahlung'
+      });
+    }
+  };
+
   const nextStep = async () => {
     if (!orderId && currentStep > 1) {
       toast({
@@ -553,9 +585,28 @@ const MultiStepForm: React.FC = () => {
               Zurück
             </Button>
             
+            {currentStep === 8 ? (
+              <Button
+                onClick={handleCheckout}
+                disabled={!formData.selectedProduct || isSaving}
+                className="flex items-center gap-2"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Weiterleitet...
+                  </>
+                ) : (
+                  <>
+                    Weiter zur Zahlung
+                    <ChevronRight className="w-4 h-4" />
+                  </>
+                )}
+              </Button>
+            ) : (
               <Button
                 onClick={nextStep}
-            disabled={currentStep === 8 || isSaving}
+                disabled={currentStep === 8 || isSaving}
                 className="flex items-center gap-2"
               >
                 {isSaving ? (
@@ -570,6 +621,7 @@ const MultiStepForm: React.FC = () => {
                   </>
                 )}
               </Button>
+            )}
           </div>
       </Card>
     </div>

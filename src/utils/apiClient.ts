@@ -366,6 +366,30 @@ class ApiClient {
   }
 
   /**
+   * Create Stripe checkout session
+   */
+  async createCheckoutSession(orderId: string): Promise<{ success: boolean; url?: string; error?: string }> {
+    try {
+      const sessionToken = getCurrentOrderSessionToken();
+      const response = await fetch(`${this.baseUrl}/api/payments/create-checkout-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Order-Session': sessionToken || '',
+        },
+        body: JSON.stringify({ orderId }),
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      return {
+        success: false,
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
    * Upload file directly to S3 using pre-signed URL
    */
   async uploadToS3(uploadUrl: string, file: File): Promise<boolean> {
