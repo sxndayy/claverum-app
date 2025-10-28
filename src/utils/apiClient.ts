@@ -390,6 +390,22 @@ class ApiClient {
   }
 
   /**
+   * Get Stripe session details
+   */
+  async getStripeSession(sessionId: string): Promise<{ success: boolean; session?: any; error?: string }> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/payments/session?session_id=${sessionId}`);
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching Stripe session:', error);
+      return {
+        success: false,
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
    * Upload file directly to S3 using pre-signed URL
    */
   async uploadToS3(uploadUrl: string, file: File): Promise<boolean> {
