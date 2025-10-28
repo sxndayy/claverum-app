@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
-import { MapPin, Home, Camera, ChevronLeft, ChevronRight, CreditCard, Loader2 } from 'lucide-react';
+import { MapPin, Home, Camera, ChevronLeft, ChevronRight, CreditCard, Loader2, CheckCircle, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import AreaUpload from '@/components/AreaUpload';
 import UploadStatus from '@/components/UploadStatus';
@@ -41,6 +41,7 @@ const MultiStepForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [paymentData, setPaymentData] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     street: '',
@@ -62,6 +63,23 @@ const MultiStepForm: React.FC = () => {
   // Initialize order on component mount
   useEffect(() => {
     const initializeOrder = async () => {
+      // Check if we're returning from Stripe payment
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionId = urlParams.get('session_id');
+      
+      if (sessionId) {
+        // We're returning from Stripe, load payment data and show Step 9
+        try {
+          const response = await apiClient.getStripeSession(sessionId);
+          if (response.success) {
+            setPaymentData(response);
+            setCurrentStep(9);
+          }
+        } catch (error) {
+          console.error('Error loading payment data:', error);
+        }
+      }
+      
       // Check if order already exists in session
       const existingOrderId = getCurrentOrderId();
       
@@ -168,6 +186,8 @@ const MultiStepForm: React.FC = () => {
       const response = await apiClient.createCheckoutSession(orderId);
       
       if (response.success && response.url) {
+        // Store the checkout URL to redirect back to Step 9 after payment
+        localStorage.setItem('claverum_checkout_url', response.url);
         window.location.href = response.url;
       } else {
         toast({
@@ -573,13 +593,95 @@ const MultiStepForm: React.FC = () => {
               </div>
             </div>
           )}
+
+          {/* Step 9: Receipt (Payment Success) */}
+          {currentStep === 9 && (
+            <div className="form-step form-step-active">
+              <div className="flex items-center gap-2 mb-4">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                <h3 className="text-lg font-medium">Zahlung erfolgreich!</h3>
+              </div>
+              
+              <div className="space-y-6">
+                {/* Success Message */}
+                <div className="text-center">
+                  <div className="text-green-500 text-4xl mb-4">
+                    <CheckCircle className="w-12 h-12 mx-auto" />
+                  </div>
+                  <p className="text-muted-foreground">
+                    Vielen Dank für deinen Einkauf! Wir haben deine Zahlung erhalten und werden uns 
+                    per E-Mail bei dir melden, sobald wir deine Bauschadensbewertung erstellt haben.
+                  </p>
+                </div>
+
+                {/* Payment Details */}
+                {paymentData && (
+                  <div className="bg-muted/50 rounded-lg p-4 text-left">
+                    <h4 className="font-semibold mb-3 flex items-center gap-2">
+                      <CreditCard className="w-4 h-4" />
+                      Zahlungsdetails
+                    </h4>
+                    
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Betrag:</span>
+                        <span className="font-medium">
+                          {(paymentData.amount_total / 100).toFixed(2)}€
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Status:</span>
+                        <span className="font-medium text-green-600 capitalize">
+                          {paymentData.payment_status}
+                        </span>
+                      </div>
+                      
+                      {paymentData.customer_email && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">E-Mail:</span>
+                          <span className="font-medium">{paymentData.customer_email}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Next Steps */}
+                <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                    <Mail className="w-4 h-4" />
+                    Was passiert als nächstes?
+                  </h4>
+                  <ul className="text-sm text-blue-600 dark:text-blue-400 space-y-1 text-left">
+                    <li>• Wir prüfen deine hochgeladenen Unterlagen</li>
+                    <li>• Unsere Experten erstellen deine Bauschadensbewertung</li>
+                    <li>• Du erhältst das Ergebnis per E-Mail (1-3 Werktage)</li>
+                  </ul>
+                </div>
+
+                {/* Action Button */}
+                <div className="text-center">
+                  <Button 
+                    onClick={() => window.location.href = '/'} 
+                    className="w-full" 
+                    size="lg"
+                  >
+                    Zur Startseite
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </CardContent>
 
-        <div className="flex justify-between p-6">
+        {/* Navigation Buttons - Hide on Step 9 (Receipt) */}
+        {currentStep !== 9 && (
+          <div className="flex justify-between p-6">
             <Button
               onClick={prevStep}
               disabled={currentStep === 1 || isSaving}
-            className="flex items-center gap-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+              className="flex items-center gap-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
             >
               <ChevronLeft className="w-4 h-4" />
               Zurück
@@ -623,6 +725,7 @@ const MultiStepForm: React.FC = () => {
               </Button>
             )}
           </div>
+        )}
       </Card>
     </div>
       

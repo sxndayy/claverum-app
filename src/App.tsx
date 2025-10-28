@@ -5,7 +5,6 @@ import Success from "./pages/Success";
 import NotFound from "./pages/NotFound";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
-import Receipt from "./pages/Receipt";
 
 // Route Error Component
 const RouteError = () => {
@@ -45,7 +44,6 @@ const App = () => (
       <Route path="/" element={<Index />} errorElement={<RouteError />} />
       <Route path="/evaluation" element={<Evaluation />} errorElement={<RouteError />} />
       <Route path="/success" element={<Success />} errorElement={<RouteError />} />
-      <Route path="/receipt" element={<Receipt />} errorElement={<RouteError />} />
       <Route path="/admin/login" element={<AdminLogin />} errorElement={<RouteError />} />
       <Route path="/admin" element={<Admin />} errorElement={<RouteError />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
