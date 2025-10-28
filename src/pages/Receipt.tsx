@@ -26,9 +26,11 @@ const Receipt = () => {
 
       try {
         const response = await apiClient.getStripeSession(sessionId);
+        console.log('Receipt response:', response);
         
-        if (response.success && response.session) {
-          setSessionData(response.session);
+        if (response.success) {
+          // Backend gibt direkt die Session-Daten zurück, nicht in einem 'session' Objekt
+          setSessionData(response);
         } else {
           setError(response.error || 'Fehler beim Laden der Zahlungsdaten');
         }
