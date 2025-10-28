@@ -73,7 +73,7 @@ router.post('/create-checkout-session', paymentLimiter, requireOrderOwnership, a
         price: process.env.STRIPE_PRICE_ID,
         quantity: 1
       }],
-      customer_email: null, // Email collected by Stripe Checkout
+      // Email wird von Stripe Checkout automatisch gesammelt
       metadata: {
         orderId: orderId
       },
