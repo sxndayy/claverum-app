@@ -315,20 +315,23 @@ const MultiStepForm: React.FC = () => {
     <>
       <div className="max-w-6xl mx-auto p-6" id="bewertung-starten">
         <Card className="shadow-strong">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-semibold text-text-100">
-              Bauschadensbewertung starten
-            </CardTitle>
-            <div className="mt-4">
-              <Progress value={progress} className="w-full" />
-              <p className="text-sm text-text-200 mt-2">Schritt {currentStep} von 8</p>
-            </div>
-            {orderId && (
-              <p className="text-xs text-muted-foreground mt-2">
-                Auftrag: {orderId.slice(0, 8)}...
-              </p>
-            )}
-          </CardHeader>
+          {/* Header - Hide on Step 9 (Receipt) */}
+          {currentStep !== 9 && (
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl font-semibold text-text-100">
+                Bauschadensbewertung starten
+              </CardTitle>
+              <div className="mt-4">
+                <Progress value={progress} className="w-full" />
+                <p className="text-sm text-text-200 mt-2">Schritt {currentStep} von 8</p>
+              </div>
+              {orderId && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  Auftrag: {orderId.slice(0, 8)}...
+                </p>
+              )}
+            </CardHeader>
+          )}
         
         <CardContent className="space-y-6">
           {/* Step 1: Objekt-Basics */}
