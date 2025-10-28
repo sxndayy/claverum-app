@@ -74,3 +74,18 @@ export const orderCreationLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+/**
+ * Rate limiter for payment endpoints
+ * 5 payment requests per 15 minutes per IP
+ */
+export const paymentLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // 5 requests per window
+  message: {
+    success: false,
+    error: 'Too many payment requests, please try again later.'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});

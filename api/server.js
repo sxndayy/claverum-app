@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import { query } from './db.js';
 import { generatePresignedUploadUrl, getPublicUrl } from './s3-client.js';
 import authRoutes from './routes/auth.js';
+import paymentRoutes from './routes/payments.js';
 import { requireAuth, optionalAuth } from './middleware/auth.js';
 import { requireOrderOwnership } from './middleware/orderOwnership.js';
 import { requireCSRF, generateCSRFForUser } from './middleware/csrf.js';
@@ -67,6 +68,9 @@ app.use(express.json({ limit: '10mb' })); // Limit request body size
 
 // Auth routes
 app.use('/api/auth', loginLimiter, authRoutes);
+
+// Payment routes
+app.use('/api/payments', paymentRoutes);
 
 // Add CSRF token generation for authenticated requests
 app.use(generateCSRFForUser);
