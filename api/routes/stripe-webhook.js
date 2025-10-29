@@ -102,6 +102,67 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
     }
   }
 
+  // Handle payment_intent.payment_failed event
+  if (event.type === 'payment_intent.payment_failed') {
+    const paymentIntent = event.data.object;
+    
+    try {
+      // Find order by payment_intent_id (set when checkout.session.completed)
+      const orderResult = await query(
+        'SELECT id FROM orders WHERE stripe_payment_intent_id = $1',
+        [paymentIntent.id]
+      );
+
+      if (orderResult.rows.length > 0) {
+        const orderId = orderResult.rows[0].id;
+        await query(
+          `UPDATE orders 
+           SET payment_status = 'failed'
+           WHERE id = $1`,
+          [orderId]
+        );
+        console.log(`❌ Order ${orderId} marked as payment failed (Payment Intent: ${paymentIntent.id})`);
+      } else {
+        console.log(`⚠️ Payment Intent ${paymentIntent.id} failed, but no matching order found`);
+      }
+    } catch (error) {
+      console.error('Error updating order payment failure status:', error);
+    }
+  }
+
+  // Handle payment_intent.succeeded event (backup, if checkout.session.completed doesn't fire)
+  if (event.type === 'payment_intent.succeeded') {
+    const paymentIntent = event.data.object;
+    
+    try {
+      // Find order by payment_intent_id
+      const orderResult = await query(
+        'SELECT id, paid FROM orders WHERE stripe_payment_intent_id = $1',
+        [paymentIntent.id]
+      );
+
+      if (orderResult.rows.length > 0) {
+        const order = orderResult.rows[0];
+        // Only update if not already marked as paid
+        if (!order.paid) {
+          await query(
+            `UPDATE orders 
+             SET paid = true, 
+                 paid_at = NOW(), 
+                 payment_status = 'paid'
+             WHERE id = $1`,
+            [order.id]
+          );
+          console.log(`✅ Order ${order.id} marked as paid (Payment Intent succeeded)`);
+        }
+      } else {
+        console.log(`⚠️ Payment Intent ${paymentIntent.id} succeeded, but no matching order found`);
+      }
+    } catch (error) {
+      console.error('Error updating order payment status:', error);
+    }
+  }
+
   // Acknowledge receipt of event
   res.json({ received: true });
 });
