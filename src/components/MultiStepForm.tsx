@@ -599,7 +599,7 @@ const MultiStepForm: React.FC = () => {
 
           {/* Step 9: Receipt (Payment Success) */}
           {currentStep === 9 && (
-            <div className="form-step form-step-active">
+            <div className="form-step form-step-active pt-6">
               <div className="flex items-center gap-2 mb-4">
                 <CheckCircle className="w-5 h-5 text-green-500" />
                 <h3 className="text-lg font-medium">Zahlung erfolgreich!</h3>

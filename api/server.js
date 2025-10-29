@@ -7,6 +7,7 @@ import { query } from './db.js';
 import { generatePresignedUploadUrl, getPublicUrl } from './s3-client.js';
 import authRoutes from './routes/auth.js';
 import paymentRoutes from './routes/payments.js';
+import stripeWebhookRoutes from './routes/stripe-webhook.js';
 import { requireAuth, optionalAuth } from './middleware/auth.js';
 import { requireOrderOwnership } from './middleware/orderOwnership.js';
 import { requireCSRF, generateCSRFForUser } from './middleware/csrf.js';
@@ -64,6 +65,11 @@ app.use(cors({
   ],
   credentials: true
 }));
+
+// Stripe webhook must be registered BEFORE express.json() middleware
+// because it needs raw body for signature verification
+app.use('/api/stripe', stripeWebhookRoutes);
+
 app.use(express.json({ limit: '10mb' })); // Limit request body size
 
 // Auth routes
