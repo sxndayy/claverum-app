@@ -546,6 +546,7 @@ app.get('/api/orders', adminLimiter, requireAuth, async (req, res) => {
       search = '',
       propertyType = '',
       city = '',
+      paid = '', // 'true', 'false', or empty for all
       sortBy = 'created_at',
       sortOrder = 'desc'
     } = req.query;
@@ -591,6 +592,13 @@ app.get('/api/orders', adminLimiter, requireAuth, async (req, res) => {
       filters.push(`city ILIKE $${paramCount}`);
       params.push(`%${safeCity}%`);
       paramCount++;
+    }
+
+    // Filter by payment status
+    if (paid === 'true') {
+      filters.push(`paid = true`);
+    } else if (paid === 'false') {
+      filters.push(`(paid = false OR paid IS NULL)`);
     }
 
     const whereClause = filters.length > 0 ? `WHERE ${filters.join(' AND ')}` : '';

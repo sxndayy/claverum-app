@@ -13,7 +13,10 @@ import {
   FileText, 
   Image,
   Save,
-  Edit3
+  Edit3,
+  CreditCard,
+  CheckCircle,
+  XCircle
 } from 'lucide-react';
 import { apiClient } from '@/utils/apiClient';
 
@@ -30,6 +33,12 @@ interface Order {
   updated_at: string;
   upload_count: number;
   text_count: number;
+  paid?: boolean;
+  paid_at?: string;
+  payment_status?: string;
+  payment_amount?: number;
+  stripe_payment_intent_id?: string;
+  stripe_checkout_session_id?: string;
 }
 
 interface OrderDetail {
@@ -43,6 +52,12 @@ interface OrderDetail {
   note: string;
   created_at: string;
   updated_at: string;
+  paid?: boolean;
+  paid_at?: string;
+  payment_status?: string;
+  payment_amount?: number;
+  stripe_payment_intent_id?: string;
+  stripe_checkout_session_id?: string;
   uploads: Array<{
     id: string;
     order_id: string;
@@ -331,6 +346,72 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
                 </div>
               </CardContent>
             </Card>
+
+            {/* Payment Information */}
+            {(orderDetail.paid !== undefined || orderDetail.payment_status) && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <CreditCard className="h-5 w-5" />
+                    Payment Information
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">Payment Status</label>
+                    <div className="flex items-center gap-2 mt-1">
+                      {orderDetail.paid ? (
+                        <>
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                          <Badge className="bg-green-500 hover:bg-green-600">Paid</Badge>
+                        </>
+                      ) : (
+                        <>
+                          <XCircle className="h-4 w-4 text-yellow-500" />
+                          <Badge className="bg-yellow-500 hover:bg-yellow-600">Unpaid</Badge>
+                        </>
+                      )}
+                      {orderDetail.payment_status && (
+                        <span className="text-sm text-gray-500 capitalize">
+                          ({orderDetail.payment_status})
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {orderDetail.paid && orderDetail.paid_at && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Paid At</label>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Calendar className="h-4 w-4 text-gray-400" />
+                        <span>{formatDate(orderDetail.paid_at)}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {orderDetail.payment_amount && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Amount</label>
+                      <p className="mt-1 font-semibold">{(orderDetail.payment_amount / 100).toFixed(2)}€</p>
+                    </div>
+                  )}
+
+                  {orderDetail.stripe_payment_intent_id && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Payment Intent ID</label>
+                      <p className="mt-1 font-mono text-xs break-all">{orderDetail.stripe_payment_intent_id}</p>
+                    </div>
+                  )}
+
+                  {orderDetail.stripe_checkout_session_id && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Checkout Session ID</label>
+                      <p className="mt-1 font-mono text-xs break-all">{orderDetail.stripe_checkout_session_id}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Photos and Texts */}

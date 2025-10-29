@@ -50,6 +50,11 @@ interface Order {
   updated_at: string;
   upload_count: number;
   text_count: number;
+  paid?: boolean;
+  paid_at?: string;
+  payment_status?: string;
+  payment_amount?: number;
+  stripe_payment_intent_id?: string;
 }
 
 const Admin: React.FC = () => {
@@ -68,6 +73,7 @@ const Admin: React.FC = () => {
   const [search, setSearch] = useState('');
   const [propertyType, setPropertyType] = useState('');
   const [city, setCity] = useState('');
+  const [paidFilter, setPaidFilter] = useState('');
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
@@ -102,6 +108,7 @@ const Admin: React.FC = () => {
         search: search || undefined,
         propertyType: propertyType || undefined,
         city: city || undefined,
+        paid: paidFilter || undefined,
         sortBy,
         sortOrder,
       };
@@ -128,7 +135,7 @@ const Admin: React.FC = () => {
     if (authManager.isAuthenticated()) {
       loadOrders();
     }
-  }, [currentPage, search, propertyType, city, sortBy, sortOrder]);
+  }, [currentPage, search, propertyType, city, paidFilter, sortBy, sortOrder]);
 
   const handleSearch = (value: string) => {
     setSearch(value);
@@ -307,6 +314,17 @@ const Admin: React.FC = () => {
                 onChange={(e) => setCity(e.target.value)}
               />
 
+              <Select value={paidFilter || "all"} onValueChange={(value) => setPaidFilter(value === "all" ? "" : value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Payment Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Orders</SelectItem>
+                  <SelectItem value="true">Paid</SelectItem>
+                  <SelectItem value="false">Unpaid</SelectItem>
+                </SelectContent>
+              </Select>
+
               <Select value={`${sortBy}-${sortOrder}`} onValueChange={(value) => {
                 const [field, order] = value.split('-');
                 setSortBy(field);
@@ -384,13 +402,23 @@ const Admin: React.FC = () => {
                           <TableCell>{order.build_year || 'N/A'}</TableCell>
                           <TableCell>{formatDate(order.created_at)}</TableCell>
                           <TableCell>
-                            <div className="flex gap-2">
-                              <Badge variant={order.upload_count > 0 ? 'default' : 'secondary'}>
-                                {order.upload_count} photos
-                              </Badge>
-                              <Badge variant={order.text_count > 0 ? 'default' : 'secondary'}>
-                                {order.text_count} texts
-                              </Badge>
+                            <div className="flex flex-col gap-2">
+                              <div className="flex gap-2">
+                                <Badge variant={order.upload_count > 0 ? 'default' : 'secondary'}>
+                                  {order.upload_count} photos
+                                </Badge>
+                                <Badge variant={order.text_count > 0 ? 'default' : 'secondary'}>
+                                  {order.text_count} texts
+                                </Badge>
+                              </div>
+                              {order.paid !== undefined && (
+                                <Badge 
+                                  variant={order.paid ? 'default' : 'secondary'}
+                                  className={order.paid ? 'bg-green-500 hover:bg-green-600' : 'bg-yellow-500 hover:bg-yellow-600'}
+                                >
+                                  {order.paid ? 'Paid' : 'Unpaid'}
+                                </Badge>
+                              )}
                             </div>
                           </TableCell>
                           <TableCell>

@@ -157,6 +157,7 @@ export interface OrdersListParams {
   search?: string;
   propertyType?: string;
   city?: string;
+  paid?: string; // 'true', 'false', or undefined for all
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }
@@ -511,6 +512,7 @@ class ApiClient {
       if (params.search) searchParams.append('search', params.search);
       if (params.propertyType) searchParams.append('propertyType', params.propertyType);
       if (params.city) searchParams.append('city', params.city);
+      if (params.paid) searchParams.append('paid', params.paid);
       if (params.sortBy) searchParams.append('sortBy', params.sortBy);
       if (params.sortOrder) searchParams.append('sortOrder', params.sortOrder);
 
