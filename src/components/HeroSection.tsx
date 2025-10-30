@@ -44,8 +44,8 @@ const HeroSection: React.FC = () => {
       <div className="container mx-auto px-4 text-center relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Main Headlines */}
-          <h1 className="text-4xl md:text-6xl font-bold text-text-100 mb-6">
-          Professionelle Bauschadensbewertung  {' '}
+          <h1 className="text-4xl md:text-6xl font-bold text-text-100 mb-6 hero-title">
+            Professionelle <br className="block md:hidden" /> Bauschadensbewertung  {' '}
             <span className="text-primary">schnell, transparent, verlässlich</span>
           </h1>
           
@@ -103,16 +103,16 @@ const HeroSection: React.FC = () => {
             <div className="text-sm">
               Über 95% Weiterempfehlungsrate
             </div>
+            {/* Moved scroll indicator here on mobile */}
+            <div className="mt-2 md:hidden">
+              <div className="w-6 h-10 border-2 border-text-200 rounded-full flex justify-center animate-bounce">
+                <div className="w-1 h-3 bg-text-200 rounded-full mt-2"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-text-200 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-text-200 rounded-full mt-2"></div>
-        </div>
-      </div>
     </section>
   );
 };

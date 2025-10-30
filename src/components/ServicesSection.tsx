@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Search, Handshake, ArrowRight } from 'lucide-react';
+import { Search, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 import ServiceInfoOverlay, {
@@ -73,51 +73,6 @@ const ServicesSection: React.FC = () => {
       },
       popular: true,
     },
-    {
-      icon: Handshake,
-      title: 'Ankaufsberatung',
-      description: 'Entscheidungshilfe vor Notartermin',
-      features: [
-        'Kaufempfehlung basierend auf Zustand',
-        'Verhandlungsargumente ableiten',
-        'Preis-Leistungs-Bewertung',
-        'Alternativenaufzeigung',
-      ],
-      info: {
-        tagline:
-          'Begleitete Entscheidungsgrundlage vor dem Notartermin – mit klaren Verhandlungspunkten, Risikoampel und objektiver Kaufempfehlung.',
-        sections: [
-          {
-            title: 'Sie erhalten',
-            items: [
-              'Verhandlungsanalyse mit konkreten Argumenten für Preisnachlässe',
-              'Bewertung der Werthaltigkeit inklusive Prognose der Folgekosten',
-              'Checkliste kritischer Bauteile für Vor-Ort-Begehungen',
-              'Ampelbasierte Risikoeinschätzung für die finale Kaufentscheidung',
-            ],
-          },
-          {
-            title: 'Ideal, wenn',
-            items: [
-              'Sie vor dem Notartermin letzte Sicherheit brauchen',
-              'Sie mehrere Objekte vergleichen oder priorisieren möchten',
-              'Sie Banken, Investoren oder Mitentscheidende von Fakten überzeugen wollen',
-            ],
-          },
-          {
-            title: 'Unser Ablauf',
-            items: [
-              'Upload der Kaufunterlagen (Exposé, Energieausweis, Fotos) – optional',
-              'Vergleich mit tausenden Markt- und Sanierungsdaten innerhalb von 12 Stunden',
-              'Optionales Abschlussgespräch zur Besprechung der Ergebnisse',
-            ],
-          },
-        ],
-        note:
-          'Auf Wunsch ergänzen wir die Analyse um ein individuelles Verhandlungsskript oder begleiten Ihr Bankgespräch.',
-      },
-      popular: false,
-    },
   ];
 
   const handleMoreInfo = (
@@ -143,14 +98,14 @@ const ServicesSection: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-bold text-text-100 md:text-4xl">
-            Unsere Leistungen
+            Unser Service
           </h2>
           <p className="mx-auto max-w-2xl text-xl text-text-200">
-            Professionelle KI-gestützte Bauschadensbewertung für jeden Bedarf
+            personalisierte Bauschadensbewertung für eden Bedarf
           </p>
         </div>
 
-        <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
+        <div className="mx-auto grid max-w-4xl gap-8">
           {services.map((service, index) => (
             <Card
               key={service.title}
@@ -161,13 +116,6 @@ const ServicesSection: React.FC = () => {
                 service.popular ? 'ring-2 ring-primary shadow-strong' : 'shadow-soft'
               }`}
             >
-              {service.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 transform">
-                  <span className="rounded-full bg-primary px-4 py-1 text-sm font-medium text-primary-foreground">
-                    Meistgewählt
-                  </span>
-                </div>
-              )}
 
               <CardHeader className="pb-4 text-center">
                 <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-brand-100">
@@ -197,7 +145,6 @@ const ServicesSection: React.FC = () => {
                     type="button"
                     onClick={handleStartEvaluation}
                     className="group w-full"
-                    variant={service.popular ? 'default' : 'outline'}
                   >
                     Jetzt starten
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

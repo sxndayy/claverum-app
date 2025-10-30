@@ -150,6 +150,9 @@ const ServiceInfoOverlay: React.FC<ServiceInfoOverlayProps> = ({
   const [dimensions, setDimensions] = useState(() =>
     calculateModalDimensions(),
   );
+  const [isMobile, setIsMobile] = useState<boolean>(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false,
+  );
   const [portalNode, setPortalNode] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -169,6 +172,9 @@ const ServiceInfoOverlay: React.FC<ServiceInfoOverlayProps> = ({
   useEffect(() => {
     const updateDimensions = () => {
       setDimensions(calculateModalDimensions());
+      if (typeof window !== 'undefined') {
+        setIsMobile(window.innerWidth < 768);
+      }
     };
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
@@ -471,7 +477,7 @@ const ServiceInfoOverlay: React.FC<ServiceInfoOverlayProps> = ({
         aria-hidden="true"
         onClick={startClose}
       />
-      <div className="relative z-10 flex h-full w-full items-center justify-center px-4 py-8 md:px-6">
+      <div className="relative z-10 flex h-full w-full items-end md:items-center justify-center px-0 py-0 md:px-6 md:py-8">
         <div
           ref={overlayRef}
           role="dialog"
@@ -479,27 +485,28 @@ const ServiceInfoOverlay: React.FC<ServiceInfoOverlayProps> = ({
           aria-labelledby={titleId}
           tabIndex={-1}
           className={cn(
-            'pointer-events-auto flex h-full w-full max-w-[92vw] flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-strong',
-            'md:max-w-[1024px]',
+            'pointer-events-auto flex w-full flex-col overflow-hidden bg-background shadow-strong border border-border',
+            'rounded-t-3xl h-[85vh] md:rounded-3xl',
+            'md:h-full md:w-full md:max-w-[92vw] md:max-w-[1024px]'
           )}
-          style={containerStyle}
+          style={isMobile ? undefined : containerStyle}
           onClick={(event) => event.stopPropagation()}
         >
-          <div className="relative flex-shrink-0 border-b border-border/70 px-6 py-6 md:px-8 md:py-8">
+          <div className="relative flex-shrink-0 border-b border-border/70 px-6 py-4 md:px-8 md:py-8">
             <h2
               id={titleId}
               className="text-2xl font-semibold text-text-100 md:text-3xl"
             >
               {service.title}
             </h2>
-            <p className="mt-3 max-w-2xl text-sm text-text-200 md:text-base">
+            <p className="mt-2 md:mt-3 max-w-2xl text-sm text-text-200 md:text-base">
               {service.info.tagline}
             </p>
             <button
               ref={closeButtonRef}
               type="button"
               onClick={startClose}
-              className="absolute right-6 top-6 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-background/80 text-text-200 shadow-soft transition-smooth hover:text-text-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 md:right-8 md:top-8"
+              className="absolute right-4 top-4 md:right-8 md:top-8 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-background/80 text-text-200 shadow-soft transition-smooth hover:text-text-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               <X className="h-5 w-5" />
               <span className="sr-only">Overlay schließen</span>
@@ -533,7 +540,7 @@ const ServiceInfoOverlay: React.FC<ServiceInfoOverlayProps> = ({
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 border-t border-border/70 px-6 py-6 md:flex-row md:items-center md:justify-between md:px-8">
+          <div className="flex flex-col gap-3 border-t border-border/70 px-6 py-4 md:py-6 md:flex-row md:items-center md:justify-between md:px-8">
             <span className="text-sm font-medium text-text-200 md:text-base">
               Fragen? Unser Team begleitet Sie von der Analyse bis zur Entscheidung.
             </span>

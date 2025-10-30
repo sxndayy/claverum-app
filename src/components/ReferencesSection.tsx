@@ -66,8 +66,8 @@ const ReferencesSection: React.FC = () => {
         <div className="text-center mt-12">
           <div className="inline-flex items-center gap-8 text-sm text-text-200">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">500+</span>
+              <div className="w-7 h-7 md:w-8 md:h-8 bg-primary rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-xs md:text-sm">500+</span>
               </div>
               <span>Bewertungen</span>
             </div>

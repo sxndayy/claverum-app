@@ -148,16 +148,7 @@ const Header: React.FC = () => {
         )}
       </div>
 
-      {/* Sticky CTA for mobile */}
-      <div className="md:hidden fixed bottom-4 left-4 right-4 z-40">
-        <Button
-          onClick={() => scrollToSection('bewertung-starten')}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 shadow-strong"
-          size="lg"
-        >
-          Jetzt Bewertung starten
-        </Button>
-      </div>
+      {/* Sticky CTA for mobile removed by request */}
     </header>
   );
 };

@@ -226,3 +226,54 @@ All colors MUST be HSL.
     }
   }
 }
+
+/* Mobile-only global overflow safety and media clamps */
+@media (max-width: 767.98px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Prevent intrinsic media from causing horizontal scroll */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Clamp full-screen width utilities when nested in padded containers */
+  .w-screen,
+  .min-w-screen {
+    max-width: 100% !important;
+  }
+
+  /* Extra safety for main layout wrappers */
+  main,
+  header,
+  footer {
+    overflow-x: clip;
+  }
+
+  /* Hyphenation and safe wrapping for long German words in large text */
+  h1,
+  h2,
+  h3,
+  h4,
+  .text-3xl,
+  .text-4xl,
+  .text-5xl,
+  .font-bold {
+    hyphens: auto;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  /* Prefer two balanced lines for the hero heading */
+  .hero-title {
+    text-wrap: balance;
+    max-width: 22ch;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.15;
+  }
+}

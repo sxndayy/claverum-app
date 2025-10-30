@@ -65,14 +65,6 @@ const Footer: React.FC = () => {
                   onClick={() => scrollToSection('leistungen')}
                   className="hover:text-black transition-smooth"
                 >
-                  Ankaufsberatung
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('leistungen')}
-                  className="hover:text-black transition-smooth"
-                >
                   Ersteinschätzung
                 </button>
               </li>
