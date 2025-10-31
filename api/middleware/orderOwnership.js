@@ -8,8 +8,8 @@ import { query } from '../db.js';
 
 /**
  * Generate a secure session token for an order (transaction-aware version)
- * @param {Function} clientOrQuery - Database client (from transaction) or query function
  * @param {string} orderId - Order UUID
+ * @param {Object|Function} clientOrQuery - Database client (from transaction) or query function
  * @returns {Promise<string>} Session token
  */
 export async function generateOrderSessionToken(orderId, clientOrQuery = query) {
@@ -17,14 +17,17 @@ export async function generateOrderSessionToken(orderId, clientOrQuery = query) 
   const expiresAt = new Date(Date.now() + (24 * 60 * 60 * 1000)); // 24 hours
   
   try {
+    // Determine if we have a transaction client (has query method) or the query function
+    const dbQuery = clientOrQuery.query ? clientOrQuery.query.bind(clientOrQuery) : clientOrQuery;
+    
     // Insert session token into database
-    await clientOrQuery(
+    await dbQuery(
       'INSERT INTO order_sessions (session_token, order_id, expires_at) VALUES ($1, $2, $3)',
       [token, orderId, expiresAt]
     );
     
     // Only clean up expired sessions if not in a transaction (client !== query means it's a transaction client)
-    if (clientOrQuery === query) {
+    if (clientOrQuery === query || typeof clientOrQuery === 'function') {
       await cleanupExpiredSessions();
     }
     
