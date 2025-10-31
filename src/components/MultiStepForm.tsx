@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
-import { MapPin, Home, Camera, ChevronLeft, ChevronRight, CreditCard, Loader2, CheckCircle, Mail } from 'lucide-react';
+import { MapPin, Home, Camera, ChevronLeft, ChevronRight, CreditCard, Loader2, CheckCircle, Mail, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import AreaUpload from '@/components/AreaUpload';
 import UploadStatus from '@/components/UploadStatus';
@@ -127,6 +127,19 @@ const MultiStepForm: React.FC = () => {
     }
   };
 
+  // Map area key to correct backend area name
+  const getAreaNameForAPI = (areaKey: string): string => {
+    const areaMap: Record<string, string> = {
+      'keller': 'Keller',
+      'elektro': 'Elektro',
+      'heizung': 'Heizung',
+      'fassade': 'Fassade',
+      'dach': 'Dach',
+      'innenraeume': 'Innenräume' // Special case: needs ä instead of ae
+    };
+    return areaMap[areaKey] || areaKey.charAt(0).toUpperCase() + areaKey.slice(1);
+  };
+
   // Save current step data before navigating
   const saveCurrentStepData = async () => {
     if (!orderId) return;
@@ -154,13 +167,13 @@ const MultiStepForm: React.FC = () => {
     
     // Queue uploads in background
     if (areaData.files.length > 0) {
-      const areaName = areaKey.charAt(0).toUpperCase() + areaKey.slice(1);
+      const areaName = getAreaNameForAPI(areaKey);
       uploadQueue.addMultipleUploads(orderId, areaName, areaData.files);
     }
 
     // Save text if provided
     if (areaData.text.trim()) {
-      const areaName = areaKey.charAt(0).toUpperCase() + areaKey.slice(1);
+      const areaName = getAreaNameForAPI(areaKey);
       apiClient.saveTexts({
         orderId,
         area: areaName,
@@ -277,26 +290,35 @@ const MultiStepForm: React.FC = () => {
     'Mehrfamilienhaus',
     'Reihenhaus',
     'Doppelhaushälfte',
-    'Bungalow',
+    'Gewerbeobjekt',
     'Sonstiges'
   ];
 
   const products = [
     {
-      id: 'basic',
-      name: 'Basis-Bewertung',
-      description: 'Grundlegende Bauschadensbewertung',
-      price: '299',
-      features: ['Visuelle Inspektion', 'Schadensdokumentation', 'Bewertungsbericht']
-    },
-    {
-      id: 'premium',
-      name: 'Premium-Bewertung',
-      description: 'Umfassende Bauschadensbewertung mit Empfehlungen',
-      price: '499',
-      features: ['Detaillierte Analyse', 'Sanierungsempfehlungen', 'Kostenschätzung', 'Prioritätenliste']
+      id: 'all-in-one',
+      name: 'All-in-one',
+      description: 'Fachgerechte Prüfung und Bewertung für verlässliche Entscheidungen',
+      price: '350',
+      features: [
+        'Alle Basisleistungen',
+        'Prüfung durch erfahrene Sachverständige',
+        'Klare Handlungsempfehlungen',
+        'Kostenschätzung für Reparaturen',
+        'Priorisierung nach Dringlichkeit',
+        'Bewertungsbericht (14–16 Seiten)',
+        'Ergebnis innerhalb 48 Stunden',
+        'Telefonischer Support'
+      ]
     }
   ];
+
+  // Auto-select product when entering step 8
+  useEffect(() => {
+    if (currentStep === 8 && !formData.selectedProduct && products.length > 0) {
+      updateFormData('selectedProduct', products[0].id);
+    }
+  }, [currentStep, formData.selectedProduct]);
 
 
   // Show loading state while initializing
@@ -562,35 +584,47 @@ const MultiStepForm: React.FC = () => {
           {/* Step 8: Produkt & Checkout */}
           {currentStep === 8 && (
             <div className="form-step form-step-active">
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-6">
                 <CreditCard className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-medium">Produktauswahl</h3>
+                <h3 className="text-xl font-semibold">Ihr Paket</h3>
               </div>
               
-              <div className="space-y-6">
-                <div className="grid gap-4">
+              <div className="flex justify-center">
+                <div className="max-w-2xl w-full">
                   {products.map((product) => (
-                    <div key={product.id} className="border border-border rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium">{product.name}</h4>
-                        <span className="text-lg font-bold text-primary">{product.price}€</span>
-                      </div>
-                      <p className="text-sm text-text-200 mb-3">{product.description}</p>
-                      <ul className="text-sm text-text-200 space-y-1">
-                        {product.features.map((feature, index) => (
-                          <li key={index} className="flex items-center gap-2">
-                            <span className="w-1 h-1 bg-primary rounded-full"></span>
-                            {feature}
-                          </li>
-                                ))}
-                              </ul>
-                      <Button
-                        className={`w-full mt-4 ${formData.selectedProduct === product.id ? 'bg-primary text-primary-foreground hover:bg-primary/90' : 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'}`}
-                        onClick={() => updateFormData('selectedProduct', product.id)}
-                      >
-                        {formData.selectedProduct === product.id ? 'Ausgewählt' : 'Auswählen'}
-                      </Button>
-                    </div>
+                    <Card 
+                      key={product.id} 
+                      className="relative border-2 border-primary shadow-lg hover-lift transition-smooth"
+                    >
+                      <CardHeader className="text-center pb-4">
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 transform">
+                          <span className="rounded-full bg-primary px-4 py-1 text-sm font-medium text-primary-foreground">
+                            Ausgewählt
+                          </span>
+                        </div>
+                        <CardTitle className="text-2xl font-bold text-text-100 mb-4">
+                          {product.name}
+                        </CardTitle>
+                        <div className="mb-4">
+                          <span className="text-4xl font-bold text-primary">{product.price}€</span>
+                          <span className="text-text-200 text-sm ml-1">inkl. MwSt.</span>
+                        </div>
+                        <p className="text-text-200 text-sm max-w-xl mx-auto">
+                          {product.description}
+                        </p>
+                      </CardHeader>
+                      
+                      <CardContent className="pt-0">
+                        <ul className="space-y-3 mb-6">
+                          {product.features.map((feature, index) => (
+                            <li key={index} className="flex items-start gap-3">
+                              <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                              <span className="text-sm text-text-200">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               </div>
@@ -693,7 +727,7 @@ const MultiStepForm: React.FC = () => {
             {currentStep === 8 ? (
               <Button
                 onClick={handleCheckout}
-                disabled={!formData.selectedProduct || isSaving}
+                disabled={isSaving}
                 className="flex items-center gap-2"
               >
                 {isSaving ? (
@@ -703,7 +737,7 @@ const MultiStepForm: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    Weiter zur Zahlung
+                    Zur Zahlung
                     <ChevronRight className="w-4 h-4" />
                   </>
                 )}
