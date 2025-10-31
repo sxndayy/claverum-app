@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import archiver from 'archiver';
 import helmet from 'helmet';
 import { query, transaction, getPoolStats, isPoolExhaustionError } from './db.js';
-import { generatePresignedUploadUrl, getPublicUrl } from './s3-client.js';
+import { generatePresignedUploadUrl, getPublicUrl, downloadFileFromS3 } from './s3-client.js';
 import authRoutes from './routes/auth.js';
 import paymentRoutes from './routes/payments.js';
 import stripeWebhookRoutes from './routes/stripe-webhook.js';
@@ -841,7 +841,21 @@ Statistiken:
     for (const [area, uploads] of Object.entries(uploadsByArea)) {
       for (const upload of uploads) {
         const filename = upload.file_path.split('/').pop();
-        archive.append(null, { name: `photos/${area}/${filename}` });
+        
+        try {
+          // Download file from S3
+          const fileContent = await downloadFileFromS3(upload.file_path);
+          
+          // Add file content to ZIP
+          archive.append(fileContent, { name: `photos/${area}/${filename}` });
+        } catch (error) {
+          // Log error but continue with other files
+          console.warn(`Failed to download file ${upload.file_path} from S3:`, error.message);
+          // Add empty file with error note (optional - or skip entirely)
+          archive.append(`Error: File could not be retrieved from storage (${error.message})`, { 
+            name: `photos/${area}/${filename}.error.txt` 
+          });
+        }
       }
     }
 

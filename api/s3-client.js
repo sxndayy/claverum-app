@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import dotenv from 'dotenv';
 
@@ -56,6 +56,33 @@ export async function generatePresignedUploadUrl(orderId, area, filename, mimeTy
 export function getPublicUrl(filePath) {
   const publicUrl = process.env.S3_PUBLIC_URL;
   return `${publicUrl}/${filePath}`;
+}
+
+/**
+ * Download a file from S3 storage
+ * @param {string} filePath - S3 key/path
+ * @returns {Promise<Buffer>} - File content as Buffer
+ */
+export async function downloadFileFromS3(filePath) {
+  const command = new GetObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: filePath,
+  });
+
+  try {
+    const response = await s3Client.send(command);
+    
+    // Convert stream to buffer
+    const chunks = [];
+    for await (const chunk of response.Body) {
+      chunks.push(chunk);
+    }
+    
+    return Buffer.concat(chunks);
+  } catch (error) {
+    console.error(`Error downloading file from S3: ${filePath}`, error);
+    throw error;
+  }
 }
 
 export default s3Client;
