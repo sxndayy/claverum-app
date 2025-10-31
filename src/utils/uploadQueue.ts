@@ -25,7 +25,8 @@ class UploadQueue {
   private queue: UploadTask[] = [];
   private maxRetries = 2;
   private listeners: Set<UploadCallback> = new Set();
-  private processing = false;
+  private activeTasks: Set<string> = new Set();
+  private maxConcurrentUploads = 3;
 
   /**
    * Add file to upload queue
@@ -46,10 +47,8 @@ class UploadQueue {
     this.queue.push(task);
     this.notifyListeners(task);
     
-    // Start processing if not already running
-    if (!this.processing) {
-      this.processQueue();
-    }
+    // Start processing if we have capacity
+    this.processQueue();
 
     return taskId;
   }
@@ -127,9 +126,8 @@ class UploadQueue {
     
     this.notifyListeners(task);
     
-    if (!this.processing) {
-      this.processQueue();
-    }
+    // Try to process queue if we have capacity
+    this.processQueue();
   }
 
   private notifyListeners(task: UploadTask): void {
@@ -145,17 +143,20 @@ class UploadQueue {
   }
 
   private async processQueue(): Promise<void> {
-    if (this.processing) return;
-    this.processing = true;
+    // Start as many tasks as we can (up to maxConcurrentUploads)
+    while (this.activeTasks.size < this.maxConcurrentUploads) {
+      const pendingTask = this.queue.find(t => t.status === 'pending');
+      if (!pendingTask) break;
 
-    while (this.queue.length > 0) {
-      const task = this.queue.find(t => t.status === 'pending');
-      if (!task) break;
-
-      await this.processTask(task);
+      // Mark task as active and start processing
+      this.activeTasks.add(pendingTask.id);
+      this.processTask(pendingTask).finally(() => {
+        // Remove from active tasks when done (success or failure)
+        this.activeTasks.delete(pendingTask.id);
+        // Try to start next pending task
+        this.processQueue();
+      });
     }
-
-    this.processing = false;
   }
 
   private async processTask(task: UploadTask): Promise<void> {

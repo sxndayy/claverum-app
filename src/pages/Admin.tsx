@@ -31,7 +31,9 @@ import {
   Home,
   FileText,
   Image,
-  LogOut
+  LogOut,
+  Database,
+  RefreshCw
 } from 'lucide-react';
 import { apiClient, OrdersListParams } from '@/utils/apiClient';
 import { authManager } from '@/utils/authManager';
@@ -76,6 +78,8 @@ const Admin: React.FC = () => {
   const [paidFilter, setPaidFilter] = useState('');
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [systemStats, setSystemStats] = useState<any>(null);
+  const [statsLoading, setStatsLoading] = useState(false);
 
   // Check authentication on mount
   useEffect(() => {
@@ -89,6 +93,7 @@ const Admin: React.FC = () => {
     // Verify token and get CSRF token
     apiClient.verifyToken().then(() => {
       loadOrders();
+      loadSystemStats();
     });
   }, [navigate]);
 
@@ -127,6 +132,20 @@ const Admin: React.FC = () => {
       setError('Failed to load orders');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadSystemStats = async () => {
+    try {
+      setStatsLoading(true);
+      const response = await apiClient.fetchAdminStats();
+      if (response.success && response.stats) {
+        setSystemStats(response.stats);
+      }
+    } catch (error) {
+      console.error('Error loading system stats:', error);
+    } finally {
+      setStatsLoading(false);
     }
   };
 
@@ -277,6 +296,127 @@ const Admin: React.FC = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* System Monitoring Card */}
+        <Card className="mb-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Database className="h-5 w-5" />
+                System Monitoring
+              </CardTitle>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={loadSystemStats}
+                disabled={statsLoading}
+                className="flex items-center gap-2"
+              >
+                <RefreshCw className={`h-4 w-4 ${statsLoading ? 'animate-spin' : ''}`} />
+                Refresh
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {statsLoading ? (
+              <div className="text-center py-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+                <p className="mt-2 text-sm text-gray-600">Loading statistics...</p>
+              </div>
+            ) : systemStats ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Database Pool Stats */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                    <Database className="h-4 w-4" />
+                    Database Pool
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Status:</span>
+                      <Badge variant={systemStats.database.status === 'healthy' ? 'default' : 'destructive'}>
+                        {systemStats.database.status === 'healthy' ? 'Healthy' : 'Warning'}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Utilization:</span>
+                      <span className="font-medium">{systemStats.database.pool.utilization}%</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Active:</span>
+                      <span className="font-medium">
+                        {systemStats.database.pool.totalCount - systemStats.database.pool.idleCount} / {systemStats.database.pool.totalCount}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Idle:</span>
+                      <span className="font-medium">{systemStats.database.pool.idleCount}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Waiting:</span>
+                      <span className="font-medium">{systemStats.database.pool.waitingCount}</span>
+                    </div>
+                    {/* Progress bar for utilization */}
+                    <div className="mt-2">
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full ${
+                            parseFloat(systemStats.database.pool.utilization) > 80
+                              ? 'bg-red-500'
+                              : parseFloat(systemStats.database.pool.utilization) > 60
+                              ? 'bg-yellow-500'
+                              : 'bg-green-500'
+                          }`}
+                          style={{ width: `${systemStats.database.pool.utilization}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Orders Stats */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    Orders
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Total:</span>
+                      <span className="font-medium">{systemStats.orders.total}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Today:</span>
+                      <span className="font-medium">{systemStats.orders.today}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Uploads Stats */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                    <Image className="h-4 w-4" />
+                    Uploads
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Total:</span>
+                      <span className="font-medium">{systemStats.uploads.total}</span>
+                    </div>
+                    <div className="flex justify-between text-xs text-gray-500 mt-4">
+                      <span>Last updated:</span>
+                      <span>{new Date(systemStats.timestamp).toLocaleTimeString('de-DE')}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-4 text-gray-600">
+                No statistics available
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Filters */}
         <Card className="mb-6">

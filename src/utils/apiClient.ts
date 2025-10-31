@@ -179,6 +179,30 @@ export interface UpdateOrderNoteResponse {
   error?: string;
 }
 
+export interface AdminStatsResponse {
+  success: boolean;
+  stats?: {
+    database: {
+      pool: {
+        totalCount: number;
+        idleCount: number;
+        waitingCount: number;
+        utilization: string;
+      };
+      status: 'healthy' | 'warning';
+    };
+    orders: {
+      total: number;
+      today: number;
+    };
+    uploads: {
+      total: number;
+    };
+    timestamp: string;
+  };
+  error?: string;
+}
+
 class ApiClient {
   private baseUrl: string;
   private csrfToken: string | null = null;
@@ -636,6 +660,29 @@ class ApiClient {
         success: false,
         orderId: '',
         updatedAt: '',
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Get admin statistics including database pool metrics
+   */
+  async fetchAdminStats(): Promise<AdminStatsResponse> {
+    try {
+      const authHeader = authManager.getAuthHeader();
+      const response = await fetch(`${this.baseUrl}/api/admin/stats`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeader,
+        },
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching admin stats:', error);
+      return {
+        success: false,
         error: 'Network error',
       };
     }

@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import archiver from 'archiver';
 import helmet from 'helmet';
-import { query, transaction } from './db.js';
+import { query, transaction, getPoolStats, isPoolExhaustionError } from './db.js';
 import { generatePresignedUploadUrl, getPublicUrl } from './s3-client.js';
 import authRoutes from './routes/auth.js';
 import paymentRoutes from './routes/payments.js';
@@ -84,6 +84,55 @@ app.use(generateCSRFForUser);
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+/**
+ * GET /api/admin/stats
+ * Get system statistics including database pool metrics
+ * Admin only
+ */
+app.get('/api/admin/stats', adminLimiter, requireAuth, async (req, res) => {
+  try {
+    const poolStats = getPoolStats();
+    
+    // Get total orders count
+    const ordersResult = await query('SELECT COUNT(*) as count FROM orders');
+    const totalOrders = parseInt(ordersResult.rows[0].count);
+    
+    // Get total uploads count
+    const uploadsResult = await query('SELECT COUNT(*) as count FROM uploads');
+    const totalUploads = parseInt(uploadsResult.rows[0].count);
+    
+    // Get orders created today
+    const todayResult = await query(
+      'SELECT COUNT(*) as count FROM orders WHERE created_at::date = CURRENT_DATE'
+    );
+    const ordersToday = parseInt(todayResult.rows[0].count);
+    
+    res.json({
+      success: true,
+      stats: {
+        database: {
+          pool: poolStats,
+          status: poolStats.utilization > 80 ? 'warning' : 'healthy'
+        },
+        orders: {
+          total: totalOrders,
+          today: ordersToday
+        },
+        uploads: {
+          total: totalUploads
+        },
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching admin stats:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch statistics'
+    });
+  }
 });
 
 /**
@@ -870,6 +919,20 @@ app.put('/api/order/:orderId/note', adminLimiter, requireAuth, requireCSRF, asyn
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
+  
+  // Check if it's a database pool exhaustion error
+  if (isPoolExhaustionError(err)) {
+    const poolStats = getPoolStats();
+    console.error('Database pool exhaustion detected:', poolStats);
+    
+    return res.status(503).json({
+      success: false,
+      error: 'Service temporarily unavailable. Please try again in a moment.',
+      retryAfter: 5 // seconds
+    });
+  }
+  
+  // Default error response
   res.status(500).json({
     success: false,
     error: 'Internal server error'
