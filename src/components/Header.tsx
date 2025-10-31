@@ -69,7 +69,7 @@ const Header: React.FC = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <h1 className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
-              Claverum
+              Bauklar
             </h1>
           </Link>
 

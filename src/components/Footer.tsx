@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const scrollToSection = (sectionId: string) => {
@@ -15,35 +15,19 @@ const Footer: React.FC = () => {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-black">Claverum</h3>
+            <h3 className="text-xl font-bold text-black">Bauklar</h3>
             <p className="text-black text-sm leading-relaxed">
-              Professionelle KI-gestützte Immobilienbewertung für private Immobilienkäufer. 
+              Professionelle Bauschadensbewertung für private Immobilienkäufer. 
               Schnell, zuverlässig, digital.
             </p>
             <div className="flex gap-3">
               <a 
-                href="https://linkedin.com/company/baucheck-ki" 
+                href="https://linkedin.com/in/dr-johannes-stankiewicz-63b5ba55/" 
                 className="w-8 h-8 bg-bg-100/10 rounded-full flex items-center justify-center hover:bg-bg-100/20 transition-smooth"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Linkedin className="w-4 h-4" />
-              </a>
-              <a 
-                href="https://twitter.com/baucheck_ki" 
-                className="w-8 h-8 bg-bg-100/10 rounded-full flex items-center justify-center hover:bg-bg-100/20 transition-smooth"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a 
-                href="https://facebook.com/baucheck.ki" 
-                className="w-8 h-8 bg-bg-100/10 rounded-full flex items-center justify-center hover:bg-bg-100/20 transition-smooth"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Facebook className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -58,22 +42,6 @@ const Footer: React.FC = () => {
                   className="hover:text-black transition-smooth"
                 >
                   Bauschadensbewertung
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('leistungen')}
-                  className="hover:text-black transition-smooth"
-                >
-                  Ersteinschätzung
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('leistungen')}
-                  className="hover:text-black transition-smooth"
-                >
-                  Bauschadensgutachten
                 </button>
               </li>
             </ul>
@@ -125,27 +93,27 @@ const Footer: React.FC = () => {
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 <a 
-                  href="mailto:support@baucheck-ki.de"
+                  href="mailto:kontakt@bauklar.org"
                   className="hover:text-black transition-smooth"
                 >
-                  support@baucheck-ki.de
+                  kontakt@bauklar.org
                 </a>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
                 <a 
-                  href="tel:+4930123456789"
+                  href="tel:015143170757"
                   className="hover:text-black transition-smooth"
                 >
-                  +49 30 123 456 789
+                  015143170757
                 </a>
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5" />
                 <div>
-                  BauCheck KI GmbH<br />
-                  Unter den Linden 1<br />
-                  10117 Berlin
+                  Claverum GmbH<br />
+                  Neusser Str. 257<br />
+                  50733 Köln
                 </div>
               </div>
             </div>
@@ -156,7 +124,7 @@ const Footer: React.FC = () => {
         <div className="border-t border-bg-100/20 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-black">
-              © 2024 Claverum GmbH. Alle Rechte vorbehalten.
+              © 2025 Claverum GmbH. Alle Rechte vorbehalten.
             </div>
             <div className="flex flex-wrap gap-6 text-sm text-black">
               <a href="/impressum" className="hover:text-black transition-smooth">
@@ -182,11 +150,7 @@ const Footer: React.FC = () => {
           
           {/* Legal Note */}
           <div className="mt-6 text-xs text-black leading-relaxed max-w-4xl">
-            <strong>Haftungsausschluss:</strong> Unsere KI-gestützte Bauschadensbewertung dient als 
-            fundierte Entscheidungsgrundlage und ersetzt keine Vor-Ort-Begehung durch einen 
-            Sachverständigen. Die Einschätzung erfolgt nach bestem Wissen und Gewissen auf Basis 
-            der zur Verfügung gestellten Unterlagen. Eine rechtliche Gewährleistung oder Haftung 
-            für Folgeschäden können wir nicht übernehmen.
+            <strong>Haftungsausschluss:</strong> Unsere Bauschadensbewertung dient als fundierte Entscheidungsgrundlage. Sie basiert auf den bereitgestellten Unterlagen und Informationen und erfolgt nach bestem Wissen und Gewissen. Eine rechtliche Gewährleistung oder Haftung, insbesondere für Vollständigkeit, Richtigkeit oder etwaige Folgeschäden, kann nicht übernommen werden.
           </div>
         </div>
       </div>

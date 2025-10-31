@@ -9,7 +9,7 @@ const AboutSection: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-text-100 mb-4">
-              Über Claverum
+              Über Bauklar
             </h2>
             <p className="text-xl text-text-200">
               Expertise trifft auf Innovation
@@ -21,7 +21,7 @@ const AboutSection: React.FC = () => {
             <div className="text-center lg:text-left">
               <div className="w-48 h-48 bg-brand-100 rounded-full mx-auto lg:mx-0 mb-6 flex items-center justify-center overflow-hidden">
                 <img 
-                  src="/Johannes-foto.png" 
+                  src="/Johannes-foto.jpeg" 
                   alt="Dr. Johannes Stankiewicz" 
                   className="w-full h-full object-cover rounded-full"
                   onError={(e) => {
@@ -52,7 +52,7 @@ const AboutSection: React.FC = () => {
                   <Linkedin className="w-4 h-4" />
                 </a>
                 <a 
-                  href="mailto:max@baucheck-ki.de" 
+                  href="mailto:kontakt@bauklar.org" 
                   className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/90 transition-smooth"
                 >
                   <Mail className="w-4 h-4" />
@@ -72,7 +72,10 @@ const AboutSection: React.FC = () => {
                 <CardContent className="p-6">
                   <h4 className="font-semibold text-text-100 mb-3">Fachhintergrund</h4>
                   <p className="text-text-200 text-sm leading-relaxed">
-                  Unser Büro ist nach DIN EN ISO/IEC 17024 zertifiziert und wird von Finanzämtern anerkannt. Dr. Stankiewicz, ein Diplom Sachverständiger (DIA), bietet Ihnen langjährige Erfahrung im Bereich der Immobilienbewertung. Zusätzlich bilden die Erfahrungen aus den Bereichen Investment, Hausverwaltung und Family Office die Basis für eine 360 Grad Betrachtung Ihrer Immobilie. 
+                  Unser Büro ist nach DIN EN ISO/IEC 17024 zertifiziert und von Finanzämtern anerkannt.
+Dr. Stankiewicz verfügt über langjährige Erfahrung in der Immobilien- und Bauschadensbewertung.
+Wir unterstützen Sie dabei, den baulichen Zustand einer Immobilie präzise einzuschätzen – etwa vor dem Kauf, bei Unsicherheiten zu möglichen Schäden oder für die Sanierungsplanung.
+Dank Erfahrung aus Investment, Hausverwaltung und Family Office betrachten wir Immobilien sowohl wirtschaftlich als auch bautechnisch und schaffen so eine klare Grundlage für fundierte Entscheidungen.
                   </p>
                 </CardContent>
               </Card>
@@ -81,7 +84,7 @@ const AboutSection: React.FC = () => {
                 <CardContent className="p-6">
                   <h4 className="font-semibold text-text-100 mb-3">Mission</h4>
                   <p className="text-text-200 text-sm leading-relaxed">
-                  Unsere Mission ist es, den Immobilienkauf zu revolutionieren, indem wir mithilfe künstlicher Intelligenz den wahren Zustand von Gebäuden für jeden verständlich und zugänglich machen. Wir verbinden modernste Technologie mit fachlicher Expertise, um klare, zuverlässige und bezahlbare Gutachten zu erstellen, die Käufern Sicherheit und Vertrauen bei einer der wichtigsten Entscheidungen ihres Lebens geben.
+                  Unsere Mission ist es, den Immobilienkauf transparenter und sicherer zu machen. Wir erfassen und beurteilen den tatsächlichen baulichen Zustand von Gebäuden verständlich, nachvollziehbar und objektiv. Dabei verbinden wir fachliche Expertise mit einem strukturierten, sorgfältigen Prüfprozess. So entstehen klare und verlässliche Gutachten, die Käuferinnen und Käufern Sicherheit und Orientierung bei einer der wichtigsten Entscheidungen ihres Lebens geben.
                   </p>
                 </CardContent>
               </Card>
@@ -91,7 +94,7 @@ const AboutSection: React.FC = () => {
                   <h4 className="font-semibold text-text-100 mb-3">Erfahrung & Zahlen</h4>
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div>
-                      <div className="text-2xl font-bold text-primary">2.500+</div>
+                      <div className="text-2xl font-bold text-primary">500+</div>
                       <div className="text-xs text-text-200">Bewertete Objekte</div>
                     </div>
                     <div>
@@ -121,15 +124,15 @@ const AboutSection: React.FC = () => {
               <div className="p-4 bg-background rounded-lg shadow-soft">
                 <div className="text-2xl mb-2">🏛️</div>
                 <p className="text-sm text-text-200">
-                  <strong className="text-text-100">Öffentlich bestellt</strong><br />
-                  Sachverständiger für Immobilienbewertung
+                  <strong className="text-text-100">Zertifiziert</strong><br />
+                  Mitglied im Bundesverband öffentlich bestellter und vereidigter sowie qualifizierter Sachverständiger für Immobilienbewertung
                 </p>
               </div>
               <div className="p-4 bg-background rounded-lg shadow-soft">
                 <div className="text-2xl mb-2">🛡️</div>
                 <p className="text-sm text-text-200">
                   <strong className="text-text-100">Berufshaftpflicht</strong><br />
-                  Versichert bis 2 Mio. € je Schadensfall
+                  Profesionelle Absicherung
                 </p>
               </div>
               <div className="p-4 bg-background rounded-lg shadow-soft">

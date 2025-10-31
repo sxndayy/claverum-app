@@ -135,10 +135,10 @@ const ContactSection: React.FC = () => {
                   <div>
                     <h3 className="font-semibold text-text-100 mb-1">E-Mail</h3>
                     <a 
-                      href="mailto:support@baucheck-ki.de" 
+                      href="mailto:kontakt@bauklar.org" 
                       className="text-primary hover:underline"
                     >
-                      support@baucheck-ki.de
+                      kontakt@bauklar.org
                     </a>
                     <p className="text-sm text-text-200 mt-1">
                       Antwort innerhalb von 24 Stunden
@@ -157,10 +157,10 @@ const ContactSection: React.FC = () => {
                   <div>
                     <h3 className="font-semibold text-text-100 mb-1">Telefon</h3>
                     <a 
-                      href="tel:+4930123456789" 
+                      href="tel:015143170757" 
                       className="text-primary hover:underline"
                     >
-                      +49 30 123 456 789
+                      015143170757
                     </a>
                     <p className="text-sm text-text-200 mt-1">
                       Mo-Fr, 9:00 - 18:00 Uhr
@@ -179,9 +179,9 @@ const ContactSection: React.FC = () => {
                   <div>
                     <h3 className="font-semibold text-text-100 mb-1">Adresse</h3>
                     <p className="text-text-200">
-                      BauCheck KI GmbH<br />
-                      Unter den Linden 1<br />
-                      10117 Berlin
+                    Claverum GmbH<br />
+                      Neusser Str. 257<br />
+                      50733 Köln
                     </p>
                   </div>
                 </div>
@@ -198,11 +198,8 @@ const ContactSection: React.FC = () => {
                     <h3 className="font-semibold text-text-100 mb-1">Geschäftszeiten</h3>
                     <div className="text-sm text-text-200 space-y-1">
                       <p>Montag - Freitag: 9:00 - 18:00</p>
-                      <p>Samstag: 10:00 - 14:00</p>
-                      <p>Sonntag: Geschlossen</p>
                     </div>
                     <p className="text-xs text-text-200 mt-2">
-                      Notfälle auch außerhalb der Geschäftszeiten
                     </p>
                   </div>
                 </div>

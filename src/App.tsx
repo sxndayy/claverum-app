@@ -5,6 +5,11 @@ import Success from "./pages/Success";
 import NotFound from "./pages/NotFound";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
+import Impressum from "./pages/Impressum";
+import AGB from "./pages/AGB";
+import Datenschutz from "./pages/Datenschutz";
+import Widerruf from "./pages/Widerruf";
+import Cookies from "./pages/Cookies";
 
 // Route Error Component
 const RouteError = () => {
@@ -46,6 +51,11 @@ const App = () => (
       <Route path="/success" element={<Success />} errorElement={<RouteError />} />
       <Route path="/admin/login" element={<AdminLogin />} errorElement={<RouteError />} />
       <Route path="/admin" element={<Admin />} errorElement={<RouteError />} />
+      <Route path="/impressum" element={<Impressum />} errorElement={<RouteError />} />
+      <Route path="/agb" element={<AGB />} errorElement={<RouteError />} />
+      <Route path="/datenschutz" element={<Datenschutz />} errorElement={<RouteError />} />
+      <Route path="/widerruf" element={<Widerruf />} errorElement={<RouteError />} />
+      <Route path="/cookies" element={<Cookies />} errorElement={<RouteError />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>

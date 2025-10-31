@@ -51,7 +51,7 @@ const HeroSection: React.FC = () => {
           
           <p className="text-xl md:text-2xl text-text-200 mb-8 max-w-3xl mx-auto">
             Prüfen Sie Ihr Wunschobjekt vor dem Kauf. 
-            Ergebnis spätestens am nächsten Werktag.
+            Ergebnis spätestens innerhalb von 48 Stunden.
           </p>
 
           {/* CTA Buttons */}

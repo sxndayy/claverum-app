@@ -19,7 +19,7 @@ const CTASection = () => {
             Bereit für Ihre Bauschadensbewertung?
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            Starten Sie jetzt Ihre professionelle KI-gestützte Bauschadensbewertung. 
+            Starten Sie jetzt Ihre professionelle Bauschadensbewertung. 
             Einfach, schnell und zuverlässig.
           </p>
           
@@ -36,7 +36,7 @@ const CTASection = () => {
               <CardContent className="p-6 text-center">
                 <Clock className="h-12 w-12 text-green-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Schnelle Ergebnisse</h3>
-                <p className="text-gray-600">Ergebnis bis zum nächsten Werktag</p>
+                <p className="text-gray-600">Ergebnis innerhalb von 48 Stunden</p>
               </CardContent>
             </Card>
             
@@ -44,7 +44,7 @@ const CTASection = () => {
               <CardContent className="p-6 text-center">
                 <CheckCircle className="h-12 w-12 text-purple-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Professionell</h3>
-                <p className="text-gray-600">KI-gestützte Analyse von Experten</p>
+                <p className="text-gray-600">Hochwertige Gutachten von Experten</p>
               </CardContent>
             </Card>
           </div>

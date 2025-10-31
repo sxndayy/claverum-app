@@ -5,7 +5,7 @@ const FAQSection: React.FC = () => {
   const faqItems = [
     {
       question: "Wie schnell erhalte ich das Ergebnis?",
-      answer: "Ihr detaillierter Bericht wird spätestens am nächsten Werktag nach Upload aller Unterlagen geliefert. In vielen Fällen erhalten Sie das Ergebnis bereits am selben Tag. Bei komplexeren Objekten kann die Bearbeitung bis zu 48 Stunden dauern."
+      answer: "Ihr detaillierter Bericht wird spätestens innerhalb von zwei Werktagen nach Upload aller Unterlagen geliefert. In vielen Fällen erhalten Sie das Ergebnis bereits am nächsten Tag. Bei komplexeren Objekten kann die Bearbeitung bis zu 72 Stunden dauern."
     },
     {
       question: "Was passiert mit meinen Daten & Fotos?",
@@ -13,35 +13,35 @@ const FAQSection: React.FC = () => {
     },
     {
       question: "Welche Fotos sind besonders wichtig?",
-      answer: "Essentiell sind: Außenansichten der Fassade, Keller (Boden, Wände, Decke), alle Bäder, Dachgeschoss/Dachstuhl und erkennbare Leitungsanschlüsse. Unser Upload-Assistent führt Sie durch eine detaillierte Checkliste und zeigt Ihnen Beispielfotos für optimale Ergebnisse."
+      answer: "Essentiell sind: Außenansichten der Fassade, Keller (Boden, Wände, Decke), alle Bäder, Elektroverteiler, Dach außen- und Innensicht und erkennbare Leitungsanschlüsse. Unser Upload-Assistent führt Sie durch eine detaillierte Checkliste."
     },
     {
       question: "Was, wenn Unterlagen fehlen?",
-      answer: "Grundrisse und Baujahr sind für eine präzise Bewertung wichtig, aber nicht zwingend erforderlich. Unsere KI kann viele Informationen aus Fotos ableiten. Sie können fehlende Unterlagen auch nachträglich bis zu 24 Stunden nach Auftragserteilung nachreichen."
+      answer: "Bitte nehmen Sie Kontakt mit dem Kundendienst auf unter kontakt@bauklar.org."
     },
     {
       question: "Ist die Einschätzung rechtsverbindlich?",
-      answer: "Unsere Bewertung dient als fundierte Entscheidungsgrundlage, ersetzt jedoch keine Vor-Ort-Begehung durch einen Sachverständigen. Die Einschätzung erfolgt nach bestem Wissen und Gewissen, rechtliche Gewährleistung können wir jedoch nicht übernehmen. Für rechtsverbindliche Gutachten vermitteln wir gerne entsprechende Experten."
+      answer: "Unsere Bewertung liefert eine klare, fachlich begründete Einschätzung des baulichen Zustands und schafft eine solide Entscheidungsbasis, insbesondere in der frühen Phase eines Kaufprozesses. Für rechtsverbindliche Gutachten, beispielsweise zur Vorlage bei Gerichten oder Behörden, ist zusätzlich eine Vor-Ort-Begehung erforderlich. Sollte ein solcher Schritt notwendig werden, unterstützen wir Sie selbstverständlich und vermitteln geeignete Sachverständige oder begleiten den Prozess weiter."
     },
     {
       question: "Kann ich nachträglich Dateien nachreichen?",
-      answer: "Ja, Sie können bis zu 24 Stunden nach Auftragserteilung zusätzliche Fotos oder Dokumente über einen sicheren Link nachreichen. Dies verbessert die Qualität der Analyse erheblich und ist kostenfrei möglich."
+      answer: "Ja, Sie können bis zu 24 Stunden nach Auftragserteilung zusätzliche Fotos oder Dokumente über nachreichen. Dies verbessert die Qualität der Analyse erheblich und ist kostenfrei möglich. Bitte nehmen Sie dazu Kontakt mit dem Kundendienst auf."
     },
     {
       question: "Wie läuft die Zahlung ab?",
-      answer: "Die Zahlung erfolgt sicher über einen etablierten Zahlungsanbieter mit Kreditkarte, SEPA-Lastschrift, Apple Pay oder Google Pay. Der Betrag wird erst nach erfolgreicher Übermittlung aller Unterlagen belastet. Sie erhalten sofort eine Zahlungsbestätigung und Rechnung per E-Mail."
+      answer: "Die Zahlung erfolgt sicher über einen etablierten Zahlungsanbieter mit Kreditkarte, SEPA-Lastschrift, Apple Pay oder Google Pay. Mit Beauftragung werden 25% des Kaufpreises fällig. Der restliche Betrag wird erst fällig mit Übersendung des Gutachtens. Sie erhalten eine Zahlungsbestätigung und Rechnung per E-Mail."
     },
     {
       question: "Kann ich stornieren?",
-      answer: "Sie haben ein 14-tägiges Widerrufsrecht ab Vertragsschluss. Sollten Sie mit dem Ergebnis nicht zufrieden sein, erhalten Sie Ihr Geld zurück – ohne Wenn und Aber. Kontaktieren Sie einfach unseren Support."
+      answer: "Sie haben ein 14-tägiges Widerrufsrecht ab Vertragsschluss. Sollten Sie mit dem Ergebnis nicht zufrieden sein, erhalten Sie Ihr Geld zurück. Bitte nehmen Sie dazu Kontakt mit dem Kundendienst auf."
     },
     {
       question: "Für welche Objekttypen ist die Analyse geeignet?",
-      answer: "Unsere KI ist speziell für Wohnimmobilien trainiert: Eigentumswohnungen, Ein-/Zwei-/Mehrfamilienhäuser. Gewerbeobjekte, Denkmäler oder Neubauten (unter 2 Jahre) können derzeit nicht optimal bewertet werden."
+      answer: "Wir bieten unsere Gutachten an für Eigentumswohnungen, Ein- und Zweifamilienhäuser,  Mehrfamilienhäuser und Gewerbeobjekte an."
     },
     {
       question: "Was unterscheidet Sie von traditionellen Gutachtern?",
-      answer: "Wir kombinieren KI-Technologie mit menschlicher Expertise für schnelle, objektive und kosteneffiziente Bewertungen. Während klassische Gutachten Wochen dauern und mehrere tausend Euro kosten, liefern wir binnen 24 Stunden präzise Ergebnisse zu einem Bruchteil der Kosten."
+      answer: "Wir verbinden strukturierte Bewertungsmethoden mit fachlicher Erfahrung zu einer schnellen, objektiven und kosteneffizienten Einschätzung. Während klassische Gutachten häufig mehrere Wochen dauern und leicht über tausend Euro kosten, erhalten Sie bei uns innerhalb von 48 Stunden eine klare, präzise Bewertung, zu einem Bruchteil dieser Kosten."
     }
   ];
 
@@ -53,7 +53,7 @@ const FAQSection: React.FC = () => {
             Häufig gestellte Fragen
           </h2>
           <p className="text-xl text-text-200 max-w-2xl mx-auto">
-            Alles was Sie über unsere KI-gestützte Bauschadensbewertung wissen müssen
+            Alles was Sie über unsere Bauschadensbewertung wissen müssen
           </p>
         </div>
 
@@ -69,7 +69,23 @@ const FAQSection: React.FC = () => {
                   {item.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-text-200 pb-6 leading-relaxed">
-                  {item.answer}
+                  {typeof item.answer === 'string' ? (
+                    item.answer.split(/(kontakt@bauklar\.org)/).map((part, idx) => 
+                      part.match(/kontakt@bauklar\.org/) ? (
+                        <a 
+                          key={idx}
+                          href="mailto:kontakt@bauklar.org"
+                          className="text-primary hover:underline font-medium"
+                        >
+                          {part}
+                        </a>
+                      ) : (
+                        <span key={idx}>{part}</span>
+                      )
+                    )
+                  ) : (
+                    item.answer
+                  )}
                 </AccordionContent>
               </AccordionItem>
             ))}
@@ -85,17 +101,17 @@ const FAQSection: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a 
-                href="mailto:support@baucheck-ki.de" 
+                href="mailto:kontakt@bauklar.org" 
                 className="text-primary hover:underline font-medium"
               >
-                support@baucheck-ki.de
+                kontakt@bauklar.org
               </a>
               <span className="hidden sm:block text-text-200">•</span>
               <a 
-                href="tel:+4930123456789" 
+                href="tel:015143170757" 
                 className="text-primary hover:underline font-medium"
               >
-                +49 30 123 456 789
+                015143170757
               </a>
             </div>
             <p className="text-xs text-text-200 mt-3">
