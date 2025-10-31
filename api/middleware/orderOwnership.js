@@ -7,21 +7,26 @@ import { query } from '../db.js';
  */
 
 /**
- * Generate a secure session token for an order
+ * Generate a secure session token for an order (transaction-aware version)
+ * @param {Function} clientOrQuery - Database client (from transaction) or query function
+ * @param {string} orderId - Order UUID
+ * @returns {Promise<string>} Session token
  */
-export async function generateOrderSessionToken(orderId) {
+export async function generateOrderSessionToken(orderId, clientOrQuery = query) {
   const token = crypto.randomBytes(32).toString('hex');
   const expiresAt = new Date(Date.now() + (24 * 60 * 60 * 1000)); // 24 hours
   
   try {
     // Insert session token into database
-    await query(
+    await clientOrQuery(
       'INSERT INTO order_sessions (session_token, order_id, expires_at) VALUES ($1, $2, $3)',
       [token, orderId, expiresAt]
     );
     
-    // Clean up expired sessions periodically
-    await cleanupExpiredSessions();
+    // Only clean up expired sessions if not in a transaction (client !== query means it's a transaction client)
+    if (clientOrQuery === query) {
+      await cleanupExpiredSessions();
+    }
     
     return token;
   } catch (error) {

@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import archiver from 'archiver';
 import helmet from 'helmet';
-import { query } from './db.js';
+import { query, transaction } from './db.js';
 import { generatePresignedUploadUrl, getPublicUrl } from './s3-client.js';
 import authRoutes from './routes/auth.js';
 import paymentRoutes from './routes/payments.js';
@@ -28,7 +28,7 @@ import {
   isValidSortField,
   isValidSortOrder
 } from './utils/validation.js';
-import { validateFileUpload, checkUploadLimits } from './middleware/fileValidation.js';
+import { validateFileUpload, checkUploadLimits, checkAndReserveUploadSlot } from './middleware/fileValidation.js';
 import { generateOrderSessionToken } from './middleware/orderOwnership.js';
 
 dotenv.config();
@@ -133,25 +133,32 @@ app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
       });
     }
 
-    const result = await query(
-      `INSERT INTO orders (street, house_number, postal_code, city, property_type, build_year, note)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       RETURNING id, created_at`,
-      [
-        sanitizedStreet || null, 
-        sanitizedHouseNumber || null, 
-        postalCode || null, 
-        sanitizedCity || null, 
-        propertyType || null, 
-        buildYear || null, 
-        sanitizedNote || null
-      ]
-    );
+    // Use transaction to atomically create order and session token
+    // This ensures data consistency - if token creation fails, order is rolled back
+    const { order, sessionToken } = await transaction(async (client) => {
+      // Create order
+      const result = await client.query(
+        `INSERT INTO orders (street, house_number, postal_code, city, property_type, build_year, note)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)
+         RETURNING id, created_at`,
+        [
+          sanitizedStreet || null, 
+          sanitizedHouseNumber || null, 
+          postalCode || null, 
+          sanitizedCity || null, 
+          propertyType || null, 
+          buildYear || null, 
+          sanitizedNote || null
+        ]
+      );
 
-    const order = result.rows[0];
+      const order = result.rows[0];
 
-    // Generate session token for order ownership
-    const sessionToken = await generateOrderSessionToken(order.id);
+      // Generate session token within the same transaction
+      const sessionToken = await generateOrderSessionToken(order.id, client);
+
+      return { order, sessionToken };
+    });
 
     res.status(201).json({
       success: true,
@@ -384,14 +391,25 @@ app.post('/api/record-upload', uploadLimiter, requireOrderOwnership, async (req,
       });
     }
 
-    const result = await query(
-      `INSERT INTO uploads (order_id, area, file_path, mime_type, file_size)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id, created_at`,
-      [orderId, area, sanitizedFilePath, mimeType, fileSize || null]
-    );
+    // Use transaction to atomically check upload limits and record upload
+    // This prevents race conditions when multiple uploads happen simultaneously
+    const upload = await transaction(async (client) => {
+      // Atomically check and reserve upload slot
+      const limitCheck = await checkAndReserveUploadSlot(client, orderId);
+      if (!limitCheck.allowed) {
+        throw new Error(limitCheck.error);
+      }
 
-    const upload = result.rows[0];
+      // Record upload within the same transaction
+      const result = await client.query(
+        `INSERT INTO uploads (order_id, area, file_path, mime_type, file_size)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING id, created_at`,
+        [orderId, area, sanitizedFilePath, mimeType, fileSize || null]
+      );
+
+      return result.rows[0];
+    });
 
     res.status(201).json({
       success: true,
@@ -401,6 +419,15 @@ app.post('/api/record-upload', uploadLimiter, requireOrderOwnership, async (req,
     });
   } catch (error) {
     console.error('Error recording upload:', error);
+    
+    // Check if it's a limit error
+    if (error.message && error.message.includes('Maximum number of uploads')) {
+      return res.status(400).json({
+        success: false,
+        error: error.message
+      });
+    }
+    
     res.status(500).json({
       success: false,
       error: 'Failed to record upload'

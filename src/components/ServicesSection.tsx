@@ -101,7 +101,7 @@ const ServicesSection: React.FC = () => {
             Unser Service
           </h2>
           <p className="mx-auto max-w-2xl text-xl text-text-200">
-            personalisierte Bauschadensbewertung für eden Bedarf
+            personalisierte Bauschadensbewertung für jeden Bedarf
           </p>
         </div>
 

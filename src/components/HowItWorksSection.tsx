@@ -34,10 +34,10 @@ const HowItWorksSection: React.FC = () => {
       icon: CheckCircle,
       title: 'Ergebnis und Empfehlung',
       subtitle: 'Bis nächster Werktag',
-      description: 'Sie erhalten einen kompakten Bericht als PDF mit kurzer Zusammenfassung, allgemeinen Hinweisen und präzisen Texten zu jedem Bereich. Inklusive vorsichtiger Kostenrahmen und konkreter nächsten Schritte.',
+      description: 'Sie erhalten ein kompaktes Gutachten als PDF mit kurzer Zusammenfassung, allgemeinen Hinweisen und präzisen Texten zu jedem Bereich. Inklusive vorsichtiger Kostenrahmen und konkreter nächsten Schritte.',
       details: [
         'Übersichtlich aufbereitet',
-        'Qualitative Kostenrahmen',
+        'Plausible Kostenrahmen',
         'Handlungs- und Wartungsempfehlungen'
       ]
     }

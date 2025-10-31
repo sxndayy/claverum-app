@@ -11,7 +11,7 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false
   },
-  max: 5,
+  max: 20, // Increased from 5 to handle 20+ concurrent users
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 10000,
   statement_timeout: 30000,
@@ -41,6 +41,27 @@ export const query = async (text, params) => {
   } catch (error) {
     console.error('Database query error:', error);
     throw error;
+  }
+};
+
+/**
+ * Execute a transaction with automatic rollback on error
+ * @param {Function} callback - Async function that receives a client and executes queries
+ * @returns {Promise<any>} - Result from the callback function
+ */
+export const transaction = async (callback) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const result = await callback(client);
+    await client.query('COMMIT');
+    return result;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('Transaction error:', error);
+    throw error;
+  } finally {
+    client.release();
   }
 };
 

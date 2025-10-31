@@ -28,7 +28,7 @@ const HeroSection: React.FC = () => {
     },
     {
       icon: Star,
-      text: 'Erfahrung seit 2019'
+      text: 'Erfahrung seit 2010'
     },
     {
       icon: Clock,
@@ -103,11 +103,18 @@ const HeroSection: React.FC = () => {
             <div className="text-sm">
               Über 95% Weiterempfehlungsrate
             </div>
-            {/* Moved scroll indicator here on mobile */}
+            {/* Mobile-only scroll indicator (original position) */}
             <div className="mt-2 md:hidden">
               <div className="w-6 h-10 border-2 border-text-200 rounded-full flex justify-center animate-bounce">
                 <div className="w-1 h-3 bg-text-200 rounded-full mt-2"></div>
               </div>
+            </div>
+          </div>
+
+          {/* Desktop-only scroll indicator (below all content) */}
+          <div className="hidden md:flex justify-center mt-12">
+            <div className="w-6 h-10 border-2 border-text-200 rounded-full flex justify-center animate-bounce">
+              <div className="w-1 h-3 bg-text-200 rounded-full mt-2"></div>
             </div>
           </div>
         </div>

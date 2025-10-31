@@ -14,7 +14,7 @@ const PricingSection: React.FC = () => {
   const packages = [
     {
       name: 'All-in-one',
-      price: 499,
+      price: 350,
       popular: true,
       description: 'Fachgerechte Prüfung und Bewertung für verlässliche Entscheidungen',
       features: [
@@ -152,7 +152,7 @@ const PricingSection: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <div className="bg-bg-200 rounded-xl p-8 mb-8">
             <h3 className="text-lg font-semibold text-text-100 mb-4 text-center">
-              💡 Schnellergebnis bis nächster Werktag
+              💡 Schnellergebnis innerhalb von 48 Stunden
             </h3>
             <div className="grid md:grid-cols-2 gap-6 text-sm text-text-200">
               <div>
