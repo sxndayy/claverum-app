@@ -17,6 +17,7 @@ interface AreaUploadProps {
   onTextChange: (text: string) => void;
   maxPhotos?: number;
   maxWords?: number;
+  textPlaceholder?: string; // Optional custom placeholder text for the textarea
 }
 
 
@@ -31,6 +32,7 @@ const AreaUpload: React.FC<AreaUploadProps> = ({
   onTextChange,
   maxPhotos = 20,
   maxWords = 200,
+  textPlaceholder,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -200,7 +202,7 @@ const AreaUpload: React.FC<AreaUploadProps> = ({
         </p>
         <Textarea
           id={`description-${areaName}`}
-          placeholder={`Beschreiben Sie den ${areaName.toLowerCase()}...`}
+          placeholder={textPlaceholder || `Beschreiben Sie den ${areaName.toLowerCase()}...`}
           value={text}
           onChange={(e) => onTextChange(e.target.value)}
           rows={6} // 5-6 lines long

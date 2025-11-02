@@ -434,8 +434,8 @@ const MultiStepForm: React.FC = () => {
                   {/* Step 2: Keller */}
           {currentStep === 2 && (
                     <AreaUpload
-                      areaName="Keller"
-                      areaDescription="Dokumentieren Sie den Kellerbereich mit Fotos"
+                      areaName="Keller + Grundrisse"
+                      areaDescription="Dokumentieren Sie den Kellerbereich mit Fotos und laden Sie ergänzend Grundrisse hoch."
                       photos={formData.keller.photos}
                       files={formData.keller.files}
                       text={formData.keller.text}
@@ -453,6 +453,7 @@ const MultiStepForm: React.FC = () => {
                       }))}
                       maxPhotos={20}
                       maxWords={200}
+                      textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr der Keler saniert wurde und erläutern sie weitere relevante Punkte."
                     />
                   )}
 
@@ -478,14 +479,15 @@ const MultiStepForm: React.FC = () => {
               }))}
               maxPhotos={20}
               maxWords={200}
+              textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr die Elektrik erneuert wurde und erläutern sie weitere relevante Punkte."
             />
           )}
 
           {/* Step 4: Heizung */}
           {currentStep === 4 && (
             <AreaUpload
-              areaName="Heizung"
-              areaDescription="Dokumentieren Sie die Heizungsanlage mit Fotos"
+              areaName="Heizung + Energieausweis"
+              areaDescription="Dokumentieren Sie die Heizungsanlage mit Fotos und laden Sie ergänzend den Energieausweis hoch."
               photos={formData.heizung.photos}
               files={formData.heizung.files}
               text={formData.heizung.text}
@@ -503,6 +505,7 @@ const MultiStepForm: React.FC = () => {
               }))}
               maxPhotos={20}
               maxWords={200}
+              textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr die Heizung erneuert wurde und erläutern sie weitere relevante Punkte."
             />
           )}
 
@@ -528,6 +531,7 @@ const MultiStepForm: React.FC = () => {
               }))}
               maxPhotos={20}
               maxWords={200}
+              textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr die Fassade saniert und ggf. gedämmt wurde und erläutern sie weitere relevante Punkte."
             />
           )}
 
@@ -553,14 +557,15 @@ const MultiStepForm: React.FC = () => {
               }))}
               maxPhotos={20}
               maxWords={200}
+              textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr das Dach saniert wurde und erläutern sie weitere relevante Punkte."
             />
           )}
 
           {/* Step 7: Innenräume */}
           {currentStep === 7 && (
             <AreaUpload
-              areaName="Innenräume"
-              areaDescription="Dokumentieren Sie die Innenräume mit Fotos"
+              areaName="Innenräume + Bäder"
+              areaDescription="Dokumentieren Sie die Innenräume und Bäder mit Fotos"
               photos={formData.innenraeume.photos}
               files={formData.innenraeume.files}
               text={formData.innenraeume.text}
@@ -578,6 +583,7 @@ const MultiStepForm: React.FC = () => {
               }))}
               maxPhotos={20}
               maxWords={200}
+              textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr ca. Sanierungen der Innenräume und Bäder stattgefunden haben und erläutern sie weitere relevante Punkte."
             />
           )}
 
