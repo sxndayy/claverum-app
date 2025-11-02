@@ -32,7 +32,7 @@ const HeroSection: React.FC = () => {
     },
     {
       icon: Clock,
-      text: 'Über 2.500 geprüfte Objekte'
+      text: 'Über 500 geprüfte Objekte'
     }
   ];
 

@@ -166,7 +166,7 @@ const ServicesSection: React.FC = () => {
         <div className="mt-16 text-center">
           <div className="mx-auto max-w-3xl rounded-xl bg-background p-8 shadow-soft">
             <h3 className="mb-4 text-xl font-semibold text-text-100">
-              Warum Claverum?
+              Warum Bauklar.org?
             </h3>
             <div className="grid gap-6 text-sm text-text-200 md:grid-cols-3">
               <div>

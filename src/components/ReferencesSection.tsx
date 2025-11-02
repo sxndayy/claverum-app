@@ -7,42 +7,42 @@ const ReferencesSection: React.FC = () => {
       rating: 5,
       reviewer: "Maria Schmidt",
       roleReviewer: "Immobilienkäuferin",
-      review: "Bauklar hat mir bei meinem Hauskauf enorm geholfen. Das Gutachten war sehr detailliert und hat mir gezeigt, welche Mängel ich übersehen hätte. Dank der professionellen Bewertung konnte ich den Kaufpreis um 15.000€ drücken!",
+      review: "Bauklar.org hat mir bei meinem Hauskauf enorm geholfen. Das Gutachten war sehr detailliert und hat mir gezeigt, welche Mängel ich übersehen hätte. Dank der professionellen Bewertung konnte ich den Kaufpreis um 15.000€ drücken!",
       date: "15. August 2025"
     },
     {
       rating: 5,
       reviewer: "Thomas Weber",
       roleReviewer: "Erstkäufer",
-      review: "Als Erstkäufer war ich völlig überfordert. Bauklar hat mir Schritt für Schritt erklärt, worauf ich achten muss. Die Fotos wurden sehr schnell analysiert und der Bericht war super verständlich. Kann ich nur empfehlen!",
+      review: "Als Erstkäufer war ich völlig überfordert. Bauklar.org hat mir Schritt für Schritt erklärt, worauf ich achten muss. Die Fotos wurden sehr schnell analysiert und der Bericht war super verständlich. Kann ich nur empfehlen!",
       date: "3. September 2025"
     },
     {
       rating: 4.5,
       reviewer: "Sarah Müller",
       roleReviewer: "Investorin",
-      review: "Ich kaufe regelmäßig Immobilien zur Vermietung. Bauklar spart mir viel Zeit und Geld. Der Gutachter erkennt auch versteckte Mängel, die ich als Laie übersehen hätte. Sehr professioneller Service!",
+      review: "Ich kaufe regelmäßig Immobilien zur Vermietung. Bauklar.org spart mir viel Zeit und Geld. Der Gutachter erkennt auch versteckte Mängel, die ich als Laie übersehen hätte. Sehr professioneller Service!",
       date: "28. Juli 2025"
     },
     {
       rating: 5,
       reviewer: "Michael Bauer",
       roleReviewer: "Familienvater",
-      review: "Wir wollten ein Haus für unsere Familie kaufen. Bauklar hat uns vor einem teuren Fehler bewahrt - das Haus hatte massive Feuchtigkeitsschäden, die wir nicht erkannt hätten. Sehr zu empfehlen!",
+      review: "Wir wollten ein Haus für unsere Familie kaufen. Bauklar.org hat uns vor einem teuren Fehler bewahrt - das Haus hatte massive Feuchtigkeitsschäden, die wir nicht erkannt hätten. Sehr zu empfehlen!",
       date: "12. August 2025"
     },
     {
       rating: 4.5,
       reviewer: "Lisa Hoffmann",
       roleReviewer: "Maklerin",
-      review: "Ich empfehle Bauklar allen meinen Kunden. Die Gutachten sind neutral und objektiv. Meine Kunden fühlen sich sicherer bei ihrer Kaufentscheidung. Ein echter Mehrwert!",
+      review: "Ich empfehle Bauklar.org allen meinen Kunden. Die Gutachten sind neutral und objektiv. Meine Kunden fühlen sich sicherer bei ihrer Kaufentscheidung. Ein echter Mehrwert!",
       date: "5. September 2025"
     },
     {
       rating: 5,
       reviewer: "Andreas Klein",
       roleReviewer: "Sanierer",
-      review: "Ich renoviere alte Häuser. Bauklar hat mir geholfen, die Kosten für die Sanierung realistisch einzuschätzen. Die Analyse war sehr präzise und hat mir geholfen, das richtige Objekt zu finden.",
+      review: "Ich renoviere alte Häuser. Bauklar.org hat mir geholfen, die Kosten für die Sanierung realistisch einzuschätzen. Die Analyse war sehr präzise und hat mir geholfen, das richtige Objekt zu finden.",
       date: "20. August 2025"
     }
   ];

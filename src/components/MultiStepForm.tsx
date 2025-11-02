@@ -200,7 +200,7 @@ const MultiStepForm: React.FC = () => {
       
       if (response.success && response.url) {
         // Store the checkout URL to redirect back to Step 9 after payment
-        localStorage.setItem('claverum_checkout_url', response.url);
+        localStorage.setItem('bauklar_checkout_url', response.url);
         window.location.href = response.url;
       } else {
         toast({

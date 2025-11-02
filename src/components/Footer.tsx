@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-black">Bauklar</h3>
+            <h3 className="text-xl font-bold text-black">Bauklar.org</h3>
             <p className="text-black text-sm leading-relaxed">
               Professionelle Bauschadensbewertung für private Immobilienkäufer. 
               Schnell, zuverlässig, digital.

@@ -4,9 +4,9 @@
  * Ensures one order per session, no duplicates on reload
  */
 
-const ORDER_ID_KEY = 'claverum_order_id';
-const ORDER_DATA_KEY = 'claverum_order_data';
-const ORDER_SESSION_TOKEN_KEY = 'claverum_order_session_token';
+const ORDER_ID_KEY = 'bauklar_order_id';
+const ORDER_DATA_KEY = 'bauklar_order_data';
+const ORDER_SESSION_TOKEN_KEY = 'bauklar_order_session_token';
 
 export interface OrderData {
   orderId: string;

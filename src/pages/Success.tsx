@@ -82,7 +82,7 @@ const Success: React.FC = () => {
                   <div>
                     <h4 className="font-medium text-text-100">Analyse & Bewertung</h4>
                     <p className="text-sm text-text-200">
-                      Unsere KI und Experten analysieren Ihr Objekt. Sie erhalten das Ergebnis bis zum nächsten Werktag.
+                      Unsere KI und Experten analysieren Ihr Objekt. Sie erhalten das Ergebnis innerhalb von 48 Stunden.
                     </p>
                   </div>
                 </div>
@@ -94,7 +94,6 @@ const Success: React.FC = () => {
               <h3 className="font-semibold text-text-100 mb-3">💡 Tipps für bessere Ergebnisse</h3>
               <ul className="text-sm text-text-200 space-y-2">
                 <li>• Reichen Sie fehlende Kellerfotos oder Außenaufnahmen nach</li>
-                <li>• Energieausweis und Grundrisse verbessern die Analyse erheblich</li>
                 <li>• Bei Fragen stehen wir Ihnen jederzeit zur Verfügung</li>
               </ul>
             </div>
@@ -104,18 +103,18 @@ const Success: React.FC = () => {
               <h3 className="font-semibold text-text-100 mb-3">Fragen zu Ihrem Auftrag?</h3>
               <div className="flex justify-center gap-4">
                 <a 
-                  href="mailto:support@baucheck-ki.de" 
+                  href="mailto:kontakt@bauklar.org" 
                   className="text-primary hover:underline flex items-center gap-2"
                 >
                   <Mail className="w-4 h-4" />
-                  support@baucheck-ki.de
+                  kontakt@bauklar.org
                 </a>
                 <a 
-                  href="tel:+4930123456789" 
+                  href="tel:015143170757" 
                   className="text-primary hover:underline flex items-center gap-2"
                 >
                   <Phone className="w-4 h-4" />
-                  030 123 456 789
+                  015143170757
                 </a>
               </div>
               <p className="text-xs text-text-200 mt-2">

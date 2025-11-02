@@ -13,8 +13,8 @@ interface LoginResponse {
 }
 
 class AuthManager {
-  private readonly TOKEN_KEY = 'claverum_admin_token';
-  private readonly USER_KEY = 'claverum_admin_user';
+  private readonly TOKEN_KEY = 'bauklar_admin_token';
+  private readonly USER_KEY = 'bauklar_admin_user';
 
   /**
    * Store JWT token in localStorage

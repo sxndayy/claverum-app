@@ -9,7 +9,7 @@ const AboutSection: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-text-100 mb-4">
-              Über Bauklar
+              Über Bauklar.org
             </h2>
             <p className="text-xl text-text-200">
               Expertise trifft auf Innovation
@@ -132,7 +132,7 @@ Dank Erfahrung aus Investment, Hausverwaltung und Family Office betrachten wir I
                 <div className="text-2xl mb-2">🛡️</div>
                 <p className="text-sm text-text-200">
                   <strong className="text-text-100">Berufshaftpflicht</strong><br />
-                  Profesionelle Absicherung
+                  Professionelle Absicherung
                 </p>
               </div>
               <div className="p-4 bg-background rounded-lg shadow-soft">
