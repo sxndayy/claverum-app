@@ -163,7 +163,7 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
 
   const getPublicImageUrl = (upload: any) => {
     // Use the publicUrl from backend if available, otherwise fallback to constructing it
-    return upload.publicUrl || `https://bauklar-bucket.s3.eu-north-1.amazonaws.com/${upload.file_path}`;
+    return upload.publicUrl || `https://claverum-bucket.s3.eu-north-1.amazonaws.com/${upload.file_path}`;
   };
 
   const groupUploadsByArea = () => {

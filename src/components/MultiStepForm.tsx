@@ -200,7 +200,7 @@ const MultiStepForm: React.FC = () => {
       
       if (response.success && response.url) {
         // Store the checkout URL to redirect back to Step 9 after payment
-        localStorage.setItem('bauklar_checkout_url', response.url);
+        localStorage.setItem('claverum_checkout_url', response.url);
         window.location.href = response.url;
       } else {
         toast({
@@ -453,7 +453,7 @@ const MultiStepForm: React.FC = () => {
                       }))}
                       maxPhotos={20}
                       maxWords={200}
-                      textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr der Keler saniert wurde und erläutern sie weitere relevante Punkte."
+                      textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr der Keller saniert wurde und erläutern sie weitere relevante Punkte."
                     />
                   )}
 
