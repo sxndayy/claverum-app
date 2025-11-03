@@ -139,9 +139,6 @@ const Footer: React.FC = () => {
               <a href="/widerruf" className="hover:text-black transition-smooth">
                 Widerruf
               </a>
-              <a href="/cookies" className="hover:text-black transition-smooth">
-                Cookies
-              </a>
               <a href="/admin" className="hover:text-black transition-smooth">
                 Admin
               </a>

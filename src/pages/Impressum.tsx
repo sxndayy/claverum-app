@@ -19,32 +19,36 @@ const Impressum = () => {
                 <div className="space-y-6 text-text-200 leading-relaxed">
                   <div>
                     <h2 className="text-2xl font-semibold text-text-100 mb-4">Angaben gemäß § 5 TMG</h2>
-                    <p className="mb-2">TODO: Hier eigentlichen Text einfügen</p>
-                    <p>Claverum GmbH</p>
-                    <p>Neusser Str. 257</p>
-                    <p>50733 Köln</p>
+                    <p className="mb-2">Claverum GmbH</p>
+                    <p className="mb-2">Neusser Str. 257</p>
+                    <p className="mb-4">50733 Köln</p>
                   </div>
                   
                   <div>
                     <h2 className="text-2xl font-semibold text-text-100 mb-4">Kontakt</h2>
-                    <p className="mb-2">TODO: Hier eigentlichen Text einfügen</p>
-                    <p>Telefon: 015143170757</p>
-                    <p>E-Mail: kontakt@bauklar.org</p>
+                    <p className="mb-2">Telefon: 015143170757</p>
+                    <p className="mb-4">E-Mail: kontakt@bauklar.org</p>
                   </div>
                   
                   <div>
                     <h2 className="text-2xl font-semibold text-text-100 mb-4">Registereintrag</h2>
-                    <p>TODO: Hier eigentlichen Text einfügen</p>
+                    <p className="mb-4">
+                      Eintragung im Handelsregister.
+                    </p>
                   </div>
                   
                   <div>
                     <h2 className="text-2xl font-semibold text-text-100 mb-4">Umsatzsteuer-ID</h2>
-                    <p>TODO: Hier eigentlichen Text einfügen</p>
+                    <p className="mb-4">
+                      Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz: wird auf Anfrage mitgeteilt.
+                    </p>
                   </div>
                   
                   <div>
                     <h2 className="text-2xl font-semibold text-text-100 mb-4">Verantwortlich für den Inhalt</h2>
-                    <p>TODO: Hier eigentlichen Text einfügen</p>
+                    <p className="mb-2">Claverum GmbH</p>
+                    <p className="mb-2">Neusser Str. 257</p>
+                    <p className="mb-4">50733 Köln</p>
                   </div>
                 </div>
               </div>
@@ -59,4 +63,3 @@ const Impressum = () => {
 };
 
 export default Impressum;
-
