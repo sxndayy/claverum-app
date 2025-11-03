@@ -33,14 +33,14 @@ const Impressum = () => {
                   <div>
                     <h2 className="text-2xl font-semibold text-text-100 mb-4">Registereintrag</h2>
                     <p className="mb-4">
-                      Eintragung im Handelsregister.
+                      HRB 125271
                     </p>
                   </div>
                   
                   <div>
                     <h2 className="text-2xl font-semibold text-text-100 mb-4">Umsatzsteuer-ID</h2>
                     <p className="mb-4">
-                      Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz: wird auf Anfrage mitgeteilt.
+                      Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz: 
                     </p>
                   </div>
                   
