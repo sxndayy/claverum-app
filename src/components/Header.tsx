@@ -9,8 +9,8 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Verstecke Button nur auf Evaluation-Seite
-  const isEvaluationPage = location.pathname === '/evaluation';
+  // Check if we're on a subpage (not homepage)
+  const isNotHomePage = location.pathname !== '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,10 +27,10 @@ const Header: React.FC = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
-    // Wenn wir auf der Evaluation-Seite sind, zur Main Page navigieren
-    if (isEvaluationPage) {
+    // If we're not on the homepage, navigate to homepage first
+    if (isNotHomePage) {
       navigate('/');
-      // Warten bis die Seite geladen ist, dann scrollen
+      // Wait for page to load, then scroll
       setTimeout(() => {
         const element = document.getElementById(sectionId);
         if (element) {
@@ -38,7 +38,7 @@ const Header: React.FC = () => {
         }
       }, 300);
     } else {
-      // Auf der Main Page direkt scrollen
+      // On homepage, scroll directly
       const element = document.getElementById(sectionId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
@@ -87,7 +87,7 @@ const Header: React.FC = () => {
           </nav>
 
           {/* CTA Button - nur auf Landing Page anzeigen */}
-          {!isEvaluationPage && (
+          {!isNotHomePage && (
             <div className="hidden md:block">
               <Button
                 onClick={handleStartEvaluation}
@@ -98,8 +98,8 @@ const Header: React.FC = () => {
             </div>
           )}
 
-          {/* Unsichtbarer Spacer für Evaluation-Seite um Layout zu halten */}
-          {isEvaluationPage && (
+          {/* Unsichtbarer Spacer für Subpages um Layout zu halten */}
+          {isNotHomePage && (
             <div className="hidden md:block">
               <Button
                 className="bg-transparent hover:bg-transparent text-transparent font-medium px-6 pointer-events-none"
