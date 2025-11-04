@@ -31,6 +31,7 @@ const AboutSection: React.FC = () => {
                 <img 
                   src="/Johannes-foto.jpeg" 
                   alt="Dr. Johannes Stankiewicz - Diplom Sachverständiger für Bauschadensbewertung" 
+                  title="Dr. Johannes Stankiewicz - Diplom Sachverständiger für Bauschadensbewertung bei Bauklar.org"
                   className="w-full h-full object-cover rounded-full"
                   loading="lazy"
                   onError={(e) => {
