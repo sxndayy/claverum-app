@@ -1,11 +1,18 @@
 import React from 'react';
+import { SEO } from '@/components/SEO';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
 
 const Impressum = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <SEO 
+        title="Impressum" 
+        description="Impressum und rechtliche Angaben der Claverum GmbH. Kontaktinformationen, Registereintrag und Verantwortlichkeiten."
+        canonical="/impressum"
+      />
+      <div className="min-h-screen bg-background">
       <Header />
       <main>
         <section className="py-20 bg-background">
@@ -59,6 +66,7 @@ const Impressum = () => {
       <Footer />
       <CookieBanner />
     </div>
+    </>
   );
 };
 

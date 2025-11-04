@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import ServiceInfoOverlay, {
   ServiceDetailWithInfo,
 } from '@/components/ServiceInfoOverlay';
+import { ServiceSchema } from '@/components/ServiceSchema';
 
 type ServiceCard = ServiceDetailWithInfo & {
   icon: typeof Search;
@@ -94,7 +95,9 @@ const ServicesSection: React.FC = () => {
     activeOverlay !== null ? services[activeOverlay.index] : null;
 
   return (
-    <section id="leistungen" className="bg-bg-200 py-20">
+    <>
+      <ServiceSchema />
+      <section id="leistungen" className="bg-bg-200 py-20">
       <div className="container mx-auto px-4">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-bold text-text-100 md:text-4xl">
@@ -204,6 +207,7 @@ const ServicesSection: React.FC = () => {
         />
       )}
     </section>
+    </>
   );
 };
 

@@ -1,11 +1,18 @@
 import React from 'react';
+import { SEO } from '@/components/SEO';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
 
 const Datenschutz = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <SEO 
+        title="Datenschutzerklärung" 
+        description="Datenschutzerklärung der Claverium GmbH. Informationen zur Datenerfassung, -verarbeitung und Ihren Rechten gemäß DSGVO."
+        canonical="/datenschutz"
+      />
+      <div className="min-h-screen bg-background">
       <Header />
       <main>
         <section className="py-20 bg-background">
@@ -250,6 +257,7 @@ const Datenschutz = () => {
       <Footer />
       <CookieBanner />
     </div>
+    </>
   );
 };
 

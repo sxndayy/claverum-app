@@ -1,11 +1,18 @@
 import React from 'react';
+import { SEO } from '@/components/SEO';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
 
 const Widerruf = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <SEO 
+        title="Widerrufsbelehrung" 
+        description="Widerrufsbelehrung der Claverium GmbH. Informationen zu Ihrem Widerrufsrecht bei Bauschadensanalysen und dem Widerrufsverfahren."
+        canonical="/widerruf"
+      />
+      <div className="min-h-screen bg-background">
       <Header />
       <main>
         <section className="py-20 bg-background">
@@ -96,6 +103,7 @@ const Widerruf = () => {
       <Footer />
       <CookieBanner />
     </div>
+    </>
   );
 };
 

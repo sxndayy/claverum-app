@@ -174,9 +174,16 @@ const AreaUpload: React.FC<AreaUploadProps> = ({
         </div>
         {photos.length > 0 && (
           <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {photos.map((url, index) => (
+            {photos.map((url, index) => {
+              const file = files[index];
+              const fileName = file?.name || '';
+              return (
               <div key={index} className="relative h-32 w-full rounded-md overflow-hidden">
-                <img src={url} alt={`Uploaded ${index + 1}`} className="object-cover w-full h-full" />
+                <img 
+                  src={url} 
+                  alt={`${areaName} - Foto ${index + 1}${fileName ? ` (${fileName})` : ''}`} 
+                  className="object-cover w-full h-full" 
+                />
                 <Button
                   type="button"
                   variant="destructive"
@@ -187,7 +194,8 @@ const AreaUpload: React.FC<AreaUploadProps> = ({
                   <X className="h-3 w-3" />
                 </Button>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-black">Bauklar.org</h3>
+            <h2 className="text-xl font-bold text-black">Bauklar.io</h2>
             <p className="text-black text-sm leading-relaxed">
               Professionelle Bauschadensbewertung für private Immobilienkäufer. 
               Schnell, zuverlässig, digital.
@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
 
           {/* Services */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-black">Leistungen</h4>
+            <h2 className="font-semibold text-black">Leistungen</h2>
             <ul className="space-y-2 text-sm text-black">
               <li>
                 <button 
@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
 
           {/* Navigation */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-black">Navigation</h4>
+            <h2 className="font-semibold text-black">Navigation</h2>
             <ul className="space-y-2 text-sm text-black">
               <li>
                 <button 
@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
 
           {/* Contact */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-black">Kontakt</h4>
+            <h2 className="font-semibold text-black">Kontakt</h2>
             <div className="space-y-3 text-sm text-black">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
@@ -111,7 +111,7 @@ const Footer: React.FC = () => {
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5" />
                 <div>
-                  Claverum GmbH<br />
+                  Claverium GmbH<br />
                   Neusser Str. 257<br />
                   50733 Köln
                 </div>
@@ -124,7 +124,7 @@ const Footer: React.FC = () => {
         <div className="border-t border-bg-100/20 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-black">
-              © 2025 Claverum GmbH. Alle Rechte vorbehalten.
+              © 2025 Claverium GmbH. Alle Rechte vorbehalten.
             </div>
             <div className="flex flex-wrap gap-6 text-sm text-black">
               <a href="/impressum" className="hover:text-black transition-smooth">

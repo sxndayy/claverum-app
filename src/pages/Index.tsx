@@ -1,4 +1,5 @@
 import React from 'react';
+import { SEO } from '@/components/SEO';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
@@ -14,8 +15,14 @@ import CookieBanner from '@/components/CookieBanner';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <>
+      <SEO 
+        title="Unabhängige Bauschadensanalyse" 
+        description="Lassen Sie Ihr Wunschobjekt per KI prüfen. Upload in Minuten, Ergebnis bis nächster Werktag. DSGVO-konform, transparent, zuverlässig."
+        canonical="/"
+      />
+      <div className="min-h-screen bg-background">
+        <Header />
       <main>
         <HeroSection />
         <ServicesSection />
@@ -29,7 +36,8 @@ const Index = () => {
       </main>
       <Footer />
       <CookieBanner />
-    </div>
+      </div>
+    </>
   );
 };
 

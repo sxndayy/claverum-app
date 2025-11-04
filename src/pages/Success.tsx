@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { SEO } from '@/components/SEO';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Mail, Upload, Clock, Phone } from 'lucide-react';
 
@@ -9,16 +10,23 @@ const Success: React.FC = () => {
   expectedDelivery.setDate(expectedDelivery.getDate() + 1);
 
   return (
-    <div className="min-h-screen bg-bg-200 flex items-center justify-center p-4">
+    <>
+      <SEO 
+        title="Auftrag erfolgreich übermittelt" 
+        description="Ihr Auftrag wurde erfolgreich übermittelt. Wir beginnen sofort mit der Analyse Ihres Objekts."
+        canonical="/success"
+        noindex={true}
+      />
+      <div className="min-h-screen bg-bg-200 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
         <Card className="shadow-strong">
           <CardHeader className="text-center pb-6">
             <div className="w-20 h-20 bg-brand-100 rounded-full mx-auto mb-4 flex items-center justify-center">
               <CheckCircle className="w-10 h-10 text-primary" />
             </div>
-            <CardTitle className="text-2xl font-bold text-text-100 mb-2">
+            <h1 className="text-2xl font-bold text-text-100 mb-2">
               Auftrag erfolgreich übermittelt!
-            </CardTitle>
+            </h1>
             <p className="text-text-200">
               Vielen Dank für Ihr Vertrauen. Wir beginnen sofort mit der Analyse Ihres Objekts.
             </p>
@@ -142,6 +150,7 @@ const Success: React.FC = () => {
         </Card>
       </div>
     </div>
+    </>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { SEO } from '@/components/SEO';
 import Header from '@/components/Header';
 import MultiStepForm from '@/components/MultiStepForm';
 import Footer from '@/components/Footer';
@@ -10,12 +11,21 @@ const Evaluation = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background relative">
+    <>
+      <SEO 
+        title="Bauschadensbewertung starten" 
+        description="Starte jetzt deine professionelle Bauschadensbewertung. Lade Fotos hoch und erhalte innerhalb von 48 Stunden ein detailliertes Gutachten."
+        canonical="/evaluation"
+      />
+      <div className="min-h-screen bg-background relative">
       {/* Background Gradient - same as HeroSection */}
       <div className="absolute inset-0 hero-gradient opacity-30 min-h-full"></div>
       <Header />
       <main className="pt-20 relative z-10">
         <div className="container mx-auto px-4 py-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-text-100 mb-8 text-center">
+            Bauschadensbewertung starten
+          </h1>
           <MultiStepForm />
         </div>
       </main>
@@ -23,6 +33,7 @@ const Evaluation = () => {
         <Footer />
       </div>
     </div>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { FAQSchema } from '@/components/FAQSchema';
 
 const FAQSection: React.FC = () => {
   const faqItems = [
@@ -46,7 +47,9 @@ const FAQSection: React.FC = () => {
   ];
 
   return (
-    <section id="faq" className="py-20 bg-bg-200">
+    <>
+      <FAQSchema faqs={faqItems} />
+      <section id="faq" className="py-20 bg-bg-200">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-text-100 mb-4">
@@ -121,6 +124,7 @@ const FAQSection: React.FC = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

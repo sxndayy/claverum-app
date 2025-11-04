@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SEO } from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -223,7 +224,14 @@ const Admin: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200">
+    <>
+      <SEO 
+        title="Admin Dashboard" 
+        description="Admin dashboard"
+        canonical="/admin"
+        noindex={true}
+      />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -627,6 +635,7 @@ const Admin: React.FC = () => {
         </Card>
       </div>
     </div>
+    </>
   );
 };
 

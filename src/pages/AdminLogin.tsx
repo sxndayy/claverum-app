@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SEO } from '@/components/SEO';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -39,7 +40,14 @@ const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <>
+      <SEO 
+        title="Admin Login" 
+        description="Admin login"
+        canonical="/admin/login"
+        noindex={true}
+      />
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
@@ -92,6 +100,7 @@ const AdminLogin: React.FC = () => {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 };
 

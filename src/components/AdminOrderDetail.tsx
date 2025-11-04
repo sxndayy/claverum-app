@@ -20,6 +20,16 @@ import {
 } from 'lucide-react';
 import { apiClient } from '@/utils/apiClient';
 
+// Mapping for descriptive area names for alt text
+const areaNames: Record<string, string> = {
+  keller: 'Keller',
+  elektro: 'Elektroinstallation',
+  heizung: 'Heizung',
+  fassade: 'Fassade',
+  dach: 'Dach',
+  innenraeume: 'Innenräume'
+};
+
 interface Order {
   id: string;
   street: string;
@@ -440,7 +450,7 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
                             <div key={upload.id} className="relative group">
                               <img
                                 src={getPublicImageUrl(upload)}
-                                alt={`${area} photo`}
+                                alt={`${areaNames[area] || area} - Foto von Gebäudebereich`}
                                 className="w-full h-32 object-cover rounded-lg border"
                                 onError={(e) => {
                                   (e.target as HTMLImageElement).src = '/placeholder.svg';
