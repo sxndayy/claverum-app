@@ -67,10 +67,10 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <h1 className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
+          <Link to="/" className="flex items-center" aria-label="Bauklar.org Homepage">
+            <span className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
               Bauklar.org
-            </h1>
+            </span>
           </Link>
 
           {/* Desktop Navigation - immer an der gleichen Position */}

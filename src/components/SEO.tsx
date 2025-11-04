@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
+import { SITE_URL, SITE_NAME } from '@/constants/config';
 
 interface SEOProps {
   title: string;
@@ -45,8 +46,8 @@ export function SEO({
   noindex = false
 }: SEOProps) {
   const location = useLocation();
-  const siteName = 'Bauklar.io';
-  const siteUrl = 'https://bauklar.io';
+  const siteName = SITE_NAME;
+  const siteUrl = SITE_URL;
   const validatedTitle = validateTitle(title, siteName);
   const validatedDescription = validateDescription(description);
   const fullTitle = `${validatedTitle} | ${siteName}`;

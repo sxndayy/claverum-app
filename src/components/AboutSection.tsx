@@ -9,7 +9,7 @@ const AboutSection: React.FC = () => {
       <ImageSchema
         imageUrl="/Johannes-foto.jpeg"
         title="Dr. Johannes Stankiewicz - Diplom Sachverständiger für Bauschadensbewertung"
-        description="Dr. Johannes Stankiewicz, Diplom Sachverständiger (DIA) für Immobilien- und Bauschadensbewertung bei Bauklar.io"
+        description="Dr. Johannes Stankiewicz, Diplom Sachverständiger (DIA) für Immobilien- und Bauschadensbewertung bei Bauklar.org"
         pageUrl="/#ueber-uns"
       />
       <section id="ueber-uns" className="py-20 bg-bg-200">

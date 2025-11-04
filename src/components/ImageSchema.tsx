@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { SITE_URL } from '@/constants/config';
 
 interface ImageSchemaProps {
   imageUrl: string;
@@ -13,7 +14,7 @@ export function ImageSchema({
   description,
   pageUrl 
 }: ImageSchemaProps) {
-  const siteUrl = 'https://bauklar.io';
+  const siteUrl = SITE_URL;
   const fullImageUrl = imageUrl.startsWith('http') ? imageUrl : `${siteUrl}${imageUrl}`;
   const fullPageUrl = pageUrl ? `${siteUrl}${pageUrl}` : siteUrl;
 

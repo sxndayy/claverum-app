@@ -1,5 +1,6 @@
 import React from 'react';
 import { ClientReviews, Review } from '@/components/ui/client-reviews';
+import { ReviewSchema } from '@/components/ReviewSchema';
 
 const ReferencesSection: React.FC = () => {
   const reviews: Review[] = [
@@ -48,7 +49,9 @@ const ReferencesSection: React.FC = () => {
   ];
 
   return (
-    <section id="referenzen" className="py-20 bg-gradient-to-br from-blue-50/50 via-blue-100/30 to-blue-200/50">
+    <>
+      <ReviewSchema reviews={reviews} />
+      <section id="referenzen" className="py-20 bg-gradient-to-br from-blue-50/50 via-blue-100/30 to-blue-200/50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-primary mb-4">
@@ -87,6 +90,7 @@ const ReferencesSection: React.FC = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

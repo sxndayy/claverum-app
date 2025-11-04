@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { SITE_URL } from '@/constants/config';
 
 interface BreadcrumbItem {
   name: string;
@@ -10,7 +11,7 @@ interface BreadcrumbSchemaProps {
 }
 
 export function BreadcrumbSchema({ items }: BreadcrumbSchemaProps) {
-  const siteUrl = 'https://bauklar.io';
+  const siteUrl = SITE_URL;
   
   const schema = {
     "@context": "https://schema.org",

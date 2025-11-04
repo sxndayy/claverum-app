@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SEO } from '@/components/SEO';
+import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Mail, Upload, Clock, Phone } from 'lucide-react';
@@ -18,6 +19,13 @@ const Success: React.FC = () => {
         description="Ihr Auftrag wurde erfolgreich übermittelt. Wir beginnen sofort mit der Analyse Ihres Objekts."
         canonical="/success"
         noindex={true}
+      />
+      <BreadcrumbSchema 
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Bauschadensbewertung starten', url: '/evaluation' },
+          { name: 'Auftrag erfolgreich', url: '/success' }
+        ]} 
       />
       <div className="min-h-screen bg-bg-200 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
@@ -37,7 +45,7 @@ const Success: React.FC = () => {
           <CardContent className="space-y-6">
             {/* Order Details */}
             <div className="bg-bg-200 rounded-lg p-4">
-              <h3 className="font-semibold text-text-100 mb-3">Auftragsdaten</h3>
+              <h2 className="font-semibold text-text-100 mb-3">Auftragsdaten</h2>
               <div className="grid md:grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="text-text-200">Bestellnummer:</span>
@@ -59,7 +67,7 @@ const Success: React.FC = () => {
 
             {/* Next Steps */}
             <div>
-              <h3 className="font-semibold text-text-100 mb-4">Wie es weitergeht:</h3>
+              <h2 className="font-semibold text-text-100 mb-4">Wie es weitergeht:</h2>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 bg-brand-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -101,7 +109,7 @@ const Success: React.FC = () => {
 
             {/* Tips */}
             <div className="bg-brand-100 rounded-lg p-4">
-              <h3 className="font-semibold text-text-100 mb-3">💡 Tipps für bessere Ergebnisse</h3>
+              <h2 className="font-semibold text-text-100 mb-3">💡 Tipps für bessere Ergebnisse</h2>
               <ul className="text-sm text-text-200 space-y-2">
                 <li>• Reichen Sie fehlende Kellerfotos oder Außenaufnahmen nach</li>
                 <li>• Bei Fragen stehen wir Ihnen jederzeit zur Verfügung</li>
@@ -110,7 +118,7 @@ const Success: React.FC = () => {
 
             {/* Contact */}
             <div className="text-center pt-4 border-t">
-              <h3 className="font-semibold text-text-100 mb-3">Fragen zu Ihrem Auftrag?</h3>
+              <h2 className="font-semibold text-text-100 mb-3">Fragen zu Ihrem Auftrag?</h2>
               <div className="flex justify-center gap-4">
                 <a 
                   href="mailto:kontakt@bauklar.org" 
@@ -135,8 +143,7 @@ const Success: React.FC = () => {
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <Button 
-                variant="outline" 
-                className="flex-1"
+                className="flex-1 border border-primary bg-transparent text-primary hover:bg-primary/10"
                 onClick={() => navigate('/')}
               >
                 Zur Startseite

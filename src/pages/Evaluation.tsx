@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { SEO } from '@/components/SEO';
+import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
 import Header from '@/components/Header';
 import MultiStepForm from '@/components/MultiStepForm';
 import Footer from '@/components/Footer';
@@ -16,6 +17,12 @@ const Evaluation = () => {
         title="Bauschadensbewertung starten" 
         description="Starte jetzt deine professionelle Bauschadensbewertung. Lade Fotos hoch und erhalte innerhalb von 48 Stunden ein detailliertes Gutachten."
         canonical="/evaluation"
+      />
+      <BreadcrumbSchema 
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Bauschadensbewertung starten', url: '/evaluation' }
+        ]} 
       />
       <div className="min-h-screen bg-background relative">
       {/* Background Gradient - same as HeroSection */}

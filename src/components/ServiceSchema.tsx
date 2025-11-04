@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { SITE_URL } from '@/constants/config';
 
 export function ServiceSchema() {
   const schema = {
@@ -9,8 +10,8 @@ export function ServiceSchema() {
     "provider": {
       "@type": "Organization",
       "name": "Claverium",
-      "url": "https://bauklar.io",
-      "logo": "https://bauklar.io/logo.png"
+      "url": SITE_URL,
+      "logo": `${SITE_URL}/logo.png`
     },
     "areaServed": {
       "@type": "Country",
