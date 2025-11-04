@@ -1,5 +1,6 @@
 import React from 'react';
 import { SEO } from '@/components/SEO';
+import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
@@ -11,6 +12,12 @@ const AGB = () => {
         title="Allgemeine Geschäftsbedingungen (AGB)" 
         description="Allgemeine Geschäftsbedingungen für Bausubstanzanalysen der Claverum GmbH. Informationen zu Leistungen, Preisen, Haftung und rechtlichen Bestimmungen."
         canonical="/agb"
+      />
+      <BreadcrumbSchema 
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'AGB', url: '/agb' }
+        ]} 
       />
       <div className="min-h-screen bg-background">
       <Header />

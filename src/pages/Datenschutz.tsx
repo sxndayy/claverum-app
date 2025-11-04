@@ -1,5 +1,6 @@
 import React from 'react';
 import { SEO } from '@/components/SEO';
+import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
@@ -11,6 +12,12 @@ const Datenschutz = () => {
         title="Datenschutzerklärung" 
         description="Datenschutzerklärung der Claverium GmbH. Informationen zur Datenerfassung, -verarbeitung und Ihren Rechten gemäß DSGVO."
         canonical="/datenschutz"
+      />
+      <BreadcrumbSchema 
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Datenschutzerklärung', url: '/datenschutz' }
+        ]} 
       />
       <div className="min-h-screen bg-background">
       <Header />

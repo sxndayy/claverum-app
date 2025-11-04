@@ -1,5 +1,6 @@
 import React from 'react';
 import { SEO } from '@/components/SEO';
+import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
@@ -11,6 +12,12 @@ const Impressum = () => {
         title="Impressum" 
         description="Impressum und rechtliche Angaben der Claverum GmbH. Kontaktinformationen, Registereintrag und Verantwortlichkeiten."
         canonical="/impressum"
+      />
+      <BreadcrumbSchema 
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Impressum', url: '/impressum' }
+        ]} 
       />
       <div className="min-h-screen bg-background">
       <Header />

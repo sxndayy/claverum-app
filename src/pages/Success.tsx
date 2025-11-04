@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SEO } from '@/components/SEO';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Mail, Upload, Clock, Phone } from 'lucide-react';
 
 const Success: React.FC = () => {
+  const navigate = useNavigate();
   const orderNumber = 'BC-' + Math.random().toString(36).substr(2, 9).toUpperCase();
   const expectedDelivery = new Date();
   expectedDelivery.setDate(expectedDelivery.getDate() + 1);
@@ -90,7 +92,7 @@ const Success: React.FC = () => {
                   <div>
                     <h4 className="font-medium text-text-100">Analyse & Bewertung</h4>
                     <p className="text-sm text-text-200">
-                      Unsere KI und Experten analysieren Ihr Objekt. Sie erhalten das Ergebnis innerhalb von 48 Stunden.
+                      Unsere Experten analysieren Ihr Objekt. Sie erhalten das Ergebnis innerhalb von 48 Stunden.
                     </p>
                   </div>
                 </div>
@@ -135,13 +137,13 @@ const Success: React.FC = () => {
               <Button 
                 variant="outline" 
                 className="flex-1"
-                onClick={() => window.location.href = '/'}
+                onClick={() => navigate('/')}
               >
                 Zur Startseite
               </Button>
               <Button 
                 className="flex-1 bg-primary hover:bg-primary/90"
-                onClick={() => window.location.href = '/upload-additional'}
+                onClick={() => navigate('/evaluation')}
               >
                 Weitere Dokumente hochladen
               </Button>

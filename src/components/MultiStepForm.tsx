@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -37,6 +38,7 @@ interface FormData {
 }
 
 const MultiStepForm: React.FC = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [orderId, setOrderId] = useState<string | null>(null);
@@ -706,7 +708,7 @@ const MultiStepForm: React.FC = () => {
                 {/* Action Button */}
                 <div className="text-center">
                   <Button 
-                    onClick={() => window.location.href = '/'} 
+                    onClick={() => navigate('/')} 
                     className="w-full" 
                     size="lg"
                   >

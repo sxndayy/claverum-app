@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 interface SEOProps {
   title: string;
@@ -9,6 +10,32 @@ interface SEOProps {
   noindex?: boolean;
 }
 
+// Validation helpers
+const validateTitle = (title: string, siteName: string): string => {
+  const fullTitle = `${title} | ${siteName}`;
+  if (fullTitle.length > 60) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`SEO Warning: Title exceeds 60 characters (${fullTitle.length}): "${fullTitle}"`);
+    }
+    // Truncate title if too long
+    const maxTitleLength = 60 - siteName.length - 3; // Account for " | "
+    return title.length > maxTitleLength 
+      ? title.substring(0, maxTitleLength - 3) + '...'
+      : title;
+  }
+  return title;
+};
+
+const validateDescription = (description: string): string => {
+  if (description.length > 160) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`SEO Warning: Description exceeds 160 characters (${description.length}): "${description.substring(0, 50)}..."`);
+    }
+    return description.substring(0, 157) + '...';
+  }
+  return description;
+};
+
 export function SEO({ 
   title, 
   description, 
@@ -17,21 +44,24 @@ export function SEO({
   ogType = 'website',
   noindex = false
 }: SEOProps) {
+  const location = useLocation();
   const siteName = 'Bauklar.io';
   const siteUrl = 'https://bauklar.io';
-  const fullTitle = `${title} | ${siteName}`;
-  const canonicalUrl = canonical || `${siteUrl}${window.location.pathname}`;
+  const validatedTitle = validateTitle(title, siteName);
+  const validatedDescription = validateDescription(description);
+  const fullTitle = `${validatedTitle} | ${siteName}`;
+  const canonicalUrl = canonical || `${siteUrl}${location.pathname}`;
   const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 
   return (
     <Helmet>
       <title>{fullTitle}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={validatedDescription} />
       {noindex && <meta name="robots" content="noindex, nofollow" />}
       
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+      <meta property="og:description" content={validatedDescription} />
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:image" content={ogImageUrl} />
@@ -40,7 +70,7 @@ export function SEO({
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:description" content={validatedDescription} />
       <meta name="twitter:image" content={ogImageUrl} />
       
       {/* Canonical */}

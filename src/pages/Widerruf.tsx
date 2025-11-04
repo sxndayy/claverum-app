@@ -1,5 +1,6 @@
 import React from 'react';
 import { SEO } from '@/components/SEO';
+import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
@@ -11,6 +12,12 @@ const Widerruf = () => {
         title="Widerrufsbelehrung" 
         description="Widerrufsbelehrung der Claverium GmbH. Informationen zu Ihrem Widerrufsrecht bei Bauschadensanalysen und dem Widerrufsverfahren."
         canonical="/widerruf"
+      />
+      <BreadcrumbSchema 
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Widerrufsbelehrung', url: '/widerruf' }
+        ]} 
       />
       <div className="min-h-screen bg-background">
       <Header />
