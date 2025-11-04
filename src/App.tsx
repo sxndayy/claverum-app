@@ -9,6 +9,7 @@ import Impressum from "./pages/Impressum";
 import AGB from "./pages/AGB";
 import Datenschutz from "./pages/Datenschutz";
 import Widerruf from "./pages/Widerruf";
+import Berlin from "./pages/Berlin";
 
 // Route Error Component
 const RouteError = () => {
@@ -55,6 +56,7 @@ const App = () => (
       <Route path="/agb" element={<AGB />} errorElement={<RouteError />} />
       <Route path="/datenschutz" element={<Datenschutz />} errorElement={<RouteError />} />
       <Route path="/widerruf" element={<Widerruf />} errorElement={<RouteError />} />
+      <Route path="/berlin" element={<Berlin />} errorElement={<RouteError />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
