@@ -4,30 +4,30 @@
   
   <!-- Homepage - Hero/Service Images -->
   <url>
-    <loc>https://bauklar.io/</loc>
+    <loc>https://bauklar.org/</loc>
     <image:image>
-      <image:loc>https://bauklar.io/logo-final.png</image:loc>
-      <image:title>Bauklar.io Logo</image:title>
-      <image:caption>Logo von Bauklar.io - Professionelle Bauschadensbewertung</image:caption>
+      <image:loc>https://bauklar.org/logo-final.png</image:loc>
+      <image:title>Bauklar.org Logo</image:title>
+      <image:caption>Logo von Bauklar.org - Professionelle Bauschadensbewertung</image:caption>
     </image:image>
   </url>
 
   <!-- About Section - Profile Image -->
   <url>
-    <loc>https://bauklar.io/#ueber-uns</loc>
+    <loc>https://bauklar.org/#ueber-uns</loc>
     <image:image>
-      <image:loc>https://bauklar.io/Johannes-foto.jpeg</image:loc>
+      <image:loc>https://bauklar.org/Johannes-foto.jpeg</image:loc>
       <image:title>Dr. Johannes Stankiewicz - Diplom Sachverständiger</image:title>
-      <image:caption>Dr. Johannes Stankiewicz, Diplom Sachverständiger für Bauschadensbewertung bei Bauklar.io</image:caption>
+      <image:caption>Dr. Johannes Stankiewicz, Diplom Sachverständiger für Bauschadensbewertung bei Bauklar.org</image:caption>
     </image:image>
   </url>
 
   <!-- Open Graph Image (if exists) -->
   <url>
-    <loc>https://bauklar.io/</loc>
+    <loc>https://bauklar.org/</loc>
     <image:image>
-      <image:loc>https://bauklar.io/og-image.png</image:loc>
-      <image:title>Bauklar.io - Unabhängige Bauschadensanalyse</image:title>
+      <image:loc>https://bauklar.org/og-image.png</image:loc>
+      <image:title>Bauklar.org - Unabhängige Bauschadensanalyse</image:title>
       <image:caption>Professionelle Bauschadensbewertung mit KI-gestützter Analyse</image:caption>
     </image:image>
   </url>

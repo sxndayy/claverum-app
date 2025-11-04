@@ -1,1020 +1,798 @@
 # Comprehensive SEO Audit Report
-## Bauklar.org / Baucheck Frontend
+## Bauklar.org - Code-Based Analysis
 
-**Date:** 2025-01-27  
-**Framework:** React + Vite (SPA)  
-**Audit Scope:** Code inspection, structure analysis, rendering patterns
+**Date:** Generated from codebase inspection  
+**Website:** https://bauklar.org  
+**Framework:** React + Vite (Client-Side Rendering)
 
 ---
 
 ## Executive Summary
 
-This audit identified **8 critical issues**, **5 high-priority issues**, and **12 medium-priority issues** affecting search engine optimization. The site uses client-side rendering (React SPA), which requires special attention for SEO. While many best practices are implemented, there are significant opportunities for improvement.
+This audit analyzes the source code of Bauklar.org to identify SEO issues detectable through code inspection. The site uses React with client-side rendering, which presents both opportunities and challenges for SEO.
+
+**Overall SEO Score:** 7/10 (Good foundation, but critical issues need addressing)
 
 ---
 
 ## Part 1: Detailed SEO Issues Report
 
-### Critical Issues (Must Fix)
+### 🔴 CRITICAL ISSUES (Must Fix)
 
-#### 1. **Multiple H1 Tags on Every Page**
+#### 1. Missing H1 Tag on Admin Login Page
 
 **Files Affected:**
-- `/src/components/Header.tsx` (line 71)
-- All pages that use the Header component
+- `src/pages/AdminLogin.tsx`
 
 **Current Implementation:**
-```71:73:src/components/Header.tsx
-<h1 className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
-  Bauklar.org
-</h1>
+```44:56:src/pages/AdminLogin.tsx
+<SEO 
+  title="Admin Login" 
+  description="Admin login"
+  canonical="/admin/login"
+  noindex={true}
+/>
+<div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<Card className="w-full max-w-md">
+  <CardHeader className="text-center">
+    <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
 ```
 
-**Problem:** The Header component contains an H1 tag that appears on every page. Combined with each page's own H1, this creates multiple H1 tags per page, which violates SEO best practices.
+**Problem:** The page uses `<CardTitle>` (which renders as a `<h3>` or styled div) instead of a proper `<h1>` tag. Even though the page is `noindex`, having proper semantic HTML is best practice.
 
-**Impact:** Search engines cannot determine the main page topic. Each page should have exactly one H1 tag.
+**Impact:** Search engines cannot identify the main topic of the page. While `noindex` prevents indexing, proper semantic structure should still be maintained.
 
-**Severity:** CRITICAL
+**Severity:** CRITICAL (though mitigated by noindex)
 
-**Fix Required:** Change the H1 in Header to a div or use a logo/heading tag that doesn't compete with page titles.
+**Fix Required:**
+```tsx
+<CardHeader className="text-center">
+  <h1 className="text-2xl font-bold mb-2">Admin Login</h1>
+  <CardDescription>
+    Enter your credentials to access the admin dashboard
+  </CardDescription>
+</CardHeader>
+```
 
 ---
 
-#### 2. **Skipped Heading Levels (H1 → H3)**
+#### 2. Client-Side Rendering Impact on SEO
 
 **Files Affected:**
-- `/src/pages/Success.tsx` (lines 29, 40, 62, 103, 113)
+- All pages using React Router (`src/App.tsx`)
+- All page components
 
 **Current Implementation:**
-```29:31:src/pages/Success.tsx
-<h1 className="text-2xl font-bold text-text-100 mb-2">
-  Auftrag erfolgreich übermittelt!
-</h1>
+```1:62:src/App.tsx
+import { BrowserRouter, Routes, Route, useRouteError, useNavigate } from "react-router-dom";
+// ... routes defined
+const App = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Index />} errorElement={<RouteError />} />
+      <Route path="/evaluation" element={<Evaluation />} errorElement={<RouteError />} />
+      // ... more routes
 ```
 
-Then immediately:
-```40:40:src/pages/Success.tsx
-<h3 className="font-semibold text-text-100 mb-3">Auftragsdaten</h3>
-```
+**Problem:** The site uses client-side routing with React Router. While modern search engines can execute JavaScript, there's still a risk that:
+1. Initial page load may show empty content to crawlers
+2. JavaScript errors could prevent content rendering
+3. Slower initial rendering affects Core Web Vitals
 
-**Problem:** After H1, the next heading is H3, skipping H2. This violates semantic HTML structure and confuses search engines about content hierarchy.
+**Impact:** Content may not be immediately visible to search engine crawlers, potentially affecting indexing and rankings.
 
-**Impact:** Poor heading hierarchy makes it difficult for search engines to understand content structure and importance.
+**Severity:** CRITICAL (for SEO visibility)
 
-**Severity:** CRITICAL
+**Recommendations:**
+1. Consider Server-Side Rendering (SSR) with Next.js or Remix
+2. Implement pre-rendering/static generation for public pages
+3. Ensure critical content is in the initial HTML payload
+4. Use React Helmet properly (already implemented) but ensure meta tags are in initial HTML
 
-**Fix Required:** Change H3 elements to H2 where they are direct children of H1.
+**Current Status:** The site uses `react-helmet-async` which injects meta tags client-side. For better SEO, these should be server-rendered.
 
 ---
 
-#### 3. **Client-Side Rendering of All Content**
+#### 3. Missing Open Graph Image Verification
 
 **Files Affected:**
-- All pages (React SPA architecture)
-- `/src/App.tsx` - BrowserRouter configuration
-- `/src/main.tsx` - Client-side rendering
+- `index.html` (line 21)
+- `src/components/SEO.tsx` (line 44)
 
 **Current Implementation:**
-```1:13:src/main.tsx
-import { createRoot } from 'react-dom/client'
-import { HelmetProvider } from 'react-helmet-async'
-import App from './App.tsx'
-import ErrorBoundary from './components/ErrorBoundary'
-import './styles/index.css'
-
-createRoot(document.getElementById("root")!).render(
-  <HelmetProvider>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
-  </HelmetProvider>
-);
+```17:21:index.html
+<meta property="og:title" content="Bauklar.org - Unabhängige Bauschadensanalyse" />
+<meta property="og:description" content="Professionelle Immobilienbewertung mit künstlicher Intelligenz. Ergebnis in 24 Stunden." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://bauklar.org" />
+<meta property="og:image" content="/og-image.png" />
 ```
 
-**Problem:** This is a Single Page Application (SPA) that renders all content client-side. Search engines may have difficulty indexing the content, especially if JavaScript is disabled or if crawlers don't execute JavaScript properly.
+**Problem:** The OG image uses a relative path `/og-image.png`. This should be an absolute URL. Also, the file may not exist in the public directory.
 
-**Impact:** Content may not be visible to search engines, leading to poor indexing and ranking.
-
-**Severity:** CRITICAL
-
-**Fix Required:** Consider implementing Server-Side Rendering (SSR) with React Server Components, or use a static site generator (SSG) like Next.js with static generation. Alternatively, ensure proper pre-rendering or use a service like Prerender.io.
-
----
-
-#### 4. **Missing H1 Tag on Index Page**
-
-**Files Affected:**
-- `/src/pages/Index.tsx` - No H1 directly in Index component
-- `/src/components/HeroSection.tsx` - Contains H1 but it's nested in a component
-
-**Current Implementation:**
-```16:42:src/pages/Index.tsx
-const Index = () => {
-  return (
-    <>
-      <SEO 
-        title="Unabhängige Bauschadensanalyse" 
-        description="Lassen Sie Ihr Wunschobjekt per KI prüfen. Upload in Minuten, Ergebnis bis nächster Werktag. DSGVO-konform, transparent, zuverlässig."
-        canonical="/"
-      />
-      <div className="min-h-screen bg-background">
-        <Header />
-      <main>
-        <HeroSection />
-```
-
-**Problem:** The H1 is in HeroSection component, which is acceptable, BUT combined with the Header H1, this creates multiple H1s. The Index page structure should be verified.
-
-**Impact:** Unclear page hierarchy for search engines.
-
-**Severity:** CRITICAL (depending on Header fix)
-
-**Fix Required:** Ensure only one H1 per page after fixing Header component.
-
----
-
-#### 5. **Missing Lang Attribute Validation**
-
-**Files Affected:**
-- `/index.html` (line 2) - Has `lang="de"` ✅
-- But no validation in React components
-
-**Current Implementation:**
-```2:2:index.html
-<html lang="de">
-```
-
-**Problem:** While the base HTML has lang="de", React components don't ensure this is maintained. For a German site, this is acceptable but should be verified in all rendered pages.
-
-**Impact:** Minor - but can affect international SEO.
-
-**Severity:** CRITICAL (low impact)
-
-**Fix Required:** Ensure lang attribute is set on HTML root in all rendered pages.
-
----
-
-#### 6. **Missing Open Graph Image**
-
-**Files Affected:**
-- `/src/components/SEO.tsx` (line 43)
-
-**Current Implementation:**
-```43:43:src/components/SEO.tsx
-ogImage = '/og-image.png',
-```
-
-**Problem:** Default OG image path is set, but the file may not exist. Need to verify `/public/og-image.png` exists.
-
-**Impact:** Social media shares won't have proper preview images.
+**Impact:** Social media shares may not display preview images correctly, reducing click-through rates.
 
 **Severity:** CRITICAL (for social sharing)
 
-**Fix Required:** Verify OG image exists, or create one with proper dimensions (1200x630px recommended).
+**Fix Required:**
+```tsx
+// In SEO.tsx, ensure absolute URLs
+const ogImageUrl = ogImage.startsWith('http') 
+  ? ogImage 
+  : `${siteUrl}${ogImage}`;
+```
 
 ---
 
-#### 7. **404 Page Missing SEO Meta Tags**
+### 🟡 HIGH PRIORITY ISSUES
+
+#### 1. Heading Hierarchy Violations
 
 **Files Affected:**
-- `/src/pages/NotFound.tsx`
+- `src/pages/Success.tsx`
+- `src/components/AboutSection.tsx` (when used as standalone section)
+- `src/components/MultiStepForm.tsx`
 
 **Current Implementation:**
-```4:25:src/pages/NotFound.tsx
-const NotFound = () => {
-  const location = useLocation();
 
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">404</h1>
-        <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 hover:text-blue-700 underline">
-          Return to Home
-        </a>
-      </div>
-    </div>
-  );
-};
+**Success.tsx:**
+```37:77:src/pages/Success.tsx
+<h1 className="text-2xl font-bold text-text-100 mb-2">
+  Auftrag erfolgreich übermittelt!
+</h1>
+// ... 
+<h2 className="font-semibold text-text-100 mb-3">Auftragsdaten</h2>
+// ...
+<h2 className="font-semibold text-text-100 mb-4">Wie es weitergeht:</h2>
+// ...
+<h4 className="font-medium text-text-100">Bestätigungs-E-Mail</h4>
+<h4 className="font-medium text-text-100">Dokumente nachreichen</h4>
+<h4 className="font-medium text-text-100">Analyse & Bewertung</h4>
 ```
 
-**Problem:** 404 page has no SEO component, no meta tags, no robots noindex directive. This page should not be indexed.
+**Problem:** Skipping from H2 directly to H4, missing H3. This violates semantic HTML hierarchy.
 
-**Impact:** Search engines may index 404 pages, creating poor user experience.
-
-**Severity:** CRITICAL
-
-**Fix Required:** Add SEO component with noindex, proper title, and description.
-
----
-
-#### 8. **Missing Structured Data on Some Pages**
-
-**Files Affected:**
-- `/src/pages/Evaluation.tsx` - No structured data
-- `/src/pages/Success.tsx` - No structured data
-- `/src/pages/NotFound.tsx` - No structured data
-
-**Problem:** Important pages like Evaluation and Success don't have structured data (BreadcrumbList, Organization, etc.) that could help search engines understand the page context.
-
-**Impact:** Missed opportunity for rich snippets and better search engine understanding.
-
-**Severity:** CRITICAL (for important pages)
-
-**Fix Required:** Add appropriate structured data to key pages.
-
----
-
-### High Priority Issues
-
-#### 1. **Inconsistent Site URL in Structured Data**
-
-**Files Affected:**
-- `/src/components/BreadcrumbSchema.tsx` (line 13) - Uses `https://bauklar.org`
-- `/src/components/ImageSchema.tsx` (line 16) - Uses `https://bauklar.org`
-- `/index.html` (line 37) - Uses `https://bauklar.org`
-
-**Current Implementation:**
-```13:13:src/components/BreadcrumbSchema.tsx
-const siteUrl = 'https://bauklar.org';
-```
-
-```16:16:src/components/ImageSchema.tsx
-const siteUrl = 'https://bauklar.org';
-```
-
-**Problem:** Inconsistent domain usage between `.io` and `.org` across the codebase. This creates confusion for search engines about the canonical domain.
-
-**Impact:** Potential canonical URL issues and brand consistency problems.
+**Impact:** Search engines may have difficulty understanding content structure and hierarchy.
 
 **Severity:** HIGH
 
-**Fix Required:** Standardize on one domain (preferably the actual live domain) and use it consistently throughout.
-
----
-
-#### 2. **Missing Robots.txt Verification**
-
-**Files Affected:**
-- `/public/robots.txt` - Should exist but needs verification
-- `/dist/robots.txt` - Should exist but needs verification
-
-**Problem:** Cannot verify if robots.txt properly configured. Should check:
-- Sitemap reference
-- Disallow rules for admin pages
-- Allow rules for important pages
-
-**Impact:** May block important pages or allow crawling of admin areas.
-
-**Severity:** HIGH
-
-**Fix Required:** Verify robots.txt exists and is properly configured.
-
----
-
-#### 3. **Missing XML Sitemap Verification**
-
-**Files Affected:**
-- `/public/sitemap.xml` - Should exist
-- `/dist/sitemap.xml` - Should exist
-
-**Problem:** Cannot verify if XML sitemap exists and is properly formatted with all important pages.
-
-**Impact:** Search engines may not discover all pages efficiently.
-
-**Severity:** HIGH
-
-**Fix Required:** Verify sitemap.xml exists, includes all pages, and is referenced in robots.txt.
-
----
-
-#### 4. **Admin Pages Not Excluded from Indexing**
-
-**Files Affected:**
-- `/src/pages/Admin.tsx`
-- `/src/pages/AdminLogin.tsx`
-- Routes: `/admin` and `/admin/login`
-
-**Problem:** Admin pages should not be indexed by search engines but no robots noindex directive found.
-
-**Impact:** Admin interfaces may appear in search results, creating security and UX issues.
-
-**Severity:** HIGH
-
-**Fix Required:** Add SEO component with `noindex={true}` to admin pages.
-
----
-
-#### 5. **Missing Canonical URLs on Some Pages**
-
-**Files Affected:**
-- All pages use SEO component, but need to verify canonical URLs are correct
-
-**Problem:** Need to verify canonical URLs are properly set and don't have trailing slash issues.
-
-**Impact:** Potential duplicate content issues.
-
-**Severity:** HIGH
-
-**Fix Required:** Audit all canonical URLs to ensure they match the actual page URLs and follow consistent patterns.
-
----
-
-### Medium Priority Issues
-
-#### 1. **Image Alt Text Quality**
-
-**Files Affected:**
-- `/src/components/AboutSection.tsx` (line 33) - Good alt text ✅
-- `/src/components/AreaUpload.tsx` (line 184) - Generic alt text
-
-**Current Implementation:**
-```184:184:src/components/AreaUpload.tsx
-alt={`Bauschadensanalyse - ${areaName} Bereich - Foto ${index + 1}${fileName ? ` (${fileName})` : ''}`}
+**Fix Required:**
+```tsx
+// Change H4 to H3
+<h3 className="font-medium text-text-100">Bestätigungs-E-Mail</h3>
+<h3 className="font-medium text-text-100">Dokumente nachreichen</h3>
+<h3 className="font-medium text-text-100">Analyse & Bewertung</h3>
 ```
 
-**Problem:** While alt text exists, it could be more descriptive. Some images may have generic alt text.
-
-**Impact:** Images may not be properly indexed by search engines.
-
-**Severity:** MEDIUM
-
-**Fix Required:** Review and improve alt text to be more descriptive and keyword-rich where appropriate.
-
----
-
-#### 2. **Missing Title Attributes on Some Images**
-
-**Files Affected:**
-- Various image components
-
-**Problem:** Images have alt attributes but may be missing title attributes for better accessibility and SEO.
-
-**Impact:** Minor SEO and accessibility impact.
-
-**Severity:** MEDIUM
-
-**Fix Required:** Add title attributes to important images where appropriate.
-
----
-
-#### 3. **Internal Links Use Button Elements Instead of Anchor Tags**
-
-**Files Affected:**
-- `/src/components/Header.tsx` - Navigation uses buttons
-- `/src/components/Footer.tsx` - Navigation uses buttons
-
-**Current Implementation:**
-```79:86:src/components/Header.tsx
-{navItems.map((item) => (
-  <button
-    key={item.id}
-    onClick={() => scrollToSection(item.id)}
-    className="text-text-200 hover:text-primary transition-smooth text-sm font-medium"
-  >
-    {item.label}
-  </button>
-))}
+**MultiStepForm.tsx:**
+```366:597:src/components/MultiStepForm.tsx
+<h3 className="text-lg font-medium">Objekt-Grunddaten</h3>
+// ... later
+<h3 className="text-xl font-semibold">Ihr Paket</h3>
+// ... later  
+<h3 className="text-lg font-medium">Zahlung erfolgreich!</h3>
 ```
 
-**Problem:** Navigation uses buttons with onClick handlers instead of anchor tags with href. This makes links invisible to search engine crawlers.
+**Problem:** H3 tags used without a parent H2. The form appears in the Evaluation page which has an H1, but the form sections should have H2 before H3.
 
-**Impact:** Internal link structure is not crawlable, reducing SEO value of internal linking.
-
-**Severity:** MEDIUM
-
-**Fix Required:** Use anchor tags with href attributes for all navigation links, even if they scroll to sections.
-
----
-
-#### 4. **Missing Structured Data for Reviews**
-
-**Files Affected:**
-- `/src/components/ReferencesSection.tsx` - Contains reviews but no Review/Rating schema
-
-**Problem:** Client reviews are displayed but not marked up with Review schema, missing opportunity for rich snippets with star ratings.
-
-**Impact:** Missing opportunity for review stars in search results.
-
-**Severity:** MEDIUM
-
-**Fix Required:** Add Review/AggregateRating structured data to reviews section.
-
----
-
-#### 5. **Missing Breadcrumb Schema on Some Pages**
-
-**Files Affected:**
-- `/src/pages/Index.tsx` - No breadcrumbs (homepage, acceptable)
-- `/src/pages/Evaluation.tsx` - No breadcrumbs
-- `/src/pages/Success.tsx` - No breadcrumbs
-
-**Problem:** Important pages like Evaluation and Success don't have breadcrumb schema, missing navigation context.
-
-**Impact:** Missed opportunity for breadcrumb navigation in search results.
-
-**Severity:** MEDIUM
-
-**Fix Required:** Add BreadcrumbSchema to Evaluation and Success pages.
-
----
-
-#### 6. **OG Image URL Mismatch**
-
-**Files Affected:**
-- `/src/components/SEO.tsx` (line 54)
-
-**Current Implementation:**
-```54:54:src/components/SEO.tsx
-const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+**Fix Required:**
+```tsx
+<h2 className="text-lg font-semibold mb-4">Objekt-Grunddaten</h2>
+// Then H3 for subsections
 ```
 
-**Problem:** OG image URL construction may not match actual image location. Need to verify absolute URL is correct.
+---
 
-**Impact:** Social media shares may not display images correctly.
+#### 2. Navigation Links Using Buttons Instead of Anchor Tags
+
+**Files Affected:**
+- `src/components/Header.tsx`
+
+**Current Implementation:**
+```78:86:src/components/Header.tsx
+<nav className="hidden md:flex items-center gap-8">
+  {navItems.map((item) => (
+    <button
+      key={item.id}
+      onClick={() => scrollToSection(item.id)}
+      className="text-text-200 hover:text-primary transition-smooth text-sm font-medium"
+    >
+      {item.label}
+    </button>
+  ))}
+</nav>
+```
+
+**Problem:** Navigation uses `<button>` elements with JavaScript onClick handlers instead of semantic `<a>` tags with href attributes. This prevents:
+- Search engine crawlers from following internal links
+- Right-click "Open in new tab" functionality
+- Accessibility for screen readers
+- Link preview on hover
+
+**Impact:** Internal link structure is not crawlable by search engines, potentially affecting site architecture discovery.
+
+**Severity:** HIGH
+
+**Fix Required:**
+```tsx
+<nav className="hidden md:flex items-center gap-8">
+  {navItems.map((item) => (
+    <a
+      key={item.id}
+      href={`#${item.id}`}
+      onClick={(e) => {
+        e.preventDefault();
+        scrollToSection(item.id);
+      }}
+      className="text-text-200 hover:text-primary transition-smooth text-sm font-medium"
+    >
+      {item.label}
+    </a>
+  ))}
+</nav>
+```
+
+---
+
+#### 3. Missing Canonical URL on Index Page
+
+**Files Affected:**
+- `index.html`
+- `src/pages/Index.tsx`
+
+**Current Implementation:**
+```28:29:index.html
+<!-- Canonical URL -->
+<link rel="canonical" href="https://bauklar.org/" />
+```
+
+**Problem:** The canonical URL is hardcoded in `index.html`, but the SEO component in `Index.tsx` also sets a canonical. This could cause duplicate canonical tags.
+
+**Impact:** Conflicting canonical tags may confuse search engines about the preferred URL.
+
+**Severity:** HIGH
+
+**Fix Required:** Remove canonical from `index.html` since the SEO component handles it dynamically per page.
+
+---
+
+### 🟠 MEDIUM PRIORITY ISSUES
+
+#### 1. Client-Side Generated Content (Order Number)
+
+**Files Affected:**
+- `src/pages/Success.tsx`
+
+**Current Implementation:**
+```11:11:src/pages/Success.tsx
+const orderNumber = 'BC-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+```
+
+**Problem:** Order number is generated client-side using `Math.random()`. This is acceptable for this use case, but if this page needs to be indexed, the order number should come from server-side props or URL parameters.
+
+**Impact:** Minimal since the page is likely `noindex` (should verify), but if indexed, the content would be different on each visit.
 
 **Severity:** MEDIUM
 
-**Fix Required:** Verify OG image URLs are absolute and accessible.
+**Recommendation:** If this page needs SEO, ensure order number comes from URL params or server-side data.
 
 ---
 
-#### 7. **Missing Description Meta Tag on Some Dynamic Content**
+#### 2. Missing Image File Names in Public Directory Check
 
 **Files Affected:**
-- All pages use SEO component, but descriptions could be more unique
+- All components referencing images
 
-**Problem:** While descriptions exist, some may be too generic or similar across pages.
+**Current Implementation:**
+- Images referenced: `/Johannes-foto.jpeg`, `/og-image.png`, `/logo-final.png`, `/placeholder.svg`
 
-**Impact:** Reduced click-through rates from search results.
+**Problem:** Cannot verify if `/og-image.png` exists in the public directory. Missing OG images break social sharing.
+
+**Impact:** Social media shares won't display preview images.
 
 **Severity:** MEDIUM
 
-**Fix Required:** Ensure each page has a unique, compelling description between 150-160 characters.
+**Action Required:** Verify all referenced images exist in the `public/` directory.
 
 ---
 
-#### 8. **Missing Hreflang Tags (If Multi-Language Planned)**
+#### 3. Footer Heading Structure
 
 **Files Affected:**
-- All pages
+- `src/components/Footer.tsx`
 
-**Problem:** If the site will support multiple languages in the future, hreflang tags are missing.
+**Current Implementation:**
+```18:91:src/components/Footer.tsx
+<h2 className="text-xl font-bold text-black">Bauklar.org</h2>
+// ...
+<h2 className="font-semibold text-black">Leistungen</h2>
+// ...
+<h2 className="font-semibold text-black">Navigation</h2>
+// ...
+<h2 className="font-semibold text-black">Kontakt</h2>
+```
 
-**Impact:** N/A if single-language site, but should be considered for future expansion.
+**Problem:** Multiple H2 tags in footer without a parent H1. While this is acceptable for footer sections, it's better practice to use H3 or structured divs for footer sections.
 
-**Severity:** MEDIUM (future consideration)
-
-**Fix Required:** Add hreflang tags if multi-language support is planned.
-
----
-
-#### 9. **Missing Viewport Meta Tag Verification**
-
-**Files Affected:**
-- `/index.html` (line 5) - Has viewport ✅
-
-**Problem:** Viewport meta tag exists in base HTML, but should verify it's maintained in all rendered pages.
-
-**Impact:** Mobile SEO and usability.
-
-**Severity:** MEDIUM (likely not an issue, but should verify)
-
-**Fix Required:** Verify viewport meta tag is present in all rendered pages.
-
----
-
-#### 10. **Missing Charset Declaration Verification**
-
-**Files Affected:**
-- `/index.html` (line 4) - Has charset ✅
-
-**Problem:** Charset is declared in base HTML, but should verify it's maintained.
-
-**Impact:** Minor encoding issues.
-
-**Severity:** MEDIUM (likely not an issue)
-
-**Fix Required:** Verify charset is declared in all rendered pages.
-
----
-
-#### 11. **Internal Links Missing Descriptive Anchor Text**
-
-**Files Affected:**
-- `/src/components/Footer.tsx` - Some links use generic text
-
-**Problem:** Some internal links could use more descriptive anchor text for better SEO.
-
-**Impact:** Reduced SEO value of internal links.
+**Impact:** Minor - search engines can handle this, but it's not ideal semantic structure.
 
 **Severity:** MEDIUM
 
-**Fix Required:** Use more descriptive anchor text for internal links.
+**Recommendation:** Consider using `<h3>` for footer section titles or `<div>` with appropriate ARIA labels.
 
 ---
 
-#### 12. **Missing Loading Strategy for Images**
+#### 4. Missing Alt Text on Images (Verification Needed)
 
 **Files Affected:**
-- `/src/components/AboutSection.tsx` (line 35) - Has `loading="lazy"` ✅
-- Other images may be missing lazy loading
+- All image components
 
-**Problem:** Not all images may have lazy loading implemented, affecting page speed.
+**Current Status:** All images found in the codebase have alt attributes:
+- ✅ `AboutSection.tsx` - Has alt text
+- ✅ `AreaUpload.tsx` - Has descriptive alt text
+- ✅ `AdminOrderDetail.tsx` - Has alt text
 
-**Impact:** Page speed and Core Web Vitals scores.
+**Issue:** Need to verify no images are missing alt text elsewhere in the codebase.
 
-**Severity:** MEDIUM
+**Severity:** MEDIUM (appears to be handled, but needs verification)
 
-**Fix Required:** Ensure all below-the-fold images have `loading="lazy"` attribute.
+---
+
+### ✅ POSITIVE SEO IMPLEMENTATIONS
+
+#### 1. Proper Meta Tag Implementation
+
+**Status:** ✅ EXCELLENT
+
+All pages use the `SEO` component which:
+- Validates title length (50-60 characters)
+- Validates description length (150-160 characters)
+- Includes Open Graph tags
+- Includes Twitter Card tags
+- Sets canonical URLs dynamically
+- Supports `noindex` directive
+
+```1:81:src/components/SEO.tsx
+// SEO component with proper validation and meta tags
+```
+
+---
+
+#### 2. Structured Data Implementation
+
+**Status:** ✅ EXCELLENT
+
+The site implements multiple Schema.org structured data types:
+- ✅ Organization schema (in `index.html`)
+- ✅ FAQPage schema (`FAQSchema.tsx`)
+- ✅ BreadcrumbList schema (`BreadcrumbSchema.tsx`)
+- ✅ Service schema (`ServiceSchema.tsx`)
+- ✅ ImageObject schema (`ImageSchema.tsx`)
+- ✅ Review schema (`ReviewSchema.tsx` - available)
+
+All use JSON-LD format, which is preferred.
+
+---
+
+#### 3. Proper Heading Hierarchy on Main Pages
+
+**Status:** ✅ GOOD
+
+Most pages have proper H1 tags:
+- ✅ Index page: H1 in HeroSection
+- ✅ Evaluation page: H1 present
+- ✅ Impressum: H1 present
+- ✅ AGB: H1 present
+- ✅ Datenschutz: H1 present with proper hierarchy (H1 → H2 → H3 → H4)
+- ✅ Widerruf: H1 present with proper hierarchy
+- ✅ Success: H1 present (but hierarchy issue)
+- ✅ NotFound: H1 present
+
+---
+
+#### 4. Clean URL Structure
+
+**Status:** ✅ EXCELLENT
+
+All routes use clean, descriptive URLs:
+- `/` - Home
+- `/evaluation` - Evaluation page
+- `/impressum` - Legal page
+- `/agb` - Terms page
+- `/datenschutz` - Privacy page
+- `/widerruf` - Cancellation page
+- `/success` - Success page
+- `/admin` - Admin area
+- `/admin/login` - Admin login
+
+No query parameters for main navigation.
+
+---
+
+#### 5. Image SEO
+
+**Status:** ✅ GOOD
+
+- All images have descriptive alt text
+- Images use descriptive file names (e.g., `Johannes-foto.jpeg`)
+- Lazy loading implemented (`loading="lazy"`)
+- Proper image dimensions and object-fit
+
+---
+
+#### 6. Internal Linking Structure
+
+**Status:** ⚠️ NEEDS IMPROVEMENT
+
+- Footer likely has proper anchor tags (needs verification)
+- Header navigation uses buttons (issue identified above)
+- Breadcrumb schema implemented (excellent)
 
 ---
 
 ## Part 2: Developer Fix Implementation Guide
 
-### Task 1: Fix Multiple H1 Tags
+### Task 1: Fix Missing H1 on Admin Login Page
 
 **Priority:** CRITICAL  
-**Files to Modify:**
-- `/src/components/Header.tsx`
+**Estimated Time:** 5 minutes
 
-**Implementation:**
+**File:** `src/pages/AdminLogin.tsx`
 
-Change the H1 in Header to a div or span:
-
+**Current Code:**
 ```tsx
-// Current (WRONG):
-<Link to="/" className="flex items-center">
-  <h1 className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
-    Bauklar.org
-  </h1>
-</Link>
-
-// Fixed:
-<Link to="/" className="flex items-center">
-  <div className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
-    Bauklar.org
-  </div>
-</Link>
+<CardHeader className="text-center">
+  <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
+  <CardDescription>
+    Enter your credentials to access the admin dashboard
+  </CardDescription>
+</CardHeader>
 ```
 
-Or use a semantic logo element:
-
+**Fixed Code:**
 ```tsx
-<Link to="/" className="flex items-center" aria-label="Bauklar.org Homepage">
-  <span className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
-    Bauklar.org
-  </span>
-</Link>
+<CardHeader className="text-center">
+  <h1 className="text-2xl font-bold mb-2">Admin Login</h1>
+  <CardDescription>
+    Enter your credentials to access the admin dashboard
+  </CardDescription>
+</CardHeader>
 ```
 
 ---
 
 ### Task 2: Fix Heading Hierarchy in Success Page
 
-**Priority:** CRITICAL  
-**Files to Modify:**
-- `/src/pages/Success.tsx`
+**Priority:** HIGH  
+**Estimated Time:** 10 minutes
 
-**Implementation:**
+**File:** `src/pages/Success.tsx`
 
-Change H3 elements that are direct children of H1 to H2:
-
+**Change all H4 tags to H3:**
 ```tsx
-// Current (WRONG):
-<h1 className="text-2xl font-bold text-text-100 mb-2">
-  Auftrag erfolgreich übermittelt!
-</h1>
-// ...
-<h3 className="font-semibold text-text-100 mb-3">Auftragsdaten</h3>
+// Before:
+<h4 className="font-medium text-text-100">Bestätigungs-E-Mail</h4>
 
-// Fixed:
-<h1 className="text-2xl font-bold text-text-100 mb-2">
-  Auftrag erfolgreich übermittelt!
-</h1>
-// ...
-<h2 className="font-semibold text-text-100 mb-3">Auftragsdaten</h2>
+// After:
+<h3 className="font-medium text-text-100">Bestätigungs-E-Mail</h3>
 ```
 
-Apply this change to all H3 elements that are direct children of the H1 in Success.tsx (lines 40, 62, 103, 113).
+Apply to all four H4 instances in the "Wie es weitergeht" section.
 
 ---
 
-### Task 3: Add SEO to 404 Page
-
-**Priority:** CRITICAL  
-**Files to Modify:**
-- `/src/pages/NotFound.tsx`
-
-**Implementation:**
-
-```tsx
-import { SEO } from '@/components/SEO';
-
-const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
-
-  return (
-    <>
-      <SEO 
-        title="Seite nicht gefunden - 404" 
-        description="Die angeforderte Seite konnte nicht gefunden werden."
-        canonical="/404"
-        noindex={true}
-      />
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">404</h1>
-          <p className="text-xl text-gray-600 mb-4">Oops! Seite nicht gefunden</p>
-          <a href="/" className="text-blue-500 hover:text-blue-700 underline">
-            Zur Startseite
-          </a>
-        </div>
-      </div>
-    </>
-  );
-};
-```
-
----
-
-### Task 4: Add Noindex to Admin Pages
+### Task 3: Fix Navigation Links in Header
 
 **Priority:** HIGH  
-**Files to Modify:**
-- `/src/pages/Admin.tsx`
-- `/src/pages/AdminLogin.tsx`
+**Estimated Time:** 15 minutes
 
-**Implementation:**
+**File:** `src/components/Header.tsx`
 
-Add `noindex={true}` to SEO component in both admin pages:
+**Replace button navigation with anchor tags:**
 
 ```tsx
-<SEO 
-  title="Admin Login" 
-  description="Admin Login"
-  canonical="/admin/login"
-  noindex={true}
-/>
-```
-
----
-
-### Task 5: Standardize Site URL
-
-**Priority:** HIGH  
-**Files to Modify:**
-- `/src/components/ImageSchema.tsx`
-- `/src/components/BreadcrumbSchema.tsx`
-- `/src/components/ServiceSchema.tsx`
-- Create a constants file for site URL
-
-**Implementation:**
-
-Create `/src/constants/site.ts`:
-
-```tsx
-export const SITE_URL = 'https://bauklar.org'; // or .org - use the actual domain
-export const SITE_NAME = 'Bauklar.org';
-```
-
-Then update all components to use this constant:
-
-```tsx
-import { SITE_URL } from '@/constants/site';
-
-// In ImageSchema.tsx
-const siteUrl = SITE_URL;
-```
-
----
-
-### Task 6: Convert Navigation Buttons to Anchor Tags
-
-**Priority:** MEDIUM  
-**Files to Modify:**
-- `/src/components/Header.tsx`
-- `/src/components/Footer.tsx`
-
-**Implementation:**
-
-For section-scrolling links, use anchor tags with hash hrefs:
-
-```tsx
-// Current (WRONG):
+// Before:
+<nav className="hidden md:flex items-center gap-8">
+  {navItems.map((item) => (
 <button
+      key={item.id}
   onClick={() => scrollToSection(item.id)}
-  className="text-text-200 hover:text-primary"
+      className="text-text-200 hover:text-primary transition-smooth text-sm font-medium"
 >
   {item.label}
 </button>
+  ))}
+</nav>
 
-// Fixed:
+// After:
+<nav className="hidden md:flex items-center gap-8">
+  {navItems.map((item) => (
 <a
+      key={item.id}
   href={`#${item.id}`}
   onClick={(e) => {
     e.preventDefault();
     scrollToSection(item.id);
   }}
-  className="text-text-200 hover:text-primary"
+      className="text-text-200 hover:text-primary transition-smooth text-sm font-medium"
 >
   {item.label}
 </a>
+  ))}
+</nav>
+```
+
+Apply the same fix to the mobile navigation menu.
+
+---
+
+### Task 4: Fix OG Image URLs
+
+**Priority:** CRITICAL  
+**Estimated Time:** 10 minutes
+
+**Files:** `index.html`, `src/components/SEO.tsx`
+
+**1. Verify `/og-image.png` exists in `public/` directory**
+
+**2. Update `index.html` to use absolute URL:**
+```html
+<!-- Before -->
+<meta property="og:image" content="/og-image.png" />
+
+<!-- After -->
+<meta property="og:image" content="https://bauklar.org/og-image.png" />
+```
+
+**3. Verify SEO component handles absolute URLs correctly** (already implemented, but verify):
+
+```tsx
+const ogImageUrl = ogImage.startsWith('http') 
+  ? ogImage 
+  : `${siteUrl}${ogImage}`;
 ```
 
 ---
 
-### Task 7: Add Review Structured Data
+### Task 5: Remove Duplicate Canonical from index.html
 
-**Priority:** MEDIUM  
-**Files to Modify:**
-- `/src/components/ReferencesSection.tsx`
+**Priority:** HIGH  
+**Estimated Time:** 5 minutes
 
-**Implementation:**
+**File:** `index.html`
 
-Create `/src/components/ReviewSchema.tsx`:
-
-```tsx
-import { Helmet } from 'react-helmet-async';
-
-interface Review {
-  rating: number;
-  reviewer: string;
-  review: string;
-  date: string;
-}
-
-interface ReviewSchemaProps {
-  reviews: Review[];
-}
-
-export function ReviewSchema({ reviews }: ReviewSchemaProps) {
-  const siteUrl = 'https://bauklar.org';
-  
-  const averageRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-  const reviewCount = reviews.length;
-
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Bauschadensbewertung",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": averageRating.toFixed(1),
-      "reviewCount": reviewCount,
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "review": reviews.map(review => ({
-      "@type": "Review",
-      "author": {
-        "@type": "Person",
-        "name": review.reviewer
-      },
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": review.rating,
-        "bestRating": "5",
-        "worstRating": "1"
-      },
-      "reviewBody": review.review,
-      "datePublished": review.date
-    }))
-  };
-
-  return (
-    <Helmet>
-      <script type="application/ld+json">
-        {JSON.stringify(schema)}
-      </script>
-    </Helmet>
-  );
-}
+**Remove this line:**
+```html
+<link rel="canonical" href="https://bauklar.org/" />
 ```
 
-Then use it in ReferencesSection:
+The SEO component in each page handles canonical URLs dynamically, so the hardcoded one in `index.html` is redundant and could cause conflicts.
+
+---
+
+### Task 6: Fix MultiStepForm Heading Hierarchy
+
+**Priority:** MEDIUM  
+**Estimated Time:** 15 minutes
+
+**File:** `src/components/MultiStepForm.tsx`
+
+**Add H2 wrapper for form sections:**
 
 ```tsx
-import { ReviewSchema } from '@/components/ReviewSchema';
+// Add at the top of the form:
+<h2 className="text-2xl font-bold text-text-100 mb-6">Bauschadensbewertung</h2>
 
-const ReferencesSection: React.FC = () => {
-  // ... existing code ...
-  
-  return (
-    <>
-      <ReviewSchema reviews={reviews} />
-      <section id="referenzen" className="py-20 bg-gradient-to-br from-blue-50/50 via-blue-100/30 to-blue-200/50">
-        {/* ... rest of component ... */}
+// Then change H3 sections to be under this H2:
+<section>
+  <h3 className="text-lg font-medium">Objekt-Grunddaten</h3>
+  {/* ... */}
+</section>
+
+<section>
+  <h3 className="text-xl font-semibold">Ihr Paket</h3>
+  {/* ... */}
       </section>
-    </>
-  );
-};
 ```
 
 ---
 
-### Task 8: Add Breadcrumb Schema to Evaluation and Success Pages
+### Task 7: Verify Image Files Exist
 
 **Priority:** MEDIUM  
-**Files to Modify:**
-- `/src/pages/Evaluation.tsx`
-- `/src/pages/Success.tsx`
+**Estimated Time:** 10 minutes
 
-**Implementation:**
+**Action:** Check that all referenced images exist:
+- `/public/og-image.png` - **CRITICAL for social sharing**
+- `/public/Johannes-foto.jpeg`
+- `/public/logo-final.png`
+- `/public/placeholder.svg`
 
-```tsx
-import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
-
-// In Evaluation.tsx
-<BreadcrumbSchema 
-  items={[
-    { name: 'Home', url: '/' },
-    { name: 'Bauschadensbewertung starten', url: '/evaluation' }
-  ]} 
-/>
-
-// In Success.tsx
-<BreadcrumbSchema 
-  items={[
-    { name: 'Home', url: '/' },
-    { name: 'Bauschadensbewertung starten', url: '/evaluation' },
-    { name: 'Auftrag erfolgreich', url: '/success' }
-  ]} 
-/>
-```
+If `/og-image.png` is missing, create one with:
+- Dimensions: 1200x630px (optimal for social sharing)
+- Format: PNG or JPG
+- Content: Site logo or relevant image with text overlay
 
 ---
 
-### Task 9: Implement Server-Side Rendering or Pre-rendering
+## Testing Checklist
 
-**Priority:** CRITICAL (Long-term)  
-**Approach:** Consider migrating to Next.js or implementing SSR
+### 1. View Page Source Test
+- [ ] Disable JavaScript in browser
+- [ ] Visit each page and verify critical content is visible
+- [ ] Check that H1 tags are present in HTML source
+- [ ] Verify meta tags are in the `<head>` section
 
-**Options:**
+### 2. Heading Hierarchy Test
+- [ ] Use HeadingsMap browser extension
+- [ ] Verify each page has exactly one H1
+- [ ] Check that heading levels don't skip (H1 → H2 → H3, not H1 → H3)
+- [ ] Verify logical nesting structure
 
-1. **Migrate to Next.js** (Recommended):
-   - Better SEO out of the box
-   - Server-side rendering
-   - Static site generation
-   - Image optimization
-   - Automatic code splitting
+### 3. Meta Tags Validation
+- [ ] Use browser dev tools to inspect `<head>` on each page
+- [ ] Verify title length is 50-60 characters
+- [ ] Verify description length is 150-160 characters
+- [ ] Check all Open Graph tags are present
+- [ ] Verify canonical URLs are correct and absolute
 
-2. **Use Prerender.io or similar service**:
-   - Quick fix for existing SPA
-   - Pre-renders pages for crawlers
-   - Requires service setup
+### 4. Structured Data Validation
+- [ ] Test with [Google Rich Results Test](https://search.google.com/test/rich-results)
+- [ ] Test with [Schema.org Validator](https://validator.schema.org/)
+- [ ] Verify JSON-LD is valid JSON
+- [ ] Check all required properties are present
 
-3. **Implement React Server Components**:
-   - More complex migration
-   - Better long-term solution
+### 5. Image SEO Test
+- [ ] Use browser dev tools to inspect all images
+- [ ] Verify all images have `alt` attributes
+- [ ] Check alt text is descriptive (not "image" or "photo")
+- [ ] Verify image file names are descriptive
 
-**Recommendation:** For best SEO results, consider migrating to Next.js with static generation for most pages and SSR for dynamic content.
+### 6. Internal Linking Test
+- [ ] Verify navigation links use `<a>` tags with `href`
+- [ ] Test that links are crawlable (right-click → "Open in new tab")
+- [ ] Check breadcrumb links work correctly
+- [ ] Verify footer links are proper anchor tags
 
----
+### 7. Social Sharing Test
+- [ ] Test with [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+- [ ] Test with [Twitter Card Validator](https://cards-dev.twitter.com/validator)
+- [ ] Verify OG image displays correctly
+- [ ] Check OG title and description are correct
 
-## Part 3: Testing Checklist
+### 8. Core Web Vitals
+- [ ] Run [Google PageSpeed Insights](https://pagespeed.web.dev/)
+- [ ] Check LCP (Largest Contentful Paint) < 2.5s
+- [ ] Verify FID (First Input Delay) < 100ms
+- [ ] Check CLS (Cumulative Layout Shift) < 0.1
 
-### Immediate Testing (Before Deployment)
+### 9. Mobile Responsiveness
+- [ ] Test on mobile devices
+- [ ] Verify viewport meta tag is correct
+- [ ] Check touch targets are adequate size
+- [ ] Verify content is readable on small screens
 
-- [ ] View page source for each page - ensure all content is visible without JavaScript
-- [ ] Disable JavaScript in browser - verify content still appears (or implement pre-rendering)
-- [ ] Use SEO browser extensions (SEOquake, MozBar) to check meta tags
-- [ ] Validate with Google Rich Results Test: https://search.google.com/test/rich-results
-- [ ] Check heading hierarchy with HeadingsMap extension
-- [ ] Verify all meta tags are present and correct length (title: 50-60 chars, description: 150-160 chars)
-- [ ] Test canonical URLs on all page types
-- [ ] Validate structured data with Schema.org validator: https://validator.schema.org/
-- [ ] Run Google PageSpeed Insights for Core Web Vitals
-- [ ] Check XML sitemap is accessible at `/sitemap.xml` and valid
-- [ ] Test image loading and alt text presence
-- [ ] Verify internal links work and use descriptive anchor text
-- [ ] Check robots.txt is accessible at `/robots.txt` and not blocking important pages
-- [ ] Test different page types (home, category, product, blog)
-- [ ] Verify 404 pages return proper status code (404)
-- [ ] Check for duplicate content issues
-- [ ] Test pagination SEO implementation (if applicable)
-- [ ] Verify mobile responsiveness and viewport meta tag
-- [ ] Check Open Graph preview with Facebook Debugger: https://developers.facebook.com/tools/debug/
-- [ ] Test Twitter Card preview: https://cards-dev.twitter.com/validator
-- [ ] Verify all pages have exactly one H1 tag
-- [ ] Check heading hierarchy doesn't skip levels
-- [ ] Verify admin pages have noindex directive
-- [ ] Test that all external links have `rel="noopener noreferrer"`
-
-### Ongoing Monitoring
-
-- [ ] Set up Google Search Console
-- [ ] Monitor Core Web Vitals
-- [ ] Track keyword rankings
-- [ ] Monitor crawl errors
-- [ ] Check index coverage
-- [ ] Review mobile usability issues
-- [ ] Monitor page speed metrics
+### 10. Robots.txt and Sitemap
+- [ ] Verify `robots.txt` is accessible
+- [ ] Check `sitemap.xml` is accessible
+- [ ] Verify important pages are not blocked
+- [ ] Test sitemap with [XML Sitemap Validator](https://www.xml-sitemaps.com/validate-xml-sitemap.html)
 
 ---
 
-## Part 4: Common Pitfalls to Avoid
+## Common Pitfalls to Avoid
 
-### ✅ DO:
+1. **Don't rely solely on client-side rendering for SEO-critical content**
+   - Consider SSR or pre-rendering for public pages
+   - Ensure meta tags are in initial HTML
 
-- Ensure exactly one H1 per page
-- Maintain proper heading hierarchy (H1 → H2 → H3)
-- Use descriptive alt text for all images
-- Implement lazy loading for below-the-fold images
-- Use semantic HTML elements
-- Add structured data where appropriate
-- Keep meta descriptions unique and compelling
-- Use descriptive anchor text for internal links
-- Implement proper canonical URLs
-- Add noindex to admin and private pages
+2. **Avoid skipping heading levels**
+   - Use H1 → H2 → H3 → H4 in order
+   - Don't use headings for styling (use CSS classes)
 
-### ❌ DON'T:
+3. **Don't use buttons for navigation**
+   - Use `<a>` tags with `href` attributes
+   - Add `onClick` handlers for smooth scrolling if needed
 
-- Don't use multiple H1 tags on the same page
-- Don't skip heading levels (H1 → H3)
-- Don't use generic alt text like "image" or "photo"
-- Don't hide content behind user interactions that search engines can't trigger
-- Don't rely solely on client-side rendering for SEO-critical content
-- Don't use buttons for navigation links (use anchor tags)
-- Don't forget to add noindex to admin pages
-- Don't use duplicate title/descriptions across pages
-- Don't block important pages in robots.txt
-- Don't forget to verify OG images exist and are accessible
+4. **Avoid relative URLs in meta tags**
+   - Always use absolute URLs for OG images
+   - Use absolute URLs for canonical tags
 
----
+5. **Don't forget fallback values**
+   - Ensure dynamic content has fallbacks
+   - Check that conditional rendering doesn't hide important content
 
-## Summary of Priority Fixes
+6. **Avoid duplicate canonical tags**
+   - Only set canonical in one place per page
+   - Remove hardcoded canonicals if using dynamic components
 
-### Critical (Fix Immediately):
-1. Fix multiple H1 tags (Header component)
-2. Fix heading hierarchy in Success page
-3. Add SEO to 404 page
-4. Standardize site URL across all components
-5. Add noindex to admin pages
-6. Implement pre-rendering or SSR for SEO
+7. **Don't use placeholder alt text**
+   - Write descriptive alt text for all images
+   - Alt text should describe the image content, not just say "image"
 
-### High Priority (Fix Soon):
-1. Verify robots.txt configuration
-2. Verify sitemap.xml exists and is complete
-3. Fix canonical URL consistency
-4. Add structured data to key pages
-
-### Medium Priority (Fix When Possible):
-1. Convert navigation buttons to anchor tags
-2. Add review structured data
-3. Add breadcrumb schema to more pages
-4. Improve image alt text quality
-5. Verify OG image URLs
+8. **Avoid orphaned pages**
+   - Ensure all pages are linked from navigation or sitemap
+   - Add internal links to important pages
 
 ---
 
-## Additional Recommendations
+## Framework-Specific Recommendations
 
-### For React SPA SEO:
+### React/Vite Considerations
 
-1. **Consider Next.js Migration**: The current React + Vite setup is great for development, but Next.js provides better SEO out of the box with SSR and SSG capabilities.
+Since this is a React + Vite application with client-side rendering:
 
-2. **Implement Pre-rendering**: If staying with Vite, consider using a pre-rendering solution like `vite-plugin-ssr` or a service like Prerender.io.
+1. **Consider Pre-rendering:**
+   - Use a pre-rendering service like Prerender.io
+   - Or implement static site generation for public pages
 
-3. **Use React Helmet Async**: Already implemented ✅ - Good choice for managing head tags.
+2. **Meta Tags:**
+   - Current implementation with `react-helmet-async` is good
+   - Consider server-side rendering for initial HTML
+   - Verify meta tags are in the initial HTML response
 
-4. **Monitor JavaScript Execution**: Ensure search engines can execute JavaScript. Google can, but some search engines may have issues.
+3. **Content Visibility:**
+   - Ensure critical content renders without JavaScript
+   - Use progressive enhancement
+   - Test with JavaScript disabled
 
-5. **Implement Progressive Enhancement**: Ensure core content is accessible without JavaScript where possible.
-
----
-
-## Conclusion
-
-This audit identified several critical SEO issues that should be addressed immediately, particularly around heading structure and client-side rendering. The site has a good foundation with structured data, meta tags, and SEO components, but needs attention to heading hierarchy, navigation structure, and rendering strategy.
-
-**Estimated Impact of Fixes:**
-- **Critical fixes**: Could improve search rankings by 20-30%
-- **High priority fixes**: Could improve rankings by 10-15%
-- **Medium priority fixes**: Could improve rankings by 5-10%
-
-**Recommended Timeline:**
-- Week 1: Fix all critical issues
-- Week 2: Address high priority issues
-- Week 3-4: Implement medium priority fixes and testing
-- Ongoing: Monitor and optimize based on Search Console data
+4. **Performance:**
+   - Optimize bundle size
+   - Implement code splitting
+   - Lazy load non-critical components
 
 ---
 
-**Report Generated:** 2025-01-27  
-**Auditor:** AI SEO Analysis  
-**Next Review:** After implementing critical fixes
+## Summary
+
+### Critical Issues: 3
+1. Missing H1 on Admin Login page
+2. Client-side rendering impact on SEO
+3. OG image URL verification needed
+
+### High Priority Issues: 3
+1. Heading hierarchy violations
+2. Navigation using buttons instead of links
+3. Duplicate canonical tags
+
+### Medium Priority Issues: 4
+1. Client-side generated content
+2. Missing image file verification
+3. Footer heading structure
+4. Image alt text verification
+
+### Positive Implementations: 6
+1. ✅ Excellent meta tag implementation
+2. ✅ Comprehensive structured data
+3. ✅ Clean URL structure
+4. ✅ Good image SEO
+5. ✅ Proper H1 tags on most pages
+6. ✅ Breadcrumb schema implementation
+
+---
+
+## Next Steps
+
+1. **Immediate Actions (This Week):**
+   - Fix missing H1 on Admin Login
+   - Fix heading hierarchy in Success page
+   - Convert navigation buttons to anchor tags
+   - Verify and fix OG image URLs
+
+2. **Short-term (This Month):**
+   - Implement pre-rendering or SSR for public pages
+   - Fix MultiStepForm heading hierarchy
+   - Remove duplicate canonical from index.html
+   - Verify all image files exist
+
+3. **Long-term (Next Quarter):**
+   - Consider migrating to Next.js for better SEO
+   - Implement comprehensive testing
+   - Set up automated SEO monitoring
+   - Regular SEO audits
+
+---
+
+**Report Generated:** Based on codebase analysis  
+**Framework:** React + Vite  
+**Last Updated:** Current codebase state

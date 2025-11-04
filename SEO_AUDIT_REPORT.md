@@ -398,7 +398,7 @@ Sitemap: https://baucheck-ki.de/sitemap.xml
 
 **Status:** 
 - ✅ react-helmet-async installed
-- ✅ SEO component created with correct domain (bauklar.io)
+- ✅ SEO component created with correct domain (bauklar.org)
 - ✅ HelmetProvider added to main.tsx
 - ✅ SEO component added to all pages:
   - Index.tsx ✅
@@ -537,7 +537,7 @@ const Evaluation = () => {
 **Priority:** CRITICAL
 
 **Status:**
-- ✅ Sitemap updated with correct domain (bauklar.io)
+- ✅ Sitemap updated with correct domain (bauklar.org)
 - ✅ All legal pages added (Impressum, AGB, Datenschutz, Widerruf)
 - ✅ Success page excluded (has noindex)
 - ✅ robots.txt updated with correct domain
@@ -670,7 +670,7 @@ alt={`${areaNames[area] || area} - Foto ${index + 1}`}
 **Status:**
 - ✅ FAQPage Schema created and added to FAQSection
 - ✅ Service Schema created and added to ServicesSection
-- ✅ Both schemas use correct domain (bauklar.io) and company name (Claverium)
+- ✅ Both schemas use correct domain (bauklar.org) and company name (Claverium)
 
 **Files created:**
 - `/src/components/FAQSchema.tsx` ✅
@@ -750,7 +750,7 @@ const serviceSchema = {
 **Status:**
 - ✅ Footer headings changed from H3/H4 to H2 for better semantic structure
 - ✅ Company name updated to Claverium GmbH
-- ✅ Brand name updated to Bauklar.io
+- ✅ Brand name updated to Bauklar.org
 
 **Files modified:**
 - `/src/components/Footer.tsx` ✅

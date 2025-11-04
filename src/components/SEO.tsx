@@ -11,6 +11,54 @@ interface SEOProps {
   noindex?: boolean;
 }
 
+// Helper to normalize canonical URLs with trailing slash
+const normalizeCanonicalUrl = (url: string, siteUrl: string): string => {
+  // If URL is already absolute (starts with http), normalize it
+  if (url.startsWith('http')) {
+    // If it's our domain, ensure trailing slash
+    if (url.startsWith(siteUrl)) {
+      const path = url.substring(siteUrl.length);
+      // If path is empty or just '/', return with trailing slash
+      if (!path || path === '/') {
+        return `${siteUrl}/`;
+      }
+      // If path has query params or hash, don't add trailing slash
+      if (path.includes('?') || path.includes('#')) {
+        return url;
+      }
+      // Add trailing slash if not already present
+      if (!path.endsWith('/')) {
+        return `${siteUrl}${path}/`;
+      }
+      return url;
+    }
+    // External URL, return as-is
+    return url;
+  }
+  
+  // Relative path - ensure it starts with /
+  if (!url.startsWith('/')) {
+    url = '/' + url;
+  }
+  
+  // Root path should end with /
+  if (url === '/') {
+    return `${siteUrl}/`;
+  }
+  
+  // If path has query params or hash, don't add trailing slash
+  if (url.includes('?') || url.includes('#')) {
+    return `${siteUrl}${url}`;
+  }
+  
+  // Add trailing slash if not already present
+  if (!url.endsWith('/')) {
+    url = url + '/';
+  }
+  
+  return `${siteUrl}${url}`;
+};
+
 // Validation helpers
 const validateTitle = (title: string, siteName: string): string => {
   const fullTitle = `${title} | ${siteName}`;
@@ -51,7 +99,9 @@ export function SEO({
   const validatedTitle = validateTitle(title, siteName);
   const validatedDescription = validateDescription(description);
   const fullTitle = `${validatedTitle} | ${siteName}`;
-  const canonicalUrl = canonical || `${siteUrl}${location.pathname}`;
+  // Normalize canonical URL with trailing slash
+  const canonicalPath = canonical || location.pathname;
+  const canonicalUrl = normalizeCanonicalUrl(canonicalPath, siteUrl);
   const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 
   return (

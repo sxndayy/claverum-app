@@ -1,4 +1,4 @@
-# Bild-SEO To-Dos für Bauklar.io
+# Bild-SEO To-Dos für Bauklar.org
 
 ## Status: Was bereits gemacht wurde ✅
 
@@ -177,9 +177,9 @@ GOOD:
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://bauklar.io/</loc>
+    <loc>https://bauklar.org/</loc>
     <image:image>
-      <image:loc>https://bauklar.io/hero-image.jpg</image:loc>
+      <image:loc>https://bauklar.org/hero-image.jpg</image:loc>
       <image:title>Bauschadensbewertung Hero</image:title>
       <image:caption>Professionelle Bauschadensanalyse</image:caption>
     </image:image>

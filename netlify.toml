@@ -1,0 +1,64 @@
+# Netlify Configuration File
+
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# Redirects - ensure trailing slash consistency
+# Redirect paths without trailing slash (and without file extensions) to paths with trailing slash
+# This ensures canonical URLs are consistent
+
+[[redirects]]
+  from = "/evaluation"
+  to = "/evaluation/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/success"
+  to = "/success/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/admin/login"
+  to = "/admin/login/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/impressum"
+  to = "/impressum/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/agb"
+  to = "/agb/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/datenschutz"
+  to = "/datenschutz/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/widerruf"
+  to = "/widerruf/"
+  status = 301
+  force = true
+
+# SPA fallback - must be last to handle all other routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
