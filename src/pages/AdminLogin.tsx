@@ -50,7 +50,7 @@ const AdminLogin: React.FC = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
+          <h1 className="text-2xl font-bold mb-2">Admin Login</h1>
           <CardDescription>
             Enter your credentials to access the admin dashboard
           </CardDescription>

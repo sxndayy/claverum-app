@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-black">Bauklar.org</h2>
+            <h3 className="text-xl font-bold text-black">Bauklar.org</h3>
             <p className="text-black text-sm leading-relaxed">
               Professionelle Bauschadensbewertung für private Immobilienkäufer. 
               Schnell, zuverlässig, digital.
@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
 
           {/* Services */}
           <div className="space-y-4">
-            <h2 className="font-semibold text-black">Leistungen</h2>
+            <h3 className="font-semibold text-black">Leistungen</h3>
             <ul className="space-y-2 text-sm text-black">
               <li>
                 <button 
@@ -66,7 +66,7 @@ const Footer: React.FC = () => {
 
           {/* Navigation */}
           <div className="space-y-4">
-            <h2 className="font-semibold text-black">Navigation</h2>
+            <h3 className="font-semibold text-black">Navigation</h3>
             <ul className="space-y-2 text-sm text-black">
               <li>
                 <button 
@@ -105,7 +105,7 @@ const Footer: React.FC = () => {
 
           {/* Contact */}
           <div className="space-y-4">
-            <h2 className="font-semibold text-black">Kontakt</h2>
+            <h3 className="font-semibold text-black">Kontakt</h3>
             <div className="space-y-3 text-sm text-black">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />

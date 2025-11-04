@@ -1,5 +1,6 @@
 import React from 'react';
 import { SEO } from '@/components/SEO';
+import { WebSiteSchema } from '@/components/WebSiteSchema';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
@@ -21,6 +22,7 @@ const Index = () => {
         description="Professionelle Bauschadensbewertung per KI. Upload in Minuten, Ergebnis bis nächster Werktag. DSGVO-konform, transparent, verlässlich."
         canonical="/"
       />
+      <WebSiteSchema />
       <div className="min-h-screen bg-background">
         <Header />
       <main>

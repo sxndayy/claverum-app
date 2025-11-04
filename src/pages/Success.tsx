@@ -74,7 +74,7 @@ const Success: React.FC = () => {
                     <Mail className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-text-100">Bestätigungs-E-Mail</h4>
+                    <h3 className="font-medium text-text-100">Bestätigungs-E-Mail</h3>
                     <p className="text-sm text-text-200">
                       Sie erhalten in wenigen Minuten eine Bestätigung mit allen Details per E-Mail.
                     </p>
@@ -86,7 +86,7 @@ const Success: React.FC = () => {
                     <Upload className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-text-100">Dokumente nachreichen</h4>
+                    <h3 className="font-medium text-text-100">Dokumente nachreichen</h3>
                     <p className="text-sm text-text-200">
                       Falls Sie weitere Fotos oder Dokumente haben, können Sie diese noch bis zu 24 Stunden nachreichen.
                     </p>
@@ -98,7 +98,7 @@ const Success: React.FC = () => {
                     <Clock className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-text-100">Analyse & Bewertung</h4>
+                    <h3 className="font-medium text-text-100">Analyse & Bewertung</h3>
                     <p className="text-sm text-text-200">
                       Unsere Experten analysieren Ihr Objekt. Sie erhalten das Ergebnis innerhalb von 48 Stunden.
                     </p>
