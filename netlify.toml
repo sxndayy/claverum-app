@@ -8,6 +8,13 @@
 # Redirect paths without trailing slash (and without file extensions) to paths with trailing slash
 # This ensures canonical URLs are consistent
 
+# WWW to Non-WWW redirect - ensure canonical domain
+[[redirects]]
+  from = "https://www.bauklar.org/*"
+  to = "https://bauklar.org/:splat"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/evaluation"
   to = "/evaluation/"

@@ -17,8 +17,8 @@ const Index = () => {
   return (
     <>
       <SEO 
-        title="Unabhängige Bauschadensanalyse" 
-        description="Lassen Sie Ihr Wunschobjekt per KI prüfen. Upload in Minuten, Ergebnis bis nächster Werktag. DSGVO-konform, transparent, zuverlässig."
+        title="Professionelle Bauschadensbewertung - schnell, transparent, verlässlich" 
+        description="Professionelle Bauschadensbewertung per KI. Upload in Minuten, Ergebnis bis nächster Werktag. DSGVO-konform, transparent, verlässlich."
         canonical="/"
       />
       <div className="min-h-screen bg-background">
