@@ -450,8 +450,9 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
                             <div key={upload.id} className="relative group">
                               <img
                                 src={getPublicImageUrl(upload)}
-                                alt={`${areaNames[area] || area} - Foto von Gebäudebereich`}
+                                alt={`Bauschadensanalyse - ${areaNames[area] || area} Bereich - Gebäudeaufnahme`}
                                 className="w-full h-32 object-cover rounded-lg border"
+                                loading="lazy"
                                 onError={(e) => {
                                   (e.target as HTMLImageElement).src = '/placeholder.svg';
                                 }}

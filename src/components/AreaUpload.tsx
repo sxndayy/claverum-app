@@ -181,8 +181,9 @@ const AreaUpload: React.FC<AreaUploadProps> = ({
               <div key={index} className="relative h-32 w-full rounded-md overflow-hidden">
                 <img 
                   src={url} 
-                  alt={`${areaName} - Foto ${index + 1}${fileName ? ` (${fileName})` : ''}`} 
-                  className="object-cover w-full h-full" 
+                  alt={`Bauschadensanalyse - ${areaName} Bereich - Foto ${index + 1}${fileName ? ` (${fileName})` : ''}`} 
+                  className="object-cover w-full h-full"
+                  loading="lazy"
                 />
                 <Button
                   type="button"

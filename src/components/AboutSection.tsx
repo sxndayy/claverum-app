@@ -1,10 +1,18 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Linkedin, Mail, Phone } from 'lucide-react';
+import { ImageSchema } from '@/components/ImageSchema';
 
 const AboutSection: React.FC = () => {
   return (
-    <section id="ueber-uns" className="py-20 bg-bg-200">
+    <>
+      <ImageSchema
+        imageUrl="/Johannes-foto.jpeg"
+        title="Dr. Johannes Stankiewicz - Diplom Sachverständiger für Bauschadensbewertung"
+        description="Dr. Johannes Stankiewicz, Diplom Sachverständiger (DIA) für Immobilien- und Bauschadensbewertung bei Bauklar.io"
+        pageUrl="/#ueber-uns"
+      />
+      <section id="ueber-uns" className="py-20 bg-bg-200">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
@@ -22,8 +30,9 @@ const AboutSection: React.FC = () => {
               <div className="w-48 h-48 bg-brand-100 rounded-full mx-auto lg:mx-0 mb-6 flex items-center justify-center overflow-hidden">
                 <img 
                   src="/Johannes-foto.jpeg" 
-                  alt="Dr. Johannes Stankiewicz" 
+                  alt="Dr. Johannes Stankiewicz - Diplom Sachverständiger für Bauschadensbewertung" 
                   className="w-full h-full object-cover rounded-full"
+                  loading="lazy"
                   onError={(e) => {
                     // Fallback zu MK wenn Bild nicht gefunden wird
                     e.currentTarget.style.display = 'none';
@@ -147,6 +156,7 @@ Dank Erfahrung aus Investment, Hausverwaltung und Family Office betrachten wir I
         </div>
       </div>
     </section>
+    </>
   );
 };
 

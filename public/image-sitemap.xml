@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Homepage - Hero/Service Images -->
+  <url>
+    <loc>https://bauklar.io/</loc>
+    <image:image>
+      <image:loc>https://bauklar.io/logo-final.png</image:loc>
+      <image:title>Bauklar.io Logo</image:title>
+      <image:caption>Logo von Bauklar.io - Professionelle Bauschadensbewertung</image:caption>
+    </image:image>
+  </url>
+
+  <!-- About Section - Profile Image -->
+  <url>
+    <loc>https://bauklar.io/#ueber-uns</loc>
+    <image:image>
+      <image:loc>https://bauklar.io/Johannes-foto.jpeg</image:loc>
+      <image:title>Dr. Johannes Stankiewicz - Diplom Sachverständiger</image:title>
+      <image:caption>Dr. Johannes Stankiewicz, Diplom Sachverständiger für Bauschadensbewertung bei Bauklar.io</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Open Graph Image (if exists) -->
+  <url>
+    <loc>https://bauklar.io/</loc>
+    <image:image>
+      <image:loc>https://bauklar.io/og-image.png</image:loc>
+      <image:title>Bauklar.io - Unabhängige Bauschadensanalyse</image:title>
+      <image:caption>Professionelle Bauschadensbewertung mit KI-gestützter Analyse</image:caption>
+    </image:image>
+  </url>
+
+</urlset>
+
