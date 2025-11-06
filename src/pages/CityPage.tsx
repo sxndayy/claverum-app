@@ -137,7 +137,7 @@ const CityPage: React.FC<CityPageProps> = ({ cityData }) => {
             <div className="container mx-auto px-4 relative z-10">
               <div className="max-w-4xl mx-auto">
                 <h1 className="text-3xl md:text-4xl font-bold text-text-100 mb-6">
-                  {cityData.content.hero.h1}
+                  {cityData?.content?.hero?.h1 || `${cityData?.city || 'Stadt'} Bauschadensanalyse – verlässlich vor dem Hauskauf`}
                 </h1>
                 <p className="text-xl text-text-200 mb-8 leading-relaxed">
                   {cityData.content.hero.subtitle}

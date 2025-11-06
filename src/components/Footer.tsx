@@ -45,6 +45,7 @@ const Footer: React.FC = () => {
                 className="w-8 h-8 bg-bg-100/10 rounded-full flex items-center justify-center hover:bg-bg-100/20 transition-smooth"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="LinkedIn Profil von Dr. Johannes Stankiewicz"
               >
                 <Linkedin className="w-4 h-4" />
               </a>
