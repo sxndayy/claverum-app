@@ -40,7 +40,7 @@ const Impressum = () => {
                   
                   <div>
                     <h2 className="text-2xl font-semibold text-text-100 mb-4">Kontakt</h2>
-                    <p className="mb-2">Telefon: 015143170757</p>
+                    <p className="mb-2">Telefon: +49 322 21804909</p>
                     <p className="mb-4">E-Mail: kontakt@bauklar.org</p>
                   </div>
                   

@@ -11,6 +11,21 @@ const Header: React.FC = () => {
   
   // Check if we're on a subpage (not homepage)
   const isNotHomePage = location.pathname !== '/';
+  
+  // Pages where the CTA button should NOT be shown (admin, evaluation, success)
+  const pagesWithoutCTA = [
+    '/evaluation',
+    '/success',
+    '/admin',
+    '/admin/login'
+  ];
+  
+  // Show CTA button on homepage, city pages, and legal pages (but not on pagesWithoutCTA)
+  // City pages are single-level paths like /berlin, /hamburg, etc.
+  const pathSegments = location.pathname.split('/').filter(Boolean);
+  const isCityPage = pathSegments.length === 1 && !pagesWithoutCTA.includes(location.pathname);
+  const isLegalPage = ['/impressum', '/agb', '/datenschutz', '/widerruf'].includes(location.pathname);
+  const shouldShowCTA = location.pathname === '/' || isCityPage || isLegalPage;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,7 +41,8 @@ const Header: React.FC = () => {
     setIsMenuOpen(false);
   };
 
-  const scrollToSection = (sectionId: string) => {
+  const handleSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    e.preventDefault();
     // If we're not on the homepage, navigate to homepage first
     if (isNotHomePage) {
       navigate('/');
@@ -67,7 +83,22 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center" aria-label="Bauklar.org Homepage">
+          <Link 
+            to="/" 
+            className="flex items-center" 
+            aria-label="Bauklar.org Homepage"
+            onClick={() => {
+              // Scroll zur oberen Position wenn man zur Homepage navigiert
+              if (location.pathname !== '/') {
+                setTimeout(() => {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 100);
+              } else {
+                // Wenn bereits auf Homepage, direkt nach oben scrollen
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+          >
             <span className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
               Bauklar.org
             </span>
@@ -76,18 +107,19 @@ const Header: React.FC = () => {
           {/* Desktop Navigation - immer an der gleichen Position */}
           <nav className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <button
+              <a
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                href={`/#${item.id}`}
+                onClick={(e) => handleSectionClick(e, item.id)}
                 className="text-text-200 hover:text-primary transition-smooth text-sm font-medium"
               >
                 {item.label}
-              </button>
+              </a>
             ))}
           </nav>
 
-          {/* CTA Button - nur auf Landing Page anzeigen */}
-          {!isNotHomePage && (
+          {/* CTA Button - auf Landing Page und City-Seiten anzeigen */}
+          {shouldShowCTA && (
             <div className="hidden md:block">
               <Button
                 onClick={handleStartEvaluation}
@@ -98,8 +130,8 @@ const Header: React.FC = () => {
             </div>
           )}
 
-          {/* Unsichtbarer Spacer für Subpages um Layout zu halten */}
-          {isNotHomePage && (
+          {/* Unsichtbarer Spacer für andere Subpages um Layout zu halten */}
+          {!shouldShowCTA && (
             <div className="hidden md:block">
               <Button
                 className="bg-transparent hover:bg-transparent text-transparent font-medium px-6 pointer-events-none"
@@ -129,13 +161,14 @@ const Header: React.FC = () => {
           <div className="md:hidden absolute top-full left-0 right-0 bg-background shadow-strong border-t">
             <nav className="p-4 space-y-4">
               {navItems.map((item) => (
-                <button
+                <a
                   key={item.id}
-                  onClick={() => scrollToSection(item.id)}
+                  href={`/#${item.id}`}
+                  onClick={(e) => handleSectionClick(e, item.id)}
                   className="block w-full text-left text-text-200 hover:text-primary transition-smooth py-2"
                 >
                   {item.label}
-                </button>
+                </a>
               ))}
               <Button
                 onClick={handleStartEvaluation}

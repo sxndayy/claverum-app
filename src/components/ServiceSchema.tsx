@@ -9,7 +9,7 @@ export function ServiceSchema() {
     "description": "Professionelle Bauschadensbewertung mit KI-gestützter Analyse. Detaillierte Zustandsanalyse mit realistischen Kosten- und Risikoabschätzungen.",
     "provider": {
       "@type": "Organization",
-      "name": "Claverium",
+      "name": "Claverum",
       "url": SITE_URL,
       "logo": `${SITE_URL}/logo.png`
     },

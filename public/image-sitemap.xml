@@ -32,5 +32,127 @@
     </image:image>
   </url>
 
+  <!-- City Pages - Hero Images -->
+  <url>
+    <loc>https://bauklar.org/berlin/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/berlin.jpg</image:loc>
+      <image:title>Berlin Stadtansicht – Bauschadensanalyse für Hauskauf in Berlin</image:title>
+      <image:caption>Bauschadensanalyse Berlin – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/hamburg/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/hamburg.jpg</image:loc>
+      <image:title>Hamburg Stadtansicht – Bauschadensanalyse für Hauskauf in Hamburg</image:title>
+      <image:caption>Bauschadensanalyse Hamburg – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/muenchen/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/muenchen.jpg</image:loc>
+      <image:title>München Stadtansicht – Bauschadensanalyse für Hauskauf in München</image:title>
+      <image:caption>Bauschadensanalyse München – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/koeln/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/koeln.jpg</image:loc>
+      <image:title>Kölner Altstadt mit historischen Gebäuden und Dom – Bauschadensanalyse für Hauskauf in Köln</image:title>
+      <image:caption>Bauschadensanalyse Köln – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/duesseldorf/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/duesseldorf-rheinkniebruecke.jpg</image:loc>
+      <image:title>Düsseldorfer Rheinkniebrücke und Skyline – Bauschadensanalyse für Hauskauf in Düsseldorf</image:title>
+      <image:caption>Bauschadensanalyse Düsseldorf – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/dortmund/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/dortmund.jpg</image:loc>
+      <image:title>Dortmunder Stadtansicht mit historischen und modernen Gebäuden – Bauschadensanalyse für Hauskauf in Dortmund</image:title>
+      <image:caption>Bauschadensanalyse Dortmund – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/essen/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/essen.jpg</image:loc>
+      <image:title>Essener Stadtbild mit Industrieerbe und modernen Gebäuden – Bauschadensanalyse für Hauskauf in Essen</image:title>
+      <image:caption>Bauschadensanalyse Essen – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/frankfurt/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/frankfurt.jpg</image:loc>
+      <image:title>Frankfurter Skyline mit Hochhäusern und Main – Bauschadensanalyse für Hauskauf in Frankfurt</image:title>
+      <image:caption>Bauschadensanalyse Frankfurt – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/stuttgart/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/stuttgart.jpg</image:loc>
+      <image:title>Stuttgarter Stadtansicht mit historischen Gebäuden – Bauschadensanalyse für Hauskauf in Stuttgart</image:title>
+      <image:caption>Bauschadensanalyse Stuttgart – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/nuernberg/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/nuernberg.jpg</image:loc>
+      <image:title>Nürnberger Altstadt mit historischen Fachwerkhäusern – Bauschadensanalyse für Hauskauf in Nürnberg</image:title>
+      <image:caption>Bauschadensanalyse Nürnberg – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/leipzig/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/leipzig.jpg</image:loc>
+      <image:title>Leipziger Stadtbild mit Gründerzeithäusern – Bauschadensanalyse für Hauskauf in Leipzig</image:title>
+      <image:caption>Bauschadensanalyse Leipzig – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/dresden/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/dresden.jpg</image:loc>
+      <image:title>Dresdner Altstadt mit barocken Gebäuden und Elbe – Bauschadensanalyse für Hauskauf in Dresden</image:title>
+      <image:caption>Bauschadensanalyse Dresden – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/hannover/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/hannover.jpg</image:loc>
+      <image:title>Hannoveraner Stadtansicht mit historischen und modernen Gebäuden – Bauschadensanalyse für Hauskauf in Hannover</image:title>
+      <image:caption>Bauschadensanalyse Hannover – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/bremen/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/bremen.jpg</image:loc>
+      <image:title>Bremer Altstadt mit Backsteinbauten und historischen Gebäuden – Bauschadensanalyse für Hauskauf in Bremen</image:title>
+      <image:caption>Bauschadensanalyse Bremen – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bauklar.org/mannheim/</loc>
+    <image:image>
+      <image:loc>https://bauklar.org/mannheim.jpg</image:loc>
+      <image:title>Mannheimer Wasserturm und Stadtansicht – Bauschadensanalyse für Hauskauf in Mannheim</image:title>
+      <image:caption>Bauschadensanalyse Mannheim – Professionelle Bewertung vor dem Immobilienkauf</image:caption>
+    </image:image>
+  </url>
+
 </urlset>
 

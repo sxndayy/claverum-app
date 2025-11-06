@@ -1,0 +1,281 @@
+{
+  "city": "Bremen",
+  "slug": "bremen",
+  "url": "https://bauklar.org/bremen",
+  "seo": {
+    "title": "Gutachter Hauskauf Bremen – In 2 Tagen Klarheit | ab 350€ | bauklar.org",
+    "metaDescription": "Unabhängige Bauschadensanalyse für Hauskauf in Bremen. Backstein, Gründerzeit, Weser – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
+    "canonical": "/bremen",
+    "robots": "index, follow",
+    "openGraph": {
+      "type": "website",
+      "title": "Bauschadensanalyse Bremen – Verlässliche Bewertung vor dem Kauf",
+      "description": "Unabhängige Bauschadensanalyse für Hauskauf in Bremen. Backstein, Gründerzeit, Weser – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
+      "image": "https://bauklar.org/og/hero-altbau.jpg",
+      "url": "https://bauklar.org/bremen"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Bauschadensanalyse Bremen – Verlässliche Bewertung vor dem Kauf",
+      "description": "Unabhängige Bauschadensanalyse für Hauskauf in Bremen. Backstein, Gründerzeit, Weser – digitale Prüfung innerhalb von 2 Werktagen.",
+      "image": "https://bauklar.org/og/hero-altbau.jpg"
+    }
+  },
+  "structuredData": {
+    "localBusiness": {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "bauklar.org - Bauschadensanalyse Bremen",
+      "image": "https://bauklar.org/og/hero-altbau.jpg",
+      "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Bremen",
+      "areaServed": {
+        "@type": "City",
+        "name": "Bremen",
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Bremen"
+        }
+      },
+      "priceRange": "ab 350€",
+      "url": "https://bauklar.org/bremen"
+    },
+    "service": {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Bauschadensanalyse Bremen",
+      "serviceType": "Bauschadensanalyse",
+      "provider": {
+        "@type": "Organization",
+        "name": "bauklar.org",
+        "url": "https://bauklar.org"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Bremen"
+      },
+      "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Bremen"
+    },
+    "breadcrumb": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://bauklar.org"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Bremen",
+          "item": "https://bauklar.org/bremen"
+        }
+      ]
+    },
+    "faqPage": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Welche Gebäudetypen in Bremen werden geprüft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Alle Gebäudetypen werden analysiert: Backsteinbauten in der Altstadt oder Neustadt, Gründerzeithäuser in Schwachhausen, Nachkriegsbauten in Vahr sowie moderne Neubauten in Oberneuland. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie schnell erhalte ich den Bericht für meine Immobilie in Bremen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was kostet eine Bauschadensanalyse in Bremen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Bremen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die digitale Analyse bietet eine fundierte Ersteinschätzung auf Basis der verfügbaren Informationen. Bei schwerwiegenden Mängeln oder komplexen Schadensbildern wird eine vertiefende Prüfung empfohlen."
+          }
+        }
+      ]
+    }
+  },
+  "images": {
+    "hero": {
+      "src": "/bremen.jpg",
+      "alt": "Bremer Altstadt mit Backsteinbauten und historischen Gebäuden – Bauschadensanalyse für Hauskauf in Bremen",
+      "width": 1600,
+      "height": 900,
+      "loading": "eager"
+    }
+  },
+  "content": {
+    "hero": {
+      "h1": "Bauschadensanalyse Bremen – verlässlich vor dem Hauskauf",
+      "subtitle": "Unabhängige Bewertung von Backsteinbauten, Gründerzeithäusern und modernen Neubauten in Bremen. Digitale Analyse mit verständlichem Bericht innerhalb von 2 Werktagen – ohne Vor-Ort-Termin.",
+      "cta": {
+        "primary": "Jetzt Bewertung starten",
+        "secondary": "So funktioniert's"
+      }
+    },
+    "sections": [
+      {
+        "id": "warum-bauschadensanalyse",
+        "h2": "Warum eine Bauschadensanalyse vor dem Immobilienkauf in Bremen",
+        "content": "Der Kauf einer Immobilie in Bremen ist eine bedeutende finanzielle Entscheidung. Ob Backsteinbau in der Altstadt, Gründerzeithaus in Schwachhausen oder Nachkriegsbau in Vahr – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.\n\nEine Bauschadensanalyse schafft Transparenz. Sie zeigt auf, welche Bauteile intakt sind, wo Sanierungsbedarf besteht und welche Kosten voraussichtlich anfallen. Diese Klarheit ermöglicht eine fundierte Entscheidung darüber, ob die Immobilie zum angebotenen Preis kaufenswert ist oder ob Nachverhandlungen erforderlich sind.\n\nBesonders in Bremen mit seinem charakteristischen Backstein-Bestand und den durch die Hansezeit geprägten historischen Gebäuden ist fachliche Einschätzung wertvoll. Die Stadt wurde im Zweiten Weltkrieg zu über 60 Prozent zerstört, darunter nahezu die gesamte Innenstadt mit ihren Backsteinbauten. Der Wiederaufbau erfolgte teils durch originalgetreue Rekonstruktion historischer Gebäude, überwiegend aber durch funktionale Nachkriegsbauten.\n\nDie digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Sie erhalten den Bericht per E-Mail innerhalb von 2 Werktagen und können direkt mit fundierten Informationen in Kaufverhandlungen gehen."
+      },
+      {
+        "id": "typische-gebaeude-bremen",
+        "h2": "Typische Gebäudetypen und Risiken in Bremen",
+        "subsections": [
+          {
+            "h3": "Backsteinbauten in der Altstadt und Neustadt",
+            "content": "Backsteinbauten prägen weite Teile Bremens. Die Stadt verfügt über einen charakteristischen Backstein-Bestand, der durch die Hansezeit geprägt wurde. Diese Gebäude entstanden zwischen dem 14. und 19. Jahrhundert und wurden nach dem Zweiten Weltkrieg teils originalgetreu rekonstruiert. Die charakteristischen Häuser zeichnen sich durch ihre Backsteinfassaden, aufwendige Verzierungen und oft steile Dächer aus.\n\nDie innere Struktur entspricht der typischen Blockrandbebauung mit Vorderhäusern zur Straße, Seitenflügeln und Hinterhäusern zum Innenhof. Die Wohnungen waren für das wohlhabende Bürgertum konzipiert und verfügen über repräsentative Eingangsbereiche, Stuckdecken und teilweise Parkettböden.\n\nHäufige Schwachstellen bei Bremer Backsteinbauten sind Feuchtigkeit durch defekte Fugenmörtel zwischen den Backsteinen. Frost-Tau-Wechsel setzen den Fugen zu. Aufsteigende Feuchtigkeit aus dem Erdreich tritt bei älteren Gebäuden ohne Horizontalsperre auf. Durchfeuchtetes Mauerwerk führt zu Salzausblühungen, Frostschäden und Schimmelbildung.\n\nDie Haustechnik entspricht oft nicht mehr heutigen Standards. Wasserleitungen aus Blei oder verzinktem Stahl sind sanierungsbedürftig, Elektroinstallationen genügen oft nicht mehr den Sicherheitsanforderungen. Die energetische Sanierung dieser Gebäude ist kostspielig, verbessert aber Wohnkomfort und Betriebskosten erheblich."
+          },
+          {
+            "h3": "Gründerzeithäuser in Schwachhausen und Vahr",
+            "content": "Gründerzeithäuser prägen weite Teile Bremens. Die Stadt erlebte im 19. Jahrhundert einen enormen Bauboom, der zu einem riesigen Gründerzeit-Bestand führte. Diese Gebäude entstanden zwischen 1870 und 1910 und wurden nach dem Zweiten Weltkrieg teils umfassend renoviert. Die charakteristischen Mietshäuser zeichnen sich durch verputzte Ziegelwände, hohe Geschosshöhen, repräsentative Stuckfassaden und großzügige Grundrisse aus.\n\nDie innere Struktur entspricht der typischen Blockrandbebauung mit Vorderhäusern zur Straße, Seitenflügeln und Hinterhäusern zum Innenhof. Die Wohnungen waren für das wohlhabende Bürgertum konzipiert und verfügen über repräsentative Eingangsbereiche, Stuckdecken und teilweise Parkettböden. Die Bauqualität dieser Häuser ist grundsätzlich solide, jedoch zeigen sich nach über 100 Jahren charakteristische Alterungserscheinungen.\n\nHäufige Schwachstellen bei Bremer Gründerzeithäusern sind Feuchtigkeit in Kellern durch fehlende oder defekte Horizontalsperren. Das Grundwasser steht in vielen Stadtteilen relativ hoch, was Abdichtungsprobleme verschärft. Holzbalkendecken können durch Schädlingsbefall oder statische Überlastung geschädigt sein. Stuckfassaden zeigen nach über 100 Jahren oft Risse, Abplatzungen oder Durchfeuchtung.\n\nDie Haustechnik entspricht oft nicht mehr heutigen Standards. Wasserleitungen aus Blei oder verzinktem Stahl sind sanierungsbedürftig, Elektroinstallationen genügen oft nicht mehr den Sicherheitsanforderungen, und alte Gasthermen oder Ofenheizungen sollten durch moderne Heizsysteme ersetzt werden. Die energetische Sanierung dieser Gebäude ist kostspielig, verbessert aber Wohnkomfort und Betriebskosten erheblich."
+          },
+          {
+            "h3": "Eigentumswohnungen: Gemeinschaftseigentum richtig bewerten",
+            "content": "Beim Kauf einer Eigentumswohnung in Bremen ist der Zustand des Gemeinschaftseigentums ebenso wichtig wie der Zustand der eigenen Wohnung. Fassade, Dach, Treppenhaus, Aufzug und zentrale Haustechnik werden gemeinschaftlich unterhalten. Sanierungsbedarf an diesen Bauteilen führt zu Umlagen, die alle Eigentümer nach Miteigentumsanteil tragen müssen.\n\nDie Instandhaltungsrücklage gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Eine Faustregel besagt, dass pro Quadratmeter Wohnfläche und Jahr mindestens ein Euro in die Rücklage fließen sollte. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.\n\nGeplante Maßnahmen, bereits diskutierte Mängel und Beschlussfassungen aus Eigentümerversammlungen sollten sorgfältig geprüft werden. Häufig werden größere Sanierungen bereits Jahre im Voraus besprochen, bevor der Beschluss gefasst wird.\n\nHäufige Schwachstellen im Gemeinschaftseigentum Bremer Wohngebäude sind undichte Flachdächer, sanierungsbedürftige Fassaden, veraltete Aufzugsanlagen und Wasserleitungen mit Korrosionsschäden. Auch Brandschutzmaßnahmen entsprechen bei älteren Gebäuden oft nicht mehr den aktuellen Anforderungen und erfordern Nachrüstung von Rauchmeldern, Feuerschutztüren oder Fluchtwegsicherungen.\n\nEine Bauschadensanalyse berücksichtigt soweit aus Unterlagen und Fotos erkennbar auch das Gemeinschaftseigentum. Hinweise auf absehbare Sanierungen werden im Bericht aufgeführt. Dies ermöglicht eine realistische Einschätzung der Gesamtkosten über die kommenden Jahre."
+          }
+        ]
+      },
+      {
+        "id": "ablauf",
+        "h2": "Ablauf der digitalen Bauschadensanalyse",
+        "content": "Die Bauschadensanalyse erfolgt vollständig digital und erfordert keine Terminvereinbarung. Sie laden Fotos der Immobilie sowie vorhandene Unterlagen wie Energieausweise hoch. Ergänzend geben Sie relevante Informationen zu Baujahr, Bauweise, erkannten Mängeln und geplanten Nutzungen an.\n\nJe vollständiger die eingereichten Informationen sind, desto präziser kann die Bewertung erfolgen. Fotos sollten alle wesentlichen Bereiche dokumentieren: Fassade, Dach, Keller, Heizungsanlage, Fenster, Sanitärinstallationen und erkennbare Schadensstellen. Auch unscheinbare Details wie Risse, Feuchtigkeitsflecken oder Schimmelansätze sind wichtig.\n\nEin qualifizierter Sachverständiger analysiert die eingereichten Daten systematisch. Bausubstanz, Haustechnik, Feuchtigkeitserscheinungen, Risse und weitere Schadensmuster werden erfasst und bewertet. Die Einschätzung berücksichtigt typische Alterungserscheinungen des jeweiligen Gebäudetyps, übliche Sanierungszyklen und erkennbare Risikofaktoren.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Datenübermittlung. Der Bericht kann für Bankgespräche, Verhandlungen mit Verkäufern oder als Grundlage für die Sanierungsplanung genutzt werden.\n\nDiese Form der Bewertung bietet eine fundierte Grundlage für Ihre Kaufentscheidung ohne aufwendige Koordination oder zeitliche Abstimmungen. Die Analyse erfolgt unabhängig und objektiv ausschließlich auf Basis der technischen Gegebenheiten. Detaillierte Informationen zum Ablauf finden Sie unter <link href='/so-funktioniert'>So funktioniert's</link>."
+      },
+      {
+        "id": "was-sie-erhalten",
+        "h2": "Was der Bericht enthält",
+        "content": "Der Bericht stellt den Zustand der Immobilie strukturiert und nachvollziehbar dar. Wesentliche Bauteile wie Tragwerk, Dach, Fassade, Fenster, Haustechnik und Innenausbau werden einzeln bewertet. Jedes Bauteil erhält eine Einschätzung seines aktuellen Zustands.\n\nErkannte Mängel werden beschrieben, ihre voraussichtliche Ursache erläutert und ihre Bedeutung für die Bausubstanz eingeordnet. Nicht jeder Mangel ist gleich schwerwiegend. Der Bericht unterscheidet zwischen kosmetischen Mängeln, Instandhaltungsrückstau und substanziellen Schäden, die kurzfristig behoben werden sollten.\n\nZu wesentlichen Schadenspositionen erhalten Sie nachvollziehbare Kostenspannen. Diese orientieren sich an üblichen Marktpreisen in Bremen und berücksichtigen verschiedene Sanierungsvarianten. Die Spannen sind bewusst realistisch gehalten, um eine verlässliche Kalkulationsgrundlage zu bieten. Pauschale oder geschönte Angaben werden vermieden.\n\nDie Priorisierung zeigt auf, welche Maßnahmen voraussichtlich kurzfristig erforderlich sind und welche mittelfristig geplant werden sollten. Dies ermöglicht eine strukturierte Finanzplanung und verhindert, dass dringliche Instandsetzungen übersehen werden. Langfristige Modernisierungspotenziale werden ebenfalls benannt.\n\nFachbegriffe werden verständlich erklärt, technische Zusammenhänge nachvollziehbar dargestellt. Der Bericht richtet sich an Käufer ohne bautechnische Vorkenntnisse und verzichtet auf unnötiges Fachvokabular. Gleichzeitig ist er präzise genug, um bei Bedarf mit Handwerkern oder Architekten besprochen zu werden.\n\nZusätzlich werden erkennbare Chancen benannt. Nicht jede Immobilie mit Mängeln ist problematisch. Oft lassen sich durch gezielte Maßnahmen Wert und Wohnqualität erheblich steigern. Der Bericht hilft, realistische von überzogenen Bedenken zu unterscheiden und die tatsächlichen Risiken einzuordnen. Transparente Informationen zu Preisen finden Sie unter <link href='/preise'>Preise</link>."
+      },
+      {
+        "id": "lokale-besonderheiten",
+        "h2": "Lokale Besonderheiten des Bremer Immobilienmarkts",
+        "content": "Bremen unterscheidet sich als Immobilienmarkt durch seinen charakteristischen Backstein-Bestand und die durch die Hansezeit geprägten historischen Gebäude. Die Stadt wurde im Zweiten Weltkrieg zu über 60 Prozent zerstört, darunter nahezu die gesamte Innenstadt mit ihren Backsteinbauten. Der Wiederaufbau erfolgte teils durch originalgetreue Rekonstruktion historischer Gebäude, überwiegend aber durch funktionale Nachkriegsbauten.\n\nDer Untergrund im Bremer Raum ist geprägt von Sand, Lehm und stellenweise Ton. Die Bodenbeschaffenheit beeinflusst Gründungsarten und Setzungsverhalten. In tiefliegenden Stadtteilen spielen Grundwasserstände eine wichtige Rolle. Gebäude in Nähe zur Weser müssen auf Hochwasserschutz ausgelegt sein.\n\nDie Weser-Nähe beeinflusst Grundwasserstände und erfordert besondere Abdichtungsmaßnahmen in Kellern und erdberührenden Bauteilen. Drückendes Wasser kann bei unzureichender Abdichtung zu Durchfeuchtung führen. Hochwasser-Risiken erfordern besondere Vorsorge-Maßnahmen.\n\nDie hohe Luftfeuchtigkeit in vielen Stadtteilen belastet Bausubstanz stärker als in Binnenlandregionen. Fassaden, Fenster und Dächer sind erhöhter Witterungsbelastung ausgesetzt. Frostperioden im Winter mit anschließendem Tauwetter setzen Bauteilen zu und können Frostschäden verursachen.\n\nDer Denkmalschutz spielt in Bremen eine wichtige Rolle, besonders in der Altstadt und den historischen Stadtteilen. Sanierungen erfordern Genehmigungen und müssen denkmalpflegerischen Anforderungen genügen. Dies kann Mehrkosten verursachen, sichert aber den Erhalt des kulturellen Erbes.\n\nDie kontinuierliche Stadtentwicklung schafft neue Wohnquartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne prägt Bremen. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die sich an der umgebenden Bebauung orientieren.\n\nWeitere Informationen zum Bremer Immobilienmarkt und baurechtliche Hinweise finden Sie beim <a href='https://www.bremen.de/stadtplanung' rel='nofollow'>Stadtplanungsamt Bremen</a> sowie beim <a href='https://www.mieterverein-bremen.de' rel='nofollow'>Mieterverein Bremen</a>."
+      }
+    ],
+    "ctaSection": {
+      "h2": "Jetzt Bauzustand Ihrer Wunschimmobilie in Bremen prüfen lassen",
+      "content": "Eine fundierte Bauschadensanalyse gibt Ihnen Sicherheit vor dem Immobilienkauf. Sie erhalten objektive Einschätzungen durch qualifizierte Sachverständige, realistische Kostenrahmen für erkannte Mängel und verständliche Handlungsempfehlungen. Die digitale Bewertung ist zeitlich flexibel, transparent und erfolgt ohne Vor-Ort-Termine.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und haben damit Klarheit für Ihre Kaufentscheidung. Sie können ihn für Verhandlungen mit Verkäufern nutzen, Ihrer Bank vorlegen oder als Grundlage für die Sanierungsplanung verwenden. Starten Sie jetzt die Bewertung und treffen Sie Ihre Kaufentscheidung auf fundierter Basis.",
+      "primaryCTA": {
+        "text": "Jetzt Bewertung starten",
+        "link": "/evaluation"
+      },
+      "secondaryCTA": {
+        "text": "So funktioniert's ansehen",
+        "link": "/so-funktioniert"
+      },
+      "microcopy": "Bericht per E-Mail innerhalb von 2 Werktagen – schnell, transparent, verlässlich.",
+      "trustElements": [
+        {
+          "text": "Qualifizierte Sachverständige"
+        },
+        {
+          "text": "Bericht innerhalb von 2 Werktagen"
+        },
+        {
+          "text": "Transparente Kostenspannen"
+        },
+        {
+          "text": "Keine versteckten Kosten"
+        }
+      ]
+    }
+  },
+  "faq": [
+    {
+      "question": "Welche Gebäudetypen in Bremen werden geprüft?",
+      "answer": "Alle Gebäudetypen werden analysiert: Backsteinbauten in der Altstadt oder Neustadt, Gründerzeithäuser in Schwachhausen, Nachkriegsbauten in Vahr sowie moderne Neubauten in Oberneuland. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+    },
+    {
+      "question": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
+      "answer": "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
+    },
+    {
+      "question": "Wie schnell erhalte ich den Bericht für meine Immobilie in Bremen?",
+      "answer": "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
+    },
+    {
+      "question": "Was kostet eine Bauschadensanalyse in Bremen?",
+      "answer": "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Bremen."
+    },
+    {
+      "question": "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
+      "answer": "Die digitale Analyse bietet eine fundierte Ersteinschätzung auf Basis der verfügbaren Informationen. Bei schwerwiegenden Mängeln oder komplexen Schadensbildern wird eine vertiefende Prüfung empfohlen."
+    }
+  ],
+  "keywords": {
+    "primary": [
+      "gutachter haus kaufen bremen",
+      "bausachverständiger bremen",
+      "bauschadensanalyse bremen",
+      "gutachter wohnungskauf bremen",
+      "immobilie prüfen lassen bremen"
+    ],
+    "secondary": [
+      "altbau gutachter bremen",
+      "hauskauf beratung bremen altstadt",
+      "baugutachter bremen schwachhausen",
+      "backstein gutachter bremen",
+      "wohnung prüfen vor kauf bremen",
+      "technische immobilienprüfung bremen",
+      "sachverständiger immobilie bremen"
+    ],
+    "local": [
+      "altstadt",
+      "neustadt",
+      "schwachhausen",
+      "vahr",
+      "backstein",
+      "weser",
+      "hanse"
+    ]
+  },
+  "internalLinks": [
+    {
+      "text": "So funktioniert's",
+      "url": "/so-funktioniert",
+      "context": "Detaillierte Informationen zum Ablauf"
+    },
+    {
+      "text": "Preise",
+      "url": "/preise",
+      "context": "Transparente Informationen zu Preisen"
+    },
+    {
+      "text": "FAQ",
+      "url": "/faq",
+      "context": "Weitere häufig gestellte Fragen"
+    },
+    {
+      "text": "Kontakt",
+      "url": "/kontakt",
+      "context": "Bei weiteren Fragen"
+    }
+  ]
+}
+

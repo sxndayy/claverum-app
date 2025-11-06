@@ -10,8 +10,10 @@ import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useNavigate, Link } from 'react-router-dom';
 import { Shield, Clock, CheckCircle, FileText } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+import { SITE_URL } from '@/constants/config';
 
-const Berlin = () => {
+const Muenchen = () => {
   const navigate = useNavigate();
 
   const handleStartEvaluation = () => {
@@ -37,20 +39,20 @@ const Berlin = () => {
 
   const faqItems = [
     {
-      question: "Welche Gebäudetypen in Berlin werden geprüft?",
-      answer: "Alle Gebäudetypen werden analysiert: Gründerzeithäuser in Prenzlauer Berg oder Charlottenburg, Nachkriegsbauten in Steglitz, Plattenbauten in Marzahn sowie Neubauten. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+      question: "Welche Gebäudetypen in München werden geprüft?",
+      answer: "Alle Gebäudetypen werden analysiert: Gründerzeithäuser in Schwabing oder Haidhausen, großbürgerliche Villen in Bogenhausen, Nachkriegsbauten sowie moderne Neubauten. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
     },
     {
       question: "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
       answer: "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
     },
     {
-      question: "Wie schnell erhalte ich den Bericht für meine Immobilie in Berlin?",
+      question: "Wie schnell erhalte ich den Bericht für meine Immobilie in München?",
       answer: "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
     },
     {
-      question: "Was kostet eine Bauschadensanalyse in Berlin?",
-      answer: "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Berlin."
+      question: "Was kostet eine Bauschadensanalyse in München?",
+      answer: "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für München."
     },
     {
       question: "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
@@ -58,23 +60,47 @@ const Berlin = () => {
     }
   ];
 
+  // LocalBusiness Schema for München
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "bauklar.org - Bauschadensanalyse München",
+    "image": `${SITE_URL}/og/hero-altbau.jpg`,
+    "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in München",
+    "areaServed": {
+      "@type": "City",
+      "name": "München",
+      "containedInPlace": {
+        "@type": "State",
+        "name": "Bayern"
+      }
+    },
+    "priceRange": "ab 350€",
+    "url": `${SITE_URL}/muenchen`
+  };
+
   return (
     <>
       <SEO 
-        title="Gutachter Hauskauf Berlin – In 2 Tagen Klarheit | ab 350€ | bauklar.org"
-        description="Unabhängige Bauschadensanalyse für Hauskauf in Berlin. Gründerzeit, Neubau, Eigentumswohnung – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen. Jetzt starten."
-        canonical="/berlin"
+        title="Gutachter Hauskauf München – In 2 Tagen Klarheit | ab 350€ | bauklar.org"
+        description="Unabhängige Bauschadensanalyse für Hauskauf in München. Gründerzeit, Altbau-Villen, Neubauten – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen."
+        canonical="/muenchen"
         ogImage="/images/hero-altbau.jpg"
         ogType="website"
       />
       <BreadcrumbSchema 
         items={[
           { name: 'Home', url: '/' },
-          { name: 'Berlin', url: '/berlin' }
+          { name: 'München', url: '/muenchen' }
         ]} 
       />
-      <CityServiceSchema cityName="Berlin" />
+      <CityServiceSchema cityName="München" />
       <FAQSchema faqs={faqItems} />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(localBusinessSchema)}
+        </script>
+      </Helmet>
       
       <div className="min-h-screen bg-background">
         <Header />
@@ -87,10 +113,10 @@ const Berlin = () => {
             <div className="container mx-auto px-4 relative z-10">
               <div className="max-w-4xl mx-auto">
                 <h1 className="text-3xl md:text-4xl font-bold text-text-100 mb-6">
-                  Bauschadensanalyse Berlin – verlässlich vor dem Hauskauf
+                  Bauschadensanalyse München – verlässlich vor dem Hauskauf
                 </h1>
                 <p className="text-xl text-text-200 mb-8 leading-relaxed">
-                  Unabhängige Bewertung von Altbau, Neubau und Eigentumswohnungen in Berlin. Digitale Analyse mit verständlichem Bericht innerhalb von 2 Werktagen – ohne Vor-Ort-Termin.
+                  Unabhängige Bewertung von Gründerzeit, Altbau-Villen und Neubauten in München. Digitale Analyse mit verständlichem Bericht innerhalb von 2 Werktagen – ohne Vor-Ort-Termin.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-12">
                   <Button
@@ -110,8 +136,8 @@ const Berlin = () => {
                 {/* Hero Image */}
                 <div className="mb-12 rounded-lg overflow-hidden shadow-soft">
                   <img
-                    src="/berlin.jpg"
-                    alt="Berlin Stadtansicht – Bauschadensanalyse für Hauskauf in Berlin"
+                    src="/muenchen.jpg"
+                    alt="Münchner Stadtansicht – Bauschadensanalyse für Hauskauf in München"
                     width={1600}
                     height={900}
                     loading="eager"
@@ -132,110 +158,101 @@ const Berlin = () => {
                     {/* Warum Bauschadensanalyse Section */}
                     <div id="warum-bauschadensanalyse">
                       <h2 className="text-2xl font-semibold text-text-100 mb-6">
-                        Warum eine Bauschadensanalyse vor dem Immobilienkauf in Berlin
+                        Warum eine Bauschadensanalyse vor dem Immobilienkauf in München
                       </h2>
                       <p className="mb-4">
-                        Der Kauf einer Immobilie in Berlin ist eine bedeutende finanzielle Entscheidung. Ob Gründerzeithaus in Friedrichshain, Eigentumswohnung in Charlottenburg oder Plattenbau in Lichtenberg – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.
+                        Der Kauf einer Immobilie in München ist eine bedeutende finanzielle Entscheidung. Ob Gründerzeithaus in Schwabing, großbürgerliche Villa in Bogenhausen oder moderne Eigentumswohnung in Neuhausen – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.
                       </p>
                       <p className="mb-4">
                         Eine Bauschadensanalyse schafft Transparenz. Sie zeigt auf, welche Bauteile intakt sind, wo Sanierungsbedarf besteht und welche Kosten voraussichtlich anfallen. Diese Klarheit ermöglicht eine fundierte Entscheidung darüber, ob die Immobilie zum angebotenen Preis kaufenswert ist oder ob Nachverhandlungen erforderlich sind.
                       </p>
                       <p className="mb-4">
-                        Besonders in Berlin mit seinem heterogenen Gebäudebestand ist fachliche Einschätzung wertvoll. Die Teilung der Stadt bis 1990 führte zu unterschiedlichen Bautraditionen und Sanierungsständen in Ost und West. Westberliner Altbauten wurden oft bereits in den 1980er Jahren modernisiert, während Ostberliner Gründerzeitquartiere vielfach erst nach der Wende instandgesetzt wurden. Der Sanierungsumfang variiert erheblich – von kosmetischen Maßnahmen bis zu grundlegenden Erneuerungen.
+                        Besonders in München mit seinem hohen Preisniveau ist fachliche Einschätzung wertvoll. Die Stadt ist geprägt von einem Mix aus historischer Bausubstanz, Kriegswiederaufbau und modernem Neubau. Die königliche Stadtplanung unter Ludwig I. schuf im 19. Jahrhundert repräsentative Straßenzüge und großzügige Platzanlagen. Gründerzeitviertel entstanden mit herrschaftlichen Wohnbauten für das aufstrebende Bürgertum. Nach den Zerstörungen des Zweiten Weltkriegs wurde teils originalgetreu wiederaufgebaut, teils entstanden funktionale Nachkriegsbauten.
                       </p>
                       <p>
-                        Die digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Der Bericht liegt voraussichtlich bis zum nächsten Werktag vor und enthält nachvollziehbare Einschätzungen sowie realistische Kostenspannen.
+                        Die digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Sie erhalten den Bericht per E-Mail innerhalb von 2 Werktagen und können direkt mit fundierten Informationen in Kaufverhandlungen gehen.
                       </p>
                     </div>
 
-                    {/* Typische Gebäude Berlin Section */}
-                    <div id="typische-gebaeude-berlin">
+                    {/* Typische Gebäude München Section */}
+                    <div id="typische-gebaeude-muenchen">
                       <h2 className="text-2xl font-semibold text-text-100 mb-6">
-                        Typische Gebäudetypen und Risiken in Berlin
+                        Typische Gebäudetypen und Risiken in München
                       </h2>
                       
                       {/* Gründerzeithäuser */}
                       <div className="mb-8">
                         <h3 className="text-xl font-semibold text-text-100 mb-4 mt-6">
-                          Gründerzeithäuser in Prenzlauer Berg, Kreuzberg und Charlottenburg
+                          Gründerzeithäuser in Schwabing, Haidhausen und der Maxvorstadt
                         </h3>
                         <p className="mb-4">
-                          Gründerzeitbauten aus der Zeit zwischen 1870 und 1918 prägen weite Teile Berlins. Diese Gebäude zeichnen sich durch massive Außenwände aus Ziegelmauerwerk, hohe Geschosshöhen, Holzbalkendecken und repräsentative Stuckfassaden aus. Die Bauqualität dieser Häuser ist grundsätzlich solide, jedoch zeigen sich nach über 100 Jahren charakteristische Alterungserscheinungen.
+                          Münchner Gründerzeitbauten aus der Zeit zwischen 1870 und 1910 unterscheiden sich in einigen Merkmalen von denen anderer deutscher Städte. Die Bauweise folgte häufig dem Vorbild italienischer Palazzi mit verputzten Fassaden in hellen Farbtönen, Gliederungen durch Gesimse und Pilaster sowie aufwendigen Stuckornamenten. Anders als in Berlin dominiert nicht der Backstein, sondern verputztes Ziegelmauerwerk.
                         </p>
                         <p className="mb-4">
-                          <strong>Feuchtigkeitsprobleme in Kellern</strong> gehören zu den häufigsten Mängeln. Viele Gründerzeithäuser haben keine oder nur unzureichende Horizontalsperren gegen aufsteigende Feuchtigkeit. Durchfeuchtetes Mauerwerk im Kellerbereich führt zu Schimmelbildung, Geruchsbelastung und kann die Tragfähigkeit beeinträchtigen. Eine nachträgliche Abdichtung ist technisch möglich, aber kostenintensiv.
+                          Die innere Struktur entspricht der typischen Blockrandbebauung mit Vorderhäusern zur Straße, Seitenflügeln und Hinterhäusern zum Innenhof. Die Geschosshöhen sind großzügig, oft über drei Meter. Die Wohnungen waren für das wohlhabende Bürgertum konzipiert und verfügen über repräsentative Eingangsbereiche, Stuckdecken und teilweise Parkettböden.
                         </p>
                         <p className="mb-4">
-                          <strong>Risse im Mauerwerk</strong> entstehen häufig durch Setzungen. Der sandige Berliner Boden ermöglicht zwar meist gute Gründungen, kann aber bei Grundwasserabsenkung oder benachbarten Baumaßnahmen zu unterschiedlichen Setzungen führen. Nicht jeder Riss ist problematisch, aber die Bewertung erfordert Fachkenntnis. Fortschreitende Risse deuten auf aktive Bewegungen hin und erfordern Untersuchung der Ursache.
-                        </p>
-                        <p className="mb-4">
-                          <strong>Holzbalkendecken</strong> können von Schädlingen befallen sein oder durch jahrzehntelange Belastung Durchbiegungen aufweisen. Auch unsachgemäße Eingriffe wie das Entfernen tragender Wände schwächen die Deckenkonstruktion. Eine Beurteilung der Holzqualität und Tragfähigkeit ist vor dem Kauf wichtig.
+                          Häufige Schwachstellen dieser Gebäude sind Feuchtigkeit in Kellern durch fehlende oder defekte Horizontalsperren. Das Münchner Grundwasser steht in vielen Stadtteilen hoch, was Abdichtungsprobleme verschärft. Holzbalkendecken können durch Schädlingsbefall oder statische Überlastung geschädigt sein. Stuckfassaden zeigen nach über 100 Jahren oft Risse, Abplatzungen oder Durchfeuchtung.
                         </p>
                         <p>
-                          <strong>Stuckfassaden</strong> zeigen oft Putzschäden, abplatzende Ornamente oder Durchfeuchtung durch defekte Regenrinnen. Die Instandsetzung von Stuckelementen ist handwerklich aufwendig und kostet je nach Umfang mehrere zehntausend Euro. Veraltete Leitungsnetze für Wasser und Elektrik entsprechen häufig nicht mehr heutigen Anforderungen und sollten erneuert werden.
+                          Die Haustechnik entspricht selten heutigen Standards. Wasserleitungen aus Blei oder verzinktem Stahl sind sanierungsbedürftig, Elektroinstallationen genügen oft nicht mehr den Sicherheitsanforderungen, und alte Gasthermen oder Ofenheizungen sollten durch moderne Heizsysteme ersetzt werden. Die energetische Sanierung dieser Gebäude ist kostspielig, verbessert aber Wohnkomfort und Betriebskosten erheblich.
+                        </p>
+                      </div>
+
+                      {/* Großbürgerliche Villen */}
+                      <div className="mb-8">
+                        <h3 className="text-xl font-semibold text-text-100 mb-4 mt-6">
+                          Großbürgerliche Villen in Bogenhausen, Lehel und am Isarhochufer
+                        </h3>
+                        <p className="mb-4">
+                          München verfügt über einen bemerkenswerten Bestand an großbürgerlichen Villen aus der Zeit zwischen 1850 und 1930. Diese Häuser entstanden in bevorzugten Lagen wie Bogenhausen, am Isarhochufer, im Lehel oder in den Villenkolonien am Starnberger See im erweiterten Einzugsgebiet der Stadt. Sie dienten dem wohlhabenden Bürgertum und Geldadel als repräsentative Wohnsitze.
+                        </p>
+                        <p className="mb-4">
+                          Die Architektur reicht vom klassizistischen Landhausstil über Neorenaissance und Neobarock bis zum Jugendstil. Charakteristisch sind großzügige Grundrisse mit 200 bis 500 Quadratmetern Wohnfläche, hochwertige Materialien wie Marmor und Eichenholz, aufwendige Stuckarbeiten und Wandmalereien sowie parkähnliche Gärten. Viele Villen stehen unter Denkmalschutz.
+                        </p>
+                        <p className="mb-4">
+                          Die Instandhaltung dieser Gebäude ist aufwendig und kostspielig. Dächer mit Naturschiefer oder Biberschwanzziegeln erfordern regelmäßige Wartung. Holzkonstruktionen in Dachstühlen können von Schädlingen befallen oder durch Feuchtigkeit geschädigt sein. Fassaden benötigen alle 20 bis 30 Jahre Erneuerung von Putz und Anstrich. Die Heizungsanlagen sind oft veraltet und ineffizient.
+                        </p>
+                        <p>
+                          Bei denkmalgeschützten Villen sind Sanierungen nur in Abstimmung mit dem Bayerischen Landesamt für Denkmalpflege möglich. Dies betrifft Fassadenarbeiten, Fensteraustausch, Dachsanierungen und teilweise auch Innenausbauten. Die Auflagen können Mehrkosten verursachen, sichern aber den Erhalt der historischen Substanz. Fördermittel für Denkmalsanierungen können einen Teil der Kosten abdecken.
                         </p>
                       </div>
 
                       {/* Nachkriegsbauten */}
                       <div className="mb-8">
                         <h3 className="text-xl font-semibold text-text-100 mb-4 mt-6">
-                          Nachkriegsbauten der 1950er bis 1970er Jahre
+                          Nachkriegsbauten und Wiederaufbau der 1950er bis 1970er Jahre
                         </h3>
                         <p className="mb-4">
-                          Nachkriegsbauten prägen Bezirke wie Steglitz, Tempelhof und Wedding. Diese Gebäude wurden in einer Zeit des schnellen Wiederaufbaus errichtet und weisen charakteristische bauliche Merkmale auf. Flachdächer waren weit verbreitet, die Dämmstandards entsprachen dem damaligen Kenntnisstand und Stahlbetonkonstruktionen wurden zunehmend eingesetzt.
+                          München wurde im Zweiten Weltkrieg erheblich zerstört. Große Teile der Altstadt, der Gründerzeitviertel und der Verkehrsinfrastruktur waren nach 1945 in Trümmern. Der Wiederaufbau erfolgte teils durch originalgetreue Rekonstruktion historischer Gebäude, überwiegend aber durch funktionale Neubauten der 1950er bis 1970er Jahre.
                         </p>
                         <p className="mb-4">
-                          <strong>Flachdächer</strong> neigen zu Undichtigkeiten, insbesondere wenn die Dachabdichtung nicht regelmäßig gewartet wurde. Wasserschäden in Geschossdecken können erhebliche Folgeschäden verursachen. Die Sanierung von Flachdächern ist kostspielig und sollte fachgerecht ausgeführt werden.
+                          Charakteristisch für diese Epoche sind schlichte Putzfassaden, standardisierte Grundrisse, einfache Ausstattungen und pragmatische Baulösungen. Ziel war die schnelle Schaffung von Wohnraum für Vertriebene, Flüchtlinge und die wachsende Bevölkerung. Die Bauqualität variiert je nach Bauträger und Baujahr erheblich.
                         </p>
                         <p className="mb-4">
-                          <strong>Wärmebrücken</strong> an Balkonen, Fensterstürzen und Geschossdecken führen zu Energieverlusten und Kondensatbildung. Die Folge sind Schimmelbildung an Innenwänden und hohe Heizkosten. Eine nachträgliche Dämmung verbessert die Energieeffizienz erheblich, ist aber mit Investitionen verbunden.
-                        </p>
-                        <p className="mb-4">
-                          <strong>Stahlbetonkonstruktionen</strong> können Korrosionsschäden an der Bewehrung aufweisen. Dringt Feuchtigkeit in den Beton ein, beginnt der Stahl zu rosten und dehnt sich aus. Dies führt zu Betonabplatzungen und Rissen. Die Instandsetzung erfordert Freilegen der Bewehrung, Entrosten, Auftragen von Korrosionsschutz und Neuvermörtelung.
+                          Häufige Mängel sind unzureichende Wärmedämmung mit hohen Heizkosten, undichte Flachdächer oder Balkone, Betonschäden durch Korrosion der Bewehrung sowie veraltete Haustechnik. Fenster entsprechen oft nicht mehr heutigen Anforderungen an Schallschutz und Energieeffizienz. Die Modernisierung kann den Wert dieser Gebäude erheblich steigern.
                         </p>
                         <p>
-                          Die Haustechnik dieser Gebäude entspricht selten heutigen Standards. Heizungsanlagen, Sanitärinstallationen und Elektrik sind oft seit Jahrzehnten nicht grundlegend erneuert worden. Die Modernisierung der Haustechnik verbessert Komfort und Effizienz, bedeutet aber eine wesentliche Investition.
+                          In einigen Fällen wurde bei Nachkriegsbauten Asbest verbaut, besonders in Fassadenplatten, Dacheindeckungen oder als Brandschutz. Die Entsorgung asbesthaltiger Materialien unterliegt strengen Vorschriften und verursacht Mehrkosten bei Sanierungen.
                         </p>
                       </div>
 
-                      {/* Plattenbauten */}
+                      {/* Neubauten */}
                       <div className="mb-8">
                         <h3 className="text-xl font-semibold text-text-100 mb-4 mt-6">
-                          Plattenbauten in Marzahn, Hellersdorf und Lichtenberg
+                          Moderne Neubauten und zeitgenössische Architektur
                         </h3>
                         <p className="mb-4">
-                          Plattenbausiedlungen wurden in den östlichen Bezirken Berlins zwischen 1970 und 1990 in industrieller Bauweise errichtet. Diese Gebäude haben aufgrund vorgefertigter Betonelemente eine standardisierte Konstruktion. Viele wurden nach der Wende energetisch saniert, die Qualität und der Umfang dieser Sanierungen variieren jedoch erheblich.
+                          München entwickelt sich kontinuierlich weiter. Neue Stadtquartiere entstehen auf ehemaligen Gewerbe- und Bahnflächen. Bekannte Beispiele sind das Werksviertel am Ostbahnhof, die Parkstadt Schwabing auf dem ehemaligen Flughafenareal Oberwiesenfeld oder die Bebauung der Bayernkaserne. Diese Quartiere verbinden Wohnen, Arbeiten und Kultur.
                         </p>
                         <p className="mb-4">
-                          <strong>Wärmedämmverbundsysteme</strong> wurden oft nachträglich angebracht. Die Ausführungsqualität ist entscheidend für die Dauerhaftigkeit. Unsachgemäß ausgeführte Dämmung kann zu Feuchtigkeitsschäden, Algenbildung an der Fassade oder Ablösung führen. Eine Prüfung des Zustands der Dämmung ist sinnvoll.
+                          Moderne Architektur in München reicht von konservativen Entwürfen, die sich an historische Vorbilder anlehnen, bis zu avantgardistischen Bauten internationaler Stararchitekten. Neubauten unterliegen hohen energetischen Anforderungen gemäß Gebäudeenergiegesetz und strengen Brandschutzvorschriften.
                         </p>
                         <p className="mb-4">
-                          <strong>Balkone</strong> zeigen häufig Betonschäden durch Korrosion der Bewehrung. Die auskragende Konstruktion ist besonders witterungsexponiert. Risse, Abplatzungen oder Rostfahnen deuten auf Sanierungsbedarf hin. Die Instandsetzung oder der Austausch von Balkonen ist kostenintensiv und betrifft das Gemeinschaftseigentum.
-                        </p>
-                        <p className="mb-4">
-                          <strong>Zentrale Heizungsanlagen</strong> sind oft veraltet und ineffizient. Die Umstellung auf moderne Heizsysteme oder dezentrale Lösungen verbessert die Energiebilanz, erfordert aber Beschlüsse der Eigentümergemeinschaft und entsprechende Investitionen. Gleichzeitig bieten fachgerecht sanierte Plattenbauten solide Bausubstanz zu vergleichsweise günstigen Preisen. Die klare Konstruktion ermöglicht übersichtliche Grundrisse und gute Raumaufteilung.
-                        </p>
-                      </div>
-
-                      {/* Eigentumswohnungen */}
-                      <div className="mb-8">
-                        <h3 className="text-xl font-semibold text-text-100 mb-4 mt-6">
-                          Eigentumswohnungen: Gemeinschaftseigentum richtig bewerten
-                        </h3>
-                        <p className="mb-4">
-                          Beim Kauf einer Eigentumswohnung in Berlin ist der Zustand des Gemeinschaftseigentums ebenso wichtig wie der Zustand der eigenen Wohnung. Fassade, Dach, Treppenhaus, Aufzug und zentrale Haustechnik werden gemeinschaftlich unterhalten. Sanierungsbedarf an diesen Bauteilen führt zu Umlagen, die alle Eigentümer nach Miteigentumsanteil tragen müssen.
-                        </p>
-                        <p className="mb-4">
-                          Die <strong>Instandhaltungsrücklage</strong> gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Eine Faustregel besagt, dass pro Quadratmeter Wohnfläche und Jahr mindestens ein Euro in die Rücklage fließen sollte. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.
-                        </p>
-                        <p className="mb-4">
-                          Geplante Maßnahmen, bereits diskutierte Mängel und Beschlussfassungen aus Eigentümerversammlungen sollten sorgfältig geprüft werden. Häufig werden größere Sanierungen bereits Jahre im Voraus besprochen, bevor der Beschluss gefasst wird.
-                        </p>
-                        <p className="mb-4">
-                          Häufige Schwachstellen im Gemeinschaftseigentum Berliner Wohngebäude sind undichte Flachdächer, sanierungsbedürftige Fassaden, veraltete Aufzugsanlagen und Wasserleitungen mit Korrosionsschäden. Auch Brandschutzmaßnahmen entsprechen bei älteren Gebäuden oft nicht mehr den aktuellen Anforderungen und erfordern Nachrüstung von Rauchmeldern, Feuerschutztüren oder Fluchtwegsicherungen.
+                          Dennoch sind auch moderne Gebäude nicht frei von Mängeln. Häufige Probleme sind Abdichtungsfehler an Balkonen, Terrassen und erdberührenden Bauteilen, mangelhafte Ausführung von Wärmedämmverbundsystemen mit Wärmebrücken oder Schimmelgefahr, Schallschutzprobleme zwischen Wohneinheiten sowie Mängel an Haustechnik, Lüftungsanlagen oder Aufzügen.
                         </p>
                         <p>
-                          Eine Bauschadensanalyse berücksichtigt soweit aus Unterlagen und Fotos erkennbar auch das Gemeinschaftseigentum. Hinweise auf absehbare Sanierungen werden im Bericht aufgeführt. Dies ermöglicht eine realistische Einschätzung der Gesamtkosten über die kommenden Jahre.
+                          Bei Neubauten ist die Bauabnahme vor Übergabe entscheidend. Eine Prüfung durch einen unabhängigen Sachverständigen kann verdeckte Mängel aufdecken und Gewährleistungsansprüche sichern. Die gesetzliche Gewährleistungsfrist beträgt fünf Jahre ab Abnahme, bei arglistig verschwiegenen Mängeln verlängert sie sich.
                         </p>
                       </div>
                     </div>
@@ -246,7 +263,7 @@ const Berlin = () => {
                         Ablauf der digitalen Bauschadensanalyse
                       </h2>
                       <p className="mb-4">
-                        Die Bauschadensanalyse erfolgt vollständig digital und erfordert keine Terminvereinbarung. Sie laden Fotos der Immobilie sowie vorhandene Unterlagen wie Grundrisse oder Energieausweise hoch. Ergänzend geben Sie relevante Informationen zu Baujahr, Bauweise, erkannten Mängeln und geplanten Nutzungen an.
+                        Die Bauschadensanalyse erfolgt vollständig digital und erfordert keine Terminvereinbarung. Sie laden Fotos der Immobilie sowie vorhandene Unterlagen wie Energieausweise hoch. Ergänzend geben Sie relevante Informationen zu Baujahr, Bauweise, erkannten Mängeln und geplanten Nutzungen an.
                       </p>
                       <p className="mb-4">
                         Je vollständiger die eingereichten Informationen sind, desto präziser kann die Bewertung erfolgen. Fotos sollten alle wesentlichen Bereiche dokumentieren: Fassade, Dach, Keller, Heizungsanlage, Fenster, Sanitärinstallationen und erkennbare Schadensstellen. Auch unscheinbare Details wie Risse, Feuchtigkeitsflecken oder Schimmelansätze sind wichtig.
@@ -255,7 +272,7 @@ const Berlin = () => {
                         Ein qualifizierter Sachverständiger analysiert die eingereichten Daten systematisch. Bausubstanz, Haustechnik, Feuchtigkeitserscheinungen, Risse und weitere Schadensmuster werden erfasst und bewertet. Die Einschätzung berücksichtigt typische Alterungserscheinungen des jeweiligen Gebäudetyps, übliche Sanierungszyklen und erkennbare Risikofaktoren.
                       </p>
                       <p className="mb-4">
-                        Der Bericht wird voraussichtlich bis zum nächsten Werktag bereitgestellt. Die Bearbeitungszeit beträgt in der Regel 48 Stunden ab vollständiger Datenübermittlung. Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und können ihn für Bankgespräche oder Verhandlungen mit Verkäufern nutzen.
+                        Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Datenübermittlung. Der Bericht kann für Bankgespräche, Verhandlungen mit Verkäufern oder als Grundlage für die Sanierungsplanung genutzt werden.
                       </p>
                       <p>
                         Diese Form der Bewertung bietet eine fundierte Grundlage für Ihre Kaufentscheidung ohne aufwendige Koordination oder zeitliche Abstimmungen. Die Analyse erfolgt unabhängig und objektiv ausschließlich auf Basis der technischen Gegebenheiten. Detaillierte Informationen zum Ablauf finden Sie unter{' '}
@@ -284,7 +301,7 @@ const Berlin = () => {
                         Erkannte Mängel werden beschrieben, ihre voraussichtliche Ursache erläutert und ihre Bedeutung für die Bausubstanz eingeordnet. Nicht jeder Mangel ist gleich schwerwiegend. Der Bericht unterscheidet zwischen kosmetischen Mängeln, Instandhaltungsrückstau und substanziellen Schäden, die kurzfristig behoben werden sollten.
                       </p>
                       <p className="mb-4">
-                        Zu wesentlichen Schadenspositionen erhalten Sie nachvollziehbare Kostenspannen. Diese orientieren sich an üblichen Marktpreisen und berücksichtigen verschiedene Sanierungsvarianten. Die Spannen sind bewusst realistisch gehalten, um eine verlässliche Kalkulationsgrundlage zu bieten. Pauschale oder geschönte Angaben werden vermieden.
+                        Zu wesentlichen Schadenspositionen erhalten Sie nachvollziehbare Kostenspannen. Diese orientieren sich an üblichen Marktpreisen in München und berücksichtigen verschiedene Sanierungsvarianten. Die Spannen sind bewusst realistisch gehalten, um eine verlässliche Kalkulationsgrundlage zu bieten. Pauschale oder geschönte Angaben werden vermieden.
                       </p>
                       <p className="mb-4">
                         Die Priorisierung zeigt auf, welche Maßnahmen voraussichtlich kurzfristig erforderlich sind und welche mittelfristig geplant werden sollten. Dies ermöglicht eine strukturierte Finanzplanung und verhindert, dass dringliche Instandsetzungen übersehen werden. Langfristige Modernisierungspotenziale werden ebenfalls benannt.
@@ -310,19 +327,32 @@ const Berlin = () => {
                     {/* Lokale Besonderheiten Section */}
                     <div id="lokale-besonderheiten">
                       <h2 className="text-2xl font-semibold text-text-100 mb-6">
-                        Lokale Besonderheiten des Berliner Immobilienmarkts
+                        Lokale Besonderheiten des Münchner Immobilienmarkts
                       </h2>
                       <p className="mb-4">
-                        Berlin unterscheidet sich als Immobilienmarkt deutlich von anderen deutschen Städten. Die Teilung der Stadt bis 1990 führte zu unterschiedlichen Bautraditionen und Sanierungsverläufen. Westberliner Altbauten in Charlottenburg, Wilmersdorf oder Schöneberg wurden oft bereits in den 1980er Jahren im Rahmen von Modernisierungsprogrammen saniert. Ostberliner Gründerzeitquartiere in Prenzlauer Berg, Friedrichshain oder Kreuzberg erfuhren vielfach erst nach der Wende umfassende Instandsetzungen.
+                        München unterscheidet sich als Immobilienmarkt durch sein hohes Preisniveau und die damit verbundenen Erwartungen an Bauqualität. Die Kaufpreise gehören zu den höchsten in Deutschland. Eine fundierte Prüfung vor dem Kauf ist daher besonders wichtig, um finanzielle Fehlentscheidungen zu vermeiden.
                       </p>
                       <p className="mb-4">
-                        Der Sanierungsstand variiert erheblich. Einzelne Gebäude wurden aufwendig restauriert, andere nur oberflächlich aufgewertet. Äußerlich ansprechende Fassaden können verdeckte Mängel wie marode Leitungsnetze, feuchte Keller oder ungedämmte Außenwände aufweisen. Eine differenzierte Prüfung ist daher besonders in Berlin wichtig.
+                        Der Untergrund im Münchner Raum ist geprägt von Kies und Sand aus eiszeitlichen Ablagerungen der Isar und ihrer Nebenflüsse. Der Grundwasserspiegel liegt in vielen Stadtteilen relativ hoch, was Abdichtungsmaßnahmen in Kellern und erdberührenden Bauteilen erforderlich macht. Drückendes Wasser kann bei unzureichender Abdichtung zu Durchfeuchtung führen.
                       </p>
                       <p className="mb-4">
-                        Die Bodenbeschaffenheit spielt für die Bausubstanz eine Rolle. Berlin steht überwiegend auf sandigem Untergrund, der gute Gründungen ermöglicht. Gleichzeitig kann es bei Grundwasserabsenkung oder benachbarten Tiefbaumaßnahmen zu Setzungen kommen. Einzelne Bereiche haben lehmige oder tonige Böden, die Setzungsrisse begünstigen. Diese regionalen Gegebenheiten fließen in die Bewertung ein.
+                        Die Lage am Alpenrand bringt höhere Niederschlagsmengen als in anderen deutschen Großstädten. Dächer, Fassaden und Außenbauteile sind stärkerer Witterungsbelastung ausgesetzt. Frostperioden im Winter mit anschließendem Tauwetter setzen Bauteilen zu und können Frostschäden verursachen.
+                      </p>
+                      <p className="mb-4">
+                        Der Denkmalschutz spielt in München eine wichtige Rolle. Viele Gebäude in der Altstadt, in den Gründerzeitvierteln und einzelne Villen stehen unter Denkmalschutz. Sanierungen erfordern Genehmigungen und müssen denkmalpflegerischen Anforderungen genügen. Dies kann Mehrkosten verursachen, sichert aber den Erhalt des kulturellen Erbes.
+                      </p>
+                      <p className="mb-4">
+                        Die kontinuierliche Stadtentwicklung schafft neue Wohnquartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne prägt München. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die sich an der umgebenden Bebauung orientieren.
                       </p>
                       <p>
-                        Neubaugebiete entstehen vor allem am Stadtrand in Pankow, Lichtenberg und Treptow-Köpenick. Auch Neubauten sind nicht frei von Mängeln. Abdichtungsprobleme, fehlerhafte Wärmedämmung, mangelhafte Schallschutzvorkehrungen oder unzureichend installierte Haustechnik kommen vor. Eine Prüfung bereits vor Übergabe kann Gewährleistungsansprüche sichern und spätere Auseinandersetzungen vermeiden.
+                        Weitere Informationen zum Münchner Immobilienmarkt und baurechtliche Hinweise finden Sie beim{' '}
+                        <a href="https://www.muenchen.de/rathaus/Stadtverwaltung/Referat-fuer-Stadtplanung-und-Bauordnung.html" rel="nofollow" className="text-primary hover:underline font-medium">
+                          Referat für Stadtplanung und Bauordnung München
+                        </a>{' '}
+                        sowie beim{' '}
+                        <a href="https://www.mieterverein-muenchen.de" rel="nofollow" className="text-primary hover:underline font-medium">
+                          Mieterverein München
+                        </a>.
                       </p>
                     </div>
                   </div>
@@ -340,7 +370,7 @@ const Berlin = () => {
                     Häufig gestellte Fragen
                   </h2>
                   <p className="text-xl text-text-200">
-                    Alles was Sie über unsere Bauschadensbewertung in Berlin wissen müssen
+                    Alles was Sie über unsere Bauschadensbewertung in München wissen müssen
                   </p>
                 </div>
 
@@ -392,7 +422,7 @@ const Berlin = () => {
                     { name: 'Bremen', slug: 'bremen' },
                     { name: 'Mannheim', slug: 'mannheim' },
                   ].map((city) => {
-                    const isCurrentCity = city.slug === 'berlin';
+                    const isCurrentCity = city.slug === 'muenchen';
                     return (
                       <Link
                         key={city.slug}
@@ -427,7 +457,7 @@ const Berlin = () => {
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto text-center">
                 <h2 className="text-3xl md:text-4xl font-bold text-text-100 mb-6">
-                  Jetzt Bauzustand Ihrer Wunschimmobilie in Berlin prüfen lassen
+                  Jetzt Bauzustand Ihrer Wunschimmobilie in München prüfen lassen
                 </h2>
                 <p className="text-xl text-text-200 mb-8 leading-relaxed">
                   Eine fundierte Bauschadensanalyse gibt Ihnen Sicherheit vor dem Immobilienkauf. Sie erhalten objektive Einschätzungen durch qualifizierte Sachverständige, realistische Kostenrahmen für erkannte Mängel und verständliche Handlungsempfehlungen. Die digitale Bewertung ist zeitlich flexibel, transparent und erfolgt ohne Vor-Ort-Termine.
@@ -486,5 +516,5 @@ const Berlin = () => {
   );
 };
 
-export default Berlin;
+export default Muenchen;
 

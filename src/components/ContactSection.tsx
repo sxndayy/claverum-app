@@ -157,10 +157,10 @@ const ContactSection: React.FC = () => {
                   <div>
                     <h3 className="font-semibold text-text-100 mb-1">Telefon</h3>
                     <a 
-                      href="tel:015143170757" 
+                      href="tel:+4932221804909" 
                       className="text-primary hover:underline"
                     >
-                      015143170757
+                      +49 322 21804909
                     </a>
                     <p className="text-sm text-text-200 mt-1">
                       Mo-Fr, 9:00 - 18:00 Uhr

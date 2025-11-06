@@ -128,11 +128,11 @@ const Success: React.FC = () => {
                   kontakt@bauklar.org
                 </a>
                 <a 
-                  href="tel:015143170757" 
+                  href="tel:+4932221804909" 
                   className="text-primary hover:underline flex items-center gap-2"
                 >
                   <Phone className="w-4 h-4" />
-                  015143170757
+                  +49 322 21804909
                 </a>
               </div>
               <p className="text-xs text-text-200 mt-2">

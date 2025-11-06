@@ -68,7 +68,7 @@ const AboutSection: React.FC = () => {
                   <Mail className="w-4 h-4" />
                 </a>
                 <a 
-                  href="tel:015143170757" 
+                  href="tel:+4932221804909" 
                   className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/90 transition-smooth"
                 >
                   <Phone className="w-4 h-4" />

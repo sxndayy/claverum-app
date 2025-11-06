@@ -10,7 +10,7 @@ const Datenschutz = () => {
     <>
       <SEO 
         title="Datenschutzerklärung" 
-        description="Datenschutzerklärung der Claverium GmbH. Informationen zur Datenerfassung, -verarbeitung und Ihren Rechten gemäß DSGVO."
+        description="Datenschutzerklärung der Claverum GmbH. Informationen zur Datenerfassung, -verarbeitung und Ihren Rechten gemäß DSGVO."
         canonical="/datenschutz"
       />
       <BreadcrumbSchema 

@@ -1,0 +1,285 @@
+{
+  "city": "Frankfurt",
+  "slug": "frankfurt",
+  "url": "https://bauklar.org/frankfurt",
+  "seo": {
+    "title": "Gutachter Hauskauf Frankfurt – In 2 Tagen Klarheit | ab 350€ | bauklar.org",
+    "metaDescription": "Unabhängige Bauschadensanalyse für Hauskauf in Frankfurt. Skyline, Bankenviertel, Westend-Villen, rekonstruierte Altstadt – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
+    "canonical": "/frankfurt",
+    "robots": "index, follow",
+    "openGraph": {
+      "type": "website",
+      "title": "Bauschadensanalyse Frankfurt – Verlässliche Bewertung vor dem Kauf",
+      "description": "Unabhängige Bauschadensanalyse für Hauskauf in Frankfurt. Skyline, Bankenviertel, Westend-Villen, rekonstruierte Altstadt – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
+      "image": "https://bauklar.org/og/hero-altbau.jpg",
+      "url": "https://bauklar.org/frankfurt"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Bauschadensanalyse Frankfurt – Verlässliche Bewertung vor dem Kauf",
+      "description": "Unabhängige Bauschadensanalyse für Hauskauf in Frankfurt. Skyline, Bankenviertel, Westend-Villen, rekonstruierte Altstadt – digitale Prüfung innerhalb von 2 Werktagen.",
+      "image": "https://bauklar.org/og/hero-altbau.jpg"
+    }
+  },
+  "structuredData": {
+    "localBusiness": {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "bauklar.org - Bauschadensanalyse Frankfurt",
+      "image": "https://bauklar.org/og/hero-altbau.jpg",
+      "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Frankfurt",
+      "areaServed": {
+        "@type": "City",
+        "name": "Frankfurt",
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Hessen"
+        }
+      },
+      "priceRange": "ab 350€",
+      "url": "https://bauklar.org/frankfurt"
+    },
+    "service": {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Bauschadensanalyse Frankfurt",
+      "serviceType": "Bauschadensanalyse",
+      "provider": {
+        "@type": "Organization",
+        "name": "bauklar.org",
+        "url": "https://bauklar.org"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Frankfurt"
+      },
+      "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Frankfurt"
+    },
+    "breadcrumb": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://bauklar.org"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Frankfurt",
+          "item": "https://bauklar.org/frankfurt"
+        }
+      ]
+    },
+    "faqPage": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Welche Gebäudetypen in Frankfurt werden geprüft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Alle Gebäudetypen werden analysiert: Gründerzeit-Villen im Westend, moderne Hochhäuser im Bankenviertel, rekonstruierte Altstadt-Häuser sowie Eigentumswohnungen in Sachsenhausen oder Nordend. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie schnell erhalte ich den Bericht für meine Immobilie in Frankfurt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was kostet eine Bauschadensanalyse in Frankfurt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Frankfurt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die digitale Analyse bietet eine fundierte Ersteinschätzung auf Basis der verfügbaren Informationen. Bei schwerwiegenden Mängeln oder komplexen Schadensbildern wird eine vertiefende Prüfung empfohlen."
+          }
+        }
+      ]
+    }
+  },
+  "images": {
+    "hero": {
+      "src": "/frankfurt.jpg",
+      "alt": "Frankfurter Skyline mit Hochhäusern und Main – Bauschadensanalyse für Hauskauf in Frankfurt",
+      "width": 1600,
+      "height": 900,
+      "loading": "eager"
+    }
+  },
+  "content": {
+    "hero": {
+      "h1": "Bauschadensanalyse Frankfurt – verlässlich vor dem Hauskauf",
+      "subtitle": "Unabhängige Bewertung von Skyline-Hochhäusern, Westend-Villen und rekonstruierter Altstadt in Frankfurt. Digitale Analyse mit verständlichem Bericht innerhalb von 2 Werktagen – ohne Vor-Ort-Termin.",
+      "cta": {
+        "primary": "Jetzt Bewertung starten",
+        "secondary": "So funktioniert's"
+      }
+    },
+    "sections": [
+      {
+        "id": "warum-bauschadensanalyse",
+        "h2": "Warum eine Bauschadensanalyse vor dem Immobilienkauf in Frankfurt",
+        "content": "Der Kauf einer Immobilie in Frankfurt ist eine bedeutende finanzielle Entscheidung. Ob Gründerzeit-Villa im Westend, moderne Eigentumswohnung im Bankenviertel oder rekonstruiertes Altstadt-Haus in Sachsenhausen – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.\n\nEine Bauschadensanalyse schafft Transparenz. Sie zeigt auf, welche Bauteile intakt sind, wo Sanierungsbedarf besteht und welche Kosten voraussichtlich anfallen. Diese Klarheit ermöglicht eine fundierte Entscheidung darüber, ob die Immobilie zum angebotenen Preis kaufenswert ist oder ob Nachverhandlungen erforderlich sind.\n\nBesonders in Frankfurt mit seinem hohen Preisniveau und der Vielfalt an Gebäudetypen ist fachliche Einschätzung wertvoll. Die Stadt ist geprägt von einem Kontrast zwischen historischer Bausubstanz und moderner Hochhausarchitektur. Die Skyline mit ihren Bankentürmen steht neben Gründerzeitvierteln und der rekonstruierten Altstadt. Diese Vielfalt erfordert spezifisches Fachwissen für jeden Gebäudetyp.\n\nDie digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Sie erhalten den Bericht per E-Mail innerhalb von 2 Werktagen und können direkt mit fundierten Informationen in Kaufverhandlungen gehen."
+      },
+      {
+        "id": "typische-gebaeude-frankfurt",
+        "h2": "Typische Gebäudetypen und Risiken in Frankfurt",
+        "subsections": [
+          {
+            "h3": "Gründerzeit-Villen im Westend und Nordend",
+            "content": "Gründerzeit-Villen prägen weite Teile Frankfurts. Diese Häuser entstanden zwischen 1870 und 1910 für das wohlhabende Bürgertum. Die charakteristischen Villen zeichnen sich durch verputzte Ziegelwände, hohe Geschosshöhen, repräsentative Stuckfassaden und großzügige Grundrisse aus. Die innere Struktur entspricht der typischen Blockrandbebauung mit Vorderhäusern zur Straße, Seitenflügeln und Hinterhäusern zum Innenhof.\n\nDie Wohnungen waren für das wohlhabende Bürgertum konzipiert und verfügen über repräsentative Eingangsbereiche, Stuckdecken und teilweise Parkettböden. Die Bauqualität dieser Häuser ist grundsätzlich solide, jedoch zeigen sich nach über 100 Jahren charakteristische Alterungserscheinungen.\n\nHäufige Schwachstellen bei Frankfurter Gründerzeit-Villen sind Feuchtigkeit in Kellern durch fehlende oder defekte Horizontalsperren. Das Grundwasser steht in vielen Stadtteilen relativ hoch, was Abdichtungsprobleme verschärft. Holzbalkendecken können durch Schädlingsbefall oder statische Überlastung geschädigt sein. Stuckfassaden zeigen nach über 100 Jahren oft Risse, Abplatzungen oder Durchfeuchtung.\n\nDie Haustechnik entspricht selten heutigen Standards. Wasserleitungen aus Blei oder verzinktem Stahl sind sanierungsbedürftig, Elektroinstallationen genügen oft nicht mehr den Sicherheitsanforderungen, und alte Gasthermen oder Ofenheizungen sollten durch moderne Heizsysteme ersetzt werden. Die energetische Sanierung dieser Gebäude ist kostspielig, verbessert aber Wohnkomfort und Betriebskosten erheblich."
+          },
+          {
+            "h3": "Moderne Hochhäuser im Bankenviertel und Umgebung",
+            "content": "Frankfurt ist bekannt für seine Skyline mit Hochhäusern. Diese Gebäude entstanden ab den 1960er Jahren und prägen das Stadtbild. Die architektonische Bandbreite reicht von frühen Hochhäusern bis zu modernen Glas-Stahl-Konstruktionen internationaler Stararchitekten.\n\nNeubauten unterliegen hohen energetischen Anforderungen gemäß Gebäudeenergiegesetz und strengen Brandschutzvorschriften. Dennoch sind auch moderne Gebäude nicht frei von Mängeln. Häufige Probleme sind Abdichtungsfehler an Balkonen, Terrassen und erdberührenden Bauteilen, mangelhafte Ausführung von Wärmedämmverbundsystemen mit Wärmebrücken oder Schimmelgefahr, Schallschutzprobleme zwischen Wohneinheiten sowie Mängel an Haustechnik, Lüftungsanlagen oder Aufzügen.\n\nDie besonderen Herausforderungen in Hochhäusern sind Windbelastung, Schwingungen und Brandschutz. Gebäude müssen auf Windbelastung ausgelegt sein, was besondere Anforderungen an die Fassade stellt. Schwingungen durch Verkehr oder Wind können zu Rissen führen. Brandschutzmaßnahmen müssen höchsten Anforderungen genügen.\n\nBei Eigentumswohnungen in Hochhäusern ist die Qualität der Eigentümergemeinschaft entscheidend. Geringe Instandhaltungsrücklagen und fehlende Rückstellungen für absehbare Sanierungen deuten auf unzureichende Verwaltung hin. Eine Prüfung bereits vor Übergabe kann Gewährleistungsansprüche sichern."
+          },
+          {
+            "h3": "Rekonstruierte Altstadt und historische Bausubstanz",
+            "content": "Frankfurt wurde im Zweiten Weltkrieg erheblich zerstört. Große Teile der Altstadt lagen nach 1945 in Trümmern. Der Wiederaufbau erfolgte teils durch originalgetreue Rekonstruktion historischer Gebäude, überwiegend aber durch funktionale Nachkriegsbauten. In den letzten Jahren wurde die Altstadt teilweise rekonstruiert.\n\nDie rekonstruierten Altstadt-Häuser wurden nach historischen Vorbildern errichtet, weisen jedoch oft moderne Grundrisse und Haustechnik auf. Die charakteristischen Fachwerkfassaden zeigen typische Merkmale: Holzbalken, Lehmfüllung, aufwendige Verzierungen. Die innere Struktur entspricht der typischen Blockrandbebauung mit Vorderhäusern zur Straße, Seitenflügeln und Hinterhäusern zum Innenhof.\n\nHäufige Schwachstellen bei rekonstruierten Altstadt-Häusern sind Feuchtigkeit durch defekte Fugenmörtel zwischen den Holzbalken. Frost-Tau-Wechsel setzen den Fugen zu. Aufsteigende Feuchtigkeit aus dem Erdreich tritt bei älteren Gebäuden ohne Horizontalsperre auf. Durchfeuchtetes Mauerwerk führt zu Salzausblühungen, Frostschäden und Schimmelbildung.\n\nDie Haustechnik entspricht oft nicht mehr heutigen Standards. Wasserleitungen aus Blei oder verzinktem Stahl sind sanierungsbedürftig, Elektroinstallationen genügen oft nicht mehr den Sicherheitsanforderungen, und alte Gasthermen oder Ofenheizungen sollten durch moderne Heizsysteme ersetzt werden. Die energetische Sanierung dieser Gebäude ist kostspielig, verbessert aber Wohnkomfort und Betriebskosten erheblich."
+          },
+          {
+            "h3": "Eigentumswohnungen: Gemeinschaftseigentum richtig bewerten",
+            "content": "Beim Kauf einer Eigentumswohnung in Frankfurt ist der Zustand des Gemeinschaftseigentums ebenso wichtig wie der Zustand der eigenen Wohnung. Fassade, Dach, Treppenhaus, Aufzug und zentrale Haustechnik werden gemeinschaftlich unterhalten. Sanierungsbedarf an diesen Bauteilen führt zu Umlagen, die alle Eigentümer nach Miteigentumsanteil tragen müssen.\n\nDie Instandhaltungsrücklage gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Eine Faustregel besagt, dass pro Quadratmeter Wohnfläche und Jahr mindestens ein Euro in die Rücklage fließen sollte. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.\n\nGeplante Maßnahmen, bereits diskutierte Mängel und Beschlussfassungen aus Eigentümerversammlungen sollten sorgfältig geprüft werden. Häufig werden größere Sanierungen bereits Jahre im Voraus besprochen, bevor der Beschluss gefasst wird.\n\nHäufige Schwachstellen im Gemeinschaftseigentum Frankfurter Wohngebäude sind undichte Flachdächer, sanierungsbedürftige Fassaden, veraltete Aufzugsanlagen und Wasserleitungen mit Korrosionsschäden. Auch Brandschutzmaßnahmen entsprechen bei älteren Gebäuden oft nicht mehr den aktuellen Anforderungen und erfordern Nachrüstung von Rauchmeldern, Feuerschutztüren oder Fluchtwegsicherungen.\n\nEine Bauschadensanalyse berücksichtigt soweit aus Unterlagen und Fotos erkennbar auch das Gemeinschaftseigentum. Hinweise auf absehbare Sanierungen werden im Bericht aufgeführt. Dies ermöglicht eine realistische Einschätzung der Gesamtkosten über die kommenden Jahre."
+          }
+        ]
+      },
+      {
+        "id": "ablauf",
+        "h2": "Ablauf der digitalen Bauschadensanalyse",
+        "content": "Die Bauschadensanalyse erfolgt vollständig digital und erfordert keine Terminvereinbarung. Sie laden Fotos der Immobilie sowie vorhandene Unterlagen wie Energieausweise hoch. Ergänzend geben Sie relevante Informationen zu Baujahr, Bauweise, erkannten Mängeln und geplanten Nutzungen an.\n\nJe vollständiger die eingereichten Informationen sind, desto präziser kann die Bewertung erfolgen. Fotos sollten alle wesentlichen Bereiche dokumentieren: Fassade, Dach, Keller, Heizungsanlage, Fenster, Sanitärinstallationen und erkennbare Schadensstellen. Auch unscheinbare Details wie Risse, Feuchtigkeitsflecken oder Schimmelansätze sind wichtig.\n\nEin qualifizierter Sachverständiger analysiert die eingereichten Daten systematisch. Bausubstanz, Haustechnik, Feuchtigkeitserscheinungen, Risse und weitere Schadensmuster werden erfasst und bewertet. Die Einschätzung berücksichtigt typische Alterungserscheinungen des jeweiligen Gebäudetyps, übliche Sanierungszyklen und erkennbare Risikofaktoren.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Datenübermittlung. Der Bericht kann für Bankgespräche, Verhandlungen mit Verkäufern oder als Grundlage für die Sanierungsplanung genutzt werden.\n\nDiese Form der Bewertung bietet eine fundierte Grundlage für Ihre Kaufentscheidung ohne aufwendige Koordination oder zeitliche Abstimmungen. Die Analyse erfolgt unabhängig und objektiv ausschließlich auf Basis der technischen Gegebenheiten. Detaillierte Informationen zum Ablauf finden Sie unter <link href='/so-funktioniert'>So funktioniert's</link>."
+      },
+      {
+        "id": "was-sie-erhalten",
+        "h2": "Was der Bericht enthält",
+        "content": "Der Bericht stellt den Zustand der Immobilie strukturiert und nachvollziehbar dar. Wesentliche Bauteile wie Tragwerk, Dach, Fassade, Fenster, Haustechnik und Innenausbau werden einzeln bewertet. Jedes Bauteil erhält eine Einschätzung seines aktuellen Zustands.\n\nErkannte Mängel werden beschrieben, ihre voraussichtliche Ursache erläutert und ihre Bedeutung für die Bausubstanz eingeordnet. Nicht jeder Mangel ist gleich schwerwiegend. Der Bericht unterscheidet zwischen kosmetischen Mängeln, Instandhaltungsrückstau und substanziellen Schäden, die kurzfristig behoben werden sollten.\n\nZu wesentlichen Schadenspositionen erhalten Sie nachvollziehbare Kostenspannen. Diese orientieren sich an üblichen Marktpreisen in Frankfurt und berücksichtigen verschiedene Sanierungsvarianten. Die Spannen sind bewusst realistisch gehalten, um eine verlässliche Kalkulationsgrundlage zu bieten. Pauschale oder geschönte Angaben werden vermieden.\n\nDie Priorisierung zeigt auf, welche Maßnahmen voraussichtlich kurzfristig erforderlich sind und welche mittelfristig geplant werden sollten. Dies ermöglicht eine strukturierte Finanzplanung und verhindert, dass dringliche Instandsetzungen übersehen werden. Langfristige Modernisierungspotenziale werden ebenfalls benannt.\n\nFachbegriffe werden verständlich erklärt, technische Zusammenhänge nachvollziehbar dargestellt. Der Bericht richtet sich an Käufer ohne bautechnische Vorkenntnisse und verzichtet auf unnötiges Fachvokabular. Gleichzeitig ist er präzise genug, um bei Bedarf mit Handwerkern oder Architekten besprochen zu werden.\n\nZusätzlich werden erkennbare Chancen benannt. Nicht jede Immobilie mit Mängeln ist problematisch. Oft lassen sich durch gezielte Maßnahmen Wert und Wohnqualität erheblich steigern. Der Bericht hilft, realistische von überzogenen Bedenken zu unterscheiden und die tatsächlichen Risiken einzuordnen. Transparente Informationen zu Preisen finden Sie unter <link href='/preise'>Preise</link>."
+      },
+      {
+        "id": "lokale-besonderheiten",
+        "h2": "Lokale Besonderheiten des Frankfurter Immobilienmarkts",
+        "content": "Frankfurt unterscheidet sich als Immobilienmarkt durch sein hohes Preisniveau und die damit verbundenen Erwartungen an Bauqualität. Die Kaufpreise gehören zu den höchsten in Deutschland. Eine fundierte Prüfung vor dem Kauf ist daher besonders wichtig, um finanzielle Fehlentscheidungen zu vermeiden.\n\nDer Untergrund im Frankfurter Raum ist geprägt von Sand, Kies und stellenweise Lehm. Die Bodenbeschaffenheit beeinflusst Gründungsarten und Setzungsverhalten. In tiefliegenden Stadtteilen spielen Grundwasserstände eine wichtige Rolle. Gebäude in Nähe zum Main müssen auf Hochwasserschutz ausgelegt sein.\n\nDie hohe Luftfeuchtigkeit in vielen Stadtteilen belastet Bausubstanz stärker als in Binnenlandregionen. Fassaden, Fenster und Dächer sind erhöhter Witterungsbelastung ausgesetzt. Frostperioden im Winter mit anschließendem Tauwetter setzen Bauteilen zu und können Frostschäden verursachen.\n\nDer Denkmalschutz spielt in Frankfurt eine wichtige Rolle, besonders in der rekonstruierten Altstadt und den Gründerzeitvierteln. Sanierungen erfordern Genehmigungen und müssen denkmalpflegerischen Anforderungen genügen. Dies kann Mehrkosten verursachen, sichert aber den Erhalt des kulturellen Erbes.\n\nDie kontinuierliche Stadtentwicklung schafft neue Wohnquartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne prägt Frankfurt. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die sich an der umgebenden Bebauung orientieren.\n\nWeitere Informationen zum Frankfurter Immobilienmarkt und baurechtliche Hinweise finden Sie beim <a href='https://www.frankfurt.de/stadtplanung' rel='nofollow'>Stadtplanungsamt Frankfurt</a> sowie beim <a href='https://www.mieterverein-frankfurt.de' rel='nofollow'>Mieterverein Frankfurt</a>."
+      }
+    ],
+    "ctaSection": {
+      "h2": "Jetzt Bauzustand Ihrer Wunschimmobilie in Frankfurt prüfen lassen",
+      "content": "Eine fundierte Bauschadensanalyse gibt Ihnen Sicherheit vor dem Immobilienkauf. Sie erhalten objektive Einschätzungen durch qualifizierte Sachverständige, realistische Kostenrahmen für erkannte Mängel und verständliche Handlungsempfehlungen. Die digitale Bewertung ist zeitlich flexibel, transparent und erfolgt ohne Vor-Ort-Termine.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und haben damit Klarheit für Ihre Kaufentscheidung. Sie können ihn für Verhandlungen mit Verkäufern nutzen, Ihrer Bank vorlegen oder als Grundlage für die Sanierungsplanung verwenden. Starten Sie jetzt die Bewertung und treffen Sie Ihre Kaufentscheidung auf fundierter Basis.",
+      "primaryCTA": {
+        "text": "Jetzt Bewertung starten",
+        "link": "/evaluation"
+      },
+      "secondaryCTA": {
+        "text": "So funktioniert's ansehen",
+        "link": "/so-funktioniert"
+      },
+      "microcopy": "Bericht per E-Mail innerhalb von 2 Werktagen – schnell, transparent, verlässlich.",
+      "trustElements": [
+        {
+          "text": "Qualifizierte Sachverständige"
+        },
+        {
+          "text": "Bericht innerhalb von 2 Werktagen"
+        },
+        {
+          "text": "Transparente Kostenspannen"
+        },
+        {
+          "text": "Keine versteckten Kosten"
+        }
+      ]
+    }
+  },
+  "faq": [
+    {
+      "question": "Welche Gebäudetypen in Frankfurt werden geprüft?",
+      "answer": "Alle Gebäudetypen werden analysiert: Gründerzeit-Villen im Westend, moderne Hochhäuser im Bankenviertel, rekonstruierte Altstadt-Häuser sowie Eigentumswohnungen in Sachsenhausen oder Nordend. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+    },
+    {
+      "question": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
+      "answer": "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
+    },
+    {
+      "question": "Wie schnell erhalte ich den Bericht für meine Immobilie in Frankfurt?",
+      "answer": "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
+    },
+    {
+      "question": "Was kostet eine Bauschadensanalyse in Frankfurt?",
+      "answer": "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Frankfurt."
+    },
+    {
+      "question": "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
+      "answer": "Die digitale Analyse bietet eine fundierte Ersteinschätzung auf Basis der verfügbaren Informationen. Bei schwerwiegenden Mängeln oder komplexen Schadensbildern wird eine vertiefende Prüfung empfohlen."
+    }
+  ],
+  "keywords": {
+    "primary": [
+      "gutachter haus kaufen frankfurt",
+      "bausachverständiger frankfurt",
+      "bauschadensanalyse frankfurt",
+      "gutachter wohnungskauf frankfurt",
+      "immobilie prüfen lassen frankfurt"
+    ],
+    "secondary": [
+      "altbau gutachter frankfurt",
+      "hauskauf beratung frankfurt westend",
+      "baugutachter frankfurt nordend",
+      "skylight gutachter frankfurt",
+      "wohnung prüfen vor kauf frankfurt",
+      "technische immobilienprüfung frankfurt",
+      "sachverständiger immobilie frankfurt"
+    ],
+    "local": [
+      "westend",
+      "nordend",
+      "sachsenhausen",
+      "bockenheim",
+      "bankenviertel",
+      "altstadt",
+      "mainufer"
+    ]
+  },
+  "internalLinks": [
+    {
+      "text": "So funktioniert's",
+      "url": "/so-funktioniert",
+      "context": "Detaillierte Informationen zum Ablauf"
+    },
+    {
+      "text": "Preise",
+      "url": "/preise",
+      "context": "Transparente Informationen zu Preisen"
+    },
+    {
+      "text": "FAQ",
+      "url": "/faq",
+      "context": "Weitere häufig gestellte Fragen"
+    },
+    {
+      "text": "Kontakt",
+      "url": "/kontakt",
+      "context": "Bei weiteren Fragen"
+    }
+  ]
+}
+

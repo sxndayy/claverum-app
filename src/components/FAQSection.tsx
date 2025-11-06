@@ -111,10 +111,10 @@ const FAQSection: React.FC = () => {
               </a>
               <span className="hidden sm:block text-text-200">•</span>
               <a 
-                href="tel:015143170757" 
+                href="tel:+4932221804909" 
                 className="text-primary hover:underline font-medium"
               >
-                015143170757
+                +49 322 21804909
               </a>
             </div>
             <p className="text-xs text-text-200 mt-3">

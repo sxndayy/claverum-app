@@ -10,8 +10,10 @@ import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useNavigate, Link } from 'react-router-dom';
 import { Shield, Clock, CheckCircle, FileText } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+import { SITE_URL } from '@/constants/config';
 
-const Berlin = () => {
+const Hamburg = () => {
   const navigate = useNavigate();
 
   const handleStartEvaluation = () => {
@@ -37,20 +39,20 @@ const Berlin = () => {
 
   const faqItems = [
     {
-      question: "Welche Gebäudetypen in Berlin werden geprüft?",
-      answer: "Alle Gebäudetypen werden analysiert: Gründerzeithäuser in Prenzlauer Berg oder Charlottenburg, Nachkriegsbauten in Steglitz, Plattenbauten in Marzahn sowie Neubauten. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+      question: "Welche Gebäudetypen in Hamburg werden geprüft?",
+      answer: "Alle Gebäudetypen werden analysiert: Backsteinbauten in Eimsbüttel oder Eppendorf, Gründerzeithäuser rund um die Außenalster, Nachkriegsbauten sowie moderne Neubauten in der HafenCity. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
     },
     {
       question: "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
       answer: "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
     },
     {
-      question: "Wie schnell erhalte ich den Bericht für meine Immobilie in Berlin?",
+      question: "Wie schnell erhalte ich den Bericht für meine Immobilie in Hamburg?",
       answer: "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
     },
     {
-      question: "Was kostet eine Bauschadensanalyse in Berlin?",
-      answer: "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Berlin."
+      question: "Was kostet eine Bauschadensanalyse in Hamburg?",
+      answer: "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Hamburg."
     },
     {
       question: "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
@@ -58,23 +60,47 @@ const Berlin = () => {
     }
   ];
 
+  // LocalBusiness Schema for Hamburg
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "bauklar.org - Bauschadensanalyse Hamburg",
+    "image": `${SITE_URL}/og/hero-altbau.jpg`,
+    "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Hamburg",
+    "areaServed": {
+      "@type": "City",
+      "name": "Hamburg",
+      "containedInPlace": {
+        "@type": "State",
+        "name": "Hamburg"
+      }
+    },
+    "priceRange": "ab 350€",
+    "url": `${SITE_URL}/hamburg`
+  };
+
   return (
     <>
       <SEO 
-        title="Gutachter Hauskauf Berlin – In 2 Tagen Klarheit | ab 350€ | bauklar.org"
-        description="Unabhängige Bauschadensanalyse für Hauskauf in Berlin. Gründerzeit, Neubau, Eigentumswohnung – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen. Jetzt starten."
-        canonical="/berlin"
+        title="Gutachter Hauskauf Hamburg – In 2 Tagen Klarheit | ab 350€ | bauklar.org"
+        description="Unabhängige Bauschadensanalyse für Hauskauf in Hamburg. Backsteinbauten, Gründerzeit, Neubauten – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen."
+        canonical="/hamburg"
         ogImage="/images/hero-altbau.jpg"
         ogType="website"
       />
       <BreadcrumbSchema 
         items={[
           { name: 'Home', url: '/' },
-          { name: 'Berlin', url: '/berlin' }
+          { name: 'Hamburg', url: '/hamburg' }
         ]} 
       />
-      <CityServiceSchema cityName="Berlin" />
+      <CityServiceSchema cityName="Hamburg" />
       <FAQSchema faqs={faqItems} />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(localBusinessSchema)}
+        </script>
+      </Helmet>
       
       <div className="min-h-screen bg-background">
         <Header />
@@ -87,10 +113,10 @@ const Berlin = () => {
             <div className="container mx-auto px-4 relative z-10">
               <div className="max-w-4xl mx-auto">
                 <h1 className="text-3xl md:text-4xl font-bold text-text-100 mb-6">
-                  Bauschadensanalyse Berlin – verlässlich vor dem Hauskauf
+                  Bauschadensanalyse Hamburg – verlässlich vor dem Hauskauf
                 </h1>
                 <p className="text-xl text-text-200 mb-8 leading-relaxed">
-                  Unabhängige Bewertung von Altbau, Neubau und Eigentumswohnungen in Berlin. Digitale Analyse mit verständlichem Bericht innerhalb von 2 Werktagen – ohne Vor-Ort-Termin.
+                  Unabhängige Bewertung von Backsteinbauten, Gründerzeit und Neubauten in Hamburg. Digitale Analyse mit verständlichem Bericht innerhalb von 2 Werktagen – ohne Vor-Ort-Termin.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-12">
                   <Button
@@ -110,8 +136,8 @@ const Berlin = () => {
                 {/* Hero Image */}
                 <div className="mb-12 rounded-lg overflow-hidden shadow-soft">
                   <img
-                    src="/berlin.jpg"
-                    alt="Berlin Stadtansicht – Bauschadensanalyse für Hauskauf in Berlin"
+                    src="/hamburg.jpg"
+                    alt="Hamburger Stadtansicht – Bauschadensanalyse für Hauskauf in Hamburg"
                     width={1600}
                     height={900}
                     loading="eager"
@@ -132,110 +158,98 @@ const Berlin = () => {
                     {/* Warum Bauschadensanalyse Section */}
                     <div id="warum-bauschadensanalyse">
                       <h2 className="text-2xl font-semibold text-text-100 mb-6">
-                        Warum eine Bauschadensanalyse vor dem Immobilienkauf in Berlin
+                        Warum eine Bauschadensanalyse vor dem Immobilienkauf in Hamburg
                       </h2>
                       <p className="mb-4">
-                        Der Kauf einer Immobilie in Berlin ist eine bedeutende finanzielle Entscheidung. Ob Gründerzeithaus in Friedrichshain, Eigentumswohnung in Charlottenburg oder Plattenbau in Lichtenberg – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.
+                        Der Kauf einer Immobilie in Hamburg ist eine bedeutende finanzielle Entscheidung. Ob charakteristisches Backsteinhaus in Eimsbüttel, großbürgerliche Villa am Alsterufer oder moderne Eigentumswohnung in der HafenCity – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.
                       </p>
                       <p className="mb-4">
                         Eine Bauschadensanalyse schafft Transparenz. Sie zeigt auf, welche Bauteile intakt sind, wo Sanierungsbedarf besteht und welche Kosten voraussichtlich anfallen. Diese Klarheit ermöglicht eine fundierte Entscheidung darüber, ob die Immobilie zum angebotenen Preis kaufenswert ist oder ob Nachverhandlungen erforderlich sind.
                       </p>
                       <p className="mb-4">
-                        Besonders in Berlin mit seinem heterogenen Gebäudebestand ist fachliche Einschätzung wertvoll. Die Teilung der Stadt bis 1990 führte zu unterschiedlichen Bautraditionen und Sanierungsständen in Ost und West. Westberliner Altbauten wurden oft bereits in den 1980er Jahren modernisiert, während Ostberliner Gründerzeitquartiere vielfach erst nach der Wende instandgesetzt wurden. Der Sanierungsumfang variiert erheblich – von kosmetischen Maßnahmen bis zu grundlegenden Erneuerungen.
+                        Besonders in Hamburg mit seinem charakteristischen Gebäudebestand ist fachliche Einschätzung wertvoll. Die Hansestadt ist geprägt von Backsteinarchitektur, die seit Jahrhunderten das Stadtbild bestimmt. Vom Mittelalter über die Gründerzeit bis zu modernen Interpretationen in der HafenCity – roter Backstein ist das prägende Element Hamburger Baukunst. Diese Bauweise bringt spezifische Herausforderungen mit sich, die Fachwissen erfordern.
                       </p>
                       <p>
-                        Die digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Der Bericht liegt voraussichtlich bis zum nächsten Werktag vor und enthält nachvollziehbare Einschätzungen sowie realistische Kostenspannen.
+                        Die digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Sie erhalten den Bericht per E-Mail innerhalb von 2 Werktagen und können direkt mit fundierten Informationen in Kaufverhandlungen gehen.
                       </p>
                     </div>
 
-                    {/* Typische Gebäude Berlin Section */}
-                    <div id="typische-gebaeude-berlin">
+                    {/* Typische Gebäude Hamburg Section */}
+                    <div id="typische-gebaeude-hamburg">
                       <h2 className="text-2xl font-semibold text-text-100 mb-6">
-                        Typische Gebäudetypen und Risiken in Berlin
+                        Typische Gebäudetypen und Risiken in Hamburg
                       </h2>
                       
-                      {/* Gründerzeithäuser */}
+                      {/* Backsteinbauten */}
                       <div className="mb-8">
                         <h3 className="text-xl font-semibold text-text-100 mb-4 mt-6">
-                          Gründerzeithäuser in Prenzlauer Berg, Kreuzberg und Charlottenburg
+                          Backsteinbauten in Eimsbüttel, Eppendorf und Winterhude
                         </h3>
                         <p className="mb-4">
-                          Gründerzeitbauten aus der Zeit zwischen 1870 und 1918 prägen weite Teile Berlins. Diese Gebäude zeichnen sich durch massive Außenwände aus Ziegelmauerwerk, hohe Geschosshöhen, Holzbalkendecken und repräsentative Stuckfassaden aus. Die Bauqualität dieser Häuser ist grundsätzlich solide, jedoch zeigen sich nach über 100 Jahren charakteristische Alterungserscheinungen.
+                          Backsteinarchitektur prägt Hamburg wie kaum eine andere deutsche Stadt. Der charakteristische rote Backstein findet sich in nahezu allen Stadtteilen und Epochen. Besonders ausgeprägt ist diese Bauweise in den Gründerzeitvierteln rund um die Außenalster sowie in den von Fritz Schumacher geprägten Wohnsiedlungen der 1920er Jahre.
                         </p>
                         <p className="mb-4">
-                          <strong>Feuchtigkeitsprobleme in Kellern</strong> gehören zu den häufigsten Mängeln. Viele Gründerzeithäuser haben keine oder nur unzureichende Horizontalsperren gegen aufsteigende Feuchtigkeit. Durchfeuchtetes Mauerwerk im Kellerbereich führt zu Schimmelbildung, Geruchsbelastung und kann die Tragfähigkeit beeinträchtigen. Eine nachträgliche Abdichtung ist technisch möglich, aber kostenintensiv.
+                          Gründerzeitliche Backsteinbauten aus der Zeit nach 1860 zeichnen sich durch massive Ziegelwände, hohe Geschosshöhen und oft weiß geschlämmte Fassaden mit Ornamenten aus. Anders als in vielen anderen Städten wurde in Hamburg vorwiegend in Blockbauweise mit nur einem Innenhof gebaut, nicht in der Berliner Bauweise mit mehreren Hinterhöfen. Diese Innenhöfe dienten als Garten oder Erholungsfläche.
                         </p>
                         <p className="mb-4">
-                          <strong>Risse im Mauerwerk</strong> entstehen häufig durch Setzungen. Der sandige Berliner Boden ermöglicht zwar meist gute Gründungen, kann aber bei Grundwasserabsenkung oder benachbarten Baumaßnahmen zu unterschiedlichen Setzungen führen. Nicht jeder Riss ist problematisch, aber die Bewertung erfordert Fachkenntnis. Fortschreitende Risse deuten auf aktive Bewegungen hin und erfordern Untersuchung der Ursache.
-                        </p>
-                        <p className="mb-4">
-                          <strong>Holzbalkendecken</strong> können von Schädlingen befallen sein oder durch jahrzehntelange Belastung Durchbiegungen aufweisen. Auch unsachgemäße Eingriffe wie das Entfernen tragender Wände schwächen die Deckenkonstruktion. Eine Beurteilung der Holzqualität und Tragfähigkeit ist vor dem Kauf wichtig.
+                          Häufige Schwachstellen bei Hamburger Backsteinbauten sind Feuchtigkeit durch defekte Fugenmörtel zwischen den Ziegelsteinen. Frost-Tau-Wechsel und die hohe Luftfeuchtigkeit der Hansestadt setzen den Fugen zu. Aufsteigende Feuchtigkeit aus dem Erdreich tritt bei älteren Gebäuden ohne Horizontalsperre auf. Durchfeuchtetes Mauerwerk führt zu Salzausblühungen, Frostschäden und Schimmelbildung.
                         </p>
                         <p>
-                          <strong>Stuckfassaden</strong> zeigen oft Putzschäden, abplatzende Ornamente oder Durchfeuchtung durch defekte Regenrinnen. Die Instandsetzung von Stuckelementen ist handwerklich aufwendig und kostet je nach Umfang mehrere zehntausend Euro. Veraltete Leitungsnetze für Wasser und Elektrik entsprechen häufig nicht mehr heutigen Anforderungen und sollten erneuert werden.
+                          Die Schumacher-Bauten aus den 1910er bis 1930er Jahren sind als Arbeiterwohnungen konzipiert und zeichnen sich durch angemessene Wohnungsgrößen und solide Bauweise aus. Diese Gebäude sind heute als vergleichsweise bezahlbare Alternative zum klassischen Gründerzeitaltbau geschätzt. Dennoch zeigen auch sie nach fast 100 Jahren Alterungserscheinungen wie veraltete Haustechnik, undichte Dächer oder sanierungsbedürftige Holzfenster.
+                        </p>
+                      </div>
+
+                      {/* Großbürgerliche Villen */}
+                      <div className="mb-8">
+                        <h3 className="text-xl font-semibold text-text-100 mb-4 mt-6">
+                          Großbürgerliche Villen an Alster und Elbe
+                        </h3>
+                        <p className="mb-4">
+                          Die Aufhebung der Torsperre 1860 ermöglichte reicheren Bürgern den Umzug in größere Wohnungen der Vororte. Es entstanden großbürgerliche Wohnviertel rund um die Außenalster, am Elbhang in Blankenese und Othmarschen. Diese Häuser wurden meist aus Backstein errichtet, aber die Fassaden in Weiß mit aufwendigen Ornamenten gehalten.
+                        </p>
+                        <p className="mb-4">
+                          Diese Villen zeichnen sich durch großzügige Grundrisse, repräsentative Eingangsbereiche, hochwertige Materialien und aufwendige Stuckarbeiten aus. Viele verfügen über Gärten, Wintergärten oder Terrassen mit Wasserblick. Die Bauqualität ist grundsätzlich hoch, jedoch erfordern diese Gebäude aufgrund ihrer Größe und Ausstattung erheblichen Instandhaltungsaufwand.
+                        </p>
+                        <p className="mb-4">
+                          Typische Probleme sind undichte Flachdächer oder Mansarddächer, veraltete Heizungsanlagen mit hohem Energieverbrauch, marode Holzkonstruktionen in Dachstühlen oder Balkonen sowie sanierungsbedürftige Außenanlagen. Die Modernisierung der Haustechnik auf heutige Standards ist kostspielig, verbessert aber Komfort und Energieeffizienz erheblich.
+                        </p>
+                        <p>
+                          Bei denkmalgeschützten Villen sind Sanierungen nur in Abstimmung mit der Denkmalschutzbehörde möglich. Dies betrifft vor allem Fassadenarbeiten, Fensteraustausch und Dachsanierungen. Die Auflagen können Mehrkosten verursachen, sichern aber den Erhalt des architektonischen Erbes.
                         </p>
                       </div>
 
                       {/* Nachkriegsbauten */}
                       <div className="mb-8">
                         <h3 className="text-xl font-semibold text-text-100 mb-4 mt-6">
-                          Nachkriegsbauten der 1950er bis 1970er Jahre
+                          Nachkriegsbauten und Wiederaufbau
                         </h3>
                         <p className="mb-4">
-                          Nachkriegsbauten prägen Bezirke wie Steglitz, Tempelhof und Wedding. Diese Gebäude wurden in einer Zeit des schnellen Wiederaufbaus errichtet und weisen charakteristische bauliche Merkmale auf. Flachdächer waren weit verbreitet, die Dämmstandards entsprachen dem damaligen Kenntnisstand und Stahlbetonkonstruktionen wurden zunehmend eingesetzt.
+                          Hamburg wurde im Zweiten Weltkrieg erheblich zerstört, insbesondere Arbeiterviertel und Teile der Innenstadt. Anders als in vielen anderen Städten fand selten eine originalgetreue Wiederherstellung statt. Stattdessen entstanden funktionale Bauten der 1950er bis 1970er Jahre, die schnell Wohnraum für Neubürger und Vertriebene schaffen sollten.
                         </p>
                         <p className="mb-4">
-                          <strong>Flachdächer</strong> neigen zu Undichtigkeiten, insbesondere wenn die Dachabdichtung nicht regelmäßig gewartet wurde. Wasserschäden in Geschossdecken können erhebliche Folgeschäden verursachen. Die Sanierung von Flachdächern ist kostspielig und sollte fachgerecht ausgeführt werden.
+                          Charakteristisch für diese Epoche sind Reihenhaussiedlungen nach Gartenstadtidee, erste Wohnhochhäuser wie die Grindelhochhäuser sowie später Großwohnsiedlungen. Die Bauweise war pragmatisch: Betonfertigteile, einfache Grundrisse, standardisierte Ausstattung. Die Qualität variiert erheblich je nach Baujahr und Bauträger.
                         </p>
                         <p className="mb-4">
-                          <strong>Wärmebrücken</strong> an Balkonen, Fensterstürzen und Geschossdecken führen zu Energieverlusten und Kondensatbildung. Die Folge sind Schimmelbildung an Innenwänden und hohe Heizkosten. Eine nachträgliche Dämmung verbessert die Energieeffizienz erheblich, ist aber mit Investitionen verbunden.
-                        </p>
-                        <p className="mb-4">
-                          <strong>Stahlbetonkonstruktionen</strong> können Korrosionsschäden an der Bewehrung aufweisen. Dringt Feuchtigkeit in den Beton ein, beginnt der Stahl zu rosten und dehnt sich aus. Dies führt zu Betonabplatzungen und Rissen. Die Instandsetzung erfordert Freilegen der Bewehrung, Entrosten, Auftragen von Korrosionsschutz und Neuvermörtelung.
-                        </p>
-                        <p>
-                          Die Haustechnik dieser Gebäude entspricht selten heutigen Standards. Heizungsanlagen, Sanitärinstallationen und Elektrik sind oft seit Jahrzehnten nicht grundlegend erneuert worden. Die Modernisierung der Haustechnik verbessert Komfort und Effizienz, bedeutet aber eine wesentliche Investition.
+                          Häufige Mängel sind unzureichende Wärmedämmung mit hohen Heizkosten, undichte Flachdächer, Betonschäden durch Korrosion der Bewehrung sowie veraltete Elektro- und Sanitärinstallationen. Fenster entsprechen oft nicht mehr heutigen Anforderungen an Schallschutz und Energieeffizienz. Die Modernisierung dieser Gebäude kann deren Wert erheblich steigern, erfordert aber substanzielle Investitionen.
                         </p>
                       </div>
 
-                      {/* Plattenbauten */}
+                      {/* Neubauten */}
                       <div className="mb-8">
                         <h3 className="text-xl font-semibold text-text-100 mb-4 mt-6">
-                          Plattenbauten in Marzahn, Hellersdorf und Lichtenberg
+                          Neubauten in HafenCity und moderne Architektur
                         </h3>
                         <p className="mb-4">
-                          Plattenbausiedlungen wurden in den östlichen Bezirken Berlins zwischen 1970 und 1990 in industrieller Bauweise errichtet. Diese Gebäude haben aufgrund vorgefertigter Betonelemente eine standardisierte Konstruktion. Viele wurden nach der Wende energetisch saniert, die Qualität und der Umfang dieser Sanierungen variieren jedoch erheblich.
+                          Hamburg entwickelt sich kontinuierlich weiter. Die HafenCity ist Europas größtes innerstädtisches Stadtentwicklungsprojekt und vereint moderne Architektur mit urbaner Mischnutzung. Wohnen, Arbeiten und Freizeit wachsen hier zu einem neuen Stadtteil zusammen. Die architektonische Bandbreite reicht von Backstein-Interpretationen bis zu Glas-Stahl-Konstruktionen.
                         </p>
                         <p className="mb-4">
-                          <strong>Wärmedämmverbundsysteme</strong> wurden oft nachträglich angebracht. Die Ausführungsqualität ist entscheidend für die Dauerhaftigkeit. Unsachgemäß ausgeführte Dämmung kann zu Feuchtigkeitsschäden, Algenbildung an der Fassade oder Ablösung führen. Eine Prüfung des Zustands der Dämmung ist sinnvoll.
+                          Neubauten unterliegen hohen energetischen Anforderungen und Brandschutzvorgaben. Dennoch sind auch moderne Gebäude nicht frei von Mängeln. Häufige Probleme sind Abdichtungsfehler an Balkonen und Terrassen, mangelhafte Ausführung von Wärmedämmverbundsystemen, Schallschutzprobleme zwischen Wohneinheiten sowie Mängel an Haustechnik und Lüftungsanlagen.
                         </p>
                         <p className="mb-4">
-                          <strong>Balkone</strong> zeigen häufig Betonschäden durch Korrosion der Bewehrung. Die auskragende Konstruktion ist besonders witterungsexponiert. Risse, Abplatzungen oder Rostfahnen deuten auf Sanierungsbedarf hin. Die Instandsetzung oder der Austausch von Balkonen ist kostenintensiv und betrifft das Gemeinschaftseigentum.
-                        </p>
-                        <p className="mb-4">
-                          <strong>Zentrale Heizungsanlagen</strong> sind oft veraltet und ineffizient. Die Umstellung auf moderne Heizsysteme oder dezentrale Lösungen verbessert die Energiebilanz, erfordert aber Beschlüsse der Eigentümergemeinschaft und entsprechende Investitionen. Gleichzeitig bieten fachgerecht sanierte Plattenbauten solide Bausubstanz zu vergleichsweise günstigen Preisen. Die klare Konstruktion ermöglicht übersichtliche Grundrisse und gute Raumaufteilung.
-                        </p>
-                      </div>
-
-                      {/* Eigentumswohnungen */}
-                      <div className="mb-8">
-                        <h3 className="text-xl font-semibold text-text-100 mb-4 mt-6">
-                          Eigentumswohnungen: Gemeinschaftseigentum richtig bewerten
-                        </h3>
-                        <p className="mb-4">
-                          Beim Kauf einer Eigentumswohnung in Berlin ist der Zustand des Gemeinschaftseigentums ebenso wichtig wie der Zustand der eigenen Wohnung. Fassade, Dach, Treppenhaus, Aufzug und zentrale Haustechnik werden gemeinschaftlich unterhalten. Sanierungsbedarf an diesen Bauteilen führt zu Umlagen, die alle Eigentümer nach Miteigentumsanteil tragen müssen.
-                        </p>
-                        <p className="mb-4">
-                          Die <strong>Instandhaltungsrücklage</strong> gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Eine Faustregel besagt, dass pro Quadratmeter Wohnfläche und Jahr mindestens ein Euro in die Rücklage fließen sollte. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.
-                        </p>
-                        <p className="mb-4">
-                          Geplante Maßnahmen, bereits diskutierte Mängel und Beschlussfassungen aus Eigentümerversammlungen sollten sorgfältig geprüft werden. Häufig werden größere Sanierungen bereits Jahre im Voraus besprochen, bevor der Beschluss gefasst wird.
-                        </p>
-                        <p className="mb-4">
-                          Häufige Schwachstellen im Gemeinschaftseigentum Berliner Wohngebäude sind undichte Flachdächer, sanierungsbedürftige Fassaden, veraltete Aufzugsanlagen und Wasserleitungen mit Korrosionsschäden. Auch Brandschutzmaßnahmen entsprechen bei älteren Gebäuden oft nicht mehr den aktuellen Anforderungen und erfordern Nachrüstung von Rauchmeldern, Feuerschutztüren oder Fluchtwegsicherungen.
+                          Die besonderen Herausforderungen in der HafenCity sind Hochwasserschutz und Feuchtigkeitsbelastung durch die Wassernähe. Gebäude stehen auf Warften oder haben verstärkte Sockelzonen. Die Abdichtung muss dauerhaft drückendem Wasser standhalten. Eine Prüfung bereits vor Übergabe kann Gewährleistungsansprüche sichern.
                         </p>
                         <p>
-                          Eine Bauschadensanalyse berücksichtigt soweit aus Unterlagen und Fotos erkennbar auch das Gemeinschaftseigentum. Hinweise auf absehbare Sanierungen werden im Bericht aufgeführt. Dies ermöglicht eine realistische Einschätzung der Gesamtkosten über die kommenden Jahre.
+                          Bei Eigentumswohnungen in Neubauten ist die Qualität der Eigentümergemeinschaft entscheidend. Geringe Instandhaltungsrücklagen und fehlende Rückstellungen für absehbare Sanierungen deuten auf unzureichende Verwaltung hin.
                         </p>
                       </div>
                     </div>
@@ -246,7 +260,7 @@ const Berlin = () => {
                         Ablauf der digitalen Bauschadensanalyse
                       </h2>
                       <p className="mb-4">
-                        Die Bauschadensanalyse erfolgt vollständig digital und erfordert keine Terminvereinbarung. Sie laden Fotos der Immobilie sowie vorhandene Unterlagen wie Grundrisse oder Energieausweise hoch. Ergänzend geben Sie relevante Informationen zu Baujahr, Bauweise, erkannten Mängeln und geplanten Nutzungen an.
+                        Die Bauschadensanalyse erfolgt vollständig digital und erfordert keine Terminvereinbarung. Sie laden Fotos der Immobilie sowie vorhandene Unterlagen wie Energieausweise hoch. Ergänzend geben Sie relevante Informationen zu Baujahr, Bauweise, erkannten Mängeln und geplanten Nutzungen an.
                       </p>
                       <p className="mb-4">
                         Je vollständiger die eingereichten Informationen sind, desto präziser kann die Bewertung erfolgen. Fotos sollten alle wesentlichen Bereiche dokumentieren: Fassade, Dach, Keller, Heizungsanlage, Fenster, Sanitärinstallationen und erkennbare Schadensstellen. Auch unscheinbare Details wie Risse, Feuchtigkeitsflecken oder Schimmelansätze sind wichtig.
@@ -255,7 +269,7 @@ const Berlin = () => {
                         Ein qualifizierter Sachverständiger analysiert die eingereichten Daten systematisch. Bausubstanz, Haustechnik, Feuchtigkeitserscheinungen, Risse und weitere Schadensmuster werden erfasst und bewertet. Die Einschätzung berücksichtigt typische Alterungserscheinungen des jeweiligen Gebäudetyps, übliche Sanierungszyklen und erkennbare Risikofaktoren.
                       </p>
                       <p className="mb-4">
-                        Der Bericht wird voraussichtlich bis zum nächsten Werktag bereitgestellt. Die Bearbeitungszeit beträgt in der Regel 48 Stunden ab vollständiger Datenübermittlung. Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und können ihn für Bankgespräche oder Verhandlungen mit Verkäufern nutzen.
+                        Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Datenübermittlung. Der Bericht kann für Bankgespräche, Verhandlungen mit Verkäufern oder als Grundlage für die Sanierungsplanung genutzt werden.
                       </p>
                       <p>
                         Diese Form der Bewertung bietet eine fundierte Grundlage für Ihre Kaufentscheidung ohne aufwendige Koordination oder zeitliche Abstimmungen. Die Analyse erfolgt unabhängig und objektiv ausschließlich auf Basis der technischen Gegebenheiten. Detaillierte Informationen zum Ablauf finden Sie unter{' '}
@@ -310,19 +324,29 @@ const Berlin = () => {
                     {/* Lokale Besonderheiten Section */}
                     <div id="lokale-besonderheiten">
                       <h2 className="text-2xl font-semibold text-text-100 mb-6">
-                        Lokale Besonderheiten des Berliner Immobilienmarkts
+                        Lokale Besonderheiten des Hamburger Immobilienmarkts
                       </h2>
                       <p className="mb-4">
-                        Berlin unterscheidet sich als Immobilienmarkt deutlich von anderen deutschen Städten. Die Teilung der Stadt bis 1990 führte zu unterschiedlichen Bautraditionen und Sanierungsverläufen. Westberliner Altbauten in Charlottenburg, Wilmersdorf oder Schöneberg wurden oft bereits in den 1980er Jahren im Rahmen von Modernisierungsprogrammen saniert. Ostberliner Gründerzeitquartiere in Prenzlauer Berg, Friedrichshain oder Kreuzberg erfuhren vielfach erst nach der Wende umfassende Instandsetzungen.
+                        Hamburg unterscheidet sich als Immobilienmarkt durch seine maritime Lage und die damit verbundenen Herausforderungen. Die hohe Luftfeuchtigkeit der Hansestadt belastet Bausubstanz stärker als in Binnenlandregionen. Fassaden, Fenster und Dächer sind erhöhter Witterungsbelastung ausgesetzt. Salzhaltige Luft in Hafennähe kann Korrosion an metallischen Bauteilen beschleunigen.
                       </p>
                       <p className="mb-4">
-                        Der Sanierungsstand variiert erheblich. Einzelne Gebäude wurden aufwendig restauriert, andere nur oberflächlich aufgewertet. Äußerlich ansprechende Fassaden können verdeckte Mängel wie marode Leitungsnetze, feuchte Keller oder ungedämmte Außenwände aufweisen. Eine differenzierte Prüfung ist daher besonders in Berlin wichtig.
+                        Der Untergrund Hamburgs ist geprägt von Marschland, Sand und stellenweise Kleiboden. Die Bodenbeschaffenheit beeinflusst Gründungsarten und Setzungsverhalten. In Elbufernähe und tiefliegenden Stadtteilen spielen Grundwasserstände und Hochwasserschutz eine wichtige Rolle. Gebäude in HafenCity und Hafenrandlagen müssen entsprechend abgedichtet sein.
                       </p>
                       <p className="mb-4">
-                        Die Bodenbeschaffenheit spielt für die Bausubstanz eine Rolle. Berlin steht überwiegend auf sandigem Untergrund, der gute Gründungen ermöglicht. Gleichzeitig kann es bei Grundwasserabsenkung oder benachbarten Tiefbaumaßnahmen zu Setzungen kommen. Einzelne Bereiche haben lehmige oder tonige Böden, die Setzungsrisse begünstigen. Diese regionalen Gegebenheiten fließen in die Bewertung ein.
+                        Die Backsteinarchitektur ist nicht nur ästhetisch prägend, sondern auch bauphysikalisch relevant. Backsteinmauerwerk hat spezifische Eigenschaften hinsichtlich Feuchtigkeitstransport, Wärmedämmung und Tragfähigkeit. Sanierungen müssen diese Eigenschaften berücksichtigen, sonst drohen Bauschäden durch unsachgemäße Maßnahmen.
+                      </p>
+                      <p className="mb-4">
+                        Die kontinuierliche Stadtentwicklung Hamburgs schafft neue Quartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne ist charakteristisch für Hamburg. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die Mehrkosten verursachen können.
                       </p>
                       <p>
-                        Neubaugebiete entstehen vor allem am Stadtrand in Pankow, Lichtenberg und Treptow-Köpenick. Auch Neubauten sind nicht frei von Mängeln. Abdichtungsprobleme, fehlerhafte Wärmedämmung, mangelhafte Schallschutzvorkehrungen oder unzureichend installierte Haustechnik kommen vor. Eine Prüfung bereits vor Übergabe kann Gewährleistungsansprüche sichern und spätere Auseinandersetzungen vermeiden.
+                        Weitere Informationen zum Hamburger Immobilienmarkt und baurechtliche Hinweise finden Sie bei der{' '}
+                        <a href="https://www.hamburg.de/bsw/" rel="nofollow" className="text-primary hover:underline font-medium">
+                          Behörde für Stadtentwicklung und Wohnen Hamburg
+                        </a>{' '}
+                        sowie beim{' '}
+                        <a href="https://www.mieterverein-hamburg.de" rel="nofollow" className="text-primary hover:underline font-medium">
+                          Mieterverein zu Hamburg
+                        </a>.
                       </p>
                     </div>
                   </div>
@@ -340,7 +364,7 @@ const Berlin = () => {
                     Häufig gestellte Fragen
                   </h2>
                   <p className="text-xl text-text-200">
-                    Alles was Sie über unsere Bauschadensbewertung in Berlin wissen müssen
+                    Alles was Sie über unsere Bauschadensbewertung in Hamburg wissen müssen
                   </p>
                 </div>
 
@@ -392,7 +416,7 @@ const Berlin = () => {
                     { name: 'Bremen', slug: 'bremen' },
                     { name: 'Mannheim', slug: 'mannheim' },
                   ].map((city) => {
-                    const isCurrentCity = city.slug === 'berlin';
+                    const isCurrentCity = city.slug === 'hamburg';
                     return (
                       <Link
                         key={city.slug}
@@ -427,7 +451,7 @@ const Berlin = () => {
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto text-center">
                 <h2 className="text-3xl md:text-4xl font-bold text-text-100 mb-6">
-                  Jetzt Bauzustand Ihrer Wunschimmobilie in Berlin prüfen lassen
+                  Jetzt Bauzustand Ihrer Wunschimmobilie in Hamburg prüfen lassen
                 </h2>
                 <p className="text-xl text-text-200 mb-8 leading-relaxed">
                   Eine fundierte Bauschadensanalyse gibt Ihnen Sicherheit vor dem Immobilienkauf. Sie erhalten objektive Einschätzungen durch qualifizierte Sachverständige, realistische Kostenrahmen für erkannte Mängel und verständliche Handlungsempfehlungen. Die digitale Bewertung ist zeitlich flexibel, transparent und erfolgt ohne Vor-Ort-Termine.
@@ -486,5 +510,5 @@ const Berlin = () => {
   );
 };
 
-export default Berlin;
+export default Hamburg;
 

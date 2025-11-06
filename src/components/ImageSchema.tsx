@@ -28,7 +28,7 @@ export function ImageSchema({
     "license": `${siteUrl}/agb`,
     "copyrightHolder": {
       "@type": "Organization",
-      "name": "Claverium GmbH",
+      "name": "Claverum GmbH",
       "url": siteUrl
     }
   };

@@ -4,6 +4,21 @@
   publish = "dist"
   command = "npm run build"
 
+# Enable prerendering for SEO - ensures search engines see full HTML content
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
 # Redirects - ensure trailing slash consistency
 # Redirect paths without trailing slash (and without file extensions) to paths with trailing slash
 # This ensures canonical URLs are consistent

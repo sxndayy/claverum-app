@@ -10,7 +10,7 @@ export function WebSiteSchema() {
     "description": "Professionelle Bauschadensbewertung per KI. Upload in Minuten, Ergebnis bis nächster Werktag.",
     "publisher": {
       "@type": "Organization",
-      "name": "Claverium",
+      "name": "Claverum",
       "url": SITE_URL
     },
     "potentialAction": {

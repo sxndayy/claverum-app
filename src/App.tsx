@@ -10,6 +10,9 @@ import AGB from "./pages/AGB";
 import Datenschutz from "./pages/Datenschutz";
 import Widerruf from "./pages/Widerruf";
 import Berlin from "./pages/Berlin";
+import Hamburg from "./pages/Hamburg";
+import Muenchen from "./pages/Muenchen";
+import CityRoute from "./components/CityRoute";
 
 // Route Error Component
 const RouteError = () => {
@@ -57,6 +60,10 @@ const App = () => (
       <Route path="/datenschutz" element={<Datenschutz />} errorElement={<RouteError />} />
       <Route path="/widerruf" element={<Widerruf />} errorElement={<RouteError />} />
       <Route path="/berlin" element={<Berlin />} errorElement={<RouteError />} />
+      <Route path="/hamburg" element={<Hamburg />} errorElement={<RouteError />} />
+      <Route path="/muenchen" element={<Muenchen />} errorElement={<RouteError />} />
+      {/* Dynamic city routes - must come after specific city routes */}
+      <Route path="/:slug" element={<CityRoute />} errorElement={<RouteError />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>

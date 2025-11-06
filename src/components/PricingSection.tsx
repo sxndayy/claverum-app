@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Star, Clock, Shield } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const PricingSection: React.FC = () => {
   const navigate = useNavigate();
@@ -10,6 +10,25 @@ const PricingSection: React.FC = () => {
   const handleStartEvaluation = () => {
     navigate('/evaluation');
   };
+
+  // Liste aller Städte mit Namen und Slugs
+  const cities = [
+    { name: 'Berlin', slug: 'berlin' },
+    { name: 'Hamburg', slug: 'hamburg' },
+    { name: 'München', slug: 'muenchen' },
+    { name: 'Köln', slug: 'koeln' },
+    { name: 'Düsseldorf', slug: 'duesseldorf' },
+    { name: 'Dortmund', slug: 'dortmund' },
+    { name: 'Essen', slug: 'essen' },
+    { name: 'Frankfurt', slug: 'frankfurt' },
+    { name: 'Stuttgart', slug: 'stuttgart' },
+    { name: 'Nürnberg', slug: 'nuernberg' },
+    { name: 'Leipzig', slug: 'leipzig' },
+    { name: 'Dresden', slug: 'dresden' },
+    { name: 'Hannover', slug: 'hannover' },
+    { name: 'Bremen', slug: 'bremen' },
+    { name: 'Mannheim', slug: 'mannheim' },
+  ];
 
   const packages = [
     {
@@ -166,23 +185,30 @@ const PricingSection: React.FC = () => {
             </div>
           </div>
 
-          {/* FAQ Preview */}
+          {/* Wo wir vertreten sind */}
           <div className="text-center">
-            <h3 className="text-lg font-semibold text-text-100 mb-4">
-              Unsicher welches Paket das richtige ist?
+            <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">
+              Wo wir vertreten sind:
             </h3>
-            <p className="text-text-200 mb-6">
-              Unser kurzer Fragebogen hilft Ihnen bei der Auswahl des optimalen Pakets
+            <p className="text-text-200 mb-8 max-w-2xl mx-auto">
+              Hier finden Sie uns und noch weitere Informationen zu den jeweiligen Städten.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="border bg-transparent text-text-100 hover:bg-bg-100" onClick={() => {
-                const element = document.getElementById('faq');
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}>
-                Häufige Fragen ansehen
-              </Button>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-5xl mx-auto">
+              {cities.map((city) => (
+                <Link
+                  key={city.slug}
+                  to={`/${city.slug}`}
+                  onClick={() => {
+                    // Scroll zur oberen Position nach Navigation
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 100);
+                  }}
+                  className="inline-flex items-center justify-center px-4 py-3 rounded-md font-medium text-sm transition-all duration-200 bg-primary hover:bg-primary/90 text-primary-foreground shadow-soft hover:shadow-strong hover-lift"
+                >
+                  {city.name}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

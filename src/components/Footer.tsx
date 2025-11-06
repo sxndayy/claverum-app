@@ -6,7 +6,8 @@ const Footer: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  const scrollToSection = (sectionId: string) => {
+  const handleSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    e.preventDefault();
     // If we're not on the homepage, navigate to homepage first
     if (location.pathname !== '/') {
       navigate('/');
@@ -29,6 +30,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="text-black bg-gradient-to-tl from-blue-50 via-blue-100 to-blue-300">
       <div className="container mx-auto px-4 py-16">
+        <h2 className="sr-only">Footer Navigation</h2>
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
@@ -54,12 +56,13 @@ const Footer: React.FC = () => {
             <h3 className="font-semibold text-black">Leistungen</h3>
             <ul className="space-y-2 text-sm text-black">
               <li>
-                <button 
-                  onClick={() => scrollToSection('leistungen')}
+                <a 
+                  href="/#leistungen"
+                  onClick={(e) => handleSectionClick(e, 'leistungen')}
                   className="hover:text-black transition-smooth"
                 >
                   Bauschadensbewertung
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -69,36 +72,40 @@ const Footer: React.FC = () => {
             <h3 className="font-semibold text-black">Navigation</h3>
             <ul className="space-y-2 text-sm text-black">
               <li>
-                <button 
-                  onClick={() => scrollToSection('so-funktioniert')}
+                <a 
+                  href="/#so-funktioniert"
+                  onClick={(e) => handleSectionClick(e, 'so-funktioniert')}
                   className="hover:text-black transition-smooth"
                 >
                   So funktioniert's
-                </button>
+                </a>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('preise')}
+                <a 
+                  href="/#preise"
+                  onClick={(e) => handleSectionClick(e, 'preise')}
                   className="hover:text-black transition-smooth"
                 >
                   Preise
-                </button>
+                </a>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('faq')}
+                <a 
+                  href="/#faq"
+                  onClick={(e) => handleSectionClick(e, 'faq')}
                   className="hover:text-black transition-smooth"
                 >
                   FAQ
-                </button>
+                </a>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('kontakt')}
+                <a 
+                  href="/#kontakt"
+                  onClick={(e) => handleSectionClick(e, 'kontakt')}
                   className="hover:text-black transition-smooth"
                 >
                   Kontakt
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -119,16 +126,16 @@ const Footer: React.FC = () => {
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
                 <a 
-                  href="tel:015143170757"
+                  href="tel:+4932221804909"
                   className="hover:text-black transition-smooth"
                 >
-                  015143170757
+                  +49 322 21804909
                 </a>
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5" />
                 <div>
-                  Claverium GmbH<br />
+                  Claverum GmbH<br />
                   Neusser Str. 257<br />
                   50733 Köln
                 </div>
@@ -141,7 +148,7 @@ const Footer: React.FC = () => {
         <div className="border-t border-bg-100/20 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-black">
-              © 2025 Claverium GmbH. Alle Rechte vorbehalten.
+              © 2025 Claverum GmbH. Alle Rechte vorbehalten.
             </div>
             <div className="flex flex-wrap gap-6 text-sm text-black">
               <a href="/impressum" className="hover:text-black transition-smooth">

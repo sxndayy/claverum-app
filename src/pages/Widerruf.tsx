@@ -10,7 +10,7 @@ const Widerruf = () => {
     <>
       <SEO 
         title="Widerrufsbelehrung" 
-        description="Widerrufsbelehrung der Claverium GmbH. Informationen zu Ihrem Widerrufsrecht bei Bauschadensanalysen und dem Widerrufsverfahren."
+        description="Widerrufsbelehrung der Claverum GmbH. Informationen zu Ihrem Widerrufsrecht bei Bauschadensanalysen und dem Widerrufsverfahren."
         canonical="/widerruf"
       />
       <BreadcrumbSchema 
