@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import archiver from 'archiver';
 import helmet from 'helmet';
-import sgMail from '@sendgrid/mail';
+import { Resend } from 'resend';
 import { query, transaction, getPoolStats, isPoolExhaustionError } from './db.js';
 import { generatePresignedUploadUrl, getPublicUrl, downloadFileFromS3 } from './s3-client.js';
 import authRoutes from './routes/auth.js';
@@ -36,10 +36,8 @@ import { generateOrderSessionToken } from './middleware/orderOwnership.js';
 
 dotenv.config();
 
-// Initialize SendGrid
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-}
+// Initialize Resend
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -935,9 +933,9 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
       });
     }
 
-    // Check if SendGrid is configured
-    if (!process.env.SENDGRID_API_KEY) {
-      console.error('SendGrid API key not configured');
+    // Check if Resend is configured
+    if (!resend || !process.env.RESEND_API_KEY) {
+      console.error('Resend API key not configured');
       return res.status(500).json({
         success: false,
         error: 'E-Mail-Service ist nicht konfiguriert. Bitte kontaktieren Sie den Administrator.'
@@ -962,38 +960,35 @@ Diese Nachricht wurde über das Kontaktformular auf bauklar.org gesendet.
 Antworten Sie direkt an: ${sanitizedEmail}
 `;
 
-    // Send email via SendGrid
-    const msg = {
+    // Send email via Resend
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #00668c;">Neue Kontaktanfrage</h2>
+        <div style="background-color: #f5f4f1; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p><strong>Name:</strong> ${sanitizedName}</p>
+          <p><strong>E-Mail:</strong> <a href="mailto:${sanitizedEmail}">${sanitizedEmail}</a></p>
+          <p><strong>Telefon:</strong> ${sanitizedPhone || 'Nicht angegeben'}</p>
+        </div>
+        <div style="margin: 20px 0;">
+          <h3 style="color: #00668c;">Nachricht:</h3>
+          <p style="white-space: pre-wrap; background-color: #fff; padding: 15px; border-left: 4px solid #00668c;">${sanitizedMessage}</p>
+        </div>
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+        <p style="color: #666; font-size: 12px;">
+          Diese Nachricht wurde über das Kontaktformular auf bauklar.org gesendet.<br>
+          Antworten Sie direkt an: <a href="mailto:${sanitizedEmail}">${sanitizedEmail}</a>
+        </p>
+      </div>
+    `;
+
+    await resend.emails.send({
+      from: `Bauklar.org Kontaktformular <${contactEmail}>`,
       to: contactEmail,
-      from: {
-        email: contactEmail,
-        name: 'Bauklar.org Kontaktformular'
-      },
       replyTo: sanitizedEmail,
       subject: `Neue Kontaktanfrage von ${sanitizedName}`,
       text: emailContent,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #00668c;">Neue Kontaktanfrage</h2>
-          <div style="background-color: #f5f4f1; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p><strong>Name:</strong> ${sanitizedName}</p>
-            <p><strong>E-Mail:</strong> <a href="mailto:${sanitizedEmail}">${sanitizedEmail}</a></p>
-            <p><strong>Telefon:</strong> ${sanitizedPhone || 'Nicht angegeben'}</p>
-          </div>
-          <div style="margin: 20px 0;">
-            <h3 style="color: #00668c;">Nachricht:</h3>
-            <p style="white-space: pre-wrap; background-color: #fff; padding: 15px; border-left: 4px solid #00668c;">${sanitizedMessage}</p>
-          </div>
-          <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
-          <p style="color: #666; font-size: 12px;">
-            Diese Nachricht wurde über das Kontaktformular auf bauklar.org gesendet.<br>
-            Antworten Sie direkt an: <a href="mailto:${sanitizedEmail}">${sanitizedEmail}</a>
-          </p>
-        </div>
-      `
-    };
-
-    await sgMail.send(msg);
+      html: emailHtml
+    });
 
     res.status(200).json({
       success: true,
@@ -1002,9 +997,9 @@ Antworten Sie direkt an: ${sanitizedEmail}
   } catch (error) {
     console.error('Error sending contact email:', error);
     
-    // Handle SendGrid specific errors
-    if (error.response) {
-      console.error('SendGrid error details:', error.response.body);
+    // Handle Resend specific errors
+    if (error.message) {
+      console.error('Resend error details:', error.message);
     }
 
     res.status(500).json({
