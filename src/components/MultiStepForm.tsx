@@ -42,9 +42,10 @@ const MultiStepForm: React.FC = () => {
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [orderId, setOrderId] = useState<string | null>(null);
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(false); // Changed to false - form renders immediately
   const [paymentData, setPaymentData] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [orderCreationError, setOrderCreationError] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
     street: '',
     houseNumber: '',
@@ -89,24 +90,35 @@ const MultiStepForm: React.FC = () => {
         console.log('Using existing order:', existingOrderId);
         setOrderId(existingOrderId);
       } else {
-        // Create new order
+        // Create new order in background (non-blocking)
         console.log('Creating new order...');
-        const response = await apiClient.createOrder();
-        
-        if (response.success) {
-          console.log('Order created:', response.orderId);
-          setOrderId(response.orderId);
-          setCurrentOrder(response.orderId, response.sessionToken);
-        } else {
-          toast({
-            variant: 'destructive',
-            title: 'Fehler',
-            description: response.error || 'Fehler beim Erstellen des Auftrags'
+        apiClient.createOrder()
+          .then(response => {
+            if (response.success) {
+              console.log('Order created:', response.orderId);
+              setOrderId(response.orderId);
+              setCurrentOrder(response.orderId, response.sessionToken);
+              setOrderCreationError(null);
+            } else {
+              console.error('Order creation failed:', response.error);
+              setOrderCreationError(response.error || 'Fehler beim Erstellen des Auftrags');
+              toast({
+                variant: 'destructive',
+                title: 'Fehler',
+                description: response.error || 'Fehler beim Erstellen des Auftrags'
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Order creation error:', error);
+            setOrderCreationError('Fehler beim Erstellen des Auftrags');
+            toast({
+              variant: 'destructive',
+              title: 'Fehler',
+              description: 'Fehler beim Erstellen des Auftrags'
+            });
           });
-        }
       }
-      
-      setIsInitializing(false);
     };
 
     initializeOrder();
@@ -222,6 +234,26 @@ const MultiStepForm: React.FC = () => {
   };
 
   const nextStep = async () => {
+    // If we're on step 1 and order is still being created, wait a bit
+    if (currentStep === 1 && !orderId && !orderCreationError) {
+      // Wait up to 3 seconds for order creation
+      let waited = 0;
+      while (!orderId && waited < 3000 && !orderCreationError) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        waited += 100;
+      }
+      
+      // If still no order after waiting, show error
+      if (!orderId && !orderCreationError) {
+        toast({
+          variant: 'destructive',
+          title: 'Bitte warten',
+          description: 'Der Auftrag wird noch erstellt. Bitte versuchen Sie es in einem Moment erneut.',
+        });
+        return;
+      }
+    }
+
     if (!orderId && currentStep > 1) {
       toast({
         variant: 'destructive',
@@ -321,19 +353,6 @@ const MultiStepForm: React.FC = () => {
       updateFormData('selectedProduct', products[0].id);
     }
   }, [currentStep, formData.selectedProduct]);
-
-
-  // Show loading state while initializing
-  if (isInitializing) {
-    return (
-      <div className="max-w-6xl mx-auto p-6 flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
-          <p className="text-muted-foreground">Initialisiere Auftrag...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <>

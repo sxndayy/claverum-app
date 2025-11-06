@@ -818,6 +818,8 @@ ${order.postal_code || ''} ${order.city || ''}
 Immobilientyp: ${order.property_type || 'Nicht angegeben'}
 Baujahr: ${order.build_year || 'Nicht angegeben'}
 
+E-Mail: ${order.email || 'Nicht angegeben'}
+
 Notizen:
 ${order.note || 'Keine Notizen'}
 
