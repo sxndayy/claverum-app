@@ -2,14 +2,19 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/logo-final.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/logo-final.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/logo-final.png" />
     <meta name="author" content="Claverum" />
+    <!-- Resource hints for external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://js.stripe.com" crossorigin>
+    <link rel="dns-prefetch" href="https://api.bauklar.org">
+    <!-- Preload critical font weights -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Structured Data -->
@@ -20,7 +25,7 @@
       "name": "Claverum",
       "url": "https://bauklar.org",
       "logo": "https://bauklar.org/logo.png",
-      "description": "KI-gestützte Immobilienbewertung für Immobilienkäufe",
+      "description": "Professionelle Bauschadensbewertung für Immobilienkäufe",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+4932221804909",

@@ -126,6 +126,12 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground font-sans;
   }
+
+  /* Font optimization - ensure font-display: swap */
+  @font-face {
+    font-family: 'Inter';
+    font-display: swap;
+  }
 }
 
 @layer components {

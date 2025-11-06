@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { SEO } from '@/components/SEO';
 import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
 import Header from '@/components/Header';
-import MultiStepForm from '@/components/MultiStepForm';
 import Footer from '@/components/Footer';
+
+// Lazy load MultiStepForm for better performance
+const MultiStepForm = lazy(() => import('@/components/MultiStepForm'));
 
 const Evaluation = () => {
   // Scrollt zur obersten Position der Seite
@@ -33,7 +35,16 @@ const Evaluation = () => {
           <h1 className="text-3xl md:text-4xl font-bold text-text-100 mb-8 text-center">
             Bauschadensbewertung starten
           </h1>
-          <MultiStepForm />
+          <Suspense fallback={
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-text-200">Lade Formular...</p>
+              </div>
+            </div>
+          }>
+            <MultiStepForm />
+          </Suspense>
         </div>
       </main>
       <div className="relative z-10 bg-white">
