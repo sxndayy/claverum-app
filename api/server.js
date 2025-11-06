@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import archiver from 'archiver';
 import helmet from 'helmet';
+import sgMail from '@sendgrid/mail';
 import { query, transaction, getPoolStats, isPoolExhaustionError } from './db.js';
 import { generatePresignedUploadUrl, getPublicUrl, downloadFileFromS3 } from './s3-client.js';
 import authRoutes from './routes/auth.js';
@@ -16,7 +17,8 @@ import {
   loginLimiter, 
   adminLimiter, 
   uploadLimiter, 
-  orderCreationLimiter 
+  orderCreationLimiter,
+  contactLimiter
 } from './middleware/rateLimiter.js';
 import { 
   sanitizeString, 
@@ -26,12 +28,18 @@ import {
   isValidPostalCode,
   isValidArea,
   isValidSortField,
-  isValidSortOrder
+  isValidSortOrder,
+  isValidEmail
 } from './utils/validation.js';
 import { validateFileUpload, checkUploadLimits, checkAndReserveUploadSlot } from './middleware/fileValidation.js';
 import { generateOrderSessionToken } from './middleware/orderOwnership.js';
 
 dotenv.config();
+
+// Initialize SendGrid
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -59,6 +67,12 @@ app.use(helmet({
 
 app.use(cors({
   origin: [
+    // Production domain
+    'http://bauklar.org',
+    'https://bauklar.org',
+    'http://www.bauklar.org',
+    'https://www.bauklar.org',
+    // Development and testing
     'https://test-johannes.netlify.app',
     'http://localhost:3000',
     'http://localhost:8080'
@@ -887,6 +901,116 @@ Statistiken:
         error: 'Failed to export order'
       });
     }
+  }
+});
+
+/**
+ * POST /api/contact
+ * Send contact form message via email
+ * Body: { name, email, phone?, message }
+ */
+app.post('/api/contact', contactLimiter, async (req, res) => {
+  try {
+    const { name, email, phone, message } = req.body;
+
+    // Validate required fields
+    if (!name || !email || !message) {
+      return res.status(400).json({
+        success: false,
+        error: 'Name, E-Mail und Nachricht sind erforderlich.'
+      });
+    }
+
+    // Validate and sanitize inputs
+    const sanitizedName = sanitizeString(name, 255);
+    const sanitizedEmail = email.trim().toLowerCase();
+    const sanitizedPhone = phone ? sanitizeString(phone, 50) : null;
+    const sanitizedMessage = sanitizeString(message, 5000);
+
+    // Validate email format
+    if (!isValidEmail(sanitizedEmail)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Ungültige E-Mail-Adresse.'
+      });
+    }
+
+    // Check if SendGrid is configured
+    if (!process.env.SENDGRID_API_KEY) {
+      console.error('SendGrid API key not configured');
+      return res.status(500).json({
+        success: false,
+        error: 'E-Mail-Service ist nicht konfiguriert. Bitte kontaktieren Sie den Administrator.'
+      });
+    }
+
+    const contactEmail = process.env.CONTACT_EMAIL || 'kontakt@bauklar.org';
+
+    // Prepare email content
+    const emailContent = `
+Neue Kontaktanfrage von ${sanitizedName}
+
+Name: ${sanitizedName}
+E-Mail: ${sanitizedEmail}
+Telefon: ${sanitizedPhone || 'Nicht angegeben'}
+
+Nachricht:
+${sanitizedMessage}
+
+---
+Diese Nachricht wurde über das Kontaktformular auf bauklar.org gesendet.
+Antworten Sie direkt an: ${sanitizedEmail}
+`;
+
+    // Send email via SendGrid
+    const msg = {
+      to: contactEmail,
+      from: {
+        email: contactEmail,
+        name: 'Bauklar.org Kontaktformular'
+      },
+      replyTo: sanitizedEmail,
+      subject: `Neue Kontaktanfrage von ${sanitizedName}`,
+      text: emailContent,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #00668c;">Neue Kontaktanfrage</h2>
+          <div style="background-color: #f5f4f1; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p><strong>Name:</strong> ${sanitizedName}</p>
+            <p><strong>E-Mail:</strong> <a href="mailto:${sanitizedEmail}">${sanitizedEmail}</a></p>
+            <p><strong>Telefon:</strong> ${sanitizedPhone || 'Nicht angegeben'}</p>
+          </div>
+          <div style="margin: 20px 0;">
+            <h3 style="color: #00668c;">Nachricht:</h3>
+            <p style="white-space: pre-wrap; background-color: #fff; padding: 15px; border-left: 4px solid #00668c;">${sanitizedMessage}</p>
+          </div>
+          <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+          <p style="color: #666; font-size: 12px;">
+            Diese Nachricht wurde über das Kontaktformular auf bauklar.org gesendet.<br>
+            Antworten Sie direkt an: <a href="mailto:${sanitizedEmail}">${sanitizedEmail}</a>
+          </p>
+        </div>
+      `
+    };
+
+    await sgMail.send(msg);
+
+    res.status(200).json({
+      success: true,
+      message: 'Nachricht erfolgreich gesendet.'
+    });
+  } catch (error) {
+    console.error('Error sending contact email:', error);
+    
+    // Handle SendGrid specific errors
+    if (error.response) {
+      console.error('SendGrid error details:', error.response.body);
+    }
+
+    res.status(500).json({
+      success: false,
+      error: 'Fehler beim Senden der Nachricht. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt per E-Mail.'
+    });
   }
 });
 

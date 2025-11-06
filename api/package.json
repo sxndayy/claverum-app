@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "stripe": "^17.5.0",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "@sendgrid/mail": "^8.1.3"
   }
 }

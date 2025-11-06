@@ -89,3 +89,18 @@ export const paymentLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+/**
+ * Rate limiter for contact form
+ * 5 messages per hour per IP to prevent spam
+ */
+export const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5, // 5 messages per hour
+  message: {
+    success: false,
+    error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});

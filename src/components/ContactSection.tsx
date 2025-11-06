@@ -4,8 +4,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { apiClient } from '@/utils/apiClient';
 
 const ContactSection: React.FC = () => {
   const { toast } = useToast();
@@ -15,23 +16,61 @@ const ContactSection: React.FC = () => {
     phone: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Here you would typically send the form data to your backend
-    toast({
-      title: "Nachricht gesendet!",
-      description: "Wir melden uns innerhalb von 24 Stunden bei Ihnen zurück.",
-    });
+    // Validate required fields
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      toast({
+        title: "Fehlende Angaben",
+        description: "Bitte füllen Sie alle Pflichtfelder aus.",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      message: ''
-    });
+    setIsSubmitting(true);
+
+    try {
+      const response = await apiClient.sendContactMessage({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim() || undefined,
+        message: formData.message.trim(),
+      });
+
+      if (response.success) {
+        toast({
+          title: "Nachricht gesendet!",
+          description: "Wir melden uns innerhalb von 24 Stunden bei Ihnen zurück.",
+        });
+
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          message: ''
+        });
+      } else {
+        toast({
+          title: "Fehler beim Senden",
+          description: response.error || "Bitte versuchen Sie es später erneut.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error sending contact message:', error);
+      toast({
+        title: "Fehler beim Senden",
+        description: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -117,8 +156,16 @@ const ContactSection: React.FC = () => {
                   type="submit" 
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                   size="lg"
+                  disabled={isSubmitting}
                 >
-                  Nachricht senden
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Wird gesendet...
+                    </>
+                  ) : (
+                    'Nachricht senden'
+                  )}
                 </Button>
               </form>
             </CardContent>

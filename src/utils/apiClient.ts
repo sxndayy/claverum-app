@@ -687,6 +687,34 @@ class ApiClient {
       };
     }
   }
+
+  /**
+   * Send contact form message
+   */
+  async sendContactMessage(data: {
+    name: string;
+    email: string;
+    phone?: string;
+    message: string;
+  }): Promise<{ success: boolean; message?: string; error?: string }> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error sending contact message:', error);
+      return {
+        success: false,
+        error: 'Netzwerkfehler. Bitte versuchen Sie es später erneut.',
+      };
+    }
+  }
 }
 
 // Export singleton instance
