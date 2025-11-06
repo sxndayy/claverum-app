@@ -77,6 +77,7 @@ router.post('/create-checkout-session', paymentLimiter, requireOrderOwnership, a
       metadata: {
         orderId: orderId
       },
+      allow_promotion_codes: true, // Aktiviert Coupon-Feld im Checkout
       success_url: `${frontendUrl}/evaluation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${frontendUrl}/evaluation`,
       expires_at: Math.floor(Date.now() / 1000) + (30 * 60) // 30 minutes
