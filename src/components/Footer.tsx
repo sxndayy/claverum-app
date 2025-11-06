@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
     <footer className="text-black bg-gradient-to-tl from-blue-50 via-blue-100 to-blue-300">
       <div className="container mx-auto px-4 py-16">
         <h2 className="sr-only">Footer Navigation</h2>
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-black">Bauklar.org</h3>
@@ -108,6 +108,58 @@ const Footer: React.FC = () => {
                 </a>
               </li>
             </ul>
+          </div>
+
+          {/* Städte */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-black">Städte</h3>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-black">
+              <a href="/berlin/" className="hover:text-black transition-smooth">
+                Berlin
+              </a>
+              <a href="/essen/" className="hover:text-black transition-smooth">
+                Essen
+              </a>
+              <a href="/hamburg/" className="hover:text-black transition-smooth">
+                Hamburg
+              </a>
+              <a href="/frankfurt/" className="hover:text-black transition-smooth">
+                Frankfurt
+              </a>
+              <a href="/muenchen/" className="hover:text-black transition-smooth">
+                München
+              </a>
+              <a href="/stuttgart/" className="hover:text-black transition-smooth">
+                Stuttgart
+              </a>
+              <a href="/koeln/" className="hover:text-black transition-smooth">
+                Köln
+              </a>
+              <a href="/nuernberg/" className="hover:text-black transition-smooth">
+                Nürnberg
+              </a>
+              <a href="/duesseldorf/" className="hover:text-black transition-smooth">
+                Düsseldorf
+              </a>
+              <a href="/leipzig/" className="hover:text-black transition-smooth">
+                Leipzig
+              </a>
+              <a href="/dortmund/" className="hover:text-black transition-smooth">
+                Dortmund
+              </a>
+              <a href="/dresden/" className="hover:text-black transition-smooth">
+                Dresden
+              </a>
+              <a href="/hannover/" className="hover:text-black transition-smooth">
+                Hannover
+              </a>
+              <a href="/bremen/" className="hover:text-black transition-smooth">
+                Bremen
+              </a>
+              <a href="/mannheim/" className="hover:text-black transition-smooth">
+                Mannheim
+              </a>
+            </div>
           </div>
 
           {/* Contact */}

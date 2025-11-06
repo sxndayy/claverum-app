@@ -1,8 +1,8 @@
 // Frontend Configuration - No Backend Dependencies
 export const APP_CONFIG = {
-  name: "BauCheck KI",
+  name: "Bauklar.org",
   version: "1.0.0",
-  description: "KI-gestützte Bauschadensbewertung",
+  description: "Professionelle Bauschadensbewertung",
   // Remove API_BASE - this will be configured in your new project
   // export const API_BASE = (import.meta.env.VITE_API_BASE ?? "http://localhost:8002").replace(/\/+$/,'');
 };

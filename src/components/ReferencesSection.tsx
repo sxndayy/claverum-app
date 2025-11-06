@@ -58,7 +58,7 @@ const ReferencesSection: React.FC = () => {
             Was unsere Kunden sagen
           </h2>
           <p className="text-xl text-text-200 max-w-3xl mx-auto">
-            Über 500 zufriedene Kunden vertrauen bereits auf unsere KI-gestützte Bauschadensbewertung
+            Über 500 zufriedene Kunden vertrauen bereits auf unsere professionelle Bauschadensbewertung
           </p>
         </div>
 
