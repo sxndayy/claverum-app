@@ -19,11 +19,14 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Vendor chunks - split large dependencies
+          // Only split non-critical vendors - let Vite handle React automatically
           if (id.includes('node_modules')) {
+            // Don't split React/React-DOM/React-Router - let Vite handle them automatically
+            // They need to be in the initial bundle for proper loading order
             if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'react-vendor';
+              return; // Let Vite handle React chunks automatically
             }
+            // Split UI libraries (non-critical)
             if (id.includes('lucide-react')) {
               return 'ui-vendor';
             }
@@ -33,13 +36,8 @@ export default defineConfig({
         },
       },
     },
-    // Minification
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console.log in production
-      },
-    },
+    // Use esbuild for safer minification (default)
+    // Terser removed for stability - esbuild is faster and safer
     // Chunk size warnings
     chunkSizeWarningLimit: 1000,
   },
