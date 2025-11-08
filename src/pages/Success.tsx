@@ -27,7 +27,7 @@ const Success: React.FC = () => {
           { name: 'Auftrag erfolgreich', url: '/success' }
         ]} 
       />
-      <div className="min-h-screen bg-bg-200 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-bg-200 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
         <Card className="shadow-strong">
           <CardHeader className="text-center pb-6">

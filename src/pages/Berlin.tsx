@@ -42,7 +42,7 @@ const Berlin = () => {
     },
     {
       question: "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
-      answer: "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
+      answer: "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
     },
     {
       question: "Wie schnell erhalte ich den Bericht für meine Immobilie in Berlin?",
@@ -226,7 +226,7 @@ const Berlin = () => {
                           Beim Kauf einer Eigentumswohnung in Berlin ist der Zustand des Gemeinschaftseigentums ebenso wichtig wie der Zustand der eigenen Wohnung. Fassade, Dach, Treppenhaus, Aufzug und zentrale Haustechnik werden gemeinschaftlich unterhalten. Sanierungsbedarf an diesen Bauteilen führt zu Umlagen, die alle Eigentümer nach Miteigentumsanteil tragen müssen.
                         </p>
                         <p className="mb-4">
-                          Die <strong>Instandhaltungsrücklage</strong> gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Eine Faustregel besagt, dass pro Quadratmeter Wohnfläche und Jahr mindestens ein Euro in die Rücklage fließen sollte. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.
+                          Die Instandhaltungsrücklage gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Pro Quadratmeter Wohnfläche sollte jährlich ein angemessener Betrag für die Rücklagenbildung vorgesehen werden. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.
                         </p>
                         <p className="mb-4">
                           Geplante Maßnahmen, bereits diskutierte Mängel und Beschlussfassungen aus Eigentümerversammlungen sollten sorgfältig geprüft werden. Häufig werden größere Sanierungen bereits Jahre im Voraus besprochen, bevor der Beschluss gefasst wird.

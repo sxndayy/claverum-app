@@ -7,8 +7,8 @@ import './styles/index.css'
 
 createRoot(document.getElementById("root")!).render(
   <HelmetProvider>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>
   </HelmetProvider>
 );

@@ -19,7 +19,7 @@ const Impressum = () => {
           { name: 'Impressum', url: '/impressum' }
         ]} 
       />
-      <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <Header />
       <main>
         <section className="py-20 bg-background">

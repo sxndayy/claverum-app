@@ -65,7 +65,7 @@ const ServicesSection: React.FC = () => {
             items: [
               'Fotos und Objektinformationen direkt im Browser hochladen',
               'Analyse und Plausibilitätsprüfung durch unsere Sachverständigen',
-              'Ergebnisbericht mit Bewertung und Handlungsempfehlung innerhalb eines Werktags',
+              'Ergebnisbericht mit Bewertung und Handlungsempfehlung innerhalb von 2 Werktagen',
             ],
           },
         ],

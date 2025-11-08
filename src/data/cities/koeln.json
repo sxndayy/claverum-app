@@ -82,7 +82,7 @@
           "name": "Welche Gebäudetypen in Köln werden geprüft?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Alle Gebäudetypen werden analysiert: Nachkriegsbauten in Südstadt oder Ehrenfeld, rekonstruierte Gründerzeithäuser in Lindenthal, moderne Neubauten am Rheinufer sowie Eigentumswohnungen in Rodenkirchen. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+            "text": "Alle Gebäudetypen werden analysiert: Nachkriegsbauten in der Südstadt oder Ehrenfeld, rekonstruierte Gründerzeithäuser in Lindenthal, moderne Neubauten am Rheinufer sowie Eigentumswohnungen in Rodenkirchen. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
           }
         },
         {
@@ -90,7 +90,7 @@
           "name": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
+            "text": "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
           }
         },
         {
@@ -142,14 +142,14 @@
       {
         "id": "warum-bauschadensanalyse",
         "h2": "Warum eine Bauschadensanalyse vor dem Immobilienkauf in Köln",
-        "content": "Der Kauf einer Immobilie in Köln ist eine bedeutende finanzielle Entscheidung. Ob rekonstruiertes Gründerzeithaus in Lindenthal, Nachkriegsbau in Südstadt oder moderne Eigentumswohnung am Rheinufer – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.\n\nEine Bauschadensanalyse schafft Transparenz. Sie zeigt auf, welche Bauteile intakt sind, wo Sanierungsbedarf besteht und welche Kosten voraussichtlich anfallen. Diese Klarheit ermöglicht eine fundierte Entscheidung darüber, ob die Immobilie zum angebotenen Preis kaufenswert ist oder ob Nachverhandlungen erforderlich sind.\n\nBesonders in Köln mit seinem durch die Zerstörungen des Zweiten Weltkriegs geprägten Gebäudebestand ist fachliche Einschätzung wertvoll. Die Stadt wurde 1945 zu über 90 Prozent zerstört, darunter nahezu die gesamte Altstadt und große Teile der Gründerzeitviertel. Der Wiederaufbau erfolgte teils durch originalgetreue Rekonstruktion historischer Gebäude wie dem Rathaus oder dem Gürzenich, überwiegend aber durch funktionale Nachkriegsbauten der 1950er bis 1970er Jahre.\n\nDie digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Sie erhalten den Bericht per E-Mail innerhalb von 2 Werktagen und können direkt mit fundierten Informationen in Kaufverhandlungen gehen."
+        "content": "Der Kauf einer Immobilie in Köln ist eine bedeutende finanzielle Entscheidung. Ob rekonstruiertes Gründerzeithaus in Lindenthal, Nachkriegsbau in der Südstadt oder moderne Eigentumswohnung am Rheinufer – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.\n\nEine Bauschadensanalyse schafft Transparenz. Sie zeigt auf, welche Bauteile intakt sind, wo Sanierungsbedarf besteht und welche Kosten voraussichtlich anfallen. Diese Klarheit ermöglicht eine fundierte Entscheidung darüber, ob die Immobilie zum angebotenen Preis kaufenswert ist oder ob Nachverhandlungen erforderlich sind.\n\nBesonders in Köln mit seinem durch die Zerstörungen des Zweiten Weltkriegs geprägten Gebäudebestand ist fachliche Einschätzung wertvoll. Die Stadt wurde 1945 zu über 90 Prozent zerstört, darunter nahezu die gesamte Altstadt und große Teile der Gründerzeitviertel. Der Wiederaufbau erfolgte teils durch originalgetreue Rekonstruktion historischer Gebäude wie dem Rathaus oder dem Gürzenich, überwiegend aber durch funktionale Nachkriegsbauten der 1950er bis 1970er Jahre.\n\nDie digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Sie erhalten den Bericht per E-Mail innerhalb von 2 Werktagen und können direkt mit fundierten Informationen in Kaufverhandlungen gehen."
       },
       {
         "id": "typische-gebaeude-koeln",
         "h2": "Typische Gebäudetypen und Risiken in Köln",
         "subsections": [
           {
-            "h3": "Nachkriegsbauten in Südstadt, Ehrenfeld und Deutz",
+            "h3": "Nachkriegsbauten in der Südstadt, Ehrenfeld und Deutz",
             "content": "Nachkriegsbauten prägen weite Teile Kölns. Die funktionalen Bauten der 1950er bis 1970er Jahre entstanden im Zuge des schnellen Wiederaufbaus nach den Zerstörungen des Zweiten Weltkriegs. Ziel war die rasche Schaffung von Wohnraum für die wachsende Bevölkerung und Vertriebene. Die Bauweise war pragmatisch: Betonfertigteile, schlichte Putzfassaden, standardisierte Grundrisse und einfache Ausstattungen.\n\nCharakteristisch für diese Epoche sind Reihenhaussiedlungen nach Gartenstadtidee, Wohnhochhäuser wie die Grünzug-Siedlung in Mülheim sowie später Großwohnsiedlungen. Die Bauqualität variiert erheblich je nach Baujahr und Bauträger. Viele Gebäude wurden als Provisorium errichtet, das jedoch zum Dauerzustand wurde.\n\nHäufige Mängel bei Kölner Nachkriegsbauten sind unzureichende Wärmedämmung mit hohen Heizkosten, undichte Flachdächer, Betonschäden durch Korrosion der Bewehrung sowie veraltete Elektro- und Sanitärinstallationen. Fenster entsprechen oft nicht mehr heutigen Anforderungen an Schallschutz und Energieeffizienz. Die Modernisierung dieser Gebäude kann deren Wert erheblich steigern, erfordert aber substanzielle Investitionen.\n\nIn einigen Fällen wurde bei Nachkriegsbauten Asbest verbaut, besonders in Fassadenplatten, Dacheindeckungen oder als Brandschutz. Die Entsorgung asbesthaltiger Materialien unterliegt strengen Vorschriften und verursacht Mehrkosten bei Sanierungen."
           },
           {
@@ -162,7 +162,7 @@
           },
           {
             "h3": "Eigentumswohnungen: Gemeinschaftseigentum richtig bewerten",
-            "content": "Beim Kauf einer Eigentumswohnung in Köln ist der Zustand des Gemeinschaftseigentums ebenso wichtig wie der Zustand der eigenen Wohnung. Fassade, Dach, Treppenhaus, Aufzug und zentrale Haustechnik werden gemeinschaftlich unterhalten. Sanierungsbedarf an diesen Bauteilen führt zu Umlagen, die alle Eigentümer nach Miteigentumsanteil tragen müssen.\n\nDie Instandhaltungsrücklage gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Eine Faustregel besagt, dass pro Quadratmeter Wohnfläche und Jahr mindestens ein Euro in die Rücklage fließen sollte. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.\n\nGeplante Maßnahmen, bereits diskutierte Mängel und Beschlussfassungen aus Eigentümerversammlungen sollten sorgfältig geprüft werden. Häufig werden größere Sanierungen bereits Jahre im Voraus besprochen, bevor der Beschluss gefasst wird.\n\nHäufige Schwachstellen im Gemeinschaftseigentum Kölner Wohngebäude sind undichte Flachdächer, sanierungsbedürftige Fassaden, veraltete Aufzugsanlagen und Wasserleitungen mit Korrosionsschäden. Auch Brandschutzmaßnahmen entsprechen bei älteren Gebäuden oft nicht mehr den aktuellen Anforderungen und erfordern Nachrüstung von Rauchmeldern, Feuerschutztüren oder Fluchtwegsicherungen.\n\nEine Bauschadensanalyse berücksichtigt soweit aus Unterlagen und Fotos erkennbar auch das Gemeinschaftseigentum. Hinweise auf absehbare Sanierungen werden im Bericht aufgeführt. Dies ermöglicht eine realistische Einschätzung der Gesamtkosten über die kommenden Jahre."
+            "content": "Beim Kauf einer Eigentumswohnung in Köln ist der Zustand des Gemeinschaftseigentums ebenso wichtig wie der Zustand der eigenen Wohnung. Fassade, Dach, Treppenhaus, Aufzug und zentrale Haustechnik werden gemeinschaftlich unterhalten. Sanierungsbedarf an diesen Bauteilen führt zu Umlagen, die alle Eigentümer nach Miteigentumsanteil tragen müssen.\n\nDie Instandhaltungsrücklage gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Pro Quadratmeter Wohnfläche sollte jährlich ein angemessener Betrag für die Rücklagenbildung vorgesehen werden. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.\n\nGeplante Maßnahmen, bereits diskutierte Mängel und Beschlussfassungen aus Eigentümerversammlungen sollten sorgfältig geprüft werden. Häufig werden größere Sanierungen bereits Jahre im Voraus besprochen, bevor der Beschluss gefasst wird.\n\nHäufige Schwachstellen im Gemeinschaftseigentum Kölner Wohngebäude sind undichte Flachdächer, sanierungsbedürftige Fassaden, veraltete Aufzugsanlagen und Wasserleitungen mit Korrosionsschäden. Auch Brandschutzmaßnahmen entsprechen bei älteren Gebäuden oft nicht mehr den aktuellen Anforderungen und erfordern Nachrüstung von Rauchmeldern, Feuerschutztüren oder Fluchtwegsicherungen.\n\nEine Bauschadensanalyse berücksichtigt soweit aus Unterlagen und Fotos erkennbar auch das Gemeinschaftseigentum. Hinweise auf absehbare Sanierungen werden im Bericht aufgeführt. Dies ermöglicht eine realistische Einschätzung der Gesamtkosten über die kommenden Jahre."
           }
         ]
       },
@@ -213,11 +213,11 @@
   "faq": [
     {
       "question": "Welche Gebäudetypen in Köln werden geprüft?",
-      "answer": "Alle Gebäudetypen werden analysiert: Nachkriegsbauten in Südstadt oder Ehrenfeld, rekonstruierte Gründerzeithäuser in Lindenthal, moderne Neubauten am Rheinufer sowie Eigentumswohnungen in Rodenkirchen. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+      "answer": "Alle Gebäudetypen werden analysiert: Nachkriegsbauten in der Südstadt oder Ehrenfeld, rekonstruierte Gründerzeithäuser in Lindenthal, moderne Neubauten am Rheinufer sowie Eigentumswohnungen in Rodenkirchen. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
     },
     {
       "question": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
-      "answer": "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
+      "answer": "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
     },
     {
       "question": "Wie schnell erhalte ich den Bericht für meine Immobilie in Köln?",

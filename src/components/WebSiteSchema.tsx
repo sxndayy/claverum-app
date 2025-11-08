@@ -7,7 +7,7 @@ export function WebSiteSchema() {
     "@type": "WebSite",
     "name": "Bauklar.org",
     "url": SITE_URL,
-    "description": "Professionelle Bauschadensbewertung per KI. Upload in Minuten, Ergebnis bis nächster Werktag.",
+    "description": "Professionelle Bauschadensbewertung. Upload in Minuten, Ergebnis innerhalb von 48 Stunden. Schnell, transparent, verlässlich.",
     "publisher": {
       "@type": "Organization",
       "name": "Claverum",

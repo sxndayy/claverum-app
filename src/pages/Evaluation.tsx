@@ -26,7 +26,7 @@ const Evaluation = () => {
           { name: 'Bauschadensbewertung starten', url: '/evaluation' }
         ]} 
       />
-      <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen bg-background relative">
       {/* Background Gradient - same as HeroSection */}
       <div className="absolute inset-0 hero-gradient opacity-30 min-h-full"></div>
       <Header />
@@ -43,7 +43,7 @@ const Evaluation = () => {
               </div>
             </div>
           }>
-            <MultiStepForm />
+          <MultiStepForm />
           </Suspense>
         </div>
       </main>

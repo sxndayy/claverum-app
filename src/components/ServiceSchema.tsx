@@ -6,7 +6,7 @@ export function ServiceSchema() {
     "@context": "https://schema.org",
     "@type": "Service",
     "name": "Bauschadensbewertung",
-    "description": "Professionelle Bauschadensbewertung mit KI-gestützter Analyse. Detaillierte Zustandsanalyse mit realistischen Kosten- und Risikoabschätzungen.",
+    "description": "Professionelle Bauschadensbewertung. Detaillierte Zustandsanalyse mit realistischen Kosten- und Risikoabschätzungen.",
     "provider": {
       "@type": "Organization",
       "name": "Claverum",

@@ -523,8 +523,8 @@ const ServiceInfoOverlay: React.FC<ServiceInfoOverlayProps> = ({
                     </h3>
                     <ul className="mt-3 space-y-2 text-sm text-text-200 md:text-base">
                       {section.items.map((item) => (
-                        <li key={item} className="flex items-start gap-2">
-                          <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-primary" />
+                        <li key={item} className="flex items-center gap-2">
+                          <span className="h-2 w-2 flex-shrink-0 rounded-full bg-primary" />
                           <span>{item}</span>
                         </li>
                       ))}

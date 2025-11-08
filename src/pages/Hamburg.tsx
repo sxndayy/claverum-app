@@ -44,7 +44,7 @@ const Hamburg = () => {
     },
     {
       question: "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
-      answer: "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
+      answer: "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
     },
     {
       question: "Wie schnell erhalte ich den Bericht für meine Immobilie in Hamburg?",
@@ -342,10 +342,6 @@ const Hamburg = () => {
                         Weitere Informationen zum Hamburger Immobilienmarkt und baurechtliche Hinweise finden Sie bei der{' '}
                         <a href="https://www.hamburg.de/bsw/" rel="nofollow" className="text-primary hover:underline font-medium">
                           Behörde für Stadtentwicklung und Wohnen Hamburg
-                        </a>{' '}
-                        sowie beim{' '}
-                        <a href="https://www.mieterverein-hamburg.de" rel="nofollow" className="text-primary hover:underline font-medium">
-                          Mieterverein zu Hamburg
                         </a>.
                       </p>
                     </div>

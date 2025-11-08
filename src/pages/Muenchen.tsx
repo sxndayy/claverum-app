@@ -44,7 +44,7 @@ const Muenchen = () => {
     },
     {
       question: "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
-      answer: "Soweit aus Unterlagen und Fotos erkennbar werden Hinweise zu Dach, Fassade, Treppenhaus und zentraler Haustechnik gegeben. Die Instandhaltungsrücklage und geplante Maßnahmen aus Eigentümerversammlungen werden berücksichtigt."
+      answer: "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
     },
     {
       question: "Wie schnell erhalte ich den Bericht für meine Immobilie in München?",
@@ -348,10 +348,6 @@ const Muenchen = () => {
                         Weitere Informationen zum Münchner Immobilienmarkt und baurechtliche Hinweise finden Sie beim{' '}
                         <a href="https://www.muenchen.de/rathaus/Stadtverwaltung/Referat-fuer-Stadtplanung-und-Bauordnung.html" rel="nofollow" className="text-primary hover:underline font-medium">
                           Referat für Stadtplanung und Bauordnung München
-                        </a>{' '}
-                        sowie beim{' '}
-                        <a href="https://www.mieterverein-muenchen.de" rel="nofollow" className="text-primary hover:underline font-medium">
-                          Mieterverein München
                         </a>.
                       </p>
                     </div>

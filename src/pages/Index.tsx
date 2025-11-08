@@ -19,12 +19,12 @@ const Index = () => {
     <>
       <SEO 
         title="Professionelle Bauschadensbewertung - schnell, transparent, verlässlich" 
-        description="Professionelle Bauschadensbewertung per KI. Upload in Minuten, Ergebnis bis nächster Werktag. DSGVO-konform, transparent, verlässlich."
+        description="Professionelle Bauschadensbewertung. Upload in Minuten, Ergebnis innerhalb von 48 Stunden. Schnell, transparent, verlässlich."
         canonical="/"
       />
       <WebSiteSchema />
-      <div className="min-h-screen bg-background">
-        <Header />
+    <div className="min-h-screen bg-background">
+      <Header />
       <main>
         <HeroSection />
         <ServicesSection />
@@ -38,7 +38,7 @@ const Index = () => {
       </main>
       <Footer />
       <CookieBanner />
-      </div>
+    </div>
     </>
   );
 };
