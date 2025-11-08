@@ -144,7 +144,7 @@ const Berlin = () => {
                         Besonders in Berlin mit seinem heterogenen Gebäudebestand ist fachliche Einschätzung wertvoll. Die Teilung der Stadt bis 1990 führte zu unterschiedlichen Bautraditionen und Sanierungsständen in Ost und West. Westberliner Altbauten wurden oft bereits in den 1980er Jahren modernisiert, während Ostberliner Gründerzeitquartiere vielfach erst nach der Wende instandgesetzt wurden. Der Sanierungsumfang variiert erheblich – von kosmetischen Maßnahmen bis zu grundlegenden Erneuerungen.
                       </p>
                       <p>
-                        Die digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Der Bericht liegt voraussichtlich bis zum nächsten Werktag vor und enthält nachvollziehbare Einschätzungen sowie realistische Kostenspannen.
+                        Die digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Der Bericht liegt voraussichtlich innerhalb von 48 Stunden vor und enthält nachvollziehbare Einschätzungen sowie realistische Kostenspannen.
                       </p>
                     </div>
 
@@ -255,7 +255,7 @@ const Berlin = () => {
                         Ein qualifizierter Sachverständiger analysiert die eingereichten Daten systematisch. Bausubstanz, Haustechnik, Feuchtigkeitserscheinungen, Risse und weitere Schadensmuster werden erfasst und bewertet. Die Einschätzung berücksichtigt typische Alterungserscheinungen des jeweiligen Gebäudetyps, übliche Sanierungszyklen und erkennbare Risikofaktoren.
                       </p>
                       <p className="mb-4">
-                        Der Bericht wird voraussichtlich bis zum nächsten Werktag bereitgestellt. Die Bearbeitungszeit beträgt in der Regel 48 Stunden ab vollständiger Datenübermittlung. Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und können ihn für Bankgespräche oder Verhandlungen mit Verkäufern nutzen.
+                        Der Bericht wird voraussichtlich innerhalb von 48 Stunden bereitgestellt. Die Bearbeitungszeit beträgt in der Regel 48 Stunden ab vollständiger Datenübermittlung. Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und können ihn für Bankgespräche oder Verhandlungen mit Verkäufern nutzen.
                       </p>
                       <p>
                         Diese Form der Bewertung bietet eine fundierte Grundlage für Ihre Kaufentscheidung ohne aufwendige Koordination oder zeitliche Abstimmungen. Die Analyse erfolgt unabhängig und objektiv ausschließlich auf Basis der technischen Gegebenheiten. Detaillierte Informationen zum Ablauf finden Sie unter{' '}

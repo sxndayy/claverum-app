@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "BauCheck KI Frontend - Standalone React Application",
+  "description": "Bauklar Frontend - Standalone React Application",
   "scripts": {
     "dev": "vite --port 3000",
     "build": "vite build",

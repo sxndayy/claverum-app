@@ -59,8 +59,11 @@ const CityPage: React.FC<CityPageProps> = ({ cityData }) => {
     answer: item.answer || ''
   }));
 
-  // LocalBusiness Schema
-  const localBusinessSchema = cityData.structuredData?.localBusiness || {};
+  // LocalBusiness Schema - safely serialize for JSON-LD
+  const localBusinessSchema = cityData.structuredData?.localBusiness;
+  const safeLocalBusinessSchema = localBusinessSchema && Object.keys(localBusinessSchema).length > 0 
+    ? localBusinessSchema 
+    : null;
 
   // Trust elements with icons mapping
   const trustElementIcons: Record<string, React.ReactNode> = {
@@ -120,11 +123,13 @@ const CityPage: React.FC<CityPageProps> = ({ cityData }) => {
       />
       <CityServiceSchema cityName={cityData.city} />
       <FAQSchema faqs={faqItems} />
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify(localBusinessSchema)}
-        </script>
-      </Helmet>
+      {safeLocalBusinessSchema && (
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(safeLocalBusinessSchema)}
+          </script>
+        </Helmet>
+      )}
       
       <div className="min-h-screen bg-background">
         <Header />

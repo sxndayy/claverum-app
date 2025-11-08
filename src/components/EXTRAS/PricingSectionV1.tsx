@@ -16,9 +16,9 @@ const PricingSectionV1: React.FC = () => {
       name: 'Basis',
       price: 299,
       popular: false,
-      description: 'Grundlegende KI-Analyse für erste Einschätzung',
+      description: 'Grundlegende Analyse für erste Einschätzung',
       features: [
-        'KI-gestützte Schadenserkennung',
+        'Systematische Schadenserkennung',
         'Grundbewertung des Bauzustands',
         'Risiko-Ampel (grün/gelb/rot)',
         'Zusammenfassung (2-3 Seiten)',
@@ -32,10 +32,10 @@ const PricingSectionV1: React.FC = () => {
       name: 'Plus',
       price: 499,
       popular: true,
-      description: 'KI-Analyse + Expertenvalidierung für fundierte Entscheidungen',
+      description: 'Analyse + Expertenvalidierung für fundierte Entscheidungen',
       features: [
         'Alle Basis-Leistungen',
-        'Expertenvalidierung der KI',
+        'Expertenvalidierung',
         'Detaillierte Handlungsempfehlungen',
         'Kostenschätzung für Reparaturen',
         'Priorisierung der Maßnahmen',
@@ -154,7 +154,7 @@ const PricingSectionV1: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <div className="bg-bg-200 rounded-xl p-8 mb-8">
             <h3 className="text-lg font-semibold text-text-100 mb-4 text-center">
-              💡 Schnellergebnis bis nächster Werktag
+              💡 Schnellergebnis innerhalb von 48 Stunden
             </h3>
             <div className="grid md:grid-cols-2 gap-6 text-sm text-text-200">
               <div>

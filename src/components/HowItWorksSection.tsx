@@ -33,7 +33,7 @@ const HowItWorksSection: React.FC = () => {
       step: 3,
       icon: CheckCircle,
       title: 'Ergebnis und Empfehlung',
-      subtitle: 'Bis nächster Werktag',
+      subtitle: 'Innerhalb von 48 Stunden',
       description: 'Sie erhalten ein kompaktes Gutachten als PDF mit kurzer Zusammenfassung, allgemeinen Hinweisen und präzisen Texten zu jedem Bereich. Inklusive vorsichtiger Kostenrahmen und konkreter nächsten Schritte.',
       details: [
         'Übersichtlich aufbereitet',
