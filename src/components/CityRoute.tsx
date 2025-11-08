@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getCityDataSync, isValidCitySlug } from '@/data/cities';
 import CityPage from '@/pages/CityPage';
 import NotFound from '@/pages/NotFound';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 // List of routes that should NOT be handled as city pages
 const RESERVED_ROUTES = [
@@ -30,15 +31,26 @@ const CityRoute: React.FC = () => {
 
   // Load city data synchronously (for prerendering)
   // This ensures Netlify prerendering can see the content immediately
-  const cityData = getCityDataSync(slug);
+  // Wrap in try-catch to prevent errors during prerendering
+  let cityData;
+  try {
+    cityData = getCityDataSync(slug);
+  } catch (error) {
+    console.error(`Error loading city data for slug "${slug}":`, error);
+    return <NotFound />;
+  }
 
   // If no city data found, show 404
   if (!cityData) {
     return <NotFound />;
   }
 
-  // Render city page with data
-  return <CityPage cityData={cityData} />;
+  // Render city page with data, wrapped in ErrorBoundary for safety
+  return (
+    <ErrorBoundary>
+      <CityPage cityData={cityData} />
+    </ErrorBoundary>
+  );
 };
 
 export default CityRoute;
