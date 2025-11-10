@@ -41,15 +41,9 @@
   status = 301
   force = true
 
-# SPA fallback for Next.js static export
-# Next.js generates static HTML files for all routes, but we need a fallback
-# This ensures that client-side navigation works correctly
-# Note: Next.js static export generates HTML files for all routes defined in generateStaticParams
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
+# NOTE: Specific route redirects are handled in public/_redirects
+# The general SPA fallback is also in public/_redirects and must be last
+# This ensures that static HTML files are served correctly
 
 # Headers for better SEO and security
 [[headers]]

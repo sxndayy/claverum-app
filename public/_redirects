@@ -7,7 +7,35 @@
 /robots.txt                /robots.txt               200
 /image-sitemap.xml         /image-sitemap.xml        200
 
-# SPA fallback - redirect all other routes to index.html
-# This ensures client-side routing works for dynamic routes
-# Next.js static export generates HTML files, but we need this for client-side navigation
-/*                         /index.html               200
+# Blog routes - serve HTML files directly
+/blog/hauskauf-beratung    /blog/hauskauf-beratung.html    200
+
+# City routes - serve HTML files directly (all 15 cities)
+/berlin                    /berlin.html              200
+/bremen                    /bremen.html              200
+/dortmund                  /dortmund.html            200
+/dresden                   /dresden.html             200
+/duesseldorf               /duesseldorf.html          200
+/essen                     /essen.html                200
+/frankfurt                 /frankfurt.html            200
+/hamburg                   /hamburg.html              200
+/hannover                  /hannover.html             200
+/koeln                     /koeln.html                200
+/leipzig                   /leipzig.html              200
+/mannheim                  /mannheim.html             200
+/muenchen                  /muenchen.html              200
+/nuernberg                 /nuernberg.html            200
+/stuttgart                 /stuttgart.html            200
+
+# Static pages - serve HTML files directly
+/impressum                 /impressum.html            200
+/agb                       /agb.html                  200
+/datenschutz               /datenschutz.html          200
+/widerruf                  /widerruf.html             200
+/admin                     /admin.html                200
+/admin/login               /admin/login.html          200
+/evaluation                /evaluation.html           200
+/success                   /success.html              200
+
+# SPA fallback - must be last
+/*                         /index.html                200
