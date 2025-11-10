@@ -10,7 +10,7 @@
  */
 
 import puppeteer from 'puppeteer';
-import { spawn } from 'child_process';
+import { spawn, execSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { existsSync, mkdirSync, writeFileSync, readdirSync } from 'fs';
@@ -213,6 +213,42 @@ function delay(ms) {
 }
 
 /**
+ * Ensure Chrome is installed for Puppeteer
+ * This is needed for Netlify builds where Chrome might not be pre-installed
+ */
+async function ensureChromeInstalled() {
+  try {
+    console.log('🔍 Checking if Chrome is available...');
+    
+    // Try to launch Puppeteer with default config to check if Chrome exists
+    const testBrowser = await puppeteer.launch({
+      headless: 'new',
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    await testBrowser.close();
+    console.log('✅ Chrome is available');
+    return true;
+  } catch (error) {
+    if (error.message.includes('Could not find Chrome') || error.message.includes('Chrome')) {
+      console.log('⚠️  Chrome not found, installing...');
+      try {
+        // Install Chrome using Puppeteer's browser installation
+        execSync('npx puppeteer browsers install chrome', {
+          stdio: 'inherit',
+          cwd: rootDir
+        });
+        console.log('✅ Chrome installed successfully');
+        return true;
+      } catch (installError) {
+        console.error('❌ Failed to install Chrome:', installError.message);
+        throw new Error('Chrome installation failed. Prerendering cannot continue.');
+      }
+    }
+    throw error;
+  }
+}
+
+/**
  * Wait for React to fully render
  */
 async function waitForReactRender(page, timeout = 10000) {
@@ -321,7 +357,10 @@ async function prerender() {
     server = await startPreviewServer();
     
     // Wait a bit for server to be fully ready
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await delay(2000);
+    
+    // Ensure Chrome is installed (needed for Netlify builds)
+    await ensureChromeInstalled();
     
     // Launch browser
     console.log('🌐 Launching browser...');
