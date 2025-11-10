@@ -120,6 +120,20 @@ const FAQSection: React.FC = () => {
             <p className="text-xs text-text-200 mt-3">
               Montag bis Freitag, 9:00 - 18:00 Uhr
             </p>
+            <div className="mt-6 pt-6 border-t border-border">
+              <p className="text-text-200 mb-2">
+                Für weitere Informationen zur Hauskauf Beratung, Kosten und Leistungen:
+              </p>
+              <a 
+                href="/blog/hauskauf-beratung" 
+                className="text-primary hover:underline font-medium inline-flex items-center gap-1"
+              >
+                Hauskauf Beratung – Ratgeber lesen
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
       </div>

@@ -20,12 +20,13 @@ const Header: React.FC = () => {
     '/admin/login'
   ];
   
-  // Show CTA button on homepage, city pages, and legal pages (but not on pagesWithoutCTA)
+  // Show CTA button on homepage, city pages, blog pages, and legal pages (but not on pagesWithoutCTA)
   // City pages are single-level paths like /berlin, /hamburg, etc.
   const pathSegments = location.pathname.split('/').filter(Boolean);
   const isCityPage = pathSegments.length === 1 && !pagesWithoutCTA.includes(location.pathname);
   const isLegalPage = ['/impressum', '/agb', '/datenschutz', '/widerruf'].includes(location.pathname);
-  const shouldShowCTA = location.pathname === '/' || isCityPage || isLegalPage;
+  const isBlogPage = location.pathname.startsWith('/blog/');
+  const shouldShowCTA = location.pathname === '/' || isCityPage || isLegalPage || isBlogPage;
 
   useEffect(() => {
     const handleScroll = () => {
