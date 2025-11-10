@@ -2,7 +2,7 @@
 
 [build]
   publish = "dist"
-  command = "npm run build"
+  command = "npm run build:prerender"
 
 # Enable prerendering for SEO - ensures search engines see full HTML content
 [build.processing]
@@ -98,13 +98,15 @@
   status = 301
   force = true
 
-# Blog path normalization (trailing slash) and SPA handling for /blog/*
+# Blog path normalization (trailing slash)
+# Note: Static HTML files are served automatically by Netlify before redirects
 [[redirects]]
   from = "/blog/hauskauf-beratung/"
   to = "/blog/hauskauf-beratung"
   status = 301
   force = true
 
+# SPA fallback for other blog routes (if they don't have static HTML)
 [[redirects]]
   from = "/blog/*"
   to = "/index.html"
