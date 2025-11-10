@@ -98,10 +98,11 @@
   status = 301
   force = false
 
-# Blog path normalization (trailing slash)
+# Blog path normalization (trailing slash removal)
 # IMPORTANT: Static HTML files are served automatically by Netlify BEFORE redirects
 # With pretty_urls = true, /blog/hauskauf-beratung/index.html is automatically served as /blog/hauskauf-beratung/
-# This redirect only handles the case where someone explicitly requests /blog/hauskauf-beratung/ with trailing slash
+# This redirect handles the case where someone explicitly requests /blog/hauskauf-beratung/ with trailing slash
+# Redirects to /blog/hauskauf-beratung (without slash) for SEO best practice
 # We use force = false to ensure static files take precedence
 [[redirects]]
   from = "/blog/hauskauf-beratung/"
@@ -109,10 +110,97 @@
   status = 301
   force = false
 
-# Note: We do NOT have a /blog/* redirect here because:
-# 1. Static files are served BEFORE redirects
-# 2. /blog/hauskauf-beratung/index.html will be served directly
-# 3. Other blog routes (if any) will fall through to the general SPA fallback below
+# City pages: Remove trailing slash for SEO best practice
+# Redirects /city/ to /city (without trailing slash)
+[[redirects]]
+  from = "/berlin/"
+  to = "/berlin"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/hamburg/"
+  to = "/hamburg"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/muenchen/"
+  to = "/muenchen"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/bremen/"
+  to = "/bremen"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/dortmund/"
+  to = "/dortmund"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/dresden/"
+  to = "/dresden"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/duesseldorf/"
+  to = "/duesseldorf"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/essen/"
+  to = "/essen"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/frankfurt/"
+  to = "/frankfurt"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/hannover/"
+  to = "/hannover"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/koeln/"
+  to = "/koeln"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/leipzig/"
+  to = "/leipzig"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/mannheim/"
+  to = "/mannheim"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/nuernberg/"
+  to = "/nuernberg"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/stuttgart/"
+  to = "/stuttgart"
+  status = 301
+  force = false
 
 # SPA fallback - must be last to handle all other routes
 # IMPORTANT: Netlify serves static files BEFORE redirects
