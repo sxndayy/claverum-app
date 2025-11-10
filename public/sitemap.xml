@@ -13,6 +13,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://bauklar.org/blog/hauskauf-beratung</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://bauklar.org/impressum/</loc>
     <lastmod>2025-11-08</lastmod>
     <changefreq>yearly</changefreq>
