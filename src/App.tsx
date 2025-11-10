@@ -9,7 +9,6 @@ import Impressum from "./pages/Impressum";
 import AGB from "./pages/AGB";
 import Datenschutz from "./pages/Datenschutz";
 import Widerruf from "./pages/Widerruf";
-import CityRoute from "./components/CityRoute";
 import BlogHauskaufBeratung from "./pages/BlogHauskaufBeratung";
 
 // Lazy load heavy components and city pages
@@ -17,6 +16,18 @@ const Admin = lazy(() => import("./pages/Admin"));
 const Berlin = lazy(() => import("./pages/Berlin"));
 const Hamburg = lazy(() => import("./pages/Hamburg"));
 const Muenchen = lazy(() => import("./pages/Muenchen"));
+const Bremen = lazy(() => import("./pages/Bremen"));
+const Dortmund = lazy(() => import("./pages/Dortmund"));
+const Dresden = lazy(() => import("./pages/Dresden"));
+const Duesseldorf = lazy(() => import("./pages/Duesseldorf"));
+const Essen = lazy(() => import("./pages/Essen"));
+const Frankfurt = lazy(() => import("./pages/Frankfurt"));
+const Hannover = lazy(() => import("./pages/Hannover"));
+const Koeln = lazy(() => import("./pages/Koeln"));
+const Leipzig = lazy(() => import("./pages/Leipzig"));
+const Mannheim = lazy(() => import("./pages/Mannheim"));
+const Nuernberg = lazy(() => import("./pages/Nuernberg"));
+const Stuttgart = lazy(() => import("./pages/Stuttgart"));
 
 // Route Error Component
 const RouteError = () => {
@@ -77,10 +88,20 @@ const App = () => (
         <Route path="/berlin" element={<Berlin />} errorElement={<RouteError />} />
         <Route path="/hamburg" element={<Hamburg />} errorElement={<RouteError />} />
         <Route path="/muenchen" element={<Muenchen />} errorElement={<RouteError />} />
+        <Route path="/bremen" element={<Bremen />} errorElement={<RouteError />} />
+        <Route path="/dortmund" element={<Dortmund />} errorElement={<RouteError />} />
+        <Route path="/dresden" element={<Dresden />} errorElement={<RouteError />} />
+        <Route path="/duesseldorf" element={<Duesseldorf />} errorElement={<RouteError />} />
+        <Route path="/essen" element={<Essen />} errorElement={<RouteError />} />
+        <Route path="/frankfurt" element={<Frankfurt />} errorElement={<RouteError />} />
+        <Route path="/hannover" element={<Hannover />} errorElement={<RouteError />} />
+        <Route path="/koeln" element={<Koeln />} errorElement={<RouteError />} />
+        <Route path="/leipzig" element={<Leipzig />} errorElement={<RouteError />} />
+        <Route path="/mannheim" element={<Mannheim />} errorElement={<RouteError />} />
+        <Route path="/nuernberg" element={<Nuernberg />} errorElement={<RouteError />} />
+        <Route path="/stuttgart" element={<Stuttgart />} errorElement={<RouteError />} />
         <Route path="/blog/hauskauf-beratung" element={<BlogHauskaufBeratung />} errorElement={<RouteError />} />
         <Route path="/blog/hauskauf-beratung/" element={<BlogHauskaufBeratung />} errorElement={<RouteError />} />
-        {/* Dynamic city routes - must come after specific city routes */}
-        <Route path="/:slug" element={<CityRoute />} errorElement={<RouteError />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
