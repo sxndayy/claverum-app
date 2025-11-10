@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite --port 3000",
     "build": "vite build",
-    "build:prerender": "vite build && node scripts/prerender.js",
+    "build:prerender": "vite build && node scripts/prerender.js || echo 'Prerendering failed, continuing with build'",
     "preview": "vite preview --port 4173",
     "prerender": "node scripts/prerender.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"

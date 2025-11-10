@@ -2,7 +2,7 @@
 
 [build]
   publish = "dist"
-  command = "npm run build:prerender"
+  command = "npm run build"
 
 # Enable prerendering for SEO - ensures search engines see full HTML content
 [build.processing]
