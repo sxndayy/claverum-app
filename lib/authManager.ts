@@ -20,6 +20,9 @@ class AuthManager {
    * Store JWT token in localStorage
    */
   setToken(token: string): void {
+    if (typeof window === 'undefined') {
+      return; // Server-side: do nothing
+    }
     localStorage.setItem(this.TOKEN_KEY, token);
   }
 
@@ -27,6 +30,9 @@ class AuthManager {
    * Get JWT token from localStorage
    */
   getToken(): string | null {
+    if (typeof window === 'undefined') {
+      return null; // Server-side: return null
+    }
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
@@ -34,6 +40,9 @@ class AuthManager {
    * Store user data in localStorage
    */
   setUser(user: User): void {
+    if (typeof window === 'undefined') {
+      return; // Server-side: do nothing
+    }
     localStorage.setItem(this.USER_KEY, JSON.stringify(user));
   }
 
@@ -41,6 +50,9 @@ class AuthManager {
    * Get user data from localStorage
    */
   getUser(): User | null {
+    if (typeof window === 'undefined') {
+      return null; // Server-side: return null
+    }
     const userStr = localStorage.getItem(this.USER_KEY);
     if (!userStr) return null;
     
@@ -83,6 +95,9 @@ class AuthManager {
    * Logout user (clear all stored data)
    */
   logout(): void {
+    if (typeof window === 'undefined') {
+      return; // Server-side: do nothing
+    }
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
   }

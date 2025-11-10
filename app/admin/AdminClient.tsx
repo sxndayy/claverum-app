@@ -68,7 +68,7 @@ export default function AdminClient() {
   const [error, setError] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [showDetail, setShowDetail] = useState(false);
-  const [user, setUser] = useState(authManager.getUser());
+  const [user, setUser] = useState<User | null>(null); // Initialize as null, set in useEffect
   
   // Pagination and filters
   const [currentPage, setCurrentPage] = useState(1);
