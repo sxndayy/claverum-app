@@ -107,12 +107,15 @@
   force = true
 
 # SPA fallback for other blog routes (if they don't have static HTML)
+# Note: Netlify serves static files BEFORE redirects, so /blog/*/index.html will be served before this redirect
 [[redirects]]
   from = "/blog/*"
   to = "/index.html"
   status = 200
 
 # SPA fallback - must be last to handle all other routes
+# Note: Netlify serves static files BEFORE redirects, so /path/index.html will be served before this redirect
+# This redirect only applies if no static file exists at the requested path
 [[redirects]]
   from = "/*"
   to = "/index.html"

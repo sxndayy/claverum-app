@@ -37,12 +37,21 @@ function getCitySlugs() {
 /**
  * Get all routes to prerender
  * Includes blog pages and all city pages
+ * 
+ * Note: Files are saved as /path/index.html for Netlify's pretty_urls feature
+ * This allows Netlify to serve /path/ correctly without redirects overriding
  */
 function getRoutesToPrerender() {
   const routes = [
+    // Main page
+    {
+      path: '/',
+      outputPath: 'index.html' // Already exists from build, but we'll overwrite with prerendered version
+    },
+    // Blog page
     {
       path: '/blog/hauskauf-beratung',
-      outputPath: 'blog/hauskauf-beratung.html'
+      outputPath: 'blog/hauskauf-beratung/index.html'
     }
   ];
 
@@ -51,7 +60,7 @@ function getRoutesToPrerender() {
   citySlugs.forEach(slug => {
     routes.push({
       path: `/${slug}`,
-      outputPath: `${slug}.html`
+      outputPath: `${slug}/index.html`
     });
   });
 
@@ -151,14 +160,28 @@ async function prerenderRoute(browser, route) {
     // Navigate to the route
     await page.goto(url, {
       waitUntil: 'networkidle0',
-      timeout: 30000
+      timeout: 60000
     });
 
     // Wait for React to hydrate and render
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
     
-    // Wait for any lazy-loaded content
-    await page.waitForSelector('body', { timeout: 5000 });
+    // Wait for any lazy-loaded content and ensure page is fully rendered
+    await page.waitForSelector('body', { timeout: 10000 });
+    
+    // Wait for any dynamic content to load (images, fonts, etc.)
+    await page.evaluate(() => {
+      return new Promise((resolve) => {
+        if (document.readyState === 'complete') {
+          resolve();
+        } else {
+          window.addEventListener('load', resolve);
+        }
+      });
+    });
+    
+    // Additional wait to ensure all React components are rendered
+    await page.waitForTimeout(1000);
     
     // Get the fully rendered HTML
     const html = await page.content();
