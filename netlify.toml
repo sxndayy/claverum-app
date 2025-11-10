@@ -54,49 +54,49 @@
   from = "/evaluation"
   to = "/evaluation/"
   status = 301
-  force = true
+  force = false
 
 [[redirects]]
   from = "/success"
   to = "/success/"
   status = 301
-  force = true
+  force = false
 
 [[redirects]]
   from = "/admin"
   to = "/admin/"
   status = 301
-  force = true
+  force = false
 
 [[redirects]]
   from = "/admin/login"
   to = "/admin/login/"
   status = 301
-  force = true
+  force = false
 
 [[redirects]]
   from = "/impressum"
   to = "/impressum/"
   status = 301
-  force = true
+  force = false
 
 [[redirects]]
   from = "/agb"
   to = "/agb/"
   status = 301
-  force = true
+  force = false
 
 [[redirects]]
   from = "/datenschutz"
   to = "/datenschutz/"
   status = 301
-  force = true
+  force = false
 
 [[redirects]]
   from = "/widerruf"
   to = "/widerruf/"
   status = 301
-  force = true
+  force = false
 
 # Blog path normalization (trailing slash)
 # IMPORTANT: Static HTML files are served automatically by Netlify BEFORE redirects
@@ -124,4 +124,18 @@
   to = "/index.html"
   status = 200
   force = false
+
+# Headers for better SEO and security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache headers for blog pages
+[[headers]]
+  for = "/blog/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
 

@@ -1,6 +1,3 @@
-# Trailing slash redirects for blog
-/blog/hauskauf-beratung/   /blog/hauskauf-beratung   301
-
 # Exclude static files from SPA redirect - they should be served directly
 # Note: Netlify serves static files BEFORE redirects, but we explicitly exclude them here for safety
 /sitemap.xml               /sitemap.xml              200

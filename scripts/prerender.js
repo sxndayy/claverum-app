@@ -13,7 +13,8 @@ import puppeteer from 'puppeteer';
 import { spawn, execSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { existsSync, mkdirSync, writeFileSync, readdirSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { PRERENDERED_ROUTES } from '../config/routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,49 +23,16 @@ const distDir = join(rootDir, 'dist');
 const previewPort = 4173;
 
 /**
- * Get all city slugs from the cities data directory
- * Excludes index.ts and reads all .json files
- */
-function getCitySlugs() {
-  const citiesDir = join(rootDir, 'src', 'data', 'cities');
-  const files = readdirSync(citiesDir);
-  
-  return files
-    .filter(file => file.endsWith('.json'))
-    .map(file => file.replace('.json', ''));
-}
-
-/**
- * Get all routes to prerender
- * Includes blog pages and all city pages
- * 
- * Note: Files are saved as /path/index.html for Netlify's pretty_urls feature
- * This allows Netlify to serve /path/ correctly without redirects overriding
+ * Convert route paths to prerender configuration
+ * Files are saved as /path/index.html for Netlify's pretty_urls feature
  */
 function getRoutesToPrerender() {
-  const routes = [
-    // Main page
-    {
-      path: '/',
-      outputPath: 'index.html' // Already exists from build, but we'll overwrite with prerendered version
-    },
-    // Blog page
-    {
-      path: '/blog/hauskauf-beratung',
-      outputPath: 'blog/hauskauf-beratung/index.html'
-    }
-  ];
-
-  // Add all city pages
-  const citySlugs = getCitySlugs();
-  citySlugs.forEach(slug => {
-    routes.push({
-      path: `/${slug}`,
-      outputPath: `${slug}/index.html`
-    });
-  });
-
-  return routes;
+  return PRERENDERED_ROUTES.map(route => ({
+    path: route,
+    outputPath: route === '/' 
+      ? 'index.html' 
+      : `${route}/index.html`
+  }));
 }
 
 // Routes to prerender
@@ -118,7 +86,6 @@ function startPreviewServer() {
     server.stderr.on('data', (data) => {
       const output = data.toString();
       if (output.includes('EADDRINUSE')) {
-        console.log('⚠️  Port already in use, assuming server is running...');
         if (!serverReady) {
           serverReady = true;
           resolve(null); // Server might already be running
@@ -135,7 +102,6 @@ function startPreviewServer() {
     // Timeout after 30 seconds
     setTimeout(() => {
       if (!serverReady) {
-        console.log('⚠️  Server might already be running, continuing...');
         resolve(null);
       }
     }, 30000);
@@ -155,6 +121,15 @@ async function validateRenderedPage(page, path) {
   const pageContent = await page.content();
   const pageTitle = await page.title();
   
+  // Check for NotFound component (using data-testid)
+  const hasNotFoundComponent = await page.evaluate(() => {
+    return document.querySelector('[data-testid="not-found"]') !== null;
+  });
+  
+  if (hasNotFoundComponent) {
+    throw new Error(`Page ${path} is rendering NotFound component instead of expected content`);
+  }
+  
   // Check for 404 indicators
   const is404 = pageContent.includes('404') && 
                 (pageContent.includes('Seite nicht gefunden') || 
@@ -166,14 +141,21 @@ async function validateRenderedPage(page, path) {
   }
   
   // Check for noindex tag (should not be present except for /404 route)
-  const hasNoindex = pageContent.includes('noindex');
+  const hasNoindex = await page.evaluate(() => {
+    const metaRobots = document.querySelector('meta[name="robots"]');
+    return metaRobots && metaRobots.getAttribute('content')?.includes('noindex');
+  });
+  
   if (hasNoindex && path !== '/404') {
     throw new Error(`Page ${path} contains noindex tag - this will prevent indexing`);
   }
   
   // Check for canonical /404/ (should not be present)
-  const has404Canonical = pageContent.includes('canonical') && 
-                          (pageContent.includes('/404') || pageContent.includes('/404/'));
+  const has404Canonical = await page.evaluate(() => {
+    const canonical = document.querySelector('link[rel="canonical"]');
+    return canonical && (canonical.getAttribute('href')?.includes('/404') || canonical.getAttribute('href')?.includes('/404/'));
+  });
+  
   if (has404Canonical && path !== '/404') {
     throw new Error(`Page has canonical /404/: ${path} - this will prevent indexing`);
   }
@@ -189,18 +171,15 @@ async function validateRenderedPage(page, path) {
     }
     
     // Check for correct canonical URL
-    const hasCorrectCanonical = pageContent.includes('canonical') && 
-                               pageContent.includes('/blog/hauskauf-beratung') &&
-                               !pageContent.includes('/404');
+    const hasCorrectCanonical = await page.evaluate(() => {
+      const canonical = document.querySelector('link[rel="canonical"]');
+      return canonical && 
+             canonical.getAttribute('href')?.includes('/blog/hauskauf-beratung') &&
+             !canonical.getAttribute('href')?.includes('/404');
+    });
+    
     if (!hasCorrectCanonical) {
       throw new Error(`Blog page ${path} does not have correct canonical URL`);
-    }
-    
-    // Additional check: Ensure page is not rendering NotFound component
-    const hasNotFoundContent = pageContent.includes('Oops! Seite nicht gefunden') || 
-                              pageContent.includes('404');
-    if (hasNotFoundContent) {
-      throw new Error(`Blog page ${path} is rendering NotFound component instead of BlogHauskaufBeratung`);
     }
   }
   
@@ -231,15 +210,12 @@ function delay(ms) {
  */
 async function ensureChromeInstalled() {
   try {
-    console.log('🔍 Checking if Chrome is available...');
-    
     // Try to launch Puppeteer with default config to check if Chrome exists
     const testBrowser = await puppeteer.launch({
       headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     await testBrowser.close();
-    console.log('✅ Chrome is available');
     return true;
   } catch (error) {
     if (error.message.includes('Could not find Chrome') || error.message.includes('Chrome')) {
@@ -376,11 +352,13 @@ async function prerenderRoute(browser, route, retries = 2) {
       
       await page.close();
       return; // Success, exit retry loop
-    } catch (error) {
-      lastError = error;
-      console.error(`   ⚠️  Attempt ${attempt + 1} failed for ${path}: ${error.message}`);
-      // Continue to next attempt
-    }
+      } catch (error) {
+        lastError = error;
+        if (attempt < retries) {
+          console.error(`   ⚠️  Attempt ${attempt + 1} failed, retrying...`);
+        }
+        // Continue to next attempt
+      }
   }
   
   // All retries failed
@@ -412,7 +390,6 @@ async function prerender() {
     await ensureChromeInstalled();
     
     // Launch browser
-    console.log('🌐 Launching browser...');
     browser = await puppeteer.launch({
       headless: 'new',
       args: [
@@ -424,13 +401,7 @@ async function prerender() {
       ]
     });
     
-    console.log('✅ Browser launched\n');
-    
-    console.log(`📋 Found ${routesToPrerender.length} routes to prerender:\n`);
-    routesToPrerender.forEach((route, index) => {
-      console.log(`  ${index + 1}. ${route.path} → ${route.outputPath}`);
-    });
-    console.log('');
+    console.log(`📋 Prerendering ${routesToPrerender.length} routes...\n`);
     
     // Prerender all routes
     let successCount = 0;
