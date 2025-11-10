@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bauklar.org/sitemap.xml
+Sitemap: https://bauklar.org/image-sitemap.xml

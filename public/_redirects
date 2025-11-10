@@ -1,0 +1,13 @@
+# Netlify Redirects for Next.js Static Export
+# Note: Next.js static export generates HTML files for all routes
+# This file handles SPA fallback for client-side routing
+
+# Exclude static files from SPA redirect - they should be served directly
+/sitemap.xml               /sitemap.xml              200
+/robots.txt                /robots.txt               200
+/image-sitemap.xml         /image-sitemap.xml        200
+
+# SPA fallback - redirect all other routes to index.html
+# This ensures client-side routing works for dynamic routes
+# Next.js static export generates HTML files, but we need this for client-side navigation
+/*                         /index.html               200

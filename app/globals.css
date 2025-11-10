@@ -1,0 +1,225 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Brand Colors */
+    --primary-100: 202 70% 88%; /* #d4eaf7 */
+    --primary-200: 203 32% 73%; /* #b6ccd8 */
+    --primary-300: 180 3% 24%; /* #3b3c3d */
+    --accent-100: 199 82% 69%; /* #71c4ef */
+    --accent-200: 200 100% 27%; /* #00668c */
+    
+    /* Text Colors */
+    --text-100: 0 0% 11%; /* #1d1c1c */
+    --text-200: 198 15% 26%; /* #313d44 */
+    
+    /* Background Colors */
+    --bg-100: 48 100% 99%; /* #fffefb */
+    --bg-200: 46 25% 96%; /* #f5f4f1 */
+    --bg-300: 60 4% 79%; /* #cccbc8 */
+    
+    /* System Colors mapped to brand */
+    --background: var(--bg-100);
+    --foreground: var(--text-100);
+    
+    --card: var(--bg-100);
+    --card-foreground: var(--text-100);
+    
+    --popover: var(--bg-100);
+    --popover-foreground: var(--text-100);
+    
+    --primary: var(--accent-200);
+    --primary-foreground: var(--bg-100);
+    
+    --secondary: var(--primary-100);
+    --secondary-foreground: var(--text-200);
+    
+    --muted: var(--bg-200);
+    --muted-foreground: var(--text-200);
+    
+    --accent: var(--accent-100);
+    --accent-foreground: var(--bg-100);
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: var(--bg-100);
+    
+    --border: var(--bg-300);
+    --input: var(--bg-200);
+    --ring: var(--accent-200);
+    
+    --radius: 0.5rem;
+    
+    /* Custom Design System */
+    --hero-gradient: linear-gradient(135deg, hsl(var(--primary-100)), hsl(var(--accent-100)));
+    --trust-gradient: linear-gradient(90deg, hsl(var(--bg-100)), hsl(var(--bg-200)));
+    --shadow-soft: 0 4px 20px hsl(var(--primary-300) / 0.08);
+    --shadow-strong: 0 10px 40px hsl(var(--primary-300) / 0.15);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* Hero Components */
+  .hero-gradient {
+    background: var(--hero-gradient);
+  }
+  
+  .trust-gradient {
+    background: var(--trust-gradient);
+  }
+  
+  /* Shadows */
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-strong {
+    box-shadow: var(--shadow-strong);
+  }
+  
+  /* Transitions */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  /* Form Wizard */
+  .form-step {
+    @apply transition-smooth;
+  }
+  
+  .form-step-active {
+    @apply opacity-100 translate-x-0;
+  }
+  
+  .form-step-inactive {
+    @apply opacity-0 translate-x-4 pointer-events-none absolute;
+  }
+  
+  /* Trust badges */
+  .trust-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-sm font-medium;
+  }
+  
+  /* Micro animations */
+  .hover-lift {
+    @apply transition-smooth hover:shadow-strong hover:-translate-y-1;
+  }
+  
+  .hover-scale {
+    @apply transition-smooth hover:scale-105;
+  }
+  
+  /* Progress bar */
+  .progress-bar {
+    @apply w-full bg-muted rounded-full h-2 overflow-hidden;
+  }
+  
+  .progress-fill {
+    @apply h-full bg-primary rounded-full transition-all duration-500 ease-out;
+  }
+
+  .steps-head {
+    position: relative;
+  }
+
+  .step-icon {
+    position: relative;
+    z-index: 2;
+  }
+
+  .steps-connector {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 2px;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(90deg, #9dbad3 0%, #2e6aa3 50%, #9dbad3 100%);
+    border-radius: 2px;
+  }
+
+  .steps-connector::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 14px;
+    background: linear-gradient(90deg, #9dbad3 0%, #2e6aa3 100%);
+    clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+  }
+
+  @media (max-width: 767px) {
+    .steps-connector {
+      display: none !important;
+    }
+  }
+}
+
+/* Mobile-only global overflow safety and media clamps */
+@media (max-width: 767.98px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Prevent intrinsic media from causing horizontal scroll */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Clamp full-screen width utilities when nested in padded containers */
+  .w-screen,
+  .min-w-screen {
+    max-width: 100% !important;
+  }
+
+  /* Extra safety for main layout wrappers */
+  main,
+  header,
+  footer {
+    overflow-x: clip;
+  }
+
+  /* Hyphenation and safe wrapping for long German words in large text */
+  h1,
+  h2,
+  h3,
+  h4,
+  .text-3xl,
+  .text-4xl,
+  .text-5xl,
+  .font-bold {
+    hyphens: auto;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  /* Prefer two balanced lines for the hero heading */
+  .hero-title {
+    text-wrap: balance;
+    max-width: 22ch;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.15;
+  }
+}
+
