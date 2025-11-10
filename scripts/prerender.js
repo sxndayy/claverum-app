@@ -426,15 +426,52 @@ async function prerender() {
     }
     
     if (server) {
-      server.kill();
-      console.log('🛑 Preview server stopped');
+      console.log('🛑 Stopping preview server...');
+      // Kill the server process and all its children
+      try {
+        if (process.platform === 'win32') {
+          // Windows: use taskkill
+          execSync(`taskkill /F /T /PID ${server.pid}`, { stdio: 'ignore' });
+        } else {
+          // Unix: kill process group
+          process.kill(-server.pid, 'SIGTERM');
+          // Give it a moment to gracefully shut down
+          await delay(1000);
+          // Force kill if still running
+          try {
+            process.kill(-server.pid, 'SIGKILL');
+          } catch (e) {
+            // Process already dead, ignore
+          }
+        }
+        console.log('✅ Preview server stopped');
+      } catch (error) {
+        console.warn('⚠️  Warning: Could not stop preview server:', error.message);
+        // Try alternative method
+        try {
+          server.kill('SIGTERM');
+          await delay(1000);
+          server.kill('SIGKILL');
+        } catch (e) {
+          // Ignore
+        }
+      }
     }
+    
+    // Ensure script exits
+    console.log('✅ Prerendering script completed');
   }
 }
 
 // Run prerendering
-prerender().catch((error) => {
-  console.error('Fatal error:', error);
-  process.exit(1);
-});
+prerender()
+  .then(() => {
+    // Ensure process exits cleanly
+    console.log('✅ All done, exiting...');
+    process.exit(0);
+  })
+  .catch((error) => {
+    console.error('Fatal error:', error);
+    process.exit(1);
+  });
 
