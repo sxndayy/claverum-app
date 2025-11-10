@@ -15,7 +15,7 @@ interface SEOProps {
 const normalizeCanonicalUrl = (url: string, siteUrl: string): string => {
   // If URL is already absolute (starts with http), normalize it
   if (url.startsWith('http')) {
-    // If it's our domain, ensure trailing slash
+    // If it's our domain, check if it's a blog post (no trailing slash for blog posts)
     if (url.startsWith(siteUrl)) {
       const path = url.substring(siteUrl.length);
       // If path is empty or just '/', return with trailing slash
@@ -26,7 +26,12 @@ const normalizeCanonicalUrl = (url: string, siteUrl: string): string => {
       if (path.includes('?') || path.includes('#')) {
         return url;
       }
-      // Add trailing slash if not already present
+      // Blog posts should NOT have trailing slash
+      if (path.startsWith('/blog/')) {
+        // Remove trailing slash if present
+        return url.endsWith('/') ? url.slice(0, -1) : url;
+      }
+      // Add trailing slash if not already present (for other pages)
       if (!path.endsWith('/')) {
         return `${siteUrl}${path}/`;
       }
@@ -51,7 +56,12 @@ const normalizeCanonicalUrl = (url: string, siteUrl: string): string => {
     return `${siteUrl}${url}`;
   }
   
-  // Add trailing slash if not already present
+  // Blog posts should NOT have trailing slash
+  if (url.startsWith('/blog/')) {
+    return `${siteUrl}${url}`;
+  }
+  
+  // Add trailing slash if not already present (for other pages)
   if (!url.endsWith('/')) {
     url = url + '/';
   }
@@ -108,7 +118,11 @@ export function SEO({
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={validatedDescription} />
-      {noindex && <meta name="robots" content="noindex, nofollow" />}
+      {noindex ? (
+        <meta name="robots" content="noindex, nofollow" />
+      ) : (
+        <meta name="robots" content="index, follow" />
+      )}
       
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />

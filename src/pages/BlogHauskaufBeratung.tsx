@@ -139,8 +139,9 @@ const BlogHauskaufBeratung = () => {
       <SEO 
         title="Hauskauf Beratung: Wann sie sinnvoll ist, Kosten und Leistungen"
         description="Hauskauf Beratung schützt vor versteckten Mängeln. Erfahren Sie, wann ein Gutachter sinnvoll ist, was er kostet und wie Sie bis zu 40.000 € beim Immobilienkauf sparen."
-        canonical="/blog/hauskauf-beratung"
+        canonical="https://bauklar.org/blog/hauskauf-beratung"
         ogType="article"
+        noindex={false}
       />
       <Helmet>
         <script type="application/ld+json">
@@ -343,63 +344,55 @@ const BlogHauskaufBeratung = () => {
                       Typische Mängel bei Altbauten
                     </h3>
                     
-                    <div className="space-y-4 mb-6">
-                      <div>
-                        <h4 className="font-semibold text-text-100 mb-2">Substanzschäden</h4>
+                    <ul className="space-y-4 mb-6 list-none">
+                      <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          Zu den schwerwiegendsten Bauschäden zählen Risse im Mauerwerk, Feuchtigkeitsschäden durch defekte Horizontalsperren und echter Hausschwamm. Schädlinge wie Holzwürmer oder Hausbockkäfer befallen häufig Dachstühle, Holztreppen und Deckenbalken. Eine vollständige Dachsanierung mit neuem Dachstuhl, Eindeckung und Dämmung verursacht Kosten ab 30.000 Euro aufwärts.
+                          <strong className="text-text-100">Substanzschäden:</strong> Zu den schwerwiegendsten Bauschäden zählen Risse im Mauerwerk, Feuchtigkeitsschäden durch defekte Horizontalsperren und echter Hausschwamm. Schädlinge wie Holzwürmer oder Hausbockkäfer befallen häufig Dachstühle, Holztreppen und Deckenbalken. Eine vollständige Dachsanierung mit neuem Dachstuhl, Eindeckung und Dämmung verursacht Kosten ab 30.000 Euro aufwärts.
                         </p>
-                      </div>
+                      </li>
                       
-                      <div>
-                        <h4 className="font-semibold text-text-100 mb-2">Schimmel</h4>
+                      <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          Schimmelbefall ist nicht immer direkt erkennbar. Manchmal deuten nur muffiger Geruch oder vereinzelte Flecken auf ein größeres Problem hin. Bausachverständige nutzen Feuchtigkeitsmessgeräte, um das Ausmaß zu ermitteln und zu bewerten, ob lediglich oberflächliche Behandlung ausreicht oder größere Sanierungen nötig sind. Die Kosten variieren stark je nach Befallsgrad.
+                          <strong className="text-text-100">Schimmel:</strong> Schimmelbefall ist nicht immer direkt erkennbar. Manchmal deuten nur muffiger Geruch oder vereinzelte Flecken auf ein größeres Problem hin. Bausachverständige nutzen Feuchtigkeitsmessgeräte, um das Ausmaß zu ermitteln und zu bewerten, ob lediglich oberflächliche Behandlung ausreicht oder größere Sanierungen nötig sind. Die Kosten variieren stark je nach Befallsgrad.
                         </p>
-                      </div>
+                      </li>
                       
-                      <div>
-                        <h4 className="font-semibold text-text-100 mb-2">Alte Heizungsanlagen</h4>
+                      <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          Die Energieeinsparverordnung (EnEV) schreibt den Austausch von Heizkesseln vor, die vor 1984 installiert wurden. Auch neuere Anlagen dürfen nur 30 Jahre betrieben werden – ausgenommen sind Brennwert- und Niedertemperaturkessel. Der Austausch einer veralteten Heizung schlägt mit 12.000 bis 16.000 Euro zu Buche. Eine fundierte Kostenprognose durch einen Gutachter hilft bei der Finanzierungsplanung.
+                          <strong className="text-text-100">Alte Heizungsanlagen:</strong> Die Energieeinsparverordnung (EnEV) schreibt den Austausch von Heizkesseln vor, die vor 1984 installiert wurden. Auch neuere Anlagen dürfen nur 30 Jahre betrieben werden – ausgenommen sind Brennwert- und Niedertemperaturkessel. Der Austausch einer veralteten Heizung schlägt mit 12.000 bis 16.000 Euro zu Buche. Eine fundierte Kostenprognose durch einen Gutachter hilft bei der Finanzierungsplanung.
                         </p>
-                      </div>
+                      </li>
                       
-                      <div>
-                        <h4 className="font-semibold text-text-100 mb-2">Asbest</h4>
+                      <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          Bis Anfang der 1990er-Jahre war Asbest als Baumaterial zugelassen. In verwittertem Zustand setzt es gesundheitsgefährdende Fasern frei. Ein Gutachter kann Asbestverdacht durch Materialproben klären. Die professionelle Asbestsanierung durch zertifizierte Fachfirmen kostet mehrere tausend Euro.
+                          <strong className="text-text-100">Asbest:</strong> Bis Anfang der 1990er-Jahre war Asbest als Baumaterial zugelassen. In verwittertem Zustand setzt es gesundheitsgefährdende Fasern frei. Ein Gutachter kann Asbestverdacht durch Materialproben klären. Die professionelle Asbestsanierung durch zertifizierte Fachfirmen kostet mehrere tausend Euro.
                         </p>
-                      </div>
+                      </li>
                       
-                      <div>
-                        <h4 className="font-semibold text-text-100 mb-2">Wasserleitungen</h4>
+                      <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          Kalkablagerungen an Armaturen signalisieren oft verkalkte Rohrleitungen. Besonders problematisch wird es, wenn zusätzlich Korrosion vorliegt – dann droht Rohrbruch. Auch alte Bleirohre müssen zwingend ersetzt werden. Bei Installationen über 50 Jahren ist eine Komplettsanierung ratsam. Die Kosten belaufen sich auf mindestens 25 Euro pro Meter Leitung.
+                          <strong className="text-text-100">Wasserleitungen:</strong> Kalkablagerungen an Armaturen signalisieren oft verkalkte Rohrleitungen. Besonders problematisch wird es, wenn zusätzlich Korrosion vorliegt – dann droht Rohrbruch. Auch alte Bleirohre müssen zwingend ersetzt werden. Bei Installationen über 50 Jahren ist eine Komplettsanierung ratsam. Die Kosten belaufen sich auf mindestens 25 Euro pro Meter Leitung.
                         </p>
-                      </div>
+                      </li>
                       
-                      <div>
-                        <h4 className="font-semibold text-text-100 mb-2">Veraltete Elektroinstallationen</h4>
+                      <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          Elektroinstallationen haben eine Lebensdauer von 30 bis 40 Jahren. Bei der Überprüfung sollte kontrolliert werden, ob ausreichend Stromkreise vorhanden sind und moderne Sicherungen (FI-Schutzschalter) installiert wurden. Eine Elektrosanierung kostet typischerweise 3 bis 5 Prozent des Gebäudewerts.
+                          <strong className="text-text-100">Veraltete Elektroinstallationen:</strong> Elektroinstallationen haben eine Lebensdauer von 30 bis 40 Jahren. Bei der Überprüfung sollte kontrolliert werden, ob ausreichend Stromkreise vorhanden sind und moderne Sicherungen (FI-Schutzschalter) installiert wurden. Eine Elektrosanierung kostet typischerweise 3 bis 5 Prozent des Gebäudewerts.
                         </p>
-                      </div>
+                      </li>
                       
-                      <div>
-                        <h4 className="font-semibold text-text-100 mb-2">Chemikalien und Holzschutzmittel</h4>
+                      <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          Früher verwendete Holzschutzmittel gelten heute vielfach als gesundheitsschädlich. Lässt sich die Schadstoffbelastung nicht beseitigen, bleibt oft nur intensives Lüften als Kompensationsmaßnahme.
+                          <strong className="text-text-100">Chemikalien und Holzschutzmittel:</strong> Früher verwendete Holzschutzmittel gelten heute vielfach als gesundheitsschädlich. Lässt sich die Schadstoffbelastung nicht beseitigen, bleibt oft nur intensives Lüften als Kompensationsmaßnahme.
                         </p>
-                      </div>
+                      </li>
                       
-                      <div>
-                        <h4 className="font-semibold text-text-100 mb-2">Schwarzbauten</h4>
+                      <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          Nicht genehmigte An- oder Umbauten stellen ein erhebliches Risiko dar. Werden solche Schwarzbauten vom Bauamt entdeckt, muss der Eigentümer diese nachträglich genehmigen lassen oder auf eigene Kosten an aktuelle Bauvorschriften anpassen. Allein die nachträgliche Legalisierung eines Dachgeschossausbaus kann fünfstellige Beträge verschlingen. Qualifizierte Gutachter erkennen solche Probleme und beraten zu möglichen Lösungsansätzen.
+                          <strong className="text-text-100">Schwarzbauten:</strong> Nicht genehmigte An- oder Umbauten stellen ein erhebliches Risiko dar. Werden solche Schwarzbauten vom Bauamt entdeckt, muss der Eigentümer diese nachträglich genehmigen lassen oder auf eigene Kosten an aktuelle Bauvorschriften anpassen. Allein die nachträgliche Legalisierung eines Dachgeschossausbaus kann fünfstellige Beträge verschlingen. Qualifizierte Gutachter erkennen solche Probleme und beraten zu möglichen Lösungsansätzen.
                         </p>
-                      </div>
-                    </div>
+                      </li>
+                    </ul>
                     
                     <h3 className="text-xl md:text-2xl font-semibold text-text-100 mt-6 mb-3">
                       Prüfung von Umbaumaßnahmen und Exposé-Angaben
@@ -549,7 +542,7 @@ const BlogHauskaufBeratung = () => {
                       Digitale Bauschadensanalyse
                     </h3>
                     <p className="text-text-200 leading-relaxed mb-4">
-                      Die digitale Variante bietet das optimale Preis-Leistungs-Verhältnis. Ab 350 Euro erhalten Sie binnen zwei Werktagen ein schriftliches Gutachten, das Mängel dokumentiert, Sanierungskosten beziffert und als Verhandlungsgrundlage dient. <a href="/#preise" onClick={(e) => scrollToHomeSection(e, 'preise')} className="text-primary hover:underline">Unsere Preise im Detail</a>.
+                      Die digitale Variante bietet das optimale Preis-Leistungs-Verhältnis. Ab 350 Euro erhalten Sie binnen zwei Werktagen ein schriftliches Gutachten, das Mängel dokumentiert, Sanierungskosten beziffert und als Verhandlungsgrundlage dient. <a href="/#preise" onClick={(e) => scrollToHomeSection(e, 'preise')} className="text-primary hover:underline">Zur Preisübersicht</a>.
                     </p>
                     
                     <h3 className="text-xl md:text-2xl font-semibold text-text-100 mt-6 mb-3">
@@ -577,7 +570,7 @@ const BlogHauskaufBeratung = () => {
                       <div>
                         <h4 className="font-semibold text-text-100 mb-2">Qualifizierte Anlaufstellen kontaktieren</h4>
                         <p className="text-text-200 leading-relaxed">
-                          Der Bundesverband Deutscher Bausachverständiger (BBAUSV) sowie der Verband Privater Bauherren (VPB) vermitteln kurzfristig geprüfte Gutachter. Zeitgemäße Alternativen wie die <a href="/#leistungen" onClick={(e) => scrollToHomeSection(e, 'leistungen')} className="text-primary hover:underline">digitale Bauschadensanalyse von bauklar.org</a> bieten zudem diskrete und zügige Lösungen.
+                          Der Bundesverband Deutscher Bausachverständiger (BBAUSV) sowie der Verband Privater Bauherren (VPB) vermitteln kurzfristig geprüfte Gutachter. Zeitgemäße Alternativen wie die <a href="/#leistungen" onClick={(e) => scrollToHomeSection(e, 'leistungen')} className="text-primary hover:underline">Online-Immobilienbewertung von bauklar.org</a> bieten zudem diskrete und zügige Lösungen.
                         </p>
                       </div>
                       
