@@ -99,13 +99,15 @@
   force = true
 
 # Blog path normalization (trailing slash)
-# Note: Static HTML files are served automatically by Netlify before redirects
-# This redirect only handles trailing slash, the static file /blog/hauskauf-beratung/index.html is served first
+# IMPORTANT: Static HTML files are served automatically by Netlify BEFORE redirects
+# With pretty_urls = true, /blog/hauskauf-beratung/index.html is automatically served as /blog/hauskauf-beratung/
+# This redirect only handles the case where someone explicitly requests /blog/hauskauf-beratung/ with trailing slash
+# We use force = false to ensure static files take precedence
 [[redirects]]
   from = "/blog/hauskauf-beratung/"
   to = "/blog/hauskauf-beratung"
   status = 301
-  force = true
+  force = false
 
 # Note: We do NOT have a /blog/* redirect here because:
 # 1. Static files are served BEFORE redirects

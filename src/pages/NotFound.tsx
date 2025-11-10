@@ -1,16 +1,44 @@
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SEO } from '@/components/SEO';
 
 const NotFound = () => {
   const location = useLocation();
+  const [isPrerendering, setIsPrerendering] = useState(false);
 
   useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
+    // Check if we're in prerendering mode
+    // During prerendering, React Router might temporarily render NotFound
+    // before lazy-loaded components are loaded. We should not render 404 content in this case.
+    if (typeof window !== 'undefined') {
+      // Check if we're being prerendered (Puppeteer sets user agent)
+      const isPuppeteer = navigator.userAgent.includes('HeadlessChrome') || 
+                         navigator.userAgent.includes('Puppeteer');
+      
+      // Also check if window.__PRERENDER__ flag is set (if we set it in prerender script)
+      const hasPrerenderFlag = (window as any).__PRERENDER__ === true;
+      
+      setIsPrerendering(isPuppeteer || hasPrerenderFlag);
+    }
+
+    if (!isPrerendering) {
+      console.error(
+        "404 Error: User attempted to access non-existent route:",
+        location.pathname
+      );
+    }
+  }, [location.pathname, isPrerendering]);
+
+  // During prerendering, don't render 404 content - let React Router handle it
+  // This prevents 404 pages from being prerendered for valid routes
+  if (isPrerendering) {
+    return (
+      <>
+        {/* Don't set SEO tags during prerendering for NotFound */}
+        <div style={{ display: 'none' }}>Prerendering...</div>
+      </>
     );
-  }, [location.pathname]);
+  }
 
   return (
     <>

@@ -146,6 +146,12 @@ function startPreviewServer() {
  * Validate that the rendered page is correct (not a 404 page)
  */
 async function validateRenderedPage(page, path) {
+  // CRITICAL: Check if React Router recognized the route correctly
+  const actualPath = await page.evaluate(() => window.location.pathname);
+  if (actualPath !== path) {
+    throw new Error(`Route mismatch: Expected ${path}, but React Router rendered ${actualPath}. This indicates React Router did not recognize the route correctly.`);
+  }
+  
   const pageContent = await page.content();
   const pageTitle = await page.title();
   
@@ -156,7 +162,7 @@ async function validateRenderedPage(page, path) {
                  pageTitle.includes('404'));
   
   if (is404) {
-    throw new Error(`Page rendered as 404: ${path}`);
+    throw new Error(`Page rendered as 404: ${path}. Actual pathname: ${actualPath}`);
   }
   
   // Check for noindex tag (should not be present except for /404 route)
@@ -179,7 +185,7 @@ async function validateRenderedPage(page, path) {
                           pageContent.includes('hauskauf-beratung') ||
                           pageContent.includes('BlogPosting');
     if (!hasBlogContent) {
-      throw new Error(`Blog page ${path} does not contain expected blog content`);
+      throw new Error(`Blog page ${path} does not contain expected blog content. Page title: ${pageTitle}`);
     }
     
     // Check for correct canonical URL
@@ -188,6 +194,13 @@ async function validateRenderedPage(page, path) {
                                !pageContent.includes('/404');
     if (!hasCorrectCanonical) {
       throw new Error(`Blog page ${path} does not have correct canonical URL`);
+    }
+    
+    // Additional check: Ensure page is not rendering NotFound component
+    const hasNotFoundContent = pageContent.includes('Oops! Seite nicht gefunden') || 
+                              pageContent.includes('404');
+    if (hasNotFoundContent) {
+      throw new Error(`Blog page ${path} is rendering NotFound component instead of BlogHauskaufBeratung`);
     }
   }
   
@@ -198,7 +211,7 @@ async function validateRenderedPage(page, path) {
                           pageContent.includes('Bauschadensbewertung') ||
                           pageContent.length > 5000; // Reasonable content length
     if (!hasCityContent) {
-      throw new Error(`City page ${path} does not contain expected content`);
+      throw new Error(`City page ${path} does not contain expected content. Page title: ${pageTitle}, Content length: ${pageContent.length}`);
     }
   }
   
@@ -249,12 +262,22 @@ async function ensureChromeInstalled() {
 }
 
 /**
- * Wait for React to fully render
+ * Wait for React to fully render and React Router to recognize the route
  */
-async function waitForReactRender(page, timeout = 10000) {
+async function waitForReactRender(page, expectedPath, timeout = 20000) {
   try {
     // Wait for React root element
     await page.waitForSelector('#root', { timeout });
+    
+    // Wait for React Router to recognize the route correctly
+    await page.waitForFunction(
+      (path) => {
+        // Check if React Router has recognized the route
+        return window.location.pathname === path;
+      },
+      { timeout },
+      expectedPath
+    );
     
     // Wait for React to hydrate - check if React has rendered content
     await page.waitForFunction(
@@ -265,77 +288,103 @@ async function waitForReactRender(page, timeout = 10000) {
       { timeout }
     );
     
-    // Additional wait for any lazy-loaded components
-    await delay(2000);
+    // Additional wait for any lazy-loaded components (Suspense boundaries)
+    await delay(3000);
+    
+    // Verify route is still correct after lazy loading
+    const actualPath = await page.evaluate(() => window.location.pathname);
+    if (actualPath !== expectedPath) {
+      throw new Error(`Route changed after render: Expected ${expectedPath}, got ${actualPath}`);
+    }
   } catch (error) {
-    console.warn(`⚠️  Warning: React render check timeout for page, continuing anyway`);
+    const actualPath = await page.evaluate(() => window.location.pathname);
+    throw new Error(`React render check failed for ${expectedPath}. Actual pathname: ${actualPath}. Error: ${error.message}`);
   }
 }
 
 /**
- * Prerender a single route
+ * Prerender a single route with retry logic
  */
-async function prerenderRoute(browser, route) {
+async function prerenderRoute(browser, route, retries = 2) {
   const { path, outputPath } = route;
   const url = `http://localhost:${previewPort}${path}`;
   
   console.log(`📄 Prerendering: ${path}...`);
   
-  try {
-    const page = await browser.newPage();
-    
-    // Set viewport for consistent rendering
-    await page.setViewport({ width: 1920, height: 1080 });
-    
-    // Navigate to the route
-    await page.goto(url, {
-      waitUntil: 'networkidle0',
-      timeout: 60000
-    });
-
-    // Wait for React to hydrate and render
-    await waitForReactRender(page, 15000);
-    
-    // Wait for any lazy-loaded content and ensure page is fully rendered
-    await page.waitForSelector('body', { timeout: 10000 });
-    
-    // Wait for any dynamic content to load (images, fonts, etc.)
-    await page.evaluate(() => {
-      return new Promise((resolve) => {
-        if (document.readyState === 'complete') {
-          resolve();
-        } else {
-          window.addEventListener('load', resolve);
-        }
-      });
-    });
-    
-    // Additional wait to ensure all React components are rendered
-    await delay(2000);
-    
-    // Validate that the page is correctly rendered (not 404)
-    await validateRenderedPage(page, path);
-    
-    // Get the fully rendered HTML
-    const html = await page.content();
-    
-    // Ensure output directory exists
-    const outputDir = join(distDir, outputPath.split('/').slice(0, -1).join('/'));
-    if (!existsSync(outputDir)) {
-      mkdirSync(outputDir, { recursive: true });
+  let lastError = null;
+  
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    if (attempt > 0) {
+      console.log(`   🔄 Retry attempt ${attempt}/${retries} for ${path}...`);
+      await delay(2000); // Wait before retry
     }
     
-    // Write the prerendered HTML
-    const fullOutputPath = join(distDir, outputPath);
-    writeFileSync(fullOutputPath, html, 'utf8');
-    
-    console.log(`✅ Prerendered: ${path} → ${outputPath}`);
-    
-    await page.close();
-  } catch (error) {
-    console.error(`❌ Error prerendering ${path}:`, error.message);
-    throw error;
+    try {
+      const page = await browser.newPage();
+      
+      // Set viewport for consistent rendering
+      await page.setViewport({ width: 1920, height: 1080 });
+      
+      // Set prerendering flag before navigation
+      await page.evaluateOnNewDocument(() => {
+        window.__PRERENDER__ = true;
+      });
+      
+      // Navigate to the route
+      await page.goto(url, {
+        waitUntil: 'networkidle0',
+        timeout: 60000
+      });
+
+      // Wait for React Router to recognize the route and React to hydrate
+      await waitForReactRender(page, path, 20000);
+      
+      // Wait for any lazy-loaded content and ensure page is fully rendered
+      await page.waitForSelector('body', { timeout: 10000 });
+      
+      // Wait for any dynamic content to load (images, fonts, etc.)
+      await page.evaluate(() => {
+        return new Promise((resolve) => {
+          if (document.readyState === 'complete') {
+            resolve();
+          } else {
+            window.addEventListener('load', resolve);
+          }
+        });
+      });
+      
+      // Additional wait to ensure all React components are rendered
+      await delay(3000);
+      
+      // Validate that the page is correctly rendered (not 404)
+      await validateRenderedPage(page, path);
+      
+      // Get the fully rendered HTML
+      const html = await page.content();
+      
+      // Ensure output directory exists
+      const outputDir = join(distDir, outputPath.split('/').slice(0, -1).join('/'));
+      if (outputDir !== distDir && !existsSync(outputDir)) {
+        mkdirSync(outputDir, { recursive: true });
+      }
+      
+      // Write the prerendered HTML
+      const fullOutputPath = join(distDir, outputPath);
+      writeFileSync(fullOutputPath, html, 'utf8');
+      
+      console.log(`✅ Prerendered: ${path} → ${outputPath}`);
+      
+      await page.close();
+      return; // Success, exit retry loop
+    } catch (error) {
+      lastError = error;
+      console.error(`   ⚠️  Attempt ${attempt + 1} failed for ${path}: ${error.message}`);
+      // Continue to next attempt
+    }
   }
+  
+  // All retries failed
+  throw new Error(`Failed to prerender ${path} after ${retries + 1} attempts: ${lastError.message}`);
 }
 
 /**
