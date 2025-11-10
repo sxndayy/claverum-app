@@ -143,6 +143,100 @@ function startPreviewServer() {
 }
 
 /**
+ * Validate that the rendered page is correct (not a 404 page)
+ */
+async function validateRenderedPage(page, path) {
+  const pageContent = await page.content();
+  const pageTitle = await page.title();
+  
+  // Check for 404 indicators
+  const is404 = pageContent.includes('404') && 
+                (pageContent.includes('Seite nicht gefunden') || 
+                 pageContent.includes('Oops! Seite nicht gefunden') ||
+                 pageTitle.includes('404'));
+  
+  if (is404) {
+    throw new Error(`Page rendered as 404: ${path}`);
+  }
+  
+  // Check for noindex tag (should not be present except for /404 route)
+  const hasNoindex = pageContent.includes('noindex');
+  if (hasNoindex && path !== '/404') {
+    throw new Error(`Page ${path} contains noindex tag - this will prevent indexing`);
+  }
+  
+  // Check for canonical /404/ (should not be present)
+  const has404Canonical = pageContent.includes('canonical') && 
+                          (pageContent.includes('/404') || pageContent.includes('/404/'));
+  if (has404Canonical && path !== '/404') {
+    throw new Error(`Page has canonical /404/: ${path} - this will prevent indexing`);
+  }
+  
+  // Blog-specific validation
+  if (path === '/blog/hauskauf-beratung') {
+    // Check for blog-specific content
+    const hasBlogContent = pageContent.includes('Hauskauf Beratung') || 
+                          pageContent.includes('hauskauf-beratung') ||
+                          pageContent.includes('BlogPosting');
+    if (!hasBlogContent) {
+      throw new Error(`Blog page ${path} does not contain expected blog content`);
+    }
+    
+    // Check for correct canonical URL
+    const hasCorrectCanonical = pageContent.includes('canonical') && 
+                               pageContent.includes('/blog/hauskauf-beratung') &&
+                               !pageContent.includes('/404');
+    if (!hasCorrectCanonical) {
+      throw new Error(`Blog page ${path} does not have correct canonical URL`);
+    }
+  }
+  
+  // City page validation
+  if (path.startsWith('/') && path !== '/' && !path.startsWith('/blog') && path !== '/404') {
+    // Check for city-specific content (should have city name or Bauschadensanalyse)
+    const hasCityContent = pageContent.includes('Bauschadensanalyse') || 
+                          pageContent.includes('Bauschadensbewertung') ||
+                          pageContent.length > 5000; // Reasonable content length
+    if (!hasCityContent) {
+      throw new Error(`City page ${path} does not contain expected content`);
+    }
+  }
+  
+  return true;
+}
+
+/**
+ * Helper function to wait (replacement for deprecated page.waitForTimeout)
+ */
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Wait for React to fully render
+ */
+async function waitForReactRender(page, timeout = 10000) {
+  try {
+    // Wait for React root element
+    await page.waitForSelector('#root', { timeout });
+    
+    // Wait for React to hydrate - check if React has rendered content
+    await page.waitForFunction(
+      () => {
+        const root = document.getElementById('root');
+        return root && root.children.length > 0 && root.innerHTML.trim().length > 100;
+      },
+      { timeout }
+    );
+    
+    // Additional wait for any lazy-loaded components
+    await delay(2000);
+  } catch (error) {
+    console.warn(`⚠️  Warning: React render check timeout for page, continuing anyway`);
+  }
+}
+
+/**
  * Prerender a single route
  */
 async function prerenderRoute(browser, route) {
@@ -164,7 +258,7 @@ async function prerenderRoute(browser, route) {
     });
 
     // Wait for React to hydrate and render
-    await page.waitForTimeout(3000);
+    await waitForReactRender(page, 15000);
     
     // Wait for any lazy-loaded content and ensure page is fully rendered
     await page.waitForSelector('body', { timeout: 10000 });
@@ -181,7 +275,10 @@ async function prerenderRoute(browser, route) {
     });
     
     // Additional wait to ensure all React components are rendered
-    await page.waitForTimeout(1000);
+    await delay(2000);
+    
+    // Validate that the page is correctly rendered (not 404)
+    await validateRenderedPage(page, path);
     
     // Get the fully rendered HTML
     const html = await page.content();
@@ -266,10 +363,21 @@ async function prerender() {
     console.log(`   ✅ Success: ${successCount}`);
     if (errorCount > 0) {
       console.log(`   ❌ Errors: ${errorCount}`);
+      console.log(`\n⚠️  Warning: Some routes failed to prerender. The build will continue, but these routes may not be indexed correctly.`);
+      // Don't exit with error code - let the build continue
+      // This allows Netlify to deploy even if some routes fail
+    }
+    
+    // Exit with error only if ALL routes failed
+    if (successCount === 0 && routesToPrerender.length > 0) {
+      console.error('\n❌ All routes failed to prerender. This is a critical error.');
+      process.exit(1);
     }
     
   } catch (error) {
     console.error('\n❌ Prerendering failed:', error.message);
+    // Only exit with error if it's a critical failure (e.g., server won't start)
+    // Individual route failures are handled above
     process.exit(1);
   } finally {
     // Cleanup
