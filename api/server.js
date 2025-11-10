@@ -64,17 +64,27 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: [
-    // Production domain
-    'http://bauklar.org',
-    'https://bauklar.org',
-    'http://www.bauklar.org',
-    'https://www.bauklar.org',
-    // Development and testing
-    'https://test-johannes.netlify.app',
-    'http://localhost:3000',
-    'http://localhost:8080'
-  ],
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      // Production domains
+      'http://bauklar.org',
+      'https://bauklar.org',
+      'http://www.bauklar.org',
+      'https://www.bauklar.org',
+      // Development and testing
+      'https://test-johannes.netlify.app',
+      'http://localhost:3000',
+      'http://localhost:8080',
+      'http://localhost:3001'
+    ];
+    
+    // Allow Netlify preview domains (e.g., *.netlify.app, *.netlify.app/*)
+    if (!origin || allowedOrigins.includes(origin) || origin.includes('.netlify.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
