@@ -8,7 +8,8 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 // List of routes that should NOT be handled as city pages
 const RESERVED_ROUTES = [
   'admin', 'admin/login', 'evaluation', 'success', 'impressum', 
-  'agb', 'datenschutz', 'widerruf', 'berlin', 'hamburg', 'muenchen'
+  'agb', 'datenschutz', 'widerruf', 'berlin', 'hamburg', 'muenchen',
+  'blog'
 ];
 
 const CityRoute: React.FC = () => {

@@ -78,6 +78,7 @@ const App = () => (
         <Route path="/hamburg" element={<Hamburg />} errorElement={<RouteError />} />
         <Route path="/muenchen" element={<Muenchen />} errorElement={<RouteError />} />
         <Route path="/blog/hauskauf-beratung" element={<BlogHauskaufBeratung />} errorElement={<RouteError />} />
+        <Route path="/blog/hauskauf-beratung/" element={<BlogHauskaufBeratung />} errorElement={<RouteError />} />
         {/* Dynamic city routes - must come after specific city routes */}
         <Route path="/:slug" element={<CityRoute />} errorElement={<RouteError />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

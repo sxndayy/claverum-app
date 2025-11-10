@@ -98,6 +98,18 @@
   status = 301
   force = true
 
+# Blog path normalization (trailing slash) and SPA handling for /blog/*
+[[redirects]]
+  from = "/blog/hauskauf-beratung/"
+  to = "/blog/hauskauf-beratung"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/index.html"
+  status = 200
+
 # SPA fallback - must be last to handle all other routes
 [[redirects]]
   from = "/*"

@@ -14,12 +14,15 @@ const NotFound = () => {
 
   return (
     <>
-      <SEO 
-        title="Seite nicht gefunden - 404" 
-        description="Die angeforderte Seite konnte nicht gefunden werden."
-        canonical="/404"
-        noindex={true}
-      />
+      {/* Only set noindex for the explicit /404 route to avoid poisoning other routes during prerender */}
+      {location.pathname === '/404' && (
+        <SEO 
+          title="Seite nicht gefunden - 404" 
+          description="Die angeforderte Seite konnte nicht gefunden werden."
+          canonical="/404"
+          noindex={true}
+        />
+      )}
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">404</h1>
