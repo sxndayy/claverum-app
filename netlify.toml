@@ -19,6 +19,11 @@
 [build.processing.html]
   pretty_urls = true
 
+# Prerendering configuration
+# Netlify will automatically prerender routes listed in sitemap.xml
+# The blog route /blog/hauskauf-beratung is already in sitemap.xml
+# This ensures the blog route is properly prerendered for SEO
+
 # Redirects - ensure trailing slash consistency
 # Redirect paths without trailing slash (and without file extensions) to paths with trailing slash
 # This ensures canonical URLs are consistent
