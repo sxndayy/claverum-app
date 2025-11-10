@@ -1,0 +1,285 @@
+{
+  "city": "Stuttgart",
+  "slug": "stuttgart",
+  "url": "https://bauklar.org/stuttgart",
+  "seo": {
+    "title": "Gutachter Hauskauf Stuttgart – In 2 Tagen Klarheit | ab 350€ | bauklar.org",
+    "metaDescription": "Unabhängige Bauschadensanalyse für Hauskauf in Stuttgart. Hügeliges Terrain, Schwaben-Architektur, Automobil-Wohlstand – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
+    "canonical": "/stuttgart",
+    "robots": "index, follow",
+    "openGraph": {
+      "type": "website",
+      "title": "Bauschadensanalyse Stuttgart – Verlässliche Bewertung vor dem Kauf",
+      "description": "Unabhängige Bauschadensanalyse für Hauskauf in Stuttgart. Hügeliges Terrain, Schwaben-Architektur, Automobil-Wohlstand – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
+      "image": "https://bauklar.org/og/hero-altbau.jpg",
+      "url": "https://bauklar.org/stuttgart"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Bauschadensanalyse Stuttgart – Verlässliche Bewertung vor dem Kauf",
+      "description": "Unabhängige Bauschadensanalyse für Hauskauf in Stuttgart. Hügeliges Terrain, Schwaben-Architektur, Automobil-Wohlstand – digitale Prüfung innerhalb von 2 Werktagen.",
+      "image": "https://bauklar.org/og/hero-altbau.jpg"
+    }
+  },
+  "structuredData": {
+    "localBusiness": {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "bauklar.org - Bauschadensanalyse Stuttgart",
+      "image": "https://bauklar.org/og/hero-altbau.jpg",
+      "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Stuttgart",
+      "areaServed": {
+        "@type": "City",
+        "name": "Stuttgart",
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Baden-Württemberg"
+        }
+      },
+      "priceRange": "ab 350€",
+      "url": "https://bauklar.org/stuttgart"
+    },
+    "service": {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Bauschadensanalyse Stuttgart",
+      "serviceType": "Bauschadensanalyse",
+      "provider": {
+        "@type": "Organization",
+        "name": "bauklar.org",
+        "url": "https://bauklar.org"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Stuttgart"
+      },
+      "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Stuttgart"
+    },
+    "breadcrumb": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://bauklar.org"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Stuttgart",
+          "item": "https://bauklar.org/stuttgart"
+        }
+      ]
+    },
+    "faqPage": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Welche Gebäudetypen in Stuttgart werden geprüft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Alle Gebäudetypen werden analysiert: Nachkriegsbauten in Degerloch oder Bad Cannstatt, Villen in Feuerbach, moderne Neubauten in Stuttgart-West sowie Hanghäuser mit typischen Drainage-Herausforderungen. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie schnell erhalte ich den Bericht für meine Immobilie in Stuttgart?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was kostet eine Bauschadensanalyse in Stuttgart?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Stuttgart."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die digitale Analyse bietet eine fundierte Ersteinschätzung auf Basis der verfügbaren Informationen. Bei schwerwiegenden Mängeln oder komplexen Schadensbildern wird eine vertiefende Prüfung empfohlen."
+          }
+        }
+      ]
+    }
+  },
+  "images": {
+    "hero": {
+      "src": "/stuttgart.jpg",
+      "alt": "Stuttgarter Stadtansicht mit historischen Gebäuden – Bauschadensanalyse für Hauskauf in Stuttgart",
+      "width": 1600,
+      "height": 900,
+      "loading": "eager"
+    }
+  },
+  "content": {
+    "hero": {
+      "h1": "Bauschadensanalyse Stuttgart – verlässlich vor dem Hauskauf",
+      "subtitle": "Unabhängige Bewertung von Hanghäusern, Nachkriegsbauten und modernen Neubauten in Stuttgart. Digitale Analyse mit verständlichem Bericht innerhalb von 2 Werktagen – ohne Vor-Ort-Termin.",
+      "cta": {
+        "primary": "Jetzt Bewertung starten",
+        "secondary": "So funktioniert's"
+      }
+    },
+    "sections": [
+      {
+        "id": "warum-bauschadensanalyse",
+        "h2": "Warum eine Bauschadensanalyse vor dem Immobilienkauf in Stuttgart",
+        "content": "Der Kauf einer Immobilie in Stuttgart ist eine bedeutende finanzielle Entscheidung. Ob Hanghaus in Degerloch, Nachkriegsbau in Bad Cannstatt oder Villa in Feuerbach – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.\n\nEine Bauschadensanalyse schafft Transparenz. Sie zeigt auf, welche Bauteile intakt sind, wo Sanierungsbedarf besteht und welche Kosten voraussichtlich anfallen. Diese Klarheit ermöglicht eine fundierte Entscheidung darüber, ob die Immobilie zum angebotenen Preis kaufenswert ist oder ob Nachverhandlungen erforderlich sind.\n\nBesonders in Stuttgart mit seinem hügeligen Terrain und der Keuper-Geologie ist fachliche Einschätzung wertvoll. Die Stadt liegt in einem Talkessel, umgeben von Hängen und Tälern. Diese Topographie prägt die Bebauung und bringt spezifische Herausforderungen mit sich. Hanghäuser erfordern besondere Drainage-Lösungen, und die Keuper-Geologie beeinflusst Gründungsarten und Setzungsverhalten.\n\nDie digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Sie erhalten den Bericht per E-Mail innerhalb von 2 Werktagen und können direkt mit fundierten Informationen in Kaufverhandlungen gehen."
+      },
+      {
+        "id": "typische-gebaeude-stuttgart",
+        "h2": "Typische Gebäudetypen und Risiken in Stuttgart",
+        "subsections": [
+          {
+            "h3": "Hanghäuser in Degerloch, Feuerbach und Stuttgart-West",
+            "content": "Hanghäuser prägen weite Teile Stuttgarts. Diese Gebäude entstanden zwischen 1950 und 1980 an den Hängen des Stuttgarter Talkessels. Die charakteristischen Häuser zeichnen sich durch ihre Lage an Hängen, terrassierte Gärten und oft steile Grundrisse aus. Die Bauweise war pragmatisch: Betonfertigteile, schlichte Putzfassaden, standardisierte Grundrisse und einfache Ausstattungen.\n\nDie besonderen Herausforderungen bei Hanghäusern sind Drainage-Probleme und Hangdruck. Regenwasser muss sorgfältig abgeleitet werden, um Hangrutschungen zu vermeiden. Die Drainage-Systeme sind oft veraltet oder defekt, was zu Durchfeuchtung und Schäden führen kann. Hangdruck kann zu Rissen in Wänden und Fundamenten führen.\n\nHäufige Schwachstellen bei Stuttgarter Hanghäusern sind Feuchtigkeit in Kellern durch defekte Drainage-Systeme. Das Keuper-Gestein kann Wasser speichern, was Drainage-Probleme verschärft. Betonschäden durch Korrosion der Bewehrung können auftreten, besonders bei unzureichender Abdichtung. Die Haustechnik entspricht oft nicht mehr heutigen Standards und sollte modernisiert werden.\n\nDie energetische Sanierung dieser Gebäude ist kostspielig, verbessert aber Wohnkomfort und Betriebskosten erheblich. Besonders in Hanglagen sind Sanierungen technisch anspruchsvoll und erfordern Fachwissen. Die Modernisierung kann den Wert dieser Gebäude erheblich steigern, erfordert aber substanzielle Investitionen."
+          },
+          {
+            "h3": "Nachkriegsbauten in Bad Cannstatt und Stadtbezirken",
+            "content": "Nachkriegsbauten prägen weite Teile Stuttgarts. Diese Gebäude entstanden zwischen 1950 und 1970 im Zuge des schnellen Wiederaufbaus nach den Zerstörungen des Zweiten Weltkriegs. Ziel war die rasche Schaffung von Wohnraum für die wachsende Bevölkerung. Die Bauweise war pragmatisch: Betonfertigteile, schlichte Putzfassaden, standardisierte Grundrisse und einfache Ausstattungen.\n\nCharakteristisch für diese Epoche sind Reihenhaussiedlungen nach Gartenstadtidee, Wohnhochhäuser sowie später Großwohnsiedlungen. Die Bauqualität variiert je nach Baujahr und Bauträger erheblich. Viele Gebäude wurden als Provisorium errichtet, das jedoch zum Dauerzustand wurde.\n\nHäufige Mängel bei Stuttgarter Nachkriegsbauten sind unzureichende Wärmedämmung mit hohen Heizkosten, undichte Flachdächer, Betonschäden durch Korrosion der Bewehrung sowie veraltete Elektro- und Sanitärinstallationen. Fenster entsprechen oft nicht mehr heutigen Anforderungen an Schallschutz und Energieeffizienz. Die Modernisierung dieser Gebäude kann deren Wert erheblich steigern, erfordert aber substanzielle Investitionen.\n\nIn einigen Fällen wurde bei Nachkriegsbauten Asbest verbaut, besonders in Fassadenplatten, Dacheindeckungen oder als Brandschutz. Die Entsorgung asbesthaltiger Materialien unterliegt strengen Vorschriften und verursacht Mehrkosten bei Sanierungen."
+          },
+          {
+            "h3": "Villen in Feuerbach und bevorzugten Lagen",
+            "content": "Stuttgart verfügt über einen bemerkenswerten Bestand an großbürgerlichen Villen aus der Zeit zwischen 1850 und 1930. Diese Häuser entstanden in bevorzugten Lagen wie Feuerbach, Degerloch oder in der Nähe des Neckars. Sie dienten dem wohlhabenden Bürgertum und Industriellen als repräsentative Wohnsitze.\n\nDie Architektur reicht vom klassizistischen Landhausstil über Neorenaissance und Neobarock bis zum Jugendstil. Charakteristisch sind großzügige Grundrisse mit 200 bis 500 Quadratmetern Wohnfläche, hochwertige Materialien wie Marmor und Eichenholz, aufwendige Stuckarbeiten und Wandmalereien sowie parkähnliche Gärten. Viele Villen stehen unter Denkmalschutz.\n\nDie Instandhaltung dieser Gebäude ist aufwendig und kostspielig. Dächer mit Naturschiefer oder Biberschwanzziegeln erfordern regelmäßige Wartung. Holzkonstruktionen in Dachstühlen können von Schädlingen befallen oder durch Feuchtigkeit geschädigt sein. Fassaden benötigen alle 20 bis 30 Jahre Erneuerung von Putz und Anstrich. Die Heizungsanlagen sind oft veraltet und ineffizient.\n\nBei denkmalgeschützten Villen sind Sanierungen nur in Abstimmung mit der Denkmalpflege möglich. Dies betrifft Fassadenarbeiten, Fensteraustausch, Dachsanierungen und teilweise auch Innenausbauten. Die Auflagen können Mehrkosten verursachen, sichern aber den Erhalt der historischen Substanz. Fördermittel für Denkmalsanierungen können einen Teil der Kosten abdecken."
+          },
+          {
+            "h3": "Eigentumswohnungen: Gemeinschaftseigentum richtig bewerten",
+            "content": "Beim Kauf einer Eigentumswohnung in Stuttgart ist der Zustand des Gemeinschaftseigentums ebenso wichtig wie der Zustand der eigenen Wohnung. Fassade, Dach, Treppenhaus, Aufzug und zentrale Haustechnik werden gemeinschaftlich unterhalten. Sanierungsbedarf an diesen Bauteilen führt zu Umlagen, die alle Eigentümer nach Miteigentumsanteil tragen müssen.\n\nDie Instandhaltungsrücklage gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Pro Quadratmeter Wohnfläche sollte jährlich ein angemessener Betrag für die Rücklagenbildung vorgesehen werden. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.\n\nGeplante Maßnahmen, bereits diskutierte Mängel und Beschlussfassungen aus Eigentümerversammlungen sollten sorgfältig geprüft werden. Häufig werden größere Sanierungen bereits Jahre im Voraus besprochen, bevor der Beschluss gefasst wird.\n\nHäufige Schwachstellen im Gemeinschaftseigentum Stuttgarter Wohngebäude sind undichte Flachdächer, sanierungsbedürftige Fassaden, veraltete Aufzugsanlagen und Wasserleitungen mit Korrosionsschäden. Auch Brandschutzmaßnahmen entsprechen bei älteren Gebäuden oft nicht mehr den aktuellen Anforderungen und erfordern Nachrüstung von Rauchmeldern, Feuerschutztüren oder Fluchtwegsicherungen.\n\nEine Bauschadensanalyse berücksichtigt soweit aus Unterlagen und Fotos erkennbar auch das Gemeinschaftseigentum. Hinweise auf absehbare Sanierungen werden im Bericht aufgeführt. Dies ermöglicht eine realistische Einschätzung der Gesamtkosten über die kommenden Jahre."
+          }
+        ]
+      },
+      {
+        "id": "ablauf",
+        "h2": "Ablauf der digitalen Bauschadensanalyse",
+        "content": "Die Bauschadensanalyse erfolgt vollständig digital und erfordert keine Terminvereinbarung. Sie laden Fotos der Immobilie sowie vorhandene Unterlagen wie Energieausweise hoch. Ergänzend geben Sie relevante Informationen zu Baujahr, Bauweise, erkannten Mängeln und geplanten Nutzungen an.\n\nJe vollständiger die eingereichten Informationen sind, desto präziser kann die Bewertung erfolgen. Fotos sollten alle wesentlichen Bereiche dokumentieren: Fassade, Dach, Keller, Heizungsanlage, Fenster, Sanitärinstallationen und erkennbare Schadensstellen. Auch unscheinbare Details wie Risse, Feuchtigkeitsflecken oder Schimmelansätze sind wichtig.\n\nEin qualifizierter Sachverständiger analysiert die eingereichten Daten systematisch. Bausubstanz, Haustechnik, Feuchtigkeitserscheinungen, Risse und weitere Schadensmuster werden erfasst und bewertet. Die Einschätzung berücksichtigt typische Alterungserscheinungen des jeweiligen Gebäudetyps, übliche Sanierungszyklen und erkennbare Risikofaktoren.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Datenübermittlung. Der Bericht kann für Bankgespräche, Verhandlungen mit Verkäufern oder als Grundlage für die Sanierungsplanung genutzt werden.\n\nDiese Form der Bewertung bietet eine fundierte Grundlage für Ihre Kaufentscheidung ohne aufwendige Koordination oder zeitliche Abstimmungen. Die Analyse erfolgt unabhängig und objektiv ausschließlich auf Basis der technischen Gegebenheiten. Detaillierte Informationen zum Ablauf finden Sie unter <link href='/so-funktioniert'>So funktioniert's</link>."
+      },
+      {
+        "id": "was-sie-erhalten",
+        "h2": "Was der Bericht enthält",
+        "content": "Der Bericht stellt den Zustand der Immobilie strukturiert und nachvollziehbar dar. Wesentliche Bauteile wie Tragwerk, Dach, Fassade, Fenster, Haustechnik und Innenausbau werden einzeln bewertet. Jedes Bauteil erhält eine Einschätzung seines aktuellen Zustands.\n\nErkannte Mängel werden beschrieben, ihre voraussichtliche Ursache erläutert und ihre Bedeutung für die Bausubstanz eingeordnet. Nicht jeder Mangel ist gleich schwerwiegend. Der Bericht unterscheidet zwischen kosmetischen Mängeln, Instandhaltungsrückstau und substanziellen Schäden, die kurzfristig behoben werden sollten.\n\nZu wesentlichen Schadenspositionen erhalten Sie nachvollziehbare Kostenspannen. Diese orientieren sich an üblichen Marktpreisen in Stuttgart und berücksichtigen verschiedene Sanierungsvarianten. Die Spannen sind bewusst realistisch gehalten, um eine verlässliche Kalkulationsgrundlage zu bieten. Pauschale oder geschönte Angaben werden vermieden.\n\nDie Priorisierung zeigt auf, welche Maßnahmen voraussichtlich kurzfristig erforderlich sind und welche mittelfristig geplant werden sollten. Dies ermöglicht eine strukturierte Finanzplanung und verhindert, dass dringliche Instandsetzungen übersehen werden. Langfristige Modernisierungspotenziale werden ebenfalls benannt.\n\nFachbegriffe werden verständlich erklärt, technische Zusammenhänge nachvollziehbar dargestellt. Der Bericht richtet sich an Käufer ohne bautechnische Vorkenntnisse und verzichtet auf unnötiges Fachvokabular. Gleichzeitig ist er präzise genug, um bei Bedarf mit Handwerkern oder Architekten besprochen zu werden.\n\nZusätzlich werden erkennbare Chancen benannt. Nicht jede Immobilie mit Mängeln ist problematisch. Oft lassen sich durch gezielte Maßnahmen Wert und Wohnqualität erheblich steigern. Der Bericht hilft, realistische von überzogenen Bedenken zu unterscheiden und die tatsächlichen Risiken einzuordnen. Transparente Informationen zu Preisen finden Sie unter <link href='/preise'>Preise</link>."
+      },
+      {
+        "id": "lokale-besonderheiten",
+        "h2": "Lokale Besonderheiten des Stuttgarter Immobilienmarkts",
+        "content": "Stuttgart unterscheidet sich als Immobilienmarkt durch sein hügeliges Terrain und die Keuper-Geologie. Die Stadt liegt in einem Talkessel, umgeben von Hängen und Tälern. Diese Topographie prägt die Bebauung und bringt spezifische Herausforderungen mit sich. Hanghäuser erfordern besondere Drainage-Lösungen, und die Keuper-Geologie beeinflusst Gründungsarten und Setzungsverhalten.\n\nDer Untergrund im Stuttgarter Raum ist geprägt von Keuper-Gestein, Sand und stellenweise Lehm. Die Bodenbeschaffenheit beeinflusst Gründungsarten und Setzungsverhalten. In Hanglagen spielen Hangdruck und Drainage-Probleme eine wichtige Rolle. Gebäude in Hanglagen müssen auf Hangrutschungen ausgelegt sein.\n\nDie hohe Luftfeuchtigkeit in vielen Stadtteilen belastet Bausubstanz stärker als in Binnenlandregionen. Fassaden, Fenster und Dächer sind erhöhter Witterungsbelastung ausgesetzt. Frostperioden im Winter mit anschließendem Tauwetter setzen Bauteilen zu und können Frostschäden verursachen.\n\nDer Denkmalschutz spielt in Stuttgart eine wichtige Rolle, besonders in den Villenvierteln und historischen Stadtteilen. Sanierungen erfordern Genehmigungen und müssen denkmalpflegerischen Anforderungen genügen. Dies kann Mehrkosten verursachen, sichert aber den Erhalt des kulturellen Erbes.\n\nDie kontinuierliche Stadtentwicklung schafft neue Wohnquartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne prägt Stuttgart. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die sich an der umgebenden Bebauung orientieren.\n\nWeitere Informationen zum Stuttgarter Immobilienmarkt und baurechtliche Hinweise finden Sie beim <a href='https://www.stuttgart.de/stadtplanung' rel='nofollow'>Stadtplanungsamt Stuttgart</a> sowie beim <a href='https://www.mieterverein-stuttgart.de' rel='nofollow'>Mieterverein Stuttgart</a>."
+      }
+    ],
+    "ctaSection": {
+      "h2": "Jetzt Bauzustand Ihrer Wunschimmobilie in Stuttgart prüfen lassen",
+      "content": "Eine fundierte Bauschadensanalyse gibt Ihnen Sicherheit vor dem Immobilienkauf. Sie erhalten objektive Einschätzungen durch qualifizierte Sachverständige, realistische Kostenrahmen für erkannte Mängel und verständliche Handlungsempfehlungen. Die digitale Bewertung ist zeitlich flexibel, transparent und erfolgt ohne Vor-Ort-Termine.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und haben damit Klarheit für Ihre Kaufentscheidung. Sie können ihn für Verhandlungen mit Verkäufern nutzen, Ihrer Bank vorlegen oder als Grundlage für die Sanierungsplanung verwenden. Starten Sie jetzt die Bewertung und treffen Sie Ihre Kaufentscheidung auf fundierter Basis.",
+      "primaryCTA": {
+        "text": "Jetzt Bewertung starten",
+        "link": "/evaluation"
+      },
+      "secondaryCTA": {
+        "text": "So funktioniert's ansehen",
+        "link": "/so-funktioniert"
+      },
+      "microcopy": "Bericht per E-Mail innerhalb von 2 Werktagen – schnell, transparent, verlässlich.",
+      "trustElements": [
+        {
+          "text": "Qualifizierte Sachverständige"
+        },
+        {
+          "text": "Bericht innerhalb von 2 Werktagen"
+        },
+        {
+          "text": "Transparente Kostenspannen"
+        },
+        {
+          "text": "Keine versteckten Kosten"
+        }
+      ]
+    }
+  },
+  "faq": [
+    {
+      "question": "Welche Gebäudetypen in Stuttgart werden geprüft?",
+      "answer": "Alle Gebäudetypen werden analysiert: Nachkriegsbauten in Degerloch oder Bad Cannstatt, Villen in Feuerbach, moderne Neubauten in Stuttgart-West sowie Hanghäuser mit typischen Drainage-Herausforderungen. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+    },
+    {
+      "question": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
+      "answer": "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
+    },
+    {
+      "question": "Wie schnell erhalte ich den Bericht für meine Immobilie in Stuttgart?",
+      "answer": "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
+    },
+    {
+      "question": "Was kostet eine Bauschadensanalyse in Stuttgart?",
+      "answer": "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Stuttgart."
+    },
+    {
+      "question": "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
+      "answer": "Die digitale Analyse bietet eine fundierte Ersteinschätzung auf Basis der verfügbaren Informationen. Bei schwerwiegenden Mängeln oder komplexen Schadensbildern wird eine vertiefende Prüfung empfohlen."
+    }
+  ],
+  "keywords": {
+    "primary": [
+      "gutachter haus kaufen stuttgart",
+      "bausachverständiger stuttgart",
+      "bauschadensanalyse stuttgart",
+      "gutachter wohnungskauf stuttgart",
+      "immobilie prüfen lassen stuttgart"
+    ],
+    "secondary": [
+      "altbau gutachter stuttgart",
+      "hauskauf beratung stuttgart degerloch",
+      "baugutachter stuttgart feuerbach",
+      "hanghaus gutachter stuttgart",
+      "wohnung prüfen vor kauf stuttgart",
+      "technische immobilienprüfung stuttgart",
+      "sachverständiger immobilie stuttgart"
+    ],
+    "local": [
+      "degerloch",
+      "bad cannstatt",
+      "feuerbach",
+      "stuttgart-west",
+      "keuper",
+      "hanglage",
+      "neckar"
+    ]
+  },
+  "internalLinks": [
+    {
+      "text": "So funktioniert's",
+      "url": "/so-funktioniert",
+      "context": "Detaillierte Informationen zum Ablauf"
+    },
+    {
+      "text": "Preise",
+      "url": "/preise",
+      "context": "Transparente Informationen zu Preisen"
+    },
+    {
+      "text": "FAQ",
+      "url": "/faq",
+      "context": "Weitere häufig gestellte Fragen"
+    },
+    {
+      "text": "Kontakt",
+      "url": "/kontakt",
+      "context": "Bei weiteren Fragen"
+    }
+  ]
+}
+

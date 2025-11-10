@@ -1,0 +1,285 @@
+{
+  "city": "Dresden",
+  "slug": "dresden",
+  "url": "https://bauklar.org/dresden",
+  "seo": {
+    "title": "Gutachter Hauskauf Dresden – In 2 Tagen Klarheit | ab 350€ | bauklar.org",
+    "metaDescription": "Unabhängige Bauschadensanalyse für Hauskauf in Dresden. Barock-Rekonstruktion, Elbe-Hochwasser, Plattenbau, GDR und post-Wende – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
+    "canonical": "/dresden",
+    "robots": "index, follow",
+    "openGraph": {
+      "type": "website",
+      "title": "Bauschadensanalyse Dresden – Verlässliche Bewertung vor dem Kauf",
+      "description": "Unabhängige Bauschadensanalyse für Hauskauf in Dresden. Barock-Rekonstruktion, Elbe-Hochwasser, Plattenbau, GDR und post-Wende – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
+      "image": "https://bauklar.org/og/hero-altbau.jpg",
+      "url": "https://bauklar.org/dresden"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Bauschadensanalyse Dresden – Verlässliche Bewertung vor dem Kauf",
+      "description": "Unabhängige Bauschadensanalyse für Hauskauf in Dresden. Barock-Rekonstruktion, Elbe-Hochwasser, Plattenbau, GDR und post-Wende – digitale Prüfung innerhalb von 2 Werktagen.",
+      "image": "https://bauklar.org/og/hero-altbau.jpg"
+    }
+  },
+  "structuredData": {
+    "localBusiness": {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "bauklar.org - Bauschadensanalyse Dresden",
+      "image": "https://bauklar.org/og/hero-altbau.jpg",
+      "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Dresden",
+      "areaServed": {
+        "@type": "City",
+        "name": "Dresden",
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Sachsen"
+        }
+      },
+      "priceRange": "ab 350€",
+      "url": "https://bauklar.org/dresden"
+    },
+    "service": {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Bauschadensanalyse Dresden",
+      "serviceType": "Bauschadensanalyse",
+      "provider": {
+        "@type": "Organization",
+        "name": "bauklar.org",
+        "url": "https://bauklar.org"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Dresden"
+      },
+      "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Dresden"
+    },
+    "breadcrumb": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://bauklar.org"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Dresden",
+          "item": "https://bauklar.org/dresden"
+        }
+      ]
+    },
+    "faqPage": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Welche Gebäudetypen in Dresden werden geprüft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Alle Gebäudetypen werden analysiert: Barock-Rekonstruktionen in der Neustadt, Plattenbauten in Striesen oder Blasewitz, rekonstruierte Altstadt-Häuser sowie moderne Neubauten in Löbtau. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie schnell erhalte ich den Bericht für meine Immobilie in Dresden?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was kostet eine Bauschadensanalyse in Dresden?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Dresden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die digitale Analyse bietet eine fundierte Ersteinschätzung auf Basis der verfügbaren Informationen. Bei schwerwiegenden Mängeln oder komplexen Schadensbildern wird eine vertiefende Prüfung empfohlen."
+          }
+        }
+      ]
+    }
+  },
+  "images": {
+    "hero": {
+      "src": "/dresden.jpg",
+      "alt": "Dresdner Altstadt mit barocken Gebäuden und Elbe – Bauschadensanalyse für Hauskauf in Dresden",
+      "width": 1600,
+      "height": 900,
+      "loading": "eager"
+    }
+  },
+  "content": {
+    "hero": {
+      "h1": "Bauschadensanalyse Dresden – verlässlich vor dem Hauskauf",
+      "subtitle": "Unabhängige Bewertung von Barock-Rekonstruktionen, Plattenbauten und rekonstruierten Altstadt-Häusern in Dresden. Digitale Analyse mit verständlichem Bericht innerhalb von 2 Werktagen – ohne Vor-Ort-Termin.",
+      "cta": {
+        "primary": "Jetzt Bewertung starten",
+        "secondary": "So funktioniert's"
+      }
+    },
+    "sections": [
+      {
+        "id": "warum-bauschadensanalyse",
+        "h2": "Warum eine Bauschadensanalyse vor dem Immobilienkauf in Dresden",
+        "content": "Der Kauf einer Immobilie in Dresden ist eine bedeutende finanzielle Entscheidung. Ob Barock-Rekonstruktion in der Neustadt, Plattenbau in Striesen oder rekonstruiertes Altstadt-Haus in Blasewitz – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.\n\nEine Bauschadensanalyse schafft Transparenz. Sie zeigt auf, welche Bauteile intakt sind, wo Sanierungsbedarf besteht und welche Kosten voraussichtlich anfallen. Diese Klarheit ermöglicht eine fundierte Entscheidung darüber, ob die Immobilie zum angebotenen Preis kaufenswert ist oder ob Nachverhandlungen erforderlich sind.\n\nBesonders in Dresden mit seiner Barock-Rekonstruktion und dem Elbe-Hochwasser-Risiko ist fachliche Einschätzung wertvoll. Die Stadt wurde 1945 zu über 90 Prozent zerstört, darunter nahezu die gesamte Altstadt mit ihren barocken Palästen und Bürgerhäusern. Nach der Wende begann eine umfassende Rekonstruktionswelle, die bis heute andauert. Das Elbe-Hochwasser von 2002 und 2013 hat zusätzliche Herausforderungen geschaffen.\n\nDie digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Sie erhalten den Bericht per E-Mail innerhalb von 2 Werktagen und können direkt mit fundierten Informationen in Kaufverhandlungen gehen."
+      },
+      {
+        "id": "typische-gebaeude-dresden",
+        "h2": "Typische Gebäudetypen und Risiken in Dresden",
+        "subsections": [
+          {
+            "h3": "Barock-Rekonstruktionen in der Neustadt und Altstadt",
+            "content": "Barock-Rekonstruktionen prägen weite Teile Dresdens. Nach der Zerstörung im Zweiten Weltkrieg wurden viele barocke Paläste und Bürgerhäuser originalgetreu rekonstruiert. Diese Gebäude zeichnen sich durch ihre aufwendigen Fassaden, repräsentative Eingangsbereiche und großzügige Grundrisse aus.\n\nDie innere Struktur entspricht der typischen Blockrandbebauung mit Vorderhäusern zur Straße, Seitenflügeln und Hinterhäusern zum Innenhof. Die Wohnungen waren für das wohlhabende Bürgertum konzipiert und verfügen über repräsentative Eingangsbereiche, Stuckdecken und teilweise Parkettböden. Die Bauqualität dieser Häuser ist grundsätzlich solide, jedoch zeigen sich nach über 100 Jahren charakteristische Alterungserscheinungen.\n\nHäufige Schwachstellen bei Dresdner Barock-Rekonstruktionen sind Feuchtigkeit in Kellern durch fehlende oder defekte Horizontalsperren. Das Grundwasser steht in vielen Stadtteilen relativ hoch, was Abdichtungsprobleme verschärft. Die Elbe-Nähe kann zu Hochwasser-Risiken führen, die besondere Abdichtungsmaßnahmen erfordern.\n\nDie Haustechnik entspricht oft nicht mehr heutigen Standards. Wasserleitungen aus Blei oder verzinktem Stahl sind sanierungsbedürftig, Elektroinstallationen genügen oft nicht mehr den Sicherheitsanforderungen, und alte Gasthermen oder Ofenheizungen sollten durch moderne Heizsysteme ersetzt werden. Die energetische Sanierung dieser Gebäude ist kostspielig, verbessert aber Wohnkomfort und Betriebskosten erheblich."
+          },
+          {
+            "h3": "Plattenbauten in Striesen, Blasewitz und Löbtau",
+            "content": "Plattenbauten prägen weite Teile Dresdens. Diese Gebäude entstanden zwischen 1970 und 1990 in industrieller Bauweise für die wachsende Bevölkerung. Die charakteristischen Betonfertigteile wurden in großen Platten gefertigt und vor Ort montiert. Viele wurden nach der Wende energetisch saniert, die Qualität und der Umfang dieser Sanierungen variieren jedoch erheblich.\n\nDie innere Struktur entspricht standardisierten Grundrissen mit einfachen Ausstattungen. Die Wohnungen waren für Arbeiterfamilien konzipiert und verfügen über angemessene, aber nicht üppige Raumgrößen. Die Bauqualität variiert je nach Baujahr und Bauträger erheblich.\n\nHäufige Mängel bei Dresdner Plattenbauten sind unzureichende Wärmedämmung mit hohen Heizkosten, undichte Flachdächer, Betonschäden durch Korrosion der Bewehrung sowie veraltete Elektro- und Sanitärinstallationen. Fenster entsprechen oft nicht mehr heutigen Anforderungen an Schallschutz und Energieeffizienz. Die Modernisierung dieser Gebäude kann deren Wert erheblich steigern, erfordert aber substanzielle Investitionen.\n\nIn einigen Fällen wurde bei Plattenbauten Asbest verbaut, besonders in Fassadenplatten, Dacheindeckungen oder als Brandschutz. Die Entsorgung asbesthaltiger Materialien unterliegt strengen Vorschriften und verursacht Mehrkosten bei Sanierungen."
+          },
+          {
+            "h3": "Rekonstruierte Altstadt-Häuser und Bürgerpaläste",
+            "content": "Nach der Wende begann eine umfassende Rekonstruktionswelle in Dresden, die bis heute andauert. Viele barocke Paläste und Bürgerhäuser wurden originalgetreu rekonstruiert, mit moderner Haustechnik ausgestattet und energetisch saniert. Der Sanierungsstand variiert erheblich: Einzelne Gebäude wurden aufwendig restauriert, andere nur oberflächlich aufgewertet.\n\nDie rekonstruierten Altstadt-Häuser zeichnen sich durch ihre aufwendigen Fassaden, repräsentative Eingangsbereiche und großzügige Grundrisse aus. Die charakteristischen barocken Merkmale wurden originalgetreu nachgebildet, jedoch mit moderner Haustechnik und energetischer Sanierung ausgestattet.\n\nHäufige Schwachstellen bei rekonstruierten Altstadt-Häusern sind verdeckte Mängel, die bei der Rekonstruktion übersehen wurden. Feuchtigkeit in Kellern kann durch unzureichende Abdichtung auftreten. Die Elbe-Nähe kann zu Hochwasser-Risiken führen, die besondere Abdichtungsmaßnahmen erfordern.\n\nDie Instandhaltung dieser Gebäude ist aufwendig und kostspielig. Dächer mit Naturschiefer oder Biberschwanzziegeln erfordern regelmäßige Wartung. Fassaden benötigen alle 20 bis 30 Jahre Erneuerung von Putz und Anstrich. Die Heizungsanlagen sind oft veraltet und ineffizient."
+          },
+          {
+            "h3": "Eigentumswohnungen: Gemeinschaftseigentum richtig bewerten",
+            "content": "Beim Kauf einer Eigentumswohnung in Dresden ist der Zustand des Gemeinschaftseigentums ebenso wichtig wie der Zustand der eigenen Wohnung. Fassade, Dach, Treppenhaus, Aufzug und zentrale Haustechnik werden gemeinschaftlich unterhalten. Sanierungsbedarf an diesen Bauteilen führt zu Umlagen, die alle Eigentümer nach Miteigentumsanteil tragen müssen.\n\nDie Instandhaltungsrücklage gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Pro Quadratmeter Wohnfläche sollte jährlich ein angemessener Betrag für die Rücklagenbildung vorgesehen werden. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.\n\nGeplante Maßnahmen, bereits diskutierte Mängel und Beschlussfassungen aus Eigentümerversammlungen sollten sorgfältig geprüft werden. Häufig werden größere Sanierungen bereits Jahre im Voraus besprochen, bevor der Beschluss gefasst wird.\n\nHäufige Schwachstellen im Gemeinschaftseigentum Dresdner Wohngebäude sind undichte Flachdächer, sanierungsbedürftige Fassaden, veraltete Aufzugsanlagen und Wasserleitungen mit Korrosionsschäden. Auch Brandschutzmaßnahmen entsprechen bei älteren Gebäuden oft nicht mehr den aktuellen Anforderungen und erfordern Nachrüstung von Rauchmeldern, Feuerschutztüren oder Fluchtwegsicherungen.\n\nEine Bauschadensanalyse berücksichtigt soweit aus Unterlagen und Fotos erkennbar auch das Gemeinschaftseigentum. Hinweise auf absehbare Sanierungen werden im Bericht aufgeführt. Dies ermöglicht eine realistische Einschätzung der Gesamtkosten über die kommenden Jahre."
+          }
+        ]
+      },
+      {
+        "id": "ablauf",
+        "h2": "Ablauf der digitalen Bauschadensanalyse",
+        "content": "Die Bauschadensanalyse erfolgt vollständig digital und erfordert keine Terminvereinbarung. Sie laden Fotos der Immobilie sowie vorhandene Unterlagen wie Energieausweise hoch. Ergänzend geben Sie relevante Informationen zu Baujahr, Bauweise, erkannten Mängeln und geplanten Nutzungen an.\n\nJe vollständiger die eingereichten Informationen sind, desto präziser kann die Bewertung erfolgen. Fotos sollten alle wesentlichen Bereiche dokumentieren: Fassade, Dach, Keller, Heizungsanlage, Fenster, Sanitärinstallationen und erkennbare Schadensstellen. Auch unscheinbare Details wie Risse, Feuchtigkeitsflecken oder Schimmelansätze sind wichtig.\n\nEin qualifizierter Sachverständiger analysiert die eingereichten Daten systematisch. Bausubstanz, Haustechnik, Feuchtigkeitserscheinungen, Risse und weitere Schadensmuster werden erfasst und bewertet. Die Einschätzung berücksichtigt typische Alterungserscheinungen des jeweiligen Gebäudetyps, übliche Sanierungszyklen und erkennbare Risikofaktoren.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Datenübermittlung. Der Bericht kann für Bankgespräche, Verhandlungen mit Verkäufern oder als Grundlage für die Sanierungsplanung genutzt werden.\n\nDiese Form der Bewertung bietet eine fundierte Grundlage für Ihre Kaufentscheidung ohne aufwendige Koordination oder zeitliche Abstimmungen. Die Analyse erfolgt unabhängig und objektiv ausschließlich auf Basis der technischen Gegebenheiten. Detaillierte Informationen zum Ablauf finden Sie unter <link href='/so-funktioniert'>So funktioniert's</link>."
+      },
+      {
+        "id": "was-sie-erhalten",
+        "h2": "Was der Bericht enthält",
+        "content": "Der Bericht stellt den Zustand der Immobilie strukturiert und nachvollziehbar dar. Wesentliche Bauteile wie Tragwerk, Dach, Fassade, Fenster, Haustechnik und Innenausbau werden einzeln bewertet. Jedes Bauteil erhält eine Einschätzung seines aktuellen Zustands.\n\nErkannte Mängel werden beschrieben, ihre voraussichtliche Ursache erläutert und ihre Bedeutung für die Bausubstanz eingeordnet. Nicht jeder Mangel ist gleich schwerwiegend. Der Bericht unterscheidet zwischen kosmetischen Mängeln, Instandhaltungsrückstau und substanziellen Schäden, die kurzfristig behoben werden sollten.\n\nZu wesentlichen Schadenspositionen erhalten Sie nachvollziehbare Kostenspannen. Diese orientieren sich an üblichen Marktpreisen in Dresden und berücksichtigen verschiedene Sanierungsvarianten. Die Spannen sind bewusst realistisch gehalten, um eine verlässliche Kalkulationsgrundlage zu bieten. Pauschale oder geschönte Angaben werden vermieden.\n\nDie Priorisierung zeigt auf, welche Maßnahmen voraussichtlich kurzfristig erforderlich sind und welche mittelfristig geplant werden sollten. Dies ermöglicht eine strukturierte Finanzplanung und verhindert, dass dringliche Instandsetzungen übersehen werden. Langfristige Modernisierungspotenziale werden ebenfalls benannt.\n\nFachbegriffe werden verständlich erklärt, technische Zusammenhänge nachvollziehbar dargestellt. Der Bericht richtet sich an Käufer ohne bautechnische Vorkenntnisse und verzichtet auf unnötiges Fachvokabular. Gleichzeitig ist er präzise genug, um bei Bedarf mit Handwerkern oder Architekten besprochen zu werden.\n\nZusätzlich werden erkennbare Chancen benannt. Nicht jede Immobilie mit Mängeln ist problematisch. Oft lassen sich durch gezielte Maßnahmen Wert und Wohnqualität erheblich steigern. Der Bericht hilft, realistische von überzogenen Bedenken zu unterscheiden und die tatsächlichen Risiken einzuordnen. Transparente Informationen zu Preisen finden Sie unter <link href='/preise'>Preise</link>."
+      },
+      {
+        "id": "lokale-besonderheiten",
+        "h2": "Lokale Besonderheiten des Dresdner Immobilienmarkts",
+        "content": "Dresden unterscheidet sich als Immobilienmarkt durch seine Barock-Rekonstruktion und das Elbe-Hochwasser-Risiko. Die Stadt wurde 1945 zu über 90 Prozent zerstört, darunter nahezu die gesamte Altstadt mit ihren barocken Palästen und Bürgerhäusern. Nach der Wende begann eine umfassende Rekonstruktionswelle, die bis heute andauert. Das Elbe-Hochwasser von 2002 und 2013 hat zusätzliche Herausforderungen geschaffen.\n\nDer Untergrund im Dresdner Raum ist geprägt von Sand, Lehm und stellenweise Kies. Die Bodenbeschaffenheit beeinflusst Gründungsarten und Setzungsverhalten. In tiefliegenden Stadtteilen spielen Grundwasserstände eine wichtige Rolle. Gebäude in Nähe zur Elbe müssen auf Hochwasserschutz ausgelegt sein.\n\nDie Elbe-Nähe beeinflusst Grundwasserstände und erfordert besondere Abdichtungsmaßnahmen in Kellern und erdberührenden Bauteilen. Drückendes Wasser kann bei unzureichender Abdichtung zu Durchfeuchtung führen. Hochwasser-Risiken erfordern besondere Vorsorge-Maßnahmen.\n\nDie hohe Luftfeuchtigkeit in vielen Stadtteilen belastet Bausubstanz stärker als in Binnenlandregionen. Fassaden, Fenster und Dächer sind erhöhter Witterungsbelastung ausgesetzt. Frostperioden im Winter mit anschließendem Tauwetter setzen Bauteilen zu und können Frostschäden verursachen.\n\nDer Denkmalschutz spielt in Dresden eine wichtige Rolle, besonders in der Altstadt und den Barock-Rekonstruktionen. Sanierungen erfordern Genehmigungen und müssen denkmalpflegerischen Anforderungen genügen. Dies kann Mehrkosten verursachen, sichert aber den Erhalt des kulturellen Erbes.\n\nDie kontinuierliche Stadtentwicklung schafft neue Wohnquartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne prägt Dresden. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die sich an der umgebenden Bebauung orientieren.\n\nWeitere Informationen zum Dresdner Immobilienmarkt und baurechtliche Hinweise finden Sie beim <a href='https://www.dresden.de/stadtplanung' rel='nofollow'>Stadtplanungsamt Dresden</a> sowie beim <a href='https://www.mieterverein-dresden.de' rel='nofollow'>Mieterverein Dresden</a>."
+      }
+    ],
+    "ctaSection": {
+      "h2": "Jetzt Bauzustand Ihrer Wunschimmobilie in Dresden prüfen lassen",
+      "content": "Eine fundierte Bauschadensanalyse gibt Ihnen Sicherheit vor dem Immobilienkauf. Sie erhalten objektive Einschätzungen durch qualifizierte Sachverständige, realistische Kostenrahmen für erkannte Mängel und verständliche Handlungsempfehlungen. Die digitale Bewertung ist zeitlich flexibel, transparent und erfolgt ohne Vor-Ort-Termine.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und haben damit Klarheit für Ihre Kaufentscheidung. Sie können ihn für Verhandlungen mit Verkäufern nutzen, Ihrer Bank vorlegen oder als Grundlage für die Sanierungsplanung verwenden. Starten Sie jetzt die Bewertung und treffen Sie Ihre Kaufentscheidung auf fundierter Basis.",
+      "primaryCTA": {
+        "text": "Jetzt Bewertung starten",
+        "link": "/evaluation"
+      },
+      "secondaryCTA": {
+        "text": "So funktioniert's ansehen",
+        "link": "/so-funktioniert"
+      },
+      "microcopy": "Bericht per E-Mail innerhalb von 2 Werktagen – schnell, transparent, verlässlich.",
+      "trustElements": [
+        {
+          "text": "Qualifizierte Sachverständige"
+        },
+        {
+          "text": "Bericht innerhalb von 2 Werktagen"
+        },
+        {
+          "text": "Transparente Kostenspannen"
+        },
+        {
+          "text": "Keine versteckten Kosten"
+        }
+      ]
+    }
+  },
+  "faq": [
+    {
+      "question": "Welche Gebäudetypen in Dresden werden geprüft?",
+      "answer": "Alle Gebäudetypen werden analysiert: Barock-Rekonstruktionen in der Neustadt, Plattenbauten in Striesen oder Blasewitz, rekonstruierte Altstadt-Häuser sowie moderne Neubauten in Löbtau. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+    },
+    {
+      "question": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
+      "answer": "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
+    },
+    {
+      "question": "Wie schnell erhalte ich den Bericht für meine Immobilie in Dresden?",
+      "answer": "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
+    },
+    {
+      "question": "Was kostet eine Bauschadensanalyse in Dresden?",
+      "answer": "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Dresden."
+    },
+    {
+      "question": "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
+      "answer": "Die digitale Analyse bietet eine fundierte Ersteinschätzung auf Basis der verfügbaren Informationen. Bei schwerwiegenden Mängeln oder komplexen Schadensbildern wird eine vertiefende Prüfung empfohlen."
+    }
+  ],
+  "keywords": {
+    "primary": [
+      "gutachter haus kaufen dresden",
+      "bausachverständiger dresden",
+      "bauschadensanalyse dresden",
+      "gutachter wohnungskauf dresden",
+      "immobilie prüfen lassen dresden"
+    ],
+    "secondary": [
+      "altbau gutachter dresden",
+      "hauskauf beratung dresden neustadt",
+      "baugutachter dresden striesen",
+      "barock gutachter dresden",
+      "wohnung prüfen vor kauf dresden",
+      "technische immobilienprüfung dresden",
+      "sachverständiger immobilie dresden"
+    ],
+    "local": [
+      "neustadt",
+      "striesen",
+      "blasewitz",
+      "löbtau",
+      "barock",
+      "elbe",
+      "hochwasser"
+    ]
+  },
+  "internalLinks": [
+    {
+      "text": "So funktioniert's",
+      "url": "/so-funktioniert",
+      "context": "Detaillierte Informationen zum Ablauf"
+    },
+    {
+      "text": "Preise",
+      "url": "/preise",
+      "context": "Transparente Informationen zu Preisen"
+    },
+    {
+      "text": "FAQ",
+      "url": "/faq",
+      "context": "Weitere häufig gestellte Fragen"
+    },
+    {
+      "text": "Kontakt",
+      "url": "/kontakt",
+      "context": "Bei weiteren Fragen"
+    }
+  ]
+}
+

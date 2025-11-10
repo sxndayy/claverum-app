@@ -1,0 +1,285 @@
+{
+  "city": "Dortmund",
+  "slug": "dortmund",
+  "url": "https://bauklar.org/dortmund",
+  "seo": {
+    "title": "Gutachter Hauskauf Dortmund – In 2 Tagen Klarheit | ab 350€ | bauklar.org",
+    "metaDescription": "Unabhängige Bauschadensanalyse für Hauskauf in Dortmund. Industrielles Erbe, Zechensiedlungen, post-industrielle Transformation – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
+    "canonical": "/dortmund",
+    "robots": "index, follow",
+    "openGraph": {
+      "type": "website",
+      "title": "Bauschadensanalyse Dortmund – Verlässliche Bewertung vor dem Kauf",
+      "description": "Unabhängige Bauschadensanalyse für Hauskauf in Dortmund. Industrielles Erbe, Zechensiedlungen, post-industrielle Transformation – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
+      "image": "https://bauklar.org/og/hero-altbau.jpg",
+      "url": "https://bauklar.org/dortmund"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Bauschadensanalyse Dortmund – Verlässliche Bewertung vor dem Kauf",
+      "description": "Unabhängige Bauschadensanalyse für Hauskauf in Dortmund. Industrielles Erbe, Zechensiedlungen, post-industrielle Transformation – digitale Prüfung innerhalb von 2 Werktagen.",
+      "image": "https://bauklar.org/og/hero-altbau.jpg"
+    }
+  },
+  "structuredData": {
+    "localBusiness": {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "bauklar.org - Bauschadensanalyse Dortmund",
+      "image": "https://bauklar.org/og/hero-altbau.jpg",
+      "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Dortmund",
+      "areaServed": {
+        "@type": "City",
+        "name": "Dortmund",
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Nordrhein-Westfalen"
+        }
+      },
+      "priceRange": "ab 350€",
+      "url": "https://bauklar.org/dortmund"
+    },
+    "service": {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Bauschadensanalyse Dortmund",
+      "serviceType": "Bauschadensanalyse",
+      "provider": {
+        "@type": "Organization",
+        "name": "bauklar.org",
+        "url": "https://bauklar.org"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Dortmund"
+      },
+      "description": "Digitale Bauschadensanalyse und Kaufberatung für Immobilien in Dortmund"
+    },
+    "breadcrumb": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://bauklar.org"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Dortmund",
+          "item": "https://bauklar.org/dortmund"
+        }
+      ]
+    },
+    "faqPage": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Welche Gebäudetypen in Dortmund werden geprüft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Alle Gebäudetypen werden analysiert: Arbeiterkolonien im Kreuzviertel, Zechensiedlungen in Hörde oder Aplerbeck, Nachkriegsbauten sowie moderne Neubauten in regenerierten Gebieten. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie schnell erhalte ich den Bericht für meine Immobilie in Dortmund?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was kostet eine Bauschadensanalyse in Dortmund?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Dortmund."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die digitale Analyse bietet eine fundierte Ersteinschätzung auf Basis der verfügbaren Informationen. Bei schwerwiegenden Mängeln oder komplexen Schadensbildern wird eine vertiefende Prüfung empfohlen."
+          }
+        }
+      ]
+    }
+  },
+  "images": {
+    "hero": {
+      "src": "/dortmund.jpg",
+      "alt": "Dortmunder Stadtansicht mit historischen und modernen Gebäuden – Bauschadensanalyse für Hauskauf in Dortmund",
+      "width": 1600,
+      "height": 900,
+      "loading": "eager"
+    }
+  },
+  "content": {
+    "hero": {
+      "h1": "Bauschadensanalyse Dortmund – verlässlich vor dem Hauskauf",
+      "subtitle": "Unabhängige Bewertung von Arbeiterkolonien, Zechensiedlungen und modernen Neubauten in Dortmund. Digitale Analyse mit verständlichem Bericht innerhalb von 2 Werktagen – ohne Vor-Ort-Termin.",
+      "cta": {
+        "primary": "Jetzt Bewertung starten",
+        "secondary": "So funktioniert's"
+      }
+    },
+    "sections": [
+      {
+        "id": "warum-bauschadensanalyse",
+        "h2": "Warum eine Bauschadensanalyse vor dem Immobilienkauf in Dortmund",
+        "content": "Der Kauf einer Immobilie in Dortmund ist eine bedeutende finanzielle Entscheidung. Ob Arbeiterkolonie im Kreuzviertel, Zechensiedlung in Hörde oder moderner Neubau in Aplerbeck – der äußere Eindruck täuscht häufig über den tatsächlichen Zustand. Verdeckte Mängel führen nach dem Kauf zu unerwarteten Kosten, die schnell fünf- bis sechsstellige Beträge erreichen.\n\nEine Bauschadensanalyse schafft Transparenz. Sie zeigt auf, welche Bauteile intakt sind, wo Sanierungsbedarf besteht und welche Kosten voraussichtlich anfallen. Diese Klarheit ermöglicht eine fundierte Entscheidung darüber, ob die Immobilie zum angebotenen Preis kaufenswert ist oder ob Nachverhandlungen erforderlich sind.\n\nBesonders in Dortmund mit seinem industriellen Erbe ist fachliche Einschätzung wertvoll. Die Stadt ist geprägt von ihrer Geschichte als Zentrum der Kohle- und Stahlindustrie. Arbeiterkolonien und Zechensiedlungen entstanden zwischen 1870 und 1930 für die Beschäftigten der Bergwerke und Hüttenwerke. Nach dem Niedergang der Schwerindustrie in den 1980er Jahren begann ein Strukturwandel, der bis heute andauert. Viele ehemalige Industriegebiete wurden zu Wohnquartieren umgewandelt.\n\nDie digitale Bauschadensanalyse von bauklar.org bietet Ihnen eine unabhängige Einschätzung durch qualifizierte Sachverständige. Auf Basis Ihrer Fotos, Unterlagen und Angaben wird der Bauzustand systematisch bewertet. Sie erhalten den Bericht per E-Mail innerhalb von 2 Werktagen und können direkt mit fundierten Informationen in Kaufverhandlungen gehen."
+      },
+      {
+        "id": "typische-gebaeude-dortmund",
+        "h2": "Typische Gebäudetypen und Risiken in Dortmund",
+        "subsections": [
+          {
+            "h3": "Arbeiterkolonien im Kreuzviertel und Stadtbezirken",
+            "content": "Arbeiterkolonien prägen weite Teile Dortmunds. Diese Siedlungen entstanden zwischen 1870 und 1930 für die Beschäftigten der Bergwerke und Hüttenwerke. Die charakteristischen Reihenhäuser wurden in standardisierter Bauweise errichtet: Ziegelmauerwerk, einfache Grundrisse, kleine Wohnungen und einfache Ausstattungen.\n\nDie Bauweise war pragmatisch und auf Kosteneffizienz ausgelegt. Die Häuser verfügen über zwei bis drei Etagen, kleine Gärten und einfache Fassaden ohne aufwendige Verzierungen. Die Wohnungen waren für Arbeiterfamilien konzipiert und verfügen über angemessene, aber nicht üppige Raumgrößen.\n\nHäufige Schwachstellen bei Dortmunder Arbeiterkolonien sind Feuchtigkeit in Kellern durch fehlende oder defekte Horizontalsperren. Das Grundwasser steht in vielen Stadtteilen relativ hoch, was Abdichtungsprobleme verschärft. Ziegelmauerwerk kann durch aufsteigende Feuchtigkeit geschädigt werden. Die Haustechnik entspricht oft nicht mehr heutigen Standards und sollte modernisiert werden.\n\nDie energetische Sanierung dieser Gebäude ist kostspielig, verbessert aber Wohnkomfort und Betriebskosten erheblich. Besonders in denkmalgeschützten Bereichen sind Sanierungen nur in Abstimmung mit der Denkmalpflege möglich. Fördermittel für Denkmalsanierungen können einen Teil der Kosten abdecken."
+          },
+          {
+            "h3": "Zechensiedlungen in Hörde, Aplerbeck und Schüren",
+            "content": "Zechensiedlungen sind charakteristisch für Dortmund. Diese Siedlungen entstanden ab 1870 in unmittelbarer Nähe zu den Bergwerken. Die Häuser wurden von den Zechengesellschaften errichtet und an die Bergarbeiter vermietet oder verkauft. Heute sind viele dieser Siedlungen denkmalgeschützt und stellen ein wichtiges kulturelles Erbe dar.\n\nDie charakteristischen Reihenhäuser wurden in standardisierter Bauweise errichtet: Ziegelmauerwerk, einfache Grundrisse, kleine Wohnungen und einfache Ausstattungen. Die Bauweise war pragmatisch und auf Kosteneffizienz ausgelegt. Die Häuser verfügen über zwei bis drei Etagen, kleine Gärten und einfache Fassaden ohne aufwendige Verzierungen.\n\nHäufige Schwachstellen bei Dortmunder Zechensiedlungen sind Feuchtigkeit in Kellern durch fehlende oder defekte Horizontalsperren. Das Grundwasser steht in vielen Stadtteilen relativ hoch, was Abdichtungsprobleme verschärft. Ziegelmauerwerk kann durch aufsteigende Feuchtigkeit geschädigt werden. Die Haustechnik entspricht oft nicht mehr heutigen Standards und sollte modernisiert werden.\n\nDie energetische Sanierung dieser Gebäude ist kostspielig, verbessert aber Wohnkomfort und Betriebskosten erheblich. Besonders in denkmalgeschützten Bereichen sind Sanierungen nur in Abstimmung mit der Denkmalpflege möglich. Fördermittel für Denkmalsanierungen können einen Teil der Kosten abdecken."
+          },
+          {
+            "h3": "Nachkriegsbauten und moderne Neubauten",
+            "content": "Nach dem Niedergang der Schwerindustrie in den 1980er Jahren begann ein Strukturwandel, der bis heute andauert. Viele ehemalige Industriegebiete wurden zu Wohnquartieren umgewandelt. Neue Stadtquartiere entstehen auf ehemaligen Gewerbe- und Bahnflächen. Diese Quartiere verbinden Wohnen, Arbeiten und Kultur.\n\nNachkriegsbauten der 1950er bis 1970er Jahre prägen weite Teile Dortmunds. Die funktionalen Bauten entstanden im Zuge des schnellen Wiederaufbaus nach den Zerstörungen des Zweiten Weltkriegs. Ziel war die rasche Schaffung von Wohnraum für die wachsende Bevölkerung. Die Bauweise war pragmatisch: Betonfertigteile, schlichte Putzfassaden, standardisierte Grundrisse und einfache Ausstattungen.\n\nHäufige Mängel bei Dortmunder Nachkriegsbauten sind unzureichende Wärmedämmung mit hohen Heizkosten, undichte Flachdächer, Betonschäden durch Korrosion der Bewehrung sowie veraltete Elektro- und Sanitärinstallationen. Fenster entsprechen oft nicht mehr heutigen Anforderungen an Schallschutz und Energieeffizienz. Die Modernisierung dieser Gebäude kann deren Wert erheblich steigern, erfordert aber substanzielle Investitionen.\n\nModerne Neubauten unterliegen hohen energetischen Anforderungen gemäß Gebäudeenergiegesetz und strengen Brandschutzvorschriften. Dennoch sind auch moderne Gebäude nicht frei von Mängeln. Häufige Probleme sind Abdichtungsfehler an Balkonen, Terrassen und erdberührenden Bauteilen, mangelhafte Ausführung von Wärmedämmverbundsystemen mit Wärmebrücken oder Schimmelgefahr, Schallschutzprobleme zwischen Wohneinheiten sowie Mängel an Haustechnik, Lüftungsanlagen oder Aufzügen."
+          },
+          {
+            "h3": "Eigentumswohnungen: Gemeinschaftseigentum richtig bewerten",
+            "content": "Beim Kauf einer Eigentumswohnung in Dortmund ist der Zustand des Gemeinschaftseigentums ebenso wichtig wie der Zustand der eigenen Wohnung. Fassade, Dach, Treppenhaus, Aufzug und zentrale Haustechnik werden gemeinschaftlich unterhalten. Sanierungsbedarf an diesen Bauteilen führt zu Umlagen, die alle Eigentümer nach Miteigentumsanteil tragen müssen.\n\nDie Instandhaltungsrücklage gibt Aufschluss über die finanzielle Vorsorge der Eigentümergemeinschaft. Pro Quadratmeter Wohnfläche sollte jährlich ein angemessener Betrag für die Rücklagenbildung vorgesehen werden. Geringe Rücklagen bei absehbarem Sanierungsbedarf deuten auf bevorstehende Sonderumlagen hin.\n\nGeplante Maßnahmen, bereits diskutierte Mängel und Beschlussfassungen aus Eigentümerversammlungen sollten sorgfältig geprüft werden. Häufig werden größere Sanierungen bereits Jahre im Voraus besprochen, bevor der Beschluss gefasst wird.\n\nHäufige Schwachstellen im Gemeinschaftseigentum Dortmunder Wohngebäude sind undichte Flachdächer, sanierungsbedürftige Fassaden, veraltete Aufzugsanlagen und Wasserleitungen mit Korrosionsschäden. Auch Brandschutzmaßnahmen entsprechen bei älteren Gebäuden oft nicht mehr den aktuellen Anforderungen und erfordern Nachrüstung von Rauchmeldern, Feuerschutztüren oder Fluchtwegsicherungen.\n\nEine Bauschadensanalyse berücksichtigt soweit aus Unterlagen und Fotos erkennbar auch das Gemeinschaftseigentum. Hinweise auf absehbare Sanierungen werden im Bericht aufgeführt. Dies ermöglicht eine realistische Einschätzung der Gesamtkosten über die kommenden Jahre."
+          }
+        ]
+      },
+      {
+        "id": "ablauf",
+        "h2": "Ablauf der digitalen Bauschadensanalyse",
+        "content": "Die Bauschadensanalyse erfolgt vollständig digital und erfordert keine Terminvereinbarung. Sie laden Fotos der Immobilie sowie vorhandene Unterlagen wie Energieausweise hoch. Ergänzend geben Sie relevante Informationen zu Baujahr, Bauweise, erkannten Mängeln und geplanten Nutzungen an.\n\nJe vollständiger die eingereichten Informationen sind, desto präziser kann die Bewertung erfolgen. Fotos sollten alle wesentlichen Bereiche dokumentieren: Fassade, Dach, Keller, Heizungsanlage, Fenster, Sanitärinstallationen und erkennbare Schadensstellen. Auch unscheinbare Details wie Risse, Feuchtigkeitsflecken oder Schimmelansätze sind wichtig.\n\nEin qualifizierter Sachverständiger analysiert die eingereichten Daten systematisch. Bausubstanz, Haustechnik, Feuchtigkeitserscheinungen, Risse und weitere Schadensmuster werden erfasst und bewertet. Die Einschätzung berücksichtigt typische Alterungserscheinungen des jeweiligen Gebäudetyps, übliche Sanierungszyklen und erkennbare Risikofaktoren.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Datenübermittlung. Der Bericht kann für Bankgespräche, Verhandlungen mit Verkäufern oder als Grundlage für die Sanierungsplanung genutzt werden.\n\nDiese Form der Bewertung bietet eine fundierte Grundlage für Ihre Kaufentscheidung ohne aufwendige Koordination oder zeitliche Abstimmungen. Die Analyse erfolgt unabhängig und objektiv ausschließlich auf Basis der technischen Gegebenheiten. Detaillierte Informationen zum Ablauf finden Sie unter <link href='/so-funktioniert'>So funktioniert's</link>."
+      },
+      {
+        "id": "was-sie-erhalten",
+        "h2": "Was der Bericht enthält",
+        "content": "Der Bericht stellt den Zustand der Immobilie strukturiert und nachvollziehbar dar. Wesentliche Bauteile wie Tragwerk, Dach, Fassade, Fenster, Haustechnik und Innenausbau werden einzeln bewertet. Jedes Bauteil erhält eine Einschätzung seines aktuellen Zustands.\n\nErkannte Mängel werden beschrieben, ihre voraussichtliche Ursache erläutert und ihre Bedeutung für die Bausubstanz eingeordnet. Nicht jeder Mangel ist gleich schwerwiegend. Der Bericht unterscheidet zwischen kosmetischen Mängeln, Instandhaltungsrückstau und substanziellen Schäden, die kurzfristig behoben werden sollten.\n\nZu wesentlichen Schadenspositionen erhalten Sie nachvollziehbare Kostenspannen. Diese orientieren sich an üblichen Marktpreisen in Dortmund und berücksichtigen verschiedene Sanierungsvarianten. Die Spannen sind bewusst realistisch gehalten, um eine verlässliche Kalkulationsgrundlage zu bieten. Pauschale oder geschönte Angaben werden vermieden.\n\nDie Priorisierung zeigt auf, welche Maßnahmen voraussichtlich kurzfristig erforderlich sind und welche mittelfristig geplant werden sollten. Dies ermöglicht eine strukturierte Finanzplanung und verhindert, dass dringliche Instandsetzungen übersehen werden. Langfristige Modernisierungspotenziale werden ebenfalls benannt.\n\nFachbegriffe werden verständlich erklärt, technische Zusammenhänge nachvollziehbar dargestellt. Der Bericht richtet sich an Käufer ohne bautechnische Vorkenntnisse und verzichtet auf unnötiges Fachvokabular. Gleichzeitig ist er präzise genug, um bei Bedarf mit Handwerkern oder Architekten besprochen zu werden.\n\nZusätzlich werden erkennbare Chancen benannt. Nicht jede Immobilie mit Mängeln ist problematisch. Oft lassen sich durch gezielte Maßnahmen Wert und Wohnqualität erheblich steigern. Der Bericht hilft, realistische von überzogenen Bedenken zu unterscheiden und die tatsächlichen Risiken einzuordnen. Transparente Informationen zu Preisen finden Sie unter <link href='/preise'>Preise</link>."
+      },
+      {
+        "id": "lokale-besonderheiten",
+        "h2": "Lokale Besonderheiten des Dortmunder Immobilienmarkts",
+        "content": "Dortmund unterscheidet sich als Immobilienmarkt durch sein industrielles Erbe und die damit verbundenen Herausforderungen. Die Stadt ist geprägt von ihrer Geschichte als Zentrum der Kohle- und Stahlindustrie. Nach dem Niedergang der Schwerindustrie in den 1980er Jahren begann ein Strukturwandel, der bis heute andauert.\n\nDer Untergrund im Dortmunder Raum ist geprägt von Sand, Lehm und stellenweise Kies. Die Bodenbeschaffenheit beeinflusst Gründungsarten und Setzungsverhalten. In tiefliegenden Stadtteilen spielen Grundwasserstände eine wichtige Rolle. Gebäude in Nähe zu ehemaligen Industriegebieten müssen auf mögliche Altlasten geprüft werden.\n\nDie hohe Luftfeuchtigkeit in vielen Stadtteilen belastet Bausubstanz stärker als in Binnenlandregionen. Fassaden, Fenster und Dächer sind erhöhter Witterungsbelastung ausgesetzt. Frostperioden im Winter mit anschließendem Tauwetter setzen Bauteilen zu und können Frostschäden verursachen.\n\nDer Denkmalschutz spielt in Dortmund eine wichtige Rolle, besonders in den Zechensiedlungen und Arbeiterkolonien. Sanierungen erfordern Genehmigungen und müssen denkmalpflegerischen Anforderungen genügen. Dies kann Mehrkosten verursachen, sichert aber den Erhalt des kulturellen Erbes.\n\nDie kontinuierliche Stadtentwicklung schafft neue Wohnquartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne prägt Dortmund. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die sich an der umgebenden Bebauung orientieren.\n\nWeitere Informationen zum Dortmunder Immobilienmarkt und baurechtliche Hinweise finden Sie bei der <a href='https://www.dortmund.de/de/rathaus/planen_bauen_wohnen/stadtplanung/' rel='nofollow'>Stadt Dortmund - Stadtplanung</a> sowie beim <a href='https://www.mieterverein-dortmund.de' rel='nofollow'>Mieterverein Dortmund</a>."
+      }
+    ],
+    "ctaSection": {
+      "h2": "Jetzt Bauzustand Ihrer Wunschimmobilie in Dortmund prüfen lassen",
+      "content": "Eine fundierte Bauschadensanalyse gibt Ihnen Sicherheit vor dem Immobilienkauf. Sie erhalten objektive Einschätzungen durch qualifizierte Sachverständige, realistische Kostenrahmen für erkannte Mängel und verständliche Handlungsempfehlungen. Die digitale Bewertung ist zeitlich flexibel, transparent und erfolgt ohne Vor-Ort-Termine.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und haben damit Klarheit für Ihre Kaufentscheidung. Sie können ihn für Verhandlungen mit Verkäufern nutzen, Ihrer Bank vorlegen oder als Grundlage für die Sanierungsplanung verwenden. Starten Sie jetzt die Bewertung und treffen Sie Ihre Kaufentscheidung auf fundierter Basis.",
+      "primaryCTA": {
+        "text": "Jetzt Bewertung starten",
+        "link": "/evaluation"
+      },
+      "secondaryCTA": {
+        "text": "So funktioniert's ansehen",
+        "link": "/so-funktioniert"
+      },
+      "microcopy": "Bericht per E-Mail innerhalb von 2 Werktagen – schnell, transparent, verlässlich.",
+      "trustElements": [
+        {
+          "text": "Qualifizierte Sachverständige"
+        },
+        {
+          "text": "Bericht innerhalb von 2 Werktagen"
+        },
+        {
+          "text": "Transparente Kostenspannen"
+        },
+        {
+          "text": "Keine versteckten Kosten"
+        }
+      ]
+    }
+  },
+  "faq": [
+    {
+      "question": "Welche Gebäudetypen in Dortmund werden geprüft?",
+      "answer": "Alle Gebäudetypen werden analysiert: Arbeiterkolonien im Kreuzviertel, Zechensiedlungen in Hörde oder Aplerbeck, Nachkriegsbauten sowie moderne Neubauten in regenerierten Gebieten. Jeder Gebäudetyp hat spezifische Risiken, die in der Analyse berücksichtigt werden."
+    },
+    {
+      "question": "Wird bei Eigentumswohnungen auch das Gemeinschaftseigentum geprüft?",
+      "answer": "Soweit es die vorliegenden Unterlagen sowie die bereitgestellten Fotos zulassen, wird der bauliche Zustand von Dach, Fassade, Treppenhaus und zentralen haustechnischen Anlagen nachvollziehbar beschrieben und in die Bewertung einbezogen."
+    },
+    {
+      "question": "Wie schnell erhalte ich den Bericht für meine Immobilie in Dortmund?",
+      "answer": "Sie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen nach vollständiger Übermittlung aller Unterlagen und Fotos."
+    },
+    {
+      "question": "Was kostet eine Bauschadensanalyse in Dortmund?",
+      "answer": "Die Preise sind transparent auf der Website einsehbar und gelten deutschlandweit einheitlich. Es gibt keine versteckten Kosten oder Zusatzgebühren für Dortmund."
+    },
+    {
+      "question": "Ersetzt die digitale Analyse einen Gutachter vor Ort?",
+      "answer": "Die digitale Analyse bietet eine fundierte Ersteinschätzung auf Basis der verfügbaren Informationen. Bei schwerwiegenden Mängeln oder komplexen Schadensbildern wird eine vertiefende Prüfung empfohlen."
+    }
+  ],
+  "keywords": {
+    "primary": [
+      "gutachter haus kaufen dortmund",
+      "bausachverständiger dortmund",
+      "bauschadensanalyse dortmund",
+      "gutachter wohnungskauf dortmund",
+      "immobilie prüfen lassen dortmund"
+    ],
+    "secondary": [
+      "altbau gutachter dortmund",
+      "hauskauf beratung dortmund kreuzviertel",
+      "baugutachter dortmund hörde",
+      "zechensiedlung gutachter dortmund",
+      "wohnung prüfen vor kauf dortmund",
+      "technische immobilienprüfung dortmund",
+      "sachverständiger immobilie dortmund"
+    ],
+    "local": [
+      "kreuzviertel",
+      "hörde",
+      "aplerbeck",
+      "schüren",
+      "arbeiterkolonie",
+      "zechensiedlung",
+      "post-industriell"
+    ]
+  },
+  "internalLinks": [
+    {
+      "text": "So funktioniert's",
+      "url": "/so-funktioniert",
+      "context": "Detaillierte Informationen zum Ablauf"
+    },
+    {
+      "text": "Preise",
+      "url": "/preise",
+      "context": "Transparente Informationen zu Preisen"
+    },
+    {
+      "text": "FAQ",
+      "url": "/faq",
+      "context": "Weitere häufig gestellte Fragen"
+    },
+    {
+      "text": "Kontakt",
+      "url": "/kontakt",
+      "context": "Bei weiteren Fragen"
+    }
+  ]
+}
+

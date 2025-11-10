@@ -1,0 +1,66 @@
+# Netlify Configuration File for Next.js Static Export
+
+[build]
+  publish = "out"
+  command = "npm run build"
+
+# Enable prerendering for SEO - ensures search engines see full HTML content
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+# WWW to Non-WWW redirects - ensure canonical domain
+# Handle HTTP www -> HTTPS non-www
+[[redirects]]
+  from = "http://www.bauklar.org/*"
+  to = "https://bauklar.org/:splat"
+  status = 301
+  force = true
+
+# Handle HTTPS www -> HTTPS non-www
+[[redirects]]
+  from = "https://www.bauklar.org/*"
+  to = "https://bauklar.org/:splat"
+  status = 301
+  force = true
+
+# Handle HTTP non-www -> HTTPS non-www (for completeness)
+[[redirects]]
+  from = "http://bauklar.org/*"
+  to = "https://bauklar.org/:splat"
+  status = 301
+  force = true
+
+# SPA fallback for Next.js static export
+# Next.js generates static HTML files for all routes, but we need a fallback
+# This ensures that client-side navigation works correctly
+# Note: Next.js static export generates HTML files for all routes defined in generateStaticParams
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+# Headers for better SEO and security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache headers for blog pages
+[[headers]]
+  for = "/blog/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
