@@ -13,11 +13,14 @@ import Footer from '@/components/layout/Footer';
 import CookieBanner from '@/components/layout/CookieBanner';
 import { Toaster } from '@/components/ui/toaster';
 import { WebSiteSchema } from '@/components/seo/WebSiteSchema';
+import { SITE_URL } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: "Professionelle Bauschadensbewertung - schnell, transparent, verlässlich",
   description: "Professionelle Bauschadensbewertung. Upload in Minuten, Ergebnis innerhalb von 48 Stunden. Schnell, transparent, verlässlich.",
-  canonical: "/",
+  alternates: {
+    canonical: `${SITE_URL}/`,
+  },
 };
 
 export default function HomePage() {
