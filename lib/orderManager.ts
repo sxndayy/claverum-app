@@ -19,6 +19,9 @@ export interface OrderData {
  * Get current order ID from session storage
  */
 export function getCurrentOrderId(): string | null {
+  if (typeof window === 'undefined') {
+    return null; // Server-side: return null
+  }
   try {
     return sessionStorage.getItem(ORDER_ID_KEY);
   } catch (error) {
@@ -31,6 +34,9 @@ export function getCurrentOrderId(): string | null {
  * Get current order session token
  */
 export function getCurrentOrderSessionToken(): string | null {
+  if (typeof window === 'undefined') {
+    return null; // Server-side: return null
+  }
   try {
     return sessionStorage.getItem(ORDER_SESSION_TOKEN_KEY);
   } catch (error) {
@@ -43,6 +49,9 @@ export function getCurrentOrderSessionToken(): string | null {
  * Set order ID and session token in session storage
  */
 export function setCurrentOrder(orderId: string, sessionToken: string): void {
+  if (typeof window === 'undefined') {
+    return; // Server-side: do nothing
+  }
   try {
     sessionStorage.setItem(ORDER_ID_KEY, orderId);
     sessionStorage.setItem(ORDER_SESSION_TOKEN_KEY, sessionToken);
@@ -64,6 +73,9 @@ export function setCurrentOrder(orderId: string, sessionToken: string): void {
  * Get order metadata
  */
 export function getOrderData(): OrderData | null {
+  if (typeof window === 'undefined') {
+    return null; // Server-side: return null
+  }
   try {
     const data = sessionStorage.getItem(ORDER_DATA_KEY);
     return data ? JSON.parse(data) : null;
@@ -77,6 +89,9 @@ export function getOrderData(): OrderData | null {
  * Update last updated timestamp
  */
 export function updateOrderTimestamp(): void {
+  if (typeof window === 'undefined') {
+    return; // Server-side: do nothing
+  }
   try {
     const data = getOrderData();
     if (data) {
@@ -92,6 +107,9 @@ export function updateOrderTimestamp(): void {
  * Clear order session (e.g., after successful checkout)
  */
 export function clearOrderSession(): void {
+  if (typeof window === 'undefined') {
+    return; // Server-side: do nothing
+  }
   try {
     sessionStorage.removeItem(ORDER_ID_KEY);
     sessionStorage.removeItem(ORDER_DATA_KEY);
