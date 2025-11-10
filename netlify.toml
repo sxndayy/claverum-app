@@ -41,9 +41,114 @@
   status = 301
   force = true
 
-# NOTE: Specific route redirects are handled in public/_redirects
-# The general SPA fallback is also in public/_redirects and must be last
-# This ensures that static HTML files are served correctly
+# Blog Routes (vor SPA Fallback!)
+[[redirects]]
+  from = "/blog/hauskauf-beratung"
+  to = "/blog/hauskauf-beratung/"
+  status = 200
+
+# Alle 15 City Routes
+[[redirects]]
+  from = "/bremen"
+  to = "/bremen/"
+  status = 200
+
+[[redirects]]
+  from = "/berlin"
+  to = "/berlin/"
+  status = 200
+
+[[redirects]]
+  from = "/hamburg"
+  to = "/hamburg/"
+  status = 200
+
+[[redirects]]
+  from = "/muenchen"
+  to = "/muenchen/"
+  status = 200
+
+[[redirects]]
+  from = "/koeln"
+  to = "/koeln/"
+  status = 200
+
+[[redirects]]
+  from = "/frankfurt"
+  to = "/frankfurt/"
+  status = 200
+
+[[redirects]]
+  from = "/stuttgart"
+  to = "/stuttgart/"
+  status = 200
+
+[[redirects]]
+  from = "/duesseldorf"
+  to = "/duesseldorf/"
+  status = 200
+
+[[redirects]]
+  from = "/dortmund"
+  to = "/dortmund/"
+  status = 200
+
+[[redirects]]
+  from = "/essen"
+  to = "/essen/"
+  status = 200
+
+[[redirects]]
+  from = "/leipzig"
+  to = "/leipzig/"
+  status = 200
+
+[[redirects]]
+  from = "/dresden"
+  to = "/dresden/"
+  status = 200
+
+[[redirects]]
+  from = "/hannover"
+  to = "/hannover/"
+  status = 200
+
+[[redirects]]
+  from = "/nuernberg"
+  to = "/nuernberg/"
+  status = 200
+
+[[redirects]]
+  from = "/mannheim"
+  to = "/mannheim/"
+  status = 200
+
+# Static Pages
+[[redirects]]
+  from = "/impressum"
+  to = "/impressum/"
+  status = 200
+
+[[redirects]]
+  from = "/agb"
+  to = "/agb/"
+  status = 200
+
+[[redirects]]
+  from = "/datenschutz"
+  to = "/datenschutz/"
+  status = 200
+
+[[redirects]]
+  from = "/widerruf"
+  to = "/widerruf/"
+  status = 200
+
+# SPA Fallback (MUSS am Ende!)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 # Headers for better SEO and security
 [[headers]]
