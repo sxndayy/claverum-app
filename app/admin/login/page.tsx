@@ -1,14 +1,12 @@
 import { Metadata } from 'next';
 import AdminLoginClient from './AdminLoginClient';
-import { SITE_URL } from '@/lib/config';
+
+// SEO irrelevant - noindex, no canonical needed
 
 export const metadata: Metadata = {
   title: "Admin Login",
   description: "Admin login",
-  alternates: {
-    canonical: `${SITE_URL}/admin/login`,
-  },
-  robots: 'noindex, follow',
+  robots: 'noindex, nofollow',
 };
 
 export default function AdminLoginPage() {

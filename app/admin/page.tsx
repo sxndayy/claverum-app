@@ -1,16 +1,14 @@
 import { Metadata } from 'next';
 import AdminClient from './AdminClient';
-import { SITE_URL } from '@/lib/config';
 
-export const dynamic = 'force-dynamic'; // Prevent static generation - requires client-side auth
+// Note: Admin page is statically generated but uses client-side auth
+// The AdminClient component handles all dynamic behavior client-side
+// SEO irrelevant - noindex, no canonical needed
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
   description: "Admin dashboard",
-  alternates: {
-    canonical: `${SITE_URL}/admin`,
-  },
-  robots: 'noindex, follow',
+  robots: 'noindex, nofollow',
 };
 
 export default function AdminPage() {

@@ -1,13 +1,12 @@
 import { Metadata } from 'next';
 import EvaluationClient from './EvaluationClient';
-import { SITE_URL } from '@/lib/config';
+
+// SEO irrelevant - users should come from homepage CTA, not Google
 
 export const metadata: Metadata = {
   title: "Bauschadensbewertung starten",
   description: "Starte jetzt deine professionelle Bauschadensbewertung. Lade Fotos hoch und erhalte innerhalb von 48 Stunden ein detailliertes Gutachten.",
-  alternates: {
-    canonical: `${SITE_URL}/evaluation`,
-  },
+  robots: 'noindex, follow',
 };
 
 export default function EvaluationPage() {
