@@ -41,6 +41,11 @@ import { apiClient, OrdersListParams } from '@/lib/apiClient';
 import { authManager } from '@/lib/authManager';
 import AdminOrderDetail from '@/components/admin/AdminOrderDetail';
 
+interface User {
+  username: string;
+  role: string;
+}
+
 interface Order {
   id: string;
   street: string;
