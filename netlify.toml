@@ -114,8 +114,8 @@
   status = 200
 
 # SPA fallback - must be last to handle all other routes
-# Note: Netlify serves static files BEFORE redirects, so /path/index.html will be served before this redirect
-# This redirect only applies if no static file exists at the requested path
+# Note: Netlify serves static files BEFORE redirects, so static files like sitemap.xml, robots.txt
+# will be served directly without hitting this redirect
 [[redirects]]
   from = "/*"
   to = "/index.html"
