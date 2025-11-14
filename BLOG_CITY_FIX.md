@@ -212,3 +212,4 @@ export async function generateStaticParams() {
    - Prüfe Netlify Redirects Konfiguration
    - Prüfe ob `.html` Extension nötig ist
 
+

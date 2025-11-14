@@ -230,3 +230,4 @@ const AreaUpload: React.FC<AreaUploadProps> = ({
 
 export default AreaUpload;
 
+

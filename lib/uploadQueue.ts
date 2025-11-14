@@ -244,3 +244,4 @@ class UploadQueue {
 // Export singleton instance
 export const uploadQueue = new UploadQueue();
 
+

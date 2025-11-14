@@ -73,3 +73,4 @@ export default function CityPage({ params }: CityPageProps) {
   return <CityPageClient cityData={cityData} />;
 }
 
+

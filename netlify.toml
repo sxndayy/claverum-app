@@ -41,12 +41,6 @@
   status = 301
   force = true
 
-# Blog Routes (vor SPA Fallback!)
-[[redirects]]
-  from = "/blog/hauskauf-beratung"
-  to = "/blog/hauskauf-beratung/"
-  status = 200
-
 # Alle 15 City Routes
 [[redirects]]
   from = "/bremen"

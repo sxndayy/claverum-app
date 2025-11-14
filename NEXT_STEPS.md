@@ -206,3 +206,4 @@
 2. 🟡 MITTEL: Phase 5 (Blog), Phase 6 (Static Pages)
 3. 🟢 NIEDRIG: Phase 7-12 (Forms, Testing, Deployment)
 
+

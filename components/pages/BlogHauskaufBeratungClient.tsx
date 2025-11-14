@@ -130,7 +130,7 @@ const BlogHauskaufBeratungClient = () => {
     "dateModified": "2025-01-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `${SITE_URL}/blog/hauskauf-beratung`
+      "@id": `${SITE_URL}/blog/hauskauf-beratung/`
     },
     "image": {
       "@type": "ImageObject",

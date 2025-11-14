@@ -172,3 +172,4 @@ Nach `npm install` und `npm run dev` sollte die Homepage unter **http://localhos
 
 **Wenn Fehler auftreten:** Bitte Fehlermeldung teilen, dann fixe ich es.
 
+

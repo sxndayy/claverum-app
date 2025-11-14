@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',  // Static HTML Export - KRITISCH für Static Site!
-  trailingSlash: false,  // URLs OHNE / am Ende (SEO Best Practice)
+  trailingSlash: true,  // URLs MIT / am Ende (konsistent mit City Pages)
   images: {
     unoptimized: true,  // Nötig für Static Export
   },

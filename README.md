@@ -65,3 +65,4 @@ npx serve out
 
 Siehe `MIGRATION_ANALYSIS.md` für vollständige Analyse.
 
+

@@ -30,3 +30,4 @@ Next.js mit `output: 'export'` generiert statische Dateien in `out/`, nicht `dis
 - ✅ Build command: `npm run build`
 - ✅ Next.js wurde auto-detected
 
+

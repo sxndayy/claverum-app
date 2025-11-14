@@ -79,3 +79,4 @@ Netlify wird automatisch:
 - `public/_headers` - Cache Headers
 - `.env.example` - Environment Variables Template
 
+

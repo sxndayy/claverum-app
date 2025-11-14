@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   title: "Hauskauf Beratung: Wann sie sinnvoll ist, Kosten und Leistungen",
   description: "Hauskauf Beratung schützt vor versteckten Mängeln. Erfahren Sie, wann ein Gutachter sinnvoll ist, was er kostet und wie Sie bis zu 40.000 € beim Immobilienkauf sparen.",
   alternates: {
-    canonical: `${SITE_URL}/blog/hauskauf-beratung`,
+    canonical: `${SITE_URL}/blog/hauskauf-beratung/`,
   },
   openGraph: {
     type: 'article',
     title: "Hauskauf Beratung: Wann sie sinnvoll ist, Kosten und Leistungen",
     description: "Hauskauf Beratung schützt vor versteckten Mängeln. Erfahren Sie, wann ein Gutachter sinnvoll ist, was er kostet und wie Sie bis zu 40.000 € beim Immobilienkauf sparen.",
-    url: `${SITE_URL}/blog/hauskauf-beratung`,
+    url: `${SITE_URL}/blog/hauskauf-beratung/`,
     images: [
       {
         url: `${SITE_URL}/Berlin 2.jpg`,
