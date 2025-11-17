@@ -74,9 +74,10 @@ router.post('/create-checkout-session', paymentLimiter, requireOrderOwnership, a
         quantity: 1
       }],
       // Collect customer information (email and name)
-      customer_email: undefined, // Let Stripe collect it
-      billing_address_collection: 'required', // Require billing address (includes name)
-      // Email wird von Stripe Checkout automatisch gesammelt
+      // billing_address_collection: 'required' forces Stripe to collect billing address (including name)
+      // This should always show the name field, not just when coupon is entered
+      billing_address_collection: 'required', // Require billing address (includes name field)
+      // Don't set customer_email - let Stripe collect it (this ensures name field is shown)
       metadata: {
         orderId: orderId
       },

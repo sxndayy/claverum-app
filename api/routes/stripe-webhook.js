@@ -66,10 +66,12 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
       const order = orderResult.rows[0];
       const customerEmail = session.customer_details?.email || order.email;
       
-      // Get customer name from Stripe (billing address or customer_details)
-      // Stripe provides name in customer_details.name or customer_details.billing_address.name
+      // Get customer name from Stripe
+      // When billing_address_collection is 'required', Stripe collects name in customer_details.name
+      // Also check billing_address.name as fallback
       const stripeCustomerName = session.customer_details?.name || 
-                                  session.customer_details?.billing_address?.name || 
+                                  (session.customer_details?.billing_address?.line1 ? 
+                                    `${session.customer_details?.billing_address?.name || ''}`.trim() || null : null) ||
                                   null;
       
       // Extract last name from full name (e.g., "Max Mustermann" -> "Mustermann")
