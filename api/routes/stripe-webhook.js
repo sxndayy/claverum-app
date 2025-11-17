@@ -85,13 +85,55 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
       const customerName = order.customer_name || stripeCustomerName;
       const customerLastName = lastName;
       
-      // Save customer name to database if we got it from Stripe and it's not already saved
-      if (stripeCustomerName && !order.customer_name) {
-        await query(
-          'UPDATE orders SET customer_name = $1 WHERE id = $2',
-          [stripeCustomerName, orderId]
-        );
-        console.log(`✅ Saved customer name to database: ${stripeCustomerName}`);
+      // Get billing address from Stripe
+      const billingAddress = session.customer_details?.billing_address || null;
+      
+      // Save customer name and billing address to database if we got it from Stripe
+      if (stripeCustomerName || billingAddress) {
+        const updateFields = [];
+        const updateValues = [];
+        let paramCount = 1;
+        
+        if (stripeCustomerName && !order.customer_name) {
+          updateFields.push(`customer_name = $${paramCount++}`);
+          updateValues.push(stripeCustomerName);
+        }
+        
+        if (billingAddress) {
+          if (billingAddress.line1) {
+            updateFields.push(`billing_address_line1 = $${paramCount++}`);
+            updateValues.push(billingAddress.line1);
+          }
+          if (billingAddress.line2) {
+            updateFields.push(`billing_address_line2 = $${paramCount++}`);
+            updateValues.push(billingAddress.line2);
+          }
+          if (billingAddress.city) {
+            updateFields.push(`billing_address_city = $${paramCount++}`);
+            updateValues.push(billingAddress.city);
+          }
+          if (billingAddress.postal_code) {
+            updateFields.push(`billing_address_postal_code = $${paramCount++}`);
+            updateValues.push(billingAddress.postal_code);
+          }
+          if (billingAddress.state) {
+            updateFields.push(`billing_address_state = $${paramCount++}`);
+            updateValues.push(billingAddress.state);
+          }
+          if (billingAddress.country) {
+            updateFields.push(`billing_address_country = $${paramCount++}`);
+            updateValues.push(billingAddress.country);
+          }
+        }
+        
+        if (updateFields.length > 0) {
+          updateValues.push(orderId);
+          await query(
+            `UPDATE orders SET ${updateFields.join(', ')} WHERE id = $${paramCount}`,
+            updateValues
+          );
+          console.log(`✅ Saved customer data to database: name=${stripeCustomerName || 'none'}, billing_address=${billingAddress ? 'yes' : 'no'}`);
+        }
       }
       
       const paymentDate = new Date();
