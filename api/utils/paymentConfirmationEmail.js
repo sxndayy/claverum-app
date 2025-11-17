@@ -107,10 +107,10 @@ export async function sendPaymentConfirmationEmail({
     </p>
 
     <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0; border-radius: 4px;">
-      <h3 style="color: #2c3e50; margin-top: 0; font-size: 16px; font-weight: bold;">Nächste Schritte</h3>
-      <ul style="color: #666; padding-left: 20px; margin: 10px 0;">
-        <li>Wir beginnen nun mit der Vorbereitung und Durchführung Ihres Auftrags.</li>
-        <li>Sie werden von uns informiert, sobald weitere Schritte erforderlich sind oder das Ergebnis für Sie bereitsteht.</li>
+      <h3 style="color: #2c3e50; margin-top: 0; font-size: 16px; font-weight: bold; margin-bottom: 10px;">Nächste Schritte</h3>
+      <ul style="color: #666; padding-left: 20px; margin: 10px 0; list-style-type: disc;">
+        <li style="margin-bottom: 8px;">Wir beginnen nun mit der Vorbereitung und Durchführung Ihres Auftrags.</li>
+        <li style="margin-bottom: 8px;">Sie werden von uns informiert, sobald weitere Schritte erforderlich sind oder das Ergebnis für Sie bereitsteht.</li>
       </ul>
     </div>
 
@@ -169,7 +169,7 @@ Auftragsübersicht
 
 Mit dieser E-Mail erhalten Sie das kaufmännische Bestätigungsschreiben gemäß den von Ihnen übermittelten Angaben. Sollten wir innerhalb von 48 Stunden keinen Widerspruch Ihrerseits erhalten, gehen wir davon aus, dass alle Daten korrekt sind und der Auftrag wie beschrieben ausgeführt werden soll.
 
-Nächste Schritte
+Nächste Schritte:
 
 • Wir beginnen nun mit der Vorbereitung und Durchführung Ihres Auftrags.
 • Sie werden von uns informiert, sobald weitere Schritte erforderlich sind oder das Ergebnis für Sie bereitsteht.
