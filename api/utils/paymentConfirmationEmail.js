@@ -7,7 +7,8 @@ import { generateConfirmationNumber, formatDateGerman, formatCurrency } from './
  * @param {Object} params
  * @param {Resend} params.resendClient - Resend client instance
  * @param {string} params.customerEmail - Customer email address
- * @param {string|null} params.customerName - Customer name (optional)
+ * @param {string|null} params.customerName - Customer full name (optional)
+ * @param {string|null} params.customerLastName - Customer last name (optional, used for greeting)
  * @param {string} params.orderNumber - Real order number (UUID from order.id)
  * @param {Date} params.paymentDate - Payment date
  * @param {Date} params.orderDate - Order creation date
@@ -19,6 +20,7 @@ export async function sendPaymentConfirmationEmail({
   resendClient,
   customerEmail,
   customerName = null,
+  customerLastName = null,
   orderNumber,
   paymentDate,
   orderDate,
@@ -37,9 +39,12 @@ export async function sendPaymentConfirmationEmail({
   const formattedOrderDate = formatDateGerman(orderDate);
   const formattedAmount = formatCurrency(amountInCents);
   
-  // Format customer name for greeting - if name exists, use it, otherwise use generic greeting
-  const greeting = customerName 
-    ? `Sehr geehrte/r ${customerName},`
+  // Format customer name for greeting - use last name if available, otherwise full name, otherwise generic
+  // Use last name for formal greeting (e.g., "Sehr geehrte/r Mustermann,")
+  const greeting = customerLastName && customerLastName.trim()
+    ? `Sehr geehrte/r ${customerLastName.trim()},`
+    : customerName && customerName.trim()
+    ? `Sehr geehrte/r ${customerName.trim()},`
     : 'Sehr geehrte/r Kunde/in,';
 
   // HTML Email Template
@@ -146,8 +151,7 @@ export async function sendPaymentConfirmationEmail({
   `.trim();
 
   // Plain text version for email clients that don't support HTML
-  const textContent = `
-Betreff: Auftragsbestätigung – Ihre Bestellung bei bauklar.org
+  const textContent = `Auftragsbestätigung – Ihre Bestellung bei bauklar.org
 
 ${greeting}
 
@@ -185,7 +189,7 @@ Ihr Team bauklar.org
 ---
 Bauklar - Gutachten & Bauschadensbewertung
 Bei Fragen: kontakt@bauklar.org oder +49 322 21804909
-  `.trim();
+`.trim();
 
   // Get sender email from environment or use default
   const fromEmail = process.env.PAYMENT_CONFIRMATION_FROM_EMAIL || 'Bauklar <kontakt@bauklar.org>';

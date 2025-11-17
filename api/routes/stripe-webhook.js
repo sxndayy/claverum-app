@@ -65,16 +65,42 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
       const order = orderResult.rows[0];
       const customerEmail = session.customer_details?.email || order.email;
-      // Get customer name from database first, fallback to Stripe
-      const customerName = order.customer_name || session.customer_details?.name || null;
+      
+      // Get customer name from Stripe (billing address or customer_details)
+      // Stripe provides name in customer_details.name or customer_details.billing_address.name
+      const stripeCustomerName = session.customer_details?.name || 
+                                  session.customer_details?.billing_address?.name || 
+                                  null;
+      
+      // Extract last name from full name (e.g., "Max Mustermann" -> "Mustermann")
+      let lastName = null;
+      if (stripeCustomerName) {
+        const nameParts = stripeCustomerName.trim().split(/\s+/);
+        lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : nameParts[0];
+      }
+      
+      // Use name from database first, otherwise use from Stripe
+      const customerName = order.customer_name || stripeCustomerName;
+      const customerLastName = lastName;
+      
+      // Save customer name to database if we got it from Stripe and it's not already saved
+      if (stripeCustomerName && !order.customer_name) {
+        await query(
+          'UPDATE orders SET customer_name = $1 WHERE id = $2',
+          [stripeCustomerName, orderId]
+        );
+        console.log(`✅ Saved customer name to database: ${stripeCustomerName}`);
+      }
+      
       const paymentDate = new Date();
       const amountInCents = session.amount_total || 0;
       
       // Use order creation date from database
       const orderDate = order.created_at || paymentDate;
       
-      // Use order.id (UUID) as the real order number (Auftragsnummer)
-      const orderNumber = order.id;
+      // Use order.id (UUID) as the real order number, but format it nicely (first 8 chars)
+      // Format: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX -> XXXXXXXX
+      const orderNumber = order.id.split('-')[0].toUpperCase();
 
       // Generate confirmation number if not already exists
       let confirmationNumber = order.confirmation_number;
@@ -126,6 +152,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
             resendClient: resend,
             customerEmail: customerEmail,
             customerName: customerName,
+            customerLastName: customerLastName, // Use last name for email greeting
             orderNumber: orderNumber, // Use real order ID (UUID) as Auftragsnummer
             paymentDate: paymentDate,
             orderDate: orderDate,
