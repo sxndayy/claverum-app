@@ -1,10 +1,16 @@
 import express from 'express';
 import Stripe from 'stripe';
 import { query } from '../db.js';
+import { Resend } from 'resend';
+import { generateConfirmationNumber } from '../utils/confirmationNumber.js';
+import { sendPaymentConfirmationEmail } from '../utils/paymentConfirmationEmail.js';
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+// Initialize Resend for payment confirmation emails
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 /**
  * POST /api/stripe/webhook
@@ -47,14 +53,39 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
     try {
       // Verify order exists
-      const orderResult = await query('SELECT id FROM orders WHERE id = $1', [orderId]);
+      const orderResult = await query('SELECT id, confirmation_number FROM orders WHERE id = $1', [orderId]);
       
       if (orderResult.rows.length === 0) {
         console.error(`Order not found: ${orderId}`);
         return res.status(404).json({ error: 'Order not found' });
       }
 
-      // Update order with payment status
+      const order = orderResult.rows[0];
+      const customerEmail = session.customer_details?.email;
+      const paymentDate = new Date();
+      const amountInCents = session.amount_total || 0;
+
+      // Generate confirmation number if not already exists
+      let confirmationNumber = order.confirmation_number;
+      if (!confirmationNumber) {
+        confirmationNumber = generateConfirmationNumber(paymentDate);
+        
+        // Ensure uniqueness (retry if collision)
+        let attempts = 0;
+        while (attempts < 5) {
+          const existing = await query(
+            'SELECT id FROM orders WHERE confirmation_number = $1',
+            [confirmationNumber]
+          );
+          if (existing.rows.length === 0) {
+            break; // Unique, we can use it
+          }
+          confirmationNumber = generateConfirmationNumber(paymentDate);
+          attempts++;
+        }
+      }
+
+      // Update order with payment status and confirmation number
       await query(
         `UPDATE orders 
          SET paid = true, 
@@ -62,18 +93,46 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
              payment_status = $1,
              stripe_payment_intent_id = $2,
              payment_amount = $3,
-             email = COALESCE($4, email)
-         WHERE id = $5`,
+             email = COALESCE($4, email),
+             confirmation_number = COALESCE(confirmation_number, $5)
+         WHERE id = $6`,
         [
           session.payment_status || 'paid',
           paymentIntentId,
-          session.amount_total, // Amount in cents
-          session.customer_details?.email,
+          amountInCents,
+          customerEmail,
+          confirmationNumber,
           orderId
         ]
       );
 
-      console.log(`✅ Order ${orderId} marked as paid (Payment Intent: ${paymentIntentId})`);
+      console.log(`✅ Order ${orderId} marked as paid (Payment Intent: ${paymentIntentId}, Confirmation: ${confirmationNumber})`);
+
+      // Send payment confirmation email to customer
+      if (customerEmail && resend) {
+        try {
+          await sendPaymentConfirmationEmail({
+            resendClient: resend,
+            customerEmail: customerEmail,
+            confirmationNumber: confirmationNumber,
+            paymentDate: paymentDate,
+            amountInCents: amountInCents,
+            orderId: orderId
+          });
+          console.log(`📧 Payment confirmation email sent to ${customerEmail}`);
+        } catch (emailError) {
+          // Log error but don't fail the webhook (payment is already processed)
+          console.error('⚠️ Failed to send payment confirmation email:', emailError);
+          // Continue - payment is still marked as successful
+        }
+      } else {
+        if (!customerEmail) {
+          console.warn(`⚠️ No customer email found in session, skipping confirmation email for order ${orderId}`);
+        }
+        if (!resend) {
+          console.warn(`⚠️ Resend not configured, skipping confirmation email for order ${orderId}`);
+        }
+      }
     } catch (error) {
       console.error('Error updating order payment status:', error);
       return res.status(500).json({ error: 'Failed to update order' });
