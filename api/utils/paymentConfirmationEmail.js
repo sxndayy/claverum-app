@@ -7,8 +7,10 @@ import { generateConfirmationNumber, formatDateGerman, formatCurrency } from './
  * @param {Object} params
  * @param {Resend} params.resendClient - Resend client instance
  * @param {string} params.customerEmail - Customer email address
+ * @param {string|null} params.customerName - Customer name (optional)
  * @param {string} params.confirmationNumber - Confirmation number (GUT-YYYY-MM-DD-XXXXX)
  * @param {Date} params.paymentDate - Payment date
+ * @param {Date} params.orderDate - Order creation date
  * @param {number} params.amountInCents - Payment amount in cents
  * @param {string} params.orderId - Order UUID
  * @returns {Promise<Object>} Resend API response
@@ -16,8 +18,10 @@ import { generateConfirmationNumber, formatDateGerman, formatCurrency } from './
 export async function sendPaymentConfirmationEmail({
   resendClient,
   customerEmail,
+  customerName = null,
   confirmationNumber,
   paymentDate,
+  orderDate,
   amountInCents,
   orderId
 }) {
@@ -30,7 +34,11 @@ export async function sendPaymentConfirmationEmail({
   }
 
   const formattedDate = formatDateGerman(paymentDate);
+  const formattedOrderDate = formatDateGerman(orderDate);
   const formattedAmount = formatCurrency(amountInCents);
+  
+  // Use customer name or fallback
+  const customerNameDisplay = customerName || 'Sehr geehrte/r Kunde/in';
 
   // HTML Email Template
   const htmlContent = `
@@ -39,72 +47,97 @@ export async function sendPaymentConfirmationEmail({
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zahlungsbestätigung - ${confirmationNumber}</title>
+  <title>Auftragsbestätigung – Ihre Bestellung bei bauklar.org</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-  <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-    <h1 style="color: #2c3e50; margin-top: 0;">Zahlungsbestätigung</h1>
-    <p style="margin: 0; color: #666;">Vielen Dank für Ihre Zahlung!</p>
-  </div>
-
-  <div style="background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-    <h2 style="color: #2c3e50; margin-top: 0; border-bottom: 2px solid #3498db; padding-bottom: 10px;">
-      Ihre Bestätigungsnummer
-    </h2>
-    <p style="font-size: 24px; font-weight: bold; color: #3498db; letter-spacing: 2px; margin: 20px 0;">
-      ${confirmationNumber}
+  <div style="background-color: #ffffff; padding: 20px;">
+    <h1 style="color: #2c3e50; margin-top: 0; font-size: 20px; font-weight: bold;">
+      Auftragsbestätigung – Ihre Bestellung bei bauklar.org
+    </h1>
+    
+    <p style="margin: 20px 0; color: #333;">
+      Sehr geehrte/r ${customerNameDisplay},
     </p>
-    <p style="color: #666; font-size: 14px;">
-      Bitte bewahren Sie diese Nummer für Ihre Unterlagen auf.
+    
+    <p style="margin: 20px 0; color: #333;">
+      vielen Dank für Ihre Bestellung über bauklar.org.
     </p>
-  </div>
-
-  <div style="background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-    <h2 style="color: #2c3e50; margin-top: 0; border-bottom: 2px solid #3498db; padding-bottom: 10px;">
-      Zahlungsdetails
-    </h2>
-    <table style="width: 100%; border-collapse: collapse;">
-      <tr>
-        <td style="padding: 8px 0; color: #666; width: 40%;">Zahlungsdatum:</td>
-        <td style="padding: 8px 0; font-weight: bold;">${formattedDate}</td>
-      </tr>
-      <tr>
-        <td style="padding: 8px 0; color: #666;">Betrag:</td>
-        <td style="padding: 8px 0; font-weight: bold; color: #27ae60; font-size: 18px;">${formattedAmount}</td>
-      </tr>
-      <tr>
-        <td style="padding: 8px 0; color: #666;">Auftragsnummer:</td>
-        <td style="padding: 8px 0; font-family: monospace; font-size: 12px;">${orderId}</td>
-      </tr>
-    </table>
-  </div>
-
-  <div style="background-color: #e8f5e9; border-left: 4px solid #27ae60; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
-    <p style="margin: 0; color: #2c3e50;">
-      <strong>✅ Zahlung erfolgreich erhalten</strong><br>
-      Wir haben Ihre Zahlung erhalten und werden nun mit der Bearbeitung Ihres Auftrags beginnen.
+    
+    <p style="margin: 20px 0; color: #333;">
+      Hiermit bestätigen wir den Eingang Ihres Auftrags sowie die Beauftragung gemäß Ihrer Bestellung.
     </p>
-  </div>
 
-  <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-    <h3 style="color: #2c3e50; margin-top: 0;">Nächste Schritte</h3>
-    <ul style="color: #666; padding-left: 20px;">
-      <li>Sie erhalten in Kürze eine Bestätigung mit weiteren Details</li>
-      <li>Unser Team beginnt mit der Analyse Ihres Objekts</li>
-      <li>Das Gutachten wird innerhalb von 48 Stunden erstellt</li>
-    </ul>
-  </div>
+    <div style="background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+      <h2 style="color: #2c3e50; margin-top: 0; font-size: 18px; font-weight: bold; border-bottom: 2px solid #3498db; padding-bottom: 10px;">
+        Auftragsübersicht
+      </h2>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="padding: 8px 0; color: #666; width: 50%;">Bestellnummer:</td>
+          <td style="padding: 8px 0; font-weight: bold; color: #2c3e50;">${confirmationNumber}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #666;">Datum der Bestellung:</td>
+          <td style="padding: 8px 0; font-weight: bold;">${formattedOrderDate}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #666;">Beauftragte Leistung:</td>
+          <td style="padding: 8px 0; font-weight: bold;">Bauschadensbewertung</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #666;">Preis:</td>
+          <td style="padding: 8px 0; font-weight: bold; color: #27ae60; font-size: 16px;">${formattedAmount} inkl. MwSt.</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #666;">Voraussichtliche Bearbeitungszeit:</td>
+          <td style="padding: 8px 0; font-weight: bold;">zwei Werktage</td>
+        </tr>
+      </table>
+    </div>
 
-  <div style="border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 30px; text-align: center; color: #666; font-size: 12px;">
-    <p style="margin: 5px 0;">
-      <strong>Bauklar</strong><br>
-      Gutachten & Bauschadensbewertung
+    <p style="margin: 20px 0; color: #333;">
+      Mit dieser E-Mail erhalten Sie das kaufmännische Bestätigungsschreiben gemäß den von Ihnen übermittelten Angaben. Sollten wir innerhalb von 48 Stunden keinen Widerspruch Ihrerseits erhalten, gehen wir davon aus, dass alle Daten korrekt sind und der Auftrag wie beschrieben ausgeführt werden soll.
     </p>
-    <p style="margin: 5px 0;">
-      Bei Fragen stehen wir Ihnen gerne zur Verfügung:<br>
-      <a href="mailto:kontakt@bauklar.org" style="color: #3498db; text-decoration: none;">kontakt@bauklar.org</a><br>
-      <a href="tel:+4932221804909" style="color: #3498db; text-decoration: none;">+49 322 21804909</a>
+
+    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0; border-radius: 4px;">
+      <h3 style="color: #2c3e50; margin-top: 0; font-size: 16px; font-weight: bold;">Nächste Schritte</h3>
+      <ul style="color: #666; padding-left: 20px; margin: 10px 0;">
+        <li>Wir beginnen nun mit der Vorbereitung und Durchführung Ihres Auftrags.</li>
+        <li>Sie werden von uns informiert, sobald weitere Schritte erforderlich sind oder das Ergebnis für Sie bereitsteht.</li>
+      </ul>
+    </div>
+
+    <div style="background-color: #fff9e6; border-left: 4px solid #f39c12; padding: 15px; margin: 20px 0; border-radius: 4px;">
+      <h3 style="color: #2c3e50; margin-top: 0; font-size: 16px; font-weight: bold;">Hinweis zur Rechnungsstellung</h3>
+      <p style="margin: 0; color: #666;">
+        Die Rechnung erhalten Sie separat nach Abschluss bzw. gemäß den vereinbarten Modalitäten.
+      </p>
+    </div>
+
+    <p style="margin: 20px 0; color: #333;">
+      Bei Rückfragen stehen wir Ihnen jederzeit gerne zur Verfügung.
     </p>
+
+    <p style="margin: 20px 0; color: #333;">
+      Wir danken Ihnen für Ihr Vertrauen und freuen uns auf die Zusammenarbeit.
+    </p>
+
+    <p style="margin: 30px 0 10px 0; color: #333;">
+      Mit freundlichen Grüßen<br>
+      <strong>Ihr Team bauklar.org</strong>
+    </p>
+
+    <div style="border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 30px; text-align: center; color: #666; font-size: 12px;">
+      <p style="margin: 5px 0;">
+        <strong>Bauklar</strong><br>
+        Gutachten & Bauschadensbewertung
+      </p>
+      <p style="margin: 5px 0;">
+        Bei Fragen stehen wir Ihnen gerne zur Verfügung:<br>
+        <a href="mailto:kontakt@bauklar.org" style="color: #3498db; text-decoration: none;">kontakt@bauklar.org</a><br>
+        <a href="tel:+4932221804909" style="color: #3498db; text-decoration: none;">+49 322 21804909</a>
+      </p>
+    </div>
   </div>
 </body>
 </html>
@@ -112,25 +145,40 @@ export async function sendPaymentConfirmationEmail({
 
   // Plain text version for email clients that don't support HTML
   const textContent = `
-Zahlungsbestätigung
+Betreff: Auftragsbestätigung – Ihre Bestellung bei bauklar.org
 
-Vielen Dank für Ihre Zahlung!
+Sehr geehrte/r ${customerNameDisplay},
 
-Ihre Bestätigungsnummer: ${confirmationNumber}
-Bitte bewahren Sie diese Nummer für Ihre Unterlagen auf.
+vielen Dank für Ihre Bestellung über bauklar.org.
 
-Zahlungsdetails:
-- Zahlungsdatum: ${formattedDate}
-- Betrag: ${formattedAmount}
-- Auftragsnummer: ${orderId}
+Hiermit bestätigen wir den Eingang Ihres Auftrags sowie die Beauftragung gemäß Ihrer Bestellung.
 
-✅ Zahlung erfolgreich erhalten
-Wir haben Ihre Zahlung erhalten und werden nun mit der Bearbeitung Ihres Auftrags beginnen.
+Auftragsübersicht
 
-Nächste Schritte:
-- Sie erhalten in Kürze eine Bestätigung mit weiteren Details
-- Unser Team beginnt mit der Analyse Ihres Objekts
-- Das Gutachten wird innerhalb von 48 Stunden erstellt
+• Bestellnummer: ${confirmationNumber}
+• Datum der Bestellung: ${formattedOrderDate}
+• Beauftragte Leistung: Bauschadensbewertung
+• Preis: ${formattedAmount} inkl. MwSt.
+• Voraussichtliche Bearbeitungszeit: zwei Werktage
+
+Mit dieser E-Mail erhalten Sie das kaufmännische Bestätigungsschreiben gemäß den von Ihnen übermittelten Angaben. Sollten wir innerhalb von 48 Stunden keinen Widerspruch Ihrerseits erhalten, gehen wir davon aus, dass alle Daten korrekt sind und der Auftrag wie beschrieben ausgeführt werden soll.
+
+Nächste Schritte
+
+• Wir beginnen nun mit der Vorbereitung und Durchführung Ihres Auftrags.
+• Sie werden von uns informiert, sobald weitere Schritte erforderlich sind oder das Ergebnis für Sie bereitsteht.
+
+Hinweis zur Rechnungsstellung
+
+Die Rechnung erhalten Sie separat nach Abschluss bzw. gemäß den vereinbarten Modalitäten.
+
+Bei Rückfragen stehen wir Ihnen jederzeit gerne zur Verfügung.
+
+Wir danken Ihnen für Ihr Vertrauen und freuen uns auf die Zusammenarbeit.
+
+Mit freundlichen Grüßen
+
+Ihr Team bauklar.org
 
 ---
 Bauklar - Gutachten & Bauschadensbewertung
@@ -144,7 +192,7 @@ Bei Fragen: kontakt@bauklar.org oder +49 322 21804909
     const result = await resendClient.emails.send({
       from: fromEmail,
       to: customerEmail,
-      subject: `Zahlungsbestätigung - ${confirmationNumber}`,
+      subject: `Auftragsbestätigung – Ihre Bestellung bei bauklar.org`,
       html: htmlContent,
       text: textContent,
     });

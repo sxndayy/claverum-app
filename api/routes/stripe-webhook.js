@@ -62,8 +62,13 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
       const order = orderResult.rows[0];
       const customerEmail = session.customer_details?.email;
+      const customerName = session.customer_details?.name || null; // Get customer name from Stripe
       const paymentDate = new Date();
       const amountInCents = session.amount_total || 0;
+      
+      // Get order creation date from database
+      const orderDateResult = await query('SELECT created_at FROM orders WHERE id = $1', [orderId]);
+      const orderDate = orderDateResult.rows[0]?.created_at || paymentDate;
 
       // Generate confirmation number if not already exists
       let confirmationNumber = order.confirmation_number;
@@ -114,8 +119,10 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
           await sendPaymentConfirmationEmail({
             resendClient: resend,
             customerEmail: customerEmail,
+            customerName: customerName,
             confirmationNumber: confirmationNumber,
             paymentDate: paymentDate,
+            orderDate: orderDate,
             amountInCents: amountInCents,
             orderId: orderId
           });
