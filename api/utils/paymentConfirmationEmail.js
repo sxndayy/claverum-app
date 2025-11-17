@@ -8,18 +8,18 @@ import { generateConfirmationNumber, formatDateGerman, formatCurrency } from './
  * @param {Resend} params.resendClient - Resend client instance
  * @param {string} params.customerEmail - Customer email address
  * @param {string|null} params.customerName - Customer name (optional)
- * @param {string} params.confirmationNumber - Confirmation number (GUT-YYYY-MM-DD-XXXXX)
+ * @param {string} params.orderNumber - Real order number (UUID from order.id)
  * @param {Date} params.paymentDate - Payment date
  * @param {Date} params.orderDate - Order creation date
  * @param {number} params.amountInCents - Payment amount in cents
- * @param {string} params.orderId - Order UUID
+ * @param {string} params.orderId - Order UUID (same as orderNumber)
  * @returns {Promise<Object>} Resend API response
  */
 export async function sendPaymentConfirmationEmail({
   resendClient,
   customerEmail,
   customerName = null,
-  confirmationNumber,
+  orderNumber,
   paymentDate,
   orderDate,
   amountInCents,
@@ -37,8 +37,10 @@ export async function sendPaymentConfirmationEmail({
   const formattedOrderDate = formatDateGerman(orderDate);
   const formattedAmount = formatCurrency(amountInCents);
   
-  // Use customer name or fallback
-  const customerNameDisplay = customerName || 'Sehr geehrte/r Kunde/in';
+  // Format customer name for greeting - if name exists, use it, otherwise use generic greeting
+  const greeting = customerName 
+    ? `Sehr geehrte/r ${customerName},`
+    : 'Sehr geehrte/r Kunde/in,';
 
   // HTML Email Template
   const htmlContent = `
@@ -56,7 +58,7 @@ export async function sendPaymentConfirmationEmail({
     </h1>
     
     <p style="margin: 20px 0; color: #333;">
-      Sehr geehrte/r ${customerNameDisplay},
+      ${greeting}
     </p>
     
     <p style="margin: 20px 0; color: #333;">
@@ -74,7 +76,7 @@ export async function sendPaymentConfirmationEmail({
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
           <td style="padding: 8px 0; color: #666; width: 50%;">Bestellnummer:</td>
-          <td style="padding: 8px 0; font-weight: bold; color: #2c3e50;">${confirmationNumber}</td>
+          <td style="padding: 8px 0; font-weight: bold; color: #2c3e50;">${orderNumber}</td>
         </tr>
         <tr>
           <td style="padding: 8px 0; color: #666;">Datum der Bestellung:</td>
@@ -147,7 +149,7 @@ export async function sendPaymentConfirmationEmail({
   const textContent = `
 Betreff: Auftragsbestätigung – Ihre Bestellung bei bauklar.org
 
-Sehr geehrte/r ${customerNameDisplay},
+${greeting}
 
 vielen Dank für Ihre Bestellung über bauklar.org.
 
@@ -155,7 +157,7 @@ Hiermit bestätigen wir den Eingang Ihres Auftrags sowie die Beauftragung gemä�
 
 Auftragsübersicht
 
-• Bestellnummer: ${confirmationNumber}
+• Bestellnummer: ${orderNumber}
 • Datum der Bestellung: ${formattedOrderDate}
 • Beauftragte Leistung: Bauschadensbewertung
 • Preis: ${formattedAmount} inkl. MwSt.
@@ -197,7 +199,7 @@ Bei Fragen: kontakt@bauklar.org oder +49 322 21804909
       text: textContent,
     });
 
-    console.log(`✅ Payment confirmation email sent to ${customerEmail} (Confirmation: ${confirmationNumber})`);
+    console.log(`✅ Payment confirmation email sent to ${customerEmail} (Order: ${orderNumber})`);
     return result;
   } catch (error) {
     console.error('Error sending payment confirmation email:', error);

@@ -52,8 +52,11 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
     }
 
     try {
-      // Verify order exists
-      const orderResult = await query('SELECT id, confirmation_number FROM orders WHERE id = $1', [orderId]);
+      // Verify order exists and get customer name from database if available
+      const orderResult = await query(
+        'SELECT id, confirmation_number, created_at, customer_name, email FROM orders WHERE id = $1', 
+        [orderId]
+      );
       
       if (orderResult.rows.length === 0) {
         console.error(`Order not found: ${orderId}`);
@@ -61,14 +64,17 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
       }
 
       const order = orderResult.rows[0];
-      const customerEmail = session.customer_details?.email;
-      const customerName = session.customer_details?.name || null; // Get customer name from Stripe
+      const customerEmail = session.customer_details?.email || order.email;
+      // Get customer name from database first, fallback to Stripe
+      const customerName = order.customer_name || session.customer_details?.name || null;
       const paymentDate = new Date();
       const amountInCents = session.amount_total || 0;
       
-      // Get order creation date from database
-      const orderDateResult = await query('SELECT created_at FROM orders WHERE id = $1', [orderId]);
-      const orderDate = orderDateResult.rows[0]?.created_at || paymentDate;
+      // Use order creation date from database
+      const orderDate = order.created_at || paymentDate;
+      
+      // Use order.id (UUID) as the real order number (Auftragsnummer)
+      const orderNumber = order.id;
 
       // Generate confirmation number if not already exists
       let confirmationNumber = order.confirmation_number;
@@ -120,7 +126,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
             resendClient: resend,
             customerEmail: customerEmail,
             customerName: customerName,
-            confirmationNumber: confirmationNumber,
+            orderNumber: orderNumber, // Use real order ID (UUID) as Auftragsnummer
             paymentDate: paymentDate,
             orderDate: orderDate,
             amountInCents: amountInCents,
