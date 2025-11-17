@@ -98,9 +98,9 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
       // Use order creation date from database
       const orderDate = order.created_at || paymentDate;
       
-      // Use order.id (UUID) as the real order number, but format it nicely (first 8 chars)
-      // Format: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX -> XXXXXXXX
-      const orderNumber = order.id.split('-')[0].toUpperCase();
+      // Use order.id (UUID) as the real order number (complete UUID)
+      // Format: 4b1191dc-b4bb-4909-92e6-6beb09effec1
+      const orderNumber = order.id;
 
       // Generate confirmation number if not already exists
       let confirmationNumber = order.confirmation_number;
