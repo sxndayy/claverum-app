@@ -13,11 +13,12 @@ export const SITE_NAME = 'Bauklar.org';
 export const getApiBase = () => {
   // For Next.js, use environment variables
   if (typeof window !== 'undefined') {
-    // Client-side: use environment variable or default
-    return process.env.NEXT_PUBLIC_API_BASE || 'https://api.bauklar.org';
+    // Client-side: use environment variable or default to Railway URL
+    return process.env.NEXT_PUBLIC_API_BASE || 'https://claverum-app-production.up.railway.app';
   }
-  // Server-side: use environment variable or default
-  return process.env.API_BASE || process.env.NEXT_PUBLIC_API_BASE || 'https://api.bauklar.org';
+  // Server-side: use environment variable or default to Railway URL
+  return process.env.API_BASE || process.env.NEXT_PUBLIC_API_BASE || 'https://claverum-app-production.up.railway.app';
 };
+
 
 
