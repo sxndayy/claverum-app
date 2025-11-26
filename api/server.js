@@ -5,7 +5,7 @@ import archiver from 'archiver';
 import helmet from 'helmet';
 import { Resend } from 'resend';
 import { query, transaction, getPoolStats, isPoolExhaustionError } from './db.js';
-import { generatePresignedUploadUrl, getPublicUrl, downloadFileFromS3, deleteFileFromS3 } from './s3-client.js';
+import { generatePresignedUploadUrl, getPublicUrl, downloadFileFromS3, deleteFileFromS3, generatePresignedDownloadUrl } from './s3-client.js';
 import authRoutes from './routes/auth.js';
 import paymentRoutes from './routes/payments.js';
 import stripeWebhookRoutes from './routes/stripe-webhook.js';
@@ -444,12 +444,21 @@ app.post('/api/record-upload', uploadLimiter, requireOrderOwnership, async (req,
       });
     }
 
-    // Validate MIME type
-    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    // Validate MIME type (images and PDFs)
+    const allowedMimeTypes = [
+      'image/jpeg', 
+      'image/jpg', 
+      'image/png', 
+      'image/webp', 
+      'image/gif',
+      'image/heic',
+      'image/heif',
+      'application/pdf'
+    ];
     if (!allowedMimeTypes.includes(mimeType)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid MIME type'
+        error: 'Invalid MIME type. Only images (JPG, PNG, WebP, GIF, HEIC) and PDFs are allowed.'
       });
     }
 
@@ -566,6 +575,62 @@ app.delete('/api/delete-upload/:orderId/:uploadId', uploadLimiter, requireOrderO
     res.status(500).json({
       success: false,
       error: 'Failed to delete upload'
+    });
+  }
+});
+
+/**
+ * GET /api/download-url/:orderId/:uploadId
+ * Generate presigned download URL for an uploaded file
+ */
+app.get('/api/download-url/:orderId/:uploadId', publicLimiter, requireOrderOwnership, async (req, res) => {
+  try {
+    const { orderId, uploadId } = req.params;
+
+    // Validate UUIDs
+    if (!isValidUUID(orderId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid order ID format'
+      });
+    }
+
+    if (!isValidUUID(uploadId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid upload ID format'
+      });
+    }
+
+    // Verify upload exists and belongs to the order
+    const uploadResult = await query(
+      'SELECT id, file_path, order_id FROM uploads WHERE id = $1 AND order_id = $2',
+      [uploadId, orderId]
+    );
+
+    if (uploadResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Upload not found or does not belong to this order'
+      });
+    }
+
+    const upload = uploadResult.rows[0];
+    const filePath = upload.file_path;
+
+    // Generate presigned download URL (valid for 1 hour)
+    const downloadUrl = await generatePresignedDownloadUrl(filePath, 3600);
+
+    res.json({
+      success: true,
+      downloadUrl,
+      expiresIn: 3600
+    });
+  } catch (error) {
+    console.error('Error generating download URL:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate download URL'
     });
   }
 });

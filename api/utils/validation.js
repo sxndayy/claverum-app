@@ -99,6 +99,24 @@ export function isValidImageMimeType(mimeType) {
 }
 
 /**
+ * Validate MIME type for uploads (images and PDFs)
+ */
+export function isValidUploadMimeType(mimeType) {
+  const allowedTypes = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png', 
+    'image/webp',
+    'image/gif',
+    'image/heic',
+    'image/heif',
+    'application/pdf'
+  ];
+  
+  return allowedTypes.includes(mimeType);
+}
+
+/**
  * Validate file size (in bytes)
  */
 export function isValidFileSize(size, maxSizeMB = 10) {

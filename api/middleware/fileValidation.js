@@ -1,5 +1,6 @@
 import { 
   isValidImageMimeType, 
+  isValidUploadMimeType,
   isValidFileSize, 
   sanitizeFilename 
 } from '../utils/validation.js';
@@ -10,9 +11,9 @@ import {
 export function validateFileUpload(mimeType, fileSize, filename) {
   const errors = [];
 
-  // Validate MIME type
-  if (!isValidImageMimeType(mimeType)) {
-    errors.push('Invalid file type. Only images (JPG, PNG, WebP, GIF) are allowed.');
+  // Validate MIME type (images and PDFs)
+  if (!isValidUploadMimeType(mimeType)) {
+    errors.push('Invalid file type. Only images (JPG, PNG, WebP, GIF, HEIC) and PDFs are allowed.');
   }
 
   // Validate file size (max 10MB)

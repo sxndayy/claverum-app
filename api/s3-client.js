@@ -59,6 +59,27 @@ export function getPublicUrl(filePath) {
 }
 
 /**
+ * Generate a presigned URL for downloading a file from S3
+ * @param {string} filePath - S3 key/path
+ * @param {number} expiresIn - Expiration time in seconds (default: 1 hour)
+ * @returns {Promise<string>} Presigned URL
+ */
+export async function generatePresignedDownloadUrl(filePath, expiresIn = 3600) {
+  const command = new GetObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: filePath,
+  });
+
+  try {
+    const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn });
+    return presignedUrl;
+  } catch (error) {
+    console.error('Error generating presigned download URL:', error);
+    throw new Error('Failed to generate download URL');
+  }
+}
+
+/**
  * Download a file from S3 storage
  * @param {string} filePath - S3 key/path
  * @returns {Promise<Buffer>} - File content as Buffer
