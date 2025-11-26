@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import dotenv from 'dotenv';
 
@@ -81,6 +81,25 @@ export async function downloadFileFromS3(filePath) {
     return Buffer.concat(chunks);
   } catch (error) {
     console.error(`Error downloading file from S3: ${filePath}`, error);
+    throw error;
+  }
+}
+
+/**
+ * Delete a file from S3 storage
+ * @param {string} filePath - S3 key/path
+ * @returns {Promise<void>}
+ */
+export async function deleteFileFromS3(filePath) {
+  const command = new DeleteObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: filePath,
+  });
+
+  try {
+    await s3Client.send(command);
+  } catch (error) {
+    console.error(`Error deleting file from S3: ${filePath}`, error);
     throw error;
   }
 }

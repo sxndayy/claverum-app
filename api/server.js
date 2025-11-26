@@ -5,7 +5,7 @@ import archiver from 'archiver';
 import helmet from 'helmet';
 import { Resend } from 'resend';
 import { query, transaction, getPoolStats, isPoolExhaustionError } from './db.js';
-import { generatePresignedUploadUrl, getPublicUrl, downloadFileFromS3 } from './s3-client.js';
+import { generatePresignedUploadUrl, getPublicUrl, downloadFileFromS3, deleteFileFromS3 } from './s3-client.js';
 import authRoutes from './routes/auth.js';
 import paymentRoutes from './routes/payments.js';
 import stripeWebhookRoutes from './routes/stripe-webhook.js';
@@ -502,6 +502,70 @@ app.post('/api/record-upload', uploadLimiter, requireOrderOwnership, async (req,
     res.status(500).json({
       success: false,
       error: 'Failed to record upload'
+    });
+  }
+});
+
+/**
+ * DELETE /api/delete-upload/:orderId/:uploadId
+ * Deletes an upload from database and S3 storage
+ */
+app.delete('/api/delete-upload/:orderId/:uploadId', uploadLimiter, requireOrderOwnership, async (req, res) => {
+  try {
+    const { orderId, uploadId } = req.params;
+
+    // Validate UUIDs
+    if (!isValidUUID(orderId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid order ID format'
+      });
+    }
+
+    if (!isValidUUID(uploadId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid upload ID format'
+      });
+    }
+
+    // Verify upload exists and belongs to the order
+    const uploadResult = await query(
+      'SELECT id, file_path, order_id FROM uploads WHERE id = $1 AND order_id = $2',
+      [uploadId, orderId]
+    );
+
+    if (uploadResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Upload not found or does not belong to this order'
+      });
+    }
+
+    const upload = uploadResult.rows[0];
+    const filePath = upload.file_path;
+
+    // Delete from S3 (best effort - don't fail if file doesn't exist in S3)
+    try {
+      await deleteFileFromS3(filePath);
+    } catch (s3Error) {
+      // Log error but continue with DB deletion
+      console.warn(`Failed to delete file from S3: ${filePath}`, s3Error.message);
+      // Don't fail the request if S3 deletion fails - file might already be deleted
+    }
+
+    // Delete from database
+    await query('DELETE FROM uploads WHERE id = $1', [uploadId]);
+
+    res.json({
+      success: true,
+      message: 'Upload deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting upload:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to delete upload'
     });
   }
 });
