@@ -704,9 +704,67 @@ app.post('/api/save-texts', publicLimiter, requireOrderOwnership, async (req, re
 
 /**
  * GET /api/order/:orderId
- * Get order details with all uploads and texts
+ * Get order details with all uploads and texts (for normal users with session token)
  */
-app.get('/api/order/:orderId', adminLimiter, requireAuth, async (req, res) => {
+app.get('/api/order/:orderId', publicLimiter, requireOrderOwnership, async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    // Get order details
+    const orderResult = await query(
+      'SELECT * FROM orders WHERE id = $1',
+      [orderId]
+    );
+
+    if (orderResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      });
+    }
+
+    // Get all uploads
+    const uploadsResult = await query(
+      'SELECT * FROM uploads WHERE order_id = $1 ORDER BY created_at',
+      [orderId]
+    );
+
+    // Get all area texts
+    const textsResult = await query(
+      'SELECT * FROM area_texts WHERE order_id = $1',
+      [orderId]
+    );
+
+    const order = orderResult.rows[0];
+
+    // Add public URLs to uploads
+    const uploadsWithPublicUrls = uploadsResult.rows.map(upload => ({
+      ...upload,
+      publicUrl: getPublicUrl(upload.file_path)
+    }));
+
+    res.json({
+      success: true,
+      order: {
+        ...order,
+        uploads: uploadsWithPublicUrls,
+        texts: textsResult.rows
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching order:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch order'
+    });
+  }
+});
+
+/**
+ * GET /api/admin/order/:orderId
+ * Get order details with all uploads and texts (for admins with JWT token)
+ */
+app.get('/api/admin/order/:orderId', adminLimiter, requireAuth, async (req, res) => {
   try {
     const { orderId } = req.params;
 
