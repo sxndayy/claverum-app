@@ -118,7 +118,7 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
       setLoading(true);
       setError(null);
 
-      const response = await apiClient.getOrderDetails(order.id);
+      const response = await apiClient.getAdminOrderDetails(order.id);
       
       if (response.success) {
         setOrderDetail(response.order);
@@ -511,5 +511,6 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
 };
 
 export default AdminOrderDetail;
+
 
 

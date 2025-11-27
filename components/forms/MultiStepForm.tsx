@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,8 +14,17 @@ import { useToast } from '@/hooks/use-toast';
 import AreaUpload from '@/components/forms/AreaUpload';
 import UploadStatus from '@/components/forms/UploadStatus';
 import { apiClient } from '@/lib/apiClient';
-import { uploadQueue } from '@/lib/uploadQueue';
-import { getCurrentOrderId, setCurrentOrder, hasActiveOrder } from '@/lib/orderManager';
+import { compressImage } from '@/lib/imageCompression';
+import { AreaUploadItem, UploadableFile } from '@/types/uploads';
+import { getCurrentOrderId, setCurrentOrder, hasActiveOrder, getCurrentStep, setCurrentStep as saveCurrentStep } from '@/lib/orderManager';
+
+type AreaKey = 'keller' | 'elektro' | 'heizung' | 'fassade' | 'dach' | 'innenraeume';
+
+type AreaUploadsState = Record<AreaKey, AreaUploadItem[]>;
+
+interface AreaContent {
+  text: string;
+}
 
 interface FormData {
   // Step 1: Objekt-Basics
@@ -27,45 +36,535 @@ interface FormData {
   buildYear: string;
   
   // Steps 2-7: Building Areas
-  keller: { photos: string[]; files: File[]; text: string; };
-  elektro: { photos: string[]; files: File[]; text: string; };
-  heizung: { photos: string[]; files: File[]; text: string; };
-  fassade: { photos: string[]; files: File[]; text: string; };
-  dach: { photos: string[]; files: File[]; text: string; };
-  innenraeume: { photos: string[]; files: File[]; text: string; };
+  keller: AreaContent;
+  elektro: AreaContent;
+  heizung: AreaContent;
+  fassade: AreaContent;
+  dach: AreaContent;
+  innenraeume: AreaContent;
 
   // Step 8: Produkt & Checkout
   selectedProduct: string;
   selectedPackage: string;
 }
 
-const MultiStepForm: React.FC = () => {
-  const router = useRouter();
-  const { toast } = useToast();
-  const [currentStep, setCurrentStep] = useState(1);
-  const [orderId, setOrderId] = useState<string | null>(null);
-  const [isInitializing, setIsInitializing] = useState(false); // Changed to false - form renders immediately
-  const [paymentData, setPaymentData] = useState<any>(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [orderCreationError, setOrderCreationError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<FormData>({
+const AREA_KEYS: AreaKey[] = ['keller', 'elektro', 'heizung', 'fassade', 'dach', 'innenraeume'];
+const FORM_DATA_STORAGE_KEY = 'claverum_form_data';
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+const MAX_FILES_PER_AREA = 20;
+const generateUploadId = (areaKey: AreaKey) => {
+  const randomPart =
+    typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+      ? crypto.randomUUID()
+      : Math.random().toString(36).slice(2, 10);
+  return `${areaKey}-${Date.now()}-${randomPart}`;
+};
+
+const createEmptyArea = (): AreaContent => ({
+  text: '',
+});
+
+const createEmptyAreaUploads = (): AreaUploadsState => ({
+  keller: [],
+  elektro: [],
+  heizung: [],
+  fassade: [],
+  dach: [],
+  innenraeume: [],
+});
+
+const createEmptyFormData = (): FormData => ({
     street: '',
     houseNumber: '',
     postalCode: '',
     city: '',
     propertyType: '',
     buildYear: '',
-    keller: { photos: [], files: [], text: '' },
-    elektro: { photos: [], files: [], text: '' },
-    heizung: { photos: [], files: [], text: '' },
-    fassade: { photos: [], files: [], text: '' },
-    dach: { photos: [], files: [], text: '' },
-    innenraeume: { photos: [], files: [], text: '' },
+  keller: createEmptyArea(),
+  elektro: createEmptyArea(),
+  heizung: createEmptyArea(),
+  fassade: createEmptyArea(),
+  dach: createEmptyArea(),
+  innenraeume: createEmptyArea(),
     selectedProduct: '',
     selectedPackage: '',
   });
 
-  // Initialize order on component mount
+const mergeStoredArea = (area: any): AreaContent => ({
+  text: typeof area?.text === 'string' ? area.text : '',
+});
+
+const loadStoredFormData = (): FormData | null => {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = sessionStorage.getItem(FORM_DATA_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    const empty = createEmptyFormData();
+    return {
+      ...empty,
+      ...parsed,
+      keller: mergeStoredArea(parsed?.keller),
+      elektro: mergeStoredArea(parsed?.elektro),
+      heizung: mergeStoredArea(parsed?.heizung),
+      fassade: mergeStoredArea(parsed?.fassade),
+      dach: mergeStoredArea(parsed?.dach),
+      innenraeume: mergeStoredArea(parsed?.innenraeume),
+    };
+  } catch (error) {
+    console.error('Error loading stored form data:', error);
+    return null;
+  }
+};
+
+const saveFormDataToStorage = (data: FormData) => {
+  if (typeof window === 'undefined') return;
+  try {
+    sessionStorage.setItem(FORM_DATA_STORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving form data to sessionStorage:', error);
+  }
+};
+
+const clearStoredFormData = () => {
+  if (typeof window === 'undefined') return;
+  try {
+    sessionStorage.removeItem(FORM_DATA_STORAGE_KEY);
+  } catch (error) {
+    console.error('Error clearing stored form data:', error);
+  }
+};
+
+
+const isImageFile = (file: File): boolean => {
+  return file.type.startsWith('image/') || /\.(jpg|jpeg|png|gif|webp|heic|heif)$/i.test(file.name);
+};
+
+const isPdfFile = (file: File): boolean => {
+  return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+};
+
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif', 'application/pdf'];
+
+const validateFile = (file: File, allowPdf: boolean = false): string | null => {
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    return 'Ungültiger Dateityp. Nur Bilder' + (allowPdf ? ' und PDFs' : '') + ' sind erlaubt.';
+  }
+  if (file.type === 'application/pdf' && !allowPdf) {
+    return 'PDFs sind für diesen Bereich nicht erlaubt.';
+  }
+  if (file.size > MAX_FILE_SIZE) {
+    return 'Datei zu groß (max. 10 MB).';
+  }
+  return null;
+};
+
+const AREA_PDF_SUPPORT: Record<AreaKey, boolean> = {
+  keller: true,
+  elektro: false,
+  heizung: true,
+  fassade: false,
+  dach: false,
+  innenraeume: false,
+};
+
+
+
+const MultiStepForm: React.FC = () => {
+  const router = useRouter();
+  const { toast } = useToast();
+  // Initialize currentStep from sessionStorage immediately
+  const [currentStep, setCurrentStep] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedStep = getCurrentStep();
+      return savedStep >= 1 && savedStep <= 8 ? savedStep : 1;
+    }
+    return 1;
+  });
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [formData, setFormData] = useState<FormData>(() => {
+    if (typeof window !== 'undefined') {
+      const hasExistingOrder = !!getCurrentOrderId();
+      if (hasExistingOrder) {
+        const stored = loadStoredFormData();
+        if (stored) {
+          return stored;
+        }
+      }
+    }
+    return createEmptyFormData();
+  });
+  const [areaUploads, setAreaUploads] = useState<AreaUploadsState>(() => {
+    return createEmptyAreaUploads();
+  });
+  const uploadFilesRef = useRef<Record<string, UploadableFile>>({});
+  const itemAreaMapRef = useRef<Record<string, AreaKey>>({});
+  const prevUploadsRef = useRef<AreaUploadsState | null>(null);
+  const fetchedUrlsRef = useRef<Set<string>>(new Set()); // Track which uploadIds already have URLs fetched
+  
+  // Fetch presigned URLs for uploads loaded from backend
+  useEffect(() => {
+    if (!orderId) return;
+
+    const fetchPresignedUrls = async () => {
+      const uploadsToFetch: Array<{ itemId: string; areaKey: AreaKey; uploadId: string }> = [];
+
+      // Collect all uploads that need presigned URLs
+      Object.entries(areaUploads).forEach(([areaKey, items]) => {
+        items.forEach(item => {
+          // Check if item needs a presigned URL: uploaded, has uploadId, no remoteUrl, and not already fetched
+          if (
+            item.status === 'uploaded' && 
+            item.uploadId && 
+            (!item.remoteUrl || item.remoteUrl === '') &&
+            !fetchedUrlsRef.current.has(item.uploadId)
+          ) {
+            uploadsToFetch.push({
+              itemId: item.id,
+              areaKey: areaKey as AreaKey,
+              uploadId: item.uploadId,
+            });
+            fetchedUrlsRef.current.add(item.uploadId); // Mark as being fetched
+          }
+        });
+      });
+
+      if (uploadsToFetch.length === 0) return;
+
+      console.log(`[PRESIGNED] Fetching ${uploadsToFetch.length} presigned URLs...`);
+
+      // Fetch presigned URLs in parallel
+      const urlPromises = uploadsToFetch.map(async ({ itemId, areaKey, uploadId }) => {
+        try {
+          const response = await apiClient.getDownloadUrl(orderId, uploadId);
+          if (response.success && response.downloadUrl) {
+            console.log(`[PRESIGNED] Successfully fetched URL for upload ${uploadId}`);
+            return { itemId, areaKey, url: response.downloadUrl };
+          }
+          // Remove from fetched set if failed, so we can retry later
+          fetchedUrlsRef.current.delete(uploadId);
+          console.error(`[PRESIGNED] Failed to get download URL for ${uploadId}:`, response.error);
+          return null;
+        } catch (error) {
+          // Remove from fetched set if failed, so we can retry later
+          fetchedUrlsRef.current.delete(uploadId);
+          console.error(`[PRESIGNED] Error fetching presigned URL for upload ${uploadId}:`, error);
+          return null;
+        }
+      });
+
+      const results = await Promise.all(urlPromises);
+
+      // Update state with presigned URLs
+      setAreaUploads(prev => {
+        const updated = { ...prev };
+        let hasChanges = false;
+        
+        results.forEach(result => {
+          if (result) {
+            const items = updated[result.areaKey];
+            const index = items.findIndex(item => item.id === result.itemId);
+            if (index !== -1 && (!items[index].remoteUrl || items[index].remoteUrl === '')) {
+              updated[result.areaKey] = [...items];
+              updated[result.areaKey][index] = {
+                ...items[index],
+                previewUrl: result.url,
+                remoteUrl: result.url,
+              };
+              hasChanges = true;
+            }
+          }
+        });
+        
+        return hasChanges ? updated : prev;
+      });
+    };
+
+    fetchPresignedUrls();
+  }, [orderId, areaUploads]); // React to changes in areaUploads to fetch URLs for newly loaded uploads
+
+  const revokePreviewUrl = useCallback((url?: string) => {
+    if (url && url.startsWith('blob:')) {
+      URL.revokeObjectURL(url);
+    }
+  }, []);
+
+  const registerLocalFile = useCallback((areaKey: AreaKey, file: File): AreaUploadItem => {
+    const id = generateUploadId(areaKey);
+    const isPdf = isPdfFile(file);
+    const previewUrl = isPdf ? '' : URL.createObjectURL(file);
+    uploadFilesRef.current[id] = file as UploadableFile;
+    itemAreaMapRef.current[id] = areaKey;
+
+    return {
+      id,
+      name: file.name,
+      size: file.size,
+      mimeType: file.type || (isPdf ? 'application/pdf' : 'image/jpeg'),
+      kind: isPdf ? 'pdf' : 'image',
+      previewUrl,
+      status: 'uploading', // Start immediately as uploading
+    };
+  }, []);
+
+  const cleanupItemResources = useCallback(
+    (itemId: string, previewUrl?: string) => {
+      revokePreviewUrl(previewUrl);
+      delete uploadFilesRef.current[itemId];
+      delete itemAreaMapRef.current[itemId];
+    },
+    [revokePreviewUrl],
+  );
+
+  // Simple upload function - uploads immediately without queue
+  const uploadFileImmediately = useCallback(
+    async (file: File, itemId: string, areaKey: AreaKey, orderId: string) => {
+      try {
+        // Map area key to backend area name
+        const areaMap: Record<string, string> = {
+          'keller': 'Keller',
+          'elektro': 'Elektro',
+          'heizung': 'Heizung',
+          'fassade': 'Fassade',
+          'dach': 'Dach',
+          'innenraeume': 'Innenräume'
+        };
+        const areaName = areaMap[areaKey] || areaKey.charAt(0).toUpperCase() + areaKey.slice(1);
+        const isPdf = isPdfFile(file);
+
+        // Step 1: Compress image (skip for PDFs)
+        let fileToUpload = file;
+        if (!isPdf) {
+          fileToUpload = await compressImage(file, {
+            maxWidth: 1600,
+            maxHeight: 1600,
+            quality: 0.8,
+          });
+        }
+
+        // Step 2: Get presigned URL
+        const urlResponse = await apiClient.getUploadUrl(
+          orderId,
+          areaName,
+          fileToUpload.name,
+          fileToUpload.type
+        );
+
+        if (!urlResponse.success) {
+          throw new Error(urlResponse.error || 'Failed to get upload URL');
+        }
+
+        // Step 3: Upload to S3
+        const uploadSuccess = await apiClient.uploadToS3(urlResponse.uploadUrl, fileToUpload);
+
+        if (!uploadSuccess) {
+          throw new Error('Failed to upload to storage');
+        }
+
+        // Step 4: Record upload in database
+        const recordResponse = await apiClient.recordUpload({
+          orderId,
+          area: areaName,
+          filePath: urlResponse.filePath,
+          mimeType: fileToUpload.type,
+          fileSize: fileToUpload.size,
+        });
+
+        if (!recordResponse.success) {
+          throw new Error(recordResponse.error || 'Failed to record upload');
+        }
+
+        // Step 5: Get presigned download URL (bucket is private)
+        const downloadUrlResponse = await apiClient.getDownloadUrl(
+          orderId,
+          recordResponse.uploadId
+        );
+
+        // Use presigned URL if available, fallback to publicUrl
+        const displayUrl = downloadUrlResponse.success && downloadUrlResponse.downloadUrl
+          ? downloadUrlResponse.downloadUrl
+          : recordResponse.publicUrl;
+
+        // Step 6: Update UI with success
+        setAreaUploads(prev => {
+          const items = prev[areaKey];
+          const index = items.findIndex(item => item.id === itemId);
+          if (index === -1) return prev;
+
+          const updatedItems = [...items];
+          const previousPreview = updatedItems[index].previewUrl;
+          updatedItems[index] = {
+            ...updatedItems[index],
+            status: 'uploaded',
+            remoteUrl: displayUrl,
+            previewUrl: displayUrl,
+          };
+
+          // Cleanup blob URL if it was a local preview
+          cleanupItemResources(itemId, previousPreview);
+
+          return {
+            ...prev,
+            [areaKey]: updatedItems,
+          };
+        });
+      } catch (error) {
+        console.error(`[UPLOAD] Upload failed for ${file.name}:`, error);
+        
+        // Update UI with error
+        setAreaUploads(prev => {
+          const items = prev[areaKey];
+          const index = items.findIndex(item => item.id === itemId);
+          if (index === -1) return prev;
+
+          const updatedItems = [...items];
+          updatedItems[index] = {
+            ...updatedItems[index],
+            status: 'failed',
+            error: error instanceof Error ? error.message : 'Upload failed',
+          };
+
+          return {
+            ...prev,
+            [areaKey]: updatedItems,
+          };
+        });
+      }
+    },
+    [cleanupItemResources],
+  );
+
+  useEffect(() => {
+    saveFormDataToStorage(formData);
+  }, [formData]);
+
+
+  const handleAreaFilesSelected = useCallback(
+    (areaKey: AreaKey, files: File[]) => {
+      if (!files.length) return;
+
+      const existingOrderId = orderId || getCurrentOrderId();
+      if (!existingOrderId) {
+        toast({
+          variant: 'destructive',
+          title: 'Fehler',
+          description: 'Bitte erstellen Sie zuerst eine Bestellung.',
+        });
+        return;
+      }
+
+      const existingCount = areaUploads[areaKey].length;
+      const remainingSlots = MAX_FILES_PER_AREA - existingCount;
+
+      if (remainingSlots <= 0) {
+        toast({
+          variant: 'destructive',
+          title: 'Limit erreicht',
+          description: `Sie können maximal ${MAX_FILES_PER_AREA} Dateien hochladen.`,
+        });
+        return;
+      }
+
+      const allowPdf = AREA_PDF_SUPPORT[areaKey] ?? false;
+      const validFiles: File[] = [];
+      files.forEach(file => {
+        const error = validateFile(file, allowPdf);
+        if (error) {
+          toast({
+            variant: 'destructive',
+            title: 'Datei ungültig',
+            description: `${file.name}: ${error}`,
+          });
+          return;
+        }
+
+        validFiles.push(file);
+      });
+
+      if (validFiles.length === 0) {
+        return;
+      }
+
+      const limitedFiles = validFiles.slice(0, remainingSlots);
+      const newItems = limitedFiles.map(file => registerLocalFile(areaKey, file));
+
+      // Add items to UI immediately
+      setAreaUploads(prev => ({
+        ...prev,
+        [areaKey]: [...prev[areaKey], ...newItems],
+      }));
+
+      // Start upload immediately for each file
+      limitedFiles.forEach((file, index) => {
+        const itemId = newItems[index].id;
+        uploadFileImmediately(file, itemId, areaKey, existingOrderId).catch(error => {
+          console.error(`[UPLOAD] Failed to start upload for ${file.name}:`, error);
+        });
+      });
+    },
+    [areaUploads, toast, registerLocalFile, uploadFileImmediately, orderId],
+  );
+
+  const handleRemoveItem = useCallback(
+    async (areaKey: AreaKey, itemId: string) => {
+      const items = areaUploads[areaKey];
+      const index = items.findIndex(item => item.id === itemId);
+      if (index === -1) return;
+      
+      const target = items[index];
+      if (target.status === 'uploading') {
+        toast({
+          variant: 'destructive',
+          title: 'Upload läuft',
+          description: 'Bitte warten Sie bis der Upload abgeschlossen ist.',
+        });
+        return;
+      }
+
+      // Extract upload ID from item ID (format: areaKey-uploadId or areaKey-timestamp-random)
+      const uploadIdMatch = target.id.match(/^[^-]+-(.+)$/);
+      const uploadId = uploadIdMatch ? uploadIdMatch[1] : null;
+      const existingOrderId = orderId || getCurrentOrderId();
+
+      // Remove from UI immediately
+      cleanupItemResources(itemId, target.previewUrl);
+      setAreaUploads(prev => {
+        const updatedItems = [...prev[areaKey].slice(0, index), ...prev[areaKey].slice(index + 1)];
+        return {
+          ...prev,
+          [areaKey]: updatedItems,
+        };
+      });
+
+      // Delete from database if it was uploaded
+      if (target.status === 'uploaded' && uploadId && existingOrderId) {
+        try {
+          const deleteResponse = await apiClient.deleteUpload(existingOrderId, uploadId);
+          
+          if (!deleteResponse.success) {
+            console.error('Failed to delete upload:', deleteResponse.error);
+            toast({
+              variant: 'destructive',
+              title: 'Fehler',
+              description: 'Datei konnte nicht gelöscht werden. Bitte versuchen Sie es erneut.',
+            });
+            // Optionally reload uploads from DB to restore the item
+          }
+        } catch (error) {
+          console.error('Error deleting upload:', error);
+          toast({
+            variant: 'destructive',
+            title: 'Fehler',
+            description: 'Datei konnte nicht gelöscht werden. Bitte versuchen Sie es erneut.',
+          });
+        }
+      }
+    },
+    [areaUploads, cleanupItemResources, orderId, toast],
+  );
+
+  // Initialize order on component mount - non-blocking
   useEffect(() => {
     const initializeOrder = async () => {
       // Check if we're returning from Stripe payment
@@ -73,16 +572,9 @@ const MultiStepForm: React.FC = () => {
       const sessionId = urlParams.get('session_id');
       
       if (sessionId) {
-        // We're returning from Stripe, load payment data and show Step 9
-        try {
-          const response = await apiClient.getStripeSession(sessionId);
-          if (response.success) {
-            setPaymentData(response);
-            setCurrentStep(9);
-          }
-        } catch (error) {
-          console.error('Error loading payment data:', error);
-        }
+        // Redirect to separate success page
+        router.push(`/success?session_id=${sessionId}`);
+        return;
       }
       
       // Check if order already exists in session
@@ -91,34 +583,48 @@ const MultiStepForm: React.FC = () => {
       if (existingOrderId) {
         console.log('Using existing order:', existingOrderId);
         setOrderId(existingOrderId);
-      } else {
-        // Create new order in background (non-blocking)
-        console.log('Creating new order...');
-        apiClient.createOrder()
-          .then(response => {
-            if (response.success) {
-              console.log('Order created:', response.orderId);
-              setOrderId(response.orderId);
-              setCurrentOrder(response.orderId, response.sessionToken);
-              setOrderCreationError(null);
-            } else {
-              console.error('Order creation failed:', response.error);
-              setOrderCreationError(response.error || 'Fehler beim Erstellen des Auftrags');
-              toast({
-                variant: 'destructive',
-                title: 'Fehler',
-                description: response.error || 'Fehler beim Erstellen des Auftrags'
-              });
+        
+        // Step is already restored via useState initializer, but ensure it's set correctly
+        const savedStep = getCurrentStep();
+        if (savedStep >= 1 && savedStep <= 8) {
+          setCurrentStep(savedStep);
+          saveCurrentStep(savedStep); // Ensure it's saved
+        }
+        
+        // Load order data from backend in background
+        apiClient.getOrderDetails(existingOrderId)
+          .then(orderResponse => {
+            if (orderResponse.success && orderResponse.order) {
+              // Load form data from backend
+              loadFormDataFromOrder(orderResponse.order);
             }
           })
           .catch(error => {
+            console.error('Error loading order data:', error);
+            // Continue anyway - form will be empty but user can continue
+          });
+      } else {
+        // Create new order in background (non-blocking, no UI feedback)
+        clearStoredFormData();
+        setFormData(createEmptyFormData());
+        setAreaUploads(createEmptyAreaUploads());
+        uploadFilesRef.current = {};
+        itemAreaMapRef.current = {};
+        
+        // Silent retry in background - no UI feedback
+        apiClient.createOrder()
+          .then(response => {
+            if (response.success) {
+              setOrderId(response.orderId);
+              setCurrentOrder(response.orderId, response.sessionToken);
+              setCurrentStep(1);
+              saveCurrentStep(1);
+            }
+            // Silently fail - user can continue filling form, order will be created on next step if needed
+          })
+          .catch(error => {
+            // Silent fail - no UI feedback
             console.error('Order creation error:', error);
-            setOrderCreationError('Fehler beim Erstellen des Auftrags');
-            toast({
-              variant: 'destructive',
-              title: 'Fehler',
-              description: 'Fehler beim Erstellen des Auftrags'
-            });
           });
       }
     };
@@ -131,7 +637,7 @@ const MultiStepForm: React.FC = () => {
   };
 
   // Map area name to key
-  const getAreaKey = (step: number): keyof FormData | null => {
+  const getAreaKey = (step: number): AreaKey | null => {
     switch (step) {
       case 2: return 'keller';
       case 3: return 'elektro';
@@ -156,12 +662,102 @@ const MultiStepForm: React.FC = () => {
     return areaMap[areaKey] || areaKey.charAt(0).toUpperCase() + areaKey.slice(1);
   };
 
+  // Map backend area name to frontend area key
+  const getAreaKeyFromAPI = (areaName: string): AreaKey | null => {
+    const areaMap: Record<string, AreaKey> = {
+      'Keller': 'keller',
+      'Elektro': 'elektro',
+      'Heizung': 'heizung',
+      'Fassade': 'fassade',
+      'Dach': 'dach',
+      'Innenräume': 'innenraeume',
+      'Innenraeume': 'innenraeume' // Fallback for old data
+    };
+    return areaMap[areaName] || null;
+  };
+
+const buildUploadsFromOrder = (uploads: any[], orderId: string | null): AreaUploadsState => {
+  const state = createEmptyAreaUploads();
+  if (!Array.isArray(uploads)) {
+    return state;
+  }
+
+  uploads.forEach(upload => {
+    const areaKey = getAreaKeyFromAPI(upload.area);
+    if (!areaKey) return;
+
+    const mimeType = upload.mime_type || 'image/jpeg';
+    const isPdf = mimeType === 'application/pdf';
+    const kind: 'image' | 'pdf' = isPdf ? 'pdf' : 'image';
+
+    // Store upload ID for fetching presigned URL later
+    // Don't set previewUrl/remoteUrl yet - will be fetched asynchronously
+    const item: AreaUploadItem = {
+      id: upload.id ? `${areaKey}-${upload.id}` : generateUploadId(areaKey),
+      name: upload.file_path?.split('/').pop() || upload.area || 'Datei',
+      size: upload.file_size || 0,
+      mimeType: mimeType,
+      kind: kind,
+      previewUrl: '', // Will be set via presigned URL
+      status: 'uploaded',
+      remoteUrl: '', // Will be set via presigned URL
+      uploadId: upload.id, // Store upload ID for fetching presigned URL
+    };
+
+    state[areaKey].push(item);
+  });
+
+  return state;
+};
+
+  // Load form data from backend order data
+  const loadFormDataFromOrder = (order: any) => {
+    const newFormData: FormData = {
+      street: order.street || '',
+      houseNumber: order.house_number || '',
+      postalCode: order.postal_code || '',
+      city: order.city || '',
+      propertyType: order.property_type || '',
+      buildYear: order.build_year || '',
+      keller: createEmptyArea(),
+      elektro: createEmptyArea(),
+      heizung: createEmptyArea(),
+      fassade: createEmptyArea(),
+      dach: createEmptyArea(),
+      innenraeume: createEmptyArea(),
+      selectedProduct: '',
+      selectedPackage: '',
+    };
+
+    // Load texts by area
+    if (order.texts && Array.isArray(order.texts)) {
+      order.texts.forEach((text: any) => {
+        const areaKey = getAreaKeyFromAPI(text.area);
+        if (areaKey && newFormData[areaKey]) {
+          const areaData = newFormData[areaKey] as AreaContent;
+          areaData.text = text.content || '';
+        }
+      });
+    }
+
+    setFormData(newFormData);
+    const uploadsFromOrder = buildUploadsFromOrder(order.uploads || [], orderId);
+    setAreaUploads(uploadsFromOrder);
+    uploadFilesRef.current = {};
+    itemAreaMapRef.current = {};
+    // Reset fetched URLs ref so presigned URLs are fetched for newly loaded uploads
+    fetchedUrlsRef.current = new Set();
+  };
+
   // Save current step data before navigating
-  const saveCurrentStepData = async () => {
-    if (!orderId) return;
+  const saveCurrentStepData = async (stepToSave: number) => {
+    if (!orderId) {
+      console.warn('Cannot save step data: no orderId');
+      return;
+    }
 
     // Step 1: Save basic info
-    if (currentStep === 1) {
+    if (stepToSave === 1) {
       if (formData.street || formData.city) {
         await apiClient.updateOrder(orderId, {
           street: formData.street,
@@ -176,15 +772,17 @@ const MultiStepForm: React.FC = () => {
     }
 
     // Steps 2-7: Handle area uploads and texts
-    const areaKey = getAreaKey(currentStep);
+    const areaKey = getAreaKey(stepToSave);
     if (!areaKey) return;
 
-    const areaData = formData[areaKey] as { photos: string[]; files: File[]; text: string; };
+    const areaData = formData[areaKey] as AreaContent;
+    const itemsForArea = areaUploads[areaKey] || [];
     
-    // Queue uploads in background
-    if (areaData.files.length > 0) {
-      const areaName = getAreaNameForAPI(areaKey);
-      uploadQueue.addMultipleUploads(orderId, areaName, areaData.files);
+    // Queue ALL pending uploads in background - but delay to avoid blocking UI
+    const pendingItems = itemsForArea.filter(item => item.status === 'local');
+    if (pendingItems.length > 0) {
+      // Uploads are now started immediately when files are selected
+      // No need to trigger uploads here - they're already running in the background
     }
 
     // Save text if provided
@@ -211,19 +809,31 @@ const MultiStepForm: React.FC = () => {
       return;
     }
 
+    setIsSaving(true);
+
     try {
       const response = await apiClient.createCheckoutSession(orderId);
       
       if (response.success && response.url) {
-        // Store the checkout URL to redirect back to Step 9 after payment
+        // Store the checkout URL (for potential redirect back)
         localStorage.setItem('claverum_checkout_url', response.url);
         window.location.href = response.url;
+      } else {
+        // Check if it's a rate limit error
+        if (response.error === 'rate_limit' || response.statusCode === 429) {
+          const retryAfter = response.retryAfter || 60;
+          toast({
+            variant: 'destructive',
+            title: 'Zu viele Anfragen',
+            description: `Bitte warten Sie ${retryAfter} Sekunden, bevor Sie es erneut versuchen.`
+          });
       } else {
         toast({
           variant: 'destructive',
           title: 'Fehler',
           description: response.error || 'Fehler beim Erstellen der Zahlung'
         });
+        }
       }
     } catch (error) {
       console.error('Checkout error:', error);
@@ -232,27 +842,34 @@ const MultiStepForm: React.FC = () => {
         title: 'Fehler',
         description: 'Fehler beim Weiterleiten zur Zahlung'
       });
+    } finally {
+      setIsSaving(false);
     }
   };
 
   const nextStep = async () => {
-    // If we're on step 1 and order is still being created, wait a bit
-    if (currentStep === 1 && !orderId && !orderCreationError) {
-      // Wait up to 3 seconds for order creation
+    // If we're on step 1 and order is still being created, wait a bit (silent)
+    if (currentStep === 1 && !orderId) {
+      // Wait up to 2 seconds for order creation (silent)
       let waited = 0;
-      while (!orderId && waited < 3000 && !orderCreationError) {
+      while (!orderId && waited < 2000) {
         await new Promise(resolve => setTimeout(resolve, 100));
         waited += 100;
       }
       
-      // If still no order after waiting, show error
-      if (!orderId && !orderCreationError) {
-        toast({
-          variant: 'destructive',
-          title: 'Bitte warten',
-          description: 'Der Auftrag wird noch erstellt. Bitte versuchen Sie es in einem Moment erneut.',
-        });
-        return;
+      // If still no order, try to create one silently before proceeding
+      if (!orderId) {
+        // Silent retry - no UI feedback
+        apiClient.createOrder()
+          .then(response => {
+            if (response.success) {
+              setOrderId(response.orderId);
+              setCurrentOrder(response.orderId, response.sessionToken);
+            }
+          })
+          .catch(() => {
+            // Silent fail
+          });
       }
     }
 
@@ -267,7 +884,7 @@ const MultiStepForm: React.FC = () => {
 
     // Validate step 1
     if (currentStep === 1) {
-      if (!formData.street || !formData.city || !formData.propertyType || !formData.buildYear) {
+      if (!formData.street || !formData.city || !formData.propertyType) {
         toast({
           variant: 'destructive',
           title: 'Fehlende Angaben',
@@ -277,43 +894,40 @@ const MultiStepForm: React.FC = () => {
       }
     }
 
-    setIsSaving(true);
+    // Save current step data in background (don't await - let it run async)
+    // Pass currentStep before it changes
+    const stepToSave = currentStep;
+    saveCurrentStepData(stepToSave).catch(error => {
+      console.error('Error saving step data:', error);
+      // Don't show error toast - let user continue
+    });
 
-    try {
-      // Save current step data in background
-      await saveCurrentStepData();
-
-      // Navigate immediately (don't wait for uploads)
-      if (currentStep < 8) {
-        setCurrentStep(prev => prev + 1);
-        
-        // Show toast for background processing
-        const areaKey = getAreaKey(currentStep);
-        if (areaKey) {
-          const areaData = formData[areaKey] as { files: File[] };
-          if (areaData.files.length > 0) {
-            toast({
-              title: 'Speichern läuft',
-              description: 'Ihre Daten werden im Hintergrund gespeichert.',
-            });
-          }
+    // Navigate immediately (don't wait for uploads or API calls)
+    if (currentStep < 8) {
+      const nextStepNum = currentStep + 1;
+      setCurrentStep(nextStepNum);
+      saveCurrentStep(nextStepNum); // Persist current step between reloads
+      
+      // Show toast for background processing
+      const areaKey = getAreaKey(stepToSave);
+      if (areaKey) {
+        const pendingItems =
+          areaUploads[areaKey]?.filter(item => item.status === 'local' || item.status === 'uploading') || [];
+        if (pendingItems.length > 0) {
+          toast({
+            title: 'Speichern läuft',
+            description: 'Ihre Daten werden im Hintergrund gespeichert.',
+          });
         }
       }
-    } catch (error) {
-      console.error('Error saving step:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Speicherfehler',
-        description: 'Daten konnten nicht gespeichert werden.',
-      });
-    } finally {
-      setIsSaving(false);
     }
   };
 
   const prevStep = () => {
     if (currentStep > 1) {
-      setCurrentStep(prev => prev - 1);
+      const prevStepNum = currentStep - 1;
+      setCurrentStep(prevStepNum);
+      saveCurrentStep(prevStepNum); // Save step to sessionStorage
     }
   };
 
@@ -360,8 +974,8 @@ const MultiStepForm: React.FC = () => {
     <>
       <div className="max-w-6xl mx-auto p-6" id="bewertung-starten">
         <Card className="shadow-strong">
-          {/* Header - Hide on Step 9 (Receipt) */}
-          {currentStep !== 9 && (
+        {/* Header */}
+        {(
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-semibold text-text-100">
                 Bauschadensbewertung starten
@@ -456,51 +1070,42 @@ const MultiStepForm: React.FC = () => {
 
                   {/* Step 2: Keller */}
           {currentStep === 2 && (
-                    <AreaUpload
-                      areaName="Keller + Grundrisse"
-                      areaDescription="Dokumentieren Sie den Kellerbereich mit Fotos und laden Sie ergänzend Grundrisse hoch."
-                      photos={formData.keller.photos}
-                      files={formData.keller.files}
-                      text={formData.keller.text}
-                      onPhotosChange={(photos) => setFormData(prev => ({ 
-                        ...prev, 
-                        keller: { ...prev.keller, photos } 
-                      }))}
-                      onFilesChange={(files) => setFormData(prev => ({ 
-                        ...prev, 
-                        keller: { ...prev.keller, files } 
-                      }))}
-                      onTextChange={(text) => setFormData(prev => ({ 
-                        ...prev, 
-                        keller: { ...prev.keller, text } 
-                      }))}
-                      maxPhotos={20}
-                      maxWords={200}
-                      textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr der Keller saniert wurde und erläutern sie weitere relevante Punkte."
-                    />
-                  )}
+            <AreaUpload
+              areaName="Keller + Grundrisse"
+              areaDescription="Dokumentieren Sie den Kellerbereich mit Fotos und laden Sie ergänzend Grundrisse hoch."
+              items={areaUploads.keller}
+              text={formData.keller.text}
+              onFilesSelected={(files) => handleAreaFilesSelected('keller', files)}
+              onRemoveItem={(id) => handleRemoveItem('keller', id)}
+              onTextChange={(text) =>
+                setFormData(prev => ({
+                  ...prev,
+                  keller: { ...prev.keller, text },
+                }))
+              }
+              allowPdf
+              maxPhotos={MAX_FILES_PER_AREA}
+              maxWords={200}
+              textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr der Keller saniert wurde und erläutern sie weitere relevante Punkte."
+            />
+          )}
 
           {/* Step 3: Elektro */}
           {currentStep === 3 && (
             <AreaUpload
               areaName="Elektro"
               areaDescription="Dokumentieren Sie die Elektroinstallation mit Fotos"
-              photos={formData.elektro.photos}
-              files={formData.elektro.files}
+              items={areaUploads.elektro}
               text={formData.elektro.text}
-              onPhotosChange={(photos) => setFormData(prev => ({ 
-                ...prev, 
-                elektro: { ...prev.elektro, photos } 
-              }))}
-              onFilesChange={(files) => setFormData(prev => ({ 
-                ...prev, 
-                elektro: { ...prev.elektro, files } 
-              }))}
-              onTextChange={(text) => setFormData(prev => ({ 
-                ...prev, 
-                elektro: { ...prev.elektro, text } 
-              }))}
-              maxPhotos={20}
+              onFilesSelected={(files) => handleAreaFilesSelected('elektro', files)}
+              onRemoveItem={(id) => handleRemoveItem('elektro', id)}
+              onTextChange={(text) =>
+                setFormData(prev => ({
+                  ...prev,
+                  elektro: { ...prev.elektro, text },
+                }))
+              }
+              maxPhotos={MAX_FILES_PER_AREA}
               maxWords={200}
               textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr die Elektrik erneuert wurde und erläutern sie weitere relevante Punkte."
             />
@@ -511,22 +1116,18 @@ const MultiStepForm: React.FC = () => {
             <AreaUpload
               areaName="Heizung + Energieausweis"
               areaDescription="Dokumentieren Sie die Heizungsanlage mit Fotos und laden Sie ergänzend den Energieausweis hoch."
-              photos={formData.heizung.photos}
-              files={formData.heizung.files}
+              items={areaUploads.heizung}
               text={formData.heizung.text}
-              onPhotosChange={(photos) => setFormData(prev => ({ 
-                ...prev, 
-                heizung: { ...prev.heizung, photos } 
-              }))}
-              onFilesChange={(files) => setFormData(prev => ({ 
-                ...prev, 
-                heizung: { ...prev.heizung, files } 
-              }))}
-              onTextChange={(text) => setFormData(prev => ({ 
-                ...prev, 
-                heizung: { ...prev.heizung, text } 
-              }))}
-              maxPhotos={20}
+              onFilesSelected={(files) => handleAreaFilesSelected('heizung', files)}
+              onRemoveItem={(id) => handleRemoveItem('heizung', id)}
+              onTextChange={(text) =>
+                setFormData(prev => ({
+                  ...prev,
+                  heizung: { ...prev.heizung, text },
+                }))
+              }
+              allowPdf
+              maxPhotos={MAX_FILES_PER_AREA}
               maxWords={200}
               textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr die Heizung erneuert wurde und erläutern sie weitere relevante Punkte."
             />
@@ -537,22 +1138,17 @@ const MultiStepForm: React.FC = () => {
             <AreaUpload
               areaName="Fassade"
               areaDescription="Dokumentieren Sie die Fassade mit Fotos"
-              photos={formData.fassade.photos}
-              files={formData.fassade.files}
+              items={areaUploads.fassade}
               text={formData.fassade.text}
-              onPhotosChange={(photos) => setFormData(prev => ({ 
-                ...prev, 
-                fassade: { ...prev.fassade, photos } 
-              }))}
-              onFilesChange={(files) => setFormData(prev => ({ 
-                ...prev, 
-                fassade: { ...prev.fassade, files } 
-              }))}
-              onTextChange={(text) => setFormData(prev => ({ 
-                ...prev, 
-                fassade: { ...prev.fassade, text } 
-              }))}
-              maxPhotos={20}
+              onFilesSelected={(files) => handleAreaFilesSelected('fassade', files)}
+              onRemoveItem={(id) => handleRemoveItem('fassade', id)}
+              onTextChange={(text) =>
+                setFormData(prev => ({
+                  ...prev,
+                  fassade: { ...prev.fassade, text },
+                }))
+              }
+              maxPhotos={MAX_FILES_PER_AREA}
               maxWords={200}
               textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr die Fassade saniert und ggf. gedämmt wurde und erläutern sie weitere relevante Punkte."
             />
@@ -563,22 +1159,17 @@ const MultiStepForm: React.FC = () => {
             <AreaUpload
               areaName="Dach"
               areaDescription="Dokumentieren Sie das Dach mit Fotos"
-              photos={formData.dach.photos}
-              files={formData.dach.files}
+              items={areaUploads.dach}
               text={formData.dach.text}
-              onPhotosChange={(photos) => setFormData(prev => ({ 
-                ...prev, 
-                dach: { ...prev.dach, photos } 
-              }))}
-              onFilesChange={(files) => setFormData(prev => ({ 
-                ...prev, 
-                dach: { ...prev.dach, files } 
-              }))}
-              onTextChange={(text) => setFormData(prev => ({ 
-                ...prev, 
-                dach: { ...prev.dach, text } 
-              }))}
-              maxPhotos={20}
+              onFilesSelected={(files) => handleAreaFilesSelected('dach', files)}
+              onRemoveItem={(id) => handleRemoveItem('dach', id)}
+              onTextChange={(text) =>
+                setFormData(prev => ({
+                  ...prev,
+                  dach: { ...prev.dach, text },
+                }))
+              }
+              maxPhotos={MAX_FILES_PER_AREA}
               maxWords={200}
               textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr das Dach saniert wurde und erläutern sie weitere relevante Punkte."
             />
@@ -589,22 +1180,17 @@ const MultiStepForm: React.FC = () => {
             <AreaUpload
               areaName="Innenräume + Bäder"
               areaDescription="Dokumentieren Sie die Innenräume und Bäder mit Fotos"
-              photos={formData.innenraeume.photos}
-              files={formData.innenraeume.files}
+              items={areaUploads.innenraeume}
               text={formData.innenraeume.text}
-              onPhotosChange={(photos) => setFormData(prev => ({ 
-                ...prev, 
-                innenraeume: { ...prev.innenraeume, photos } 
-              }))}
-              onFilesChange={(files) => setFormData(prev => ({ 
-                ...prev, 
-                innenraeume: { ...prev.innenraeume, files } 
-              }))}
-              onTextChange={(text) => setFormData(prev => ({ 
-                ...prev, 
-                innenraeume: { ...prev.innenraeume, text } 
-              }))}
-              maxPhotos={20}
+              onFilesSelected={(files) => handleAreaFilesSelected('innenraeume', files)}
+              onRemoveItem={(id) => handleRemoveItem('innenraeume', id)}
+              onTextChange={(text) =>
+                setFormData(prev => ({
+                  ...prev,
+                  innenraeume: { ...prev.innenraeume, text },
+                }))
+              }
+              maxPhotos={MAX_FILES_PER_AREA}
               maxWords={200}
               textPlaceholder="Wenn möglich, bitte geben Sie an, in welchem Jahr ca. Sanierungen der Innenräume und Bäder stattgefunden haben und erläutern sie weitere relevante Punkte."
             />
@@ -660,98 +1246,22 @@ const MultiStepForm: React.FC = () => {
             </div>
           )}
 
-          {/* Step 9: Receipt (Payment Success) */}
-          {currentStep === 9 && (
-            <div className="form-step form-step-active pt-6">
-              <div className="flex items-center gap-2 mb-4">
-                <CheckCircle className="w-5 h-5 text-green-500" />
-                <h3 className="text-lg font-medium">Zahlung erfolgreich!</h3>
-              </div>
-              
-              <div className="space-y-6">
-                {/* Success Message */}
-                <div className="text-center">
-                  <div className="text-green-500 text-4xl mb-4">
-                    <CheckCircle className="w-12 h-12 mx-auto" />
-                  </div>
-                  <p className="text-muted-foreground">
-                    Vielen Dank für deinen Einkauf! Wir haben deine Zahlung erhalten und werden uns 
-                    per E-Mail bei dir melden, sobald wir deine Bauschadensbewertung erstellt haben.
-                  </p>
-                </div>
-
-                {/* Payment Details */}
-                {paymentData && (
-                  <div className="bg-muted/50 rounded-lg p-4 text-left">
-                    <h4 className="font-semibold mb-3 flex items-center gap-2">
-                      <CreditCard className="w-4 h-4" />
-                      Zahlungsdetails
-                    </h4>
-                    
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Betrag:</span>
-                        <span className="font-medium">
-                          {(paymentData.amount_total / 100).toFixed(2)}€
-                        </span>
-                      </div>
-                      
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Status:</span>
-                        <span className="font-medium text-green-600 capitalize">
-                          {paymentData.payment_status}
-                        </span>
-                      </div>
-                      
-                      {paymentData.customer_email && (
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">E-Mail:</span>
-                          <span className="font-medium">{paymentData.customer_email}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Next Steps */}
-                <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4">
-                  <h4 className="font-semibold mb-2 flex items-center gap-2 text-blue-700 dark:text-blue-300">
-                    <Mail className="w-4 h-4" />
-                    Was passiert als nächstes?
-                  </h4>
-                  <ul className="text-sm text-blue-600 dark:text-blue-400 space-y-1 text-left">
-                    <li>• Wir prüfen deine hochgeladenen Unterlagen</li>
-                    <li>• Unsere Experten erstellen deine Bauschadensbewertung</li>
-                    <li>• Du erhältst das Ergebnis per E-Mail (1-3 Werktage)</li>
-                  </ul>
-                </div>
-
-                {/* Action Button */}
-                <div className="text-center">
-                  <Button 
-                    onClick={() => router.push('/')} 
-                    className="w-full" 
-                    size="lg"
-                  >
-                    Zur Startseite
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
         </CardContent>
 
-        {/* Navigation Buttons - Hide on Step 9 (Receipt) */}
-        {currentStep !== 9 && (
+        {/* Navigation Buttons */}
+        {(
           <div className="flex justify-between p-6">
+            {currentStep > 1 && (
             <Button
               onClick={prevStep}
-              disabled={currentStep === 1 || isSaving}
-              className="flex items-center gap-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                disabled={isSaving}
+                className="flex items-center gap-2 border border-primary text-primary bg-primary/10 hover:bg-primary/20 hover:text-primary"
             >
               <ChevronLeft className="w-4 h-4" />
               Zurück
             </Button>
+            )}
+            {currentStep === 1 && <div />}
             
             {currentStep === 8 ? (
               <Button
@@ -802,5 +1312,3 @@ const MultiStepForm: React.FC = () => {
 };
 
 export default MultiStepForm;
-
-

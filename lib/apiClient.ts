@@ -76,6 +76,19 @@ export interface RecordUploadResponse {
   error?: string;
 }
 
+export interface DeleteUploadResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+export interface DownloadUrlResponse {
+  success: boolean;
+  downloadUrl?: string;
+  expiresIn?: number;
+  error?: string;
+}
+
 export interface SaveTextsRequest {
   orderId: string;
   area: string;
@@ -244,12 +257,22 @@ class ApiClient {
         this.setCSRFToken(csrfToken);
       }
 
-      return await response.json();
+      // Check if response is ok
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Login failed' }));
+        return {
+          success: false,
+          error: errorData.error || `Login failed: ${response.status} ${response.statusText}`,
+        };
+      }
+
+      const data = await response.json();
+      return data;
     } catch (error) {
       console.error('Login error:', error);
       return {
         success: false,
-        error: 'Network error',
+        error: error instanceof Error ? error.message : 'Network error. Please check your connection.',
       };
     }
   }
@@ -304,29 +327,120 @@ class ApiClient {
   }
 
   /**
-   * Create a new order
+   * Create a new order with retry logic and timeout
    */
-  async createOrder(data?: Partial<UpdateOrderRequest>): Promise<CreateOrderResponse> {
+  async createOrder(data?: Partial<UpdateOrderRequest>, retries: number = 3): Promise<CreateOrderResponse> {
+    const timeoutMs = 10000; // 10 seconds timeout
+    
+    for (let attempt = 1; attempt <= retries; attempt++) {
     try {
+        // Create AbortController for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
       const response = await fetch(`${this.baseUrl}/api/create-order`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data || {}),
+          signal: controller.signal,
       });
 
-      return await response.json();
-    } catch (error) {
-      console.error('Error creating order:', error);
+        clearTimeout(timeoutId);
+
+        // Check if response is ok
+        if (!response.ok) {
+          const errorText = await response.text();
+          let errorData;
+          try {
+            errorData = JSON.parse(errorText);
+          } catch {
+            errorData = { error: `Server error: ${response.status} ${response.statusText}` };
+          }
+
+          // Retry on server errors (5xx), but not on client errors (4xx)
+          if (response.status >= 500 && attempt < retries) {
+            console.warn(`Order creation attempt ${attempt} failed with status ${response.status}, retrying...`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt)); // Exponential backoff
+            continue;
+          }
+
+          return {
+            success: false,
+            orderId: '',
+            sessionToken: '',
+            createdAt: '',
+            error: errorData.error || `Server error: ${response.status}`,
+          };
+        }
+
+        const result = await response.json();
+        
+        // Validate response structure
+        if (!result.orderId || !result.sessionToken) {
+          throw new Error('Invalid response from server');
+        }
+
+        return result;
+      } catch (error: any) {
+        // Handle abort (timeout)
+        if (error.name === 'AbortError') {
+          if (attempt < retries) {
+            console.warn(`Order creation attempt ${attempt} timed out, retrying...`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+            continue;
+          }
+          return {
+            success: false,
+            orderId: '',
+            sessionToken: '',
+            createdAt: '',
+            error: 'Request timeout - Bitte versuchen Sie es erneut',
+          };
+        }
+
+        // Handle network errors
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+          if (attempt < retries) {
+            console.warn(`Order creation attempt ${attempt} failed with network error, retrying...`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+            continue;
+          }
+          return {
+            success: false,
+            orderId: '',
+            sessionToken: '',
+            createdAt: '',
+            error: 'Netzwerkfehler - Bitte überprüfen Sie Ihre Internetverbindung',
+          };
+        }
+
+        // Other errors
+        console.error(`Error creating order (attempt ${attempt}):`, error);
+        if (attempt < retries) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+          continue;
+        }
+
       return {
         success: false,
         orderId: '',
         sessionToken: '',
         createdAt: '',
-        error: 'Network error',
+          error: error.message || 'Unbekannter Fehler beim Erstellen des Auftrags',
       };
     }
+    }
+
+    // Should never reach here, but TypeScript needs it
+    return {
+      success: false,
+      orderId: '',
+      sessionToken: '',
+      createdAt: '',
+      error: 'Fehler beim Erstellen des Auftrags',
+    };
   }
 
   /**
@@ -377,6 +491,18 @@ class ApiClient {
           'X-Order-Session': sessionToken || '',
         },
       });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return {
+          success: false,
+          uploadUrl: '',
+          filePath: '',
+          publicUrl: '',
+          error: errorData.error || `Server error: ${response.status} ${response.statusText}`,
+        };
+      }
+      
       return await response.json();
     } catch (error) {
       console.error('Error getting upload URL:', error);
@@ -393,7 +519,7 @@ class ApiClient {
   /**
    * Create Stripe checkout session
    */
-  async createCheckoutSession(orderId: string): Promise<{ success: boolean; url?: string; error?: string }> {
+  async createCheckoutSession(orderId: string): Promise<{ success: boolean; url?: string; error?: string; statusCode?: number; retryAfter?: number }> {
     try {
       const sessionToken = getCurrentOrderSessionToken();
       const response = await fetch(`${this.baseUrl}/api/payments/create-checkout-session`, {
@@ -404,6 +530,48 @@ class ApiClient {
         },
         body: JSON.stringify({ orderId }),
       });
+
+      // Check if response is ok (status 200-299)
+      if (!response.ok) {
+        // Handle rate limiting (429)
+        if (response.status === 429) {
+          const retryAfterHeader = response.headers.get('Retry-After');
+          const retryAfter = retryAfterHeader ? parseInt(retryAfterHeader, 10) : 60;
+          
+          // Try to parse error message from response
+          let errorMessage = 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.';
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.error || errorMessage;
+          } catch {
+            // If JSON parsing fails, use default message
+          }
+
+          return {
+            success: false,
+            error: 'rate_limit',
+            statusCode: 429,
+            retryAfter,
+          };
+        }
+
+        // Handle other HTTP errors
+        let errorMessage = `Server error: ${response.status} ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // If JSON parsing fails, use default message
+        }
+
+        return {
+          success: false,
+          error: errorMessage,
+          statusCode: response.status,
+        };
+      }
+
+      // Success - parse JSON response
       return await response.json();
     } catch (error) {
       console.error('Error creating checkout session:', error);
@@ -434,6 +602,11 @@ class ApiClient {
    * Upload file directly to S3 using pre-signed URL
    */
   async uploadToS3(uploadUrl: string, file: File): Promise<boolean> {
+    const controller = new AbortController();
+    const timeout = 30000; // 30s für Bilder
+
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
     try {
       const response = await fetch(uploadUrl, {
         method: 'PUT',
@@ -441,11 +614,26 @@ class ApiClient {
         headers: {
           'Content-Type': file.type,
         },
+        signal: controller.signal,
       });
 
-      return response.ok;
-    } catch (error) {
-      console.error('Error uploading to S3:', error);
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        console.error('S3 Upload failed:', response.status, response.statusText);
+        return false;
+      }
+
+      return true;
+    } catch (error: any) {
+      clearTimeout(timeoutId);
+
+      if (error.name === 'AbortError') {
+        console.error('Upload timeout after', timeout / 1000, 'seconds');
+      } else {
+        console.error('S3 Upload error:', error);
+      }
+
       return false;
     }
   }
@@ -473,6 +661,67 @@ class ApiClient {
         uploadId: '',
         createdAt: '',
         publicUrl: '',
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Delete an upload from database and S3
+   */
+  async deleteUpload(orderId: string, uploadId: string): Promise<DeleteUploadResponse> {
+    try {
+      const sessionToken = getCurrentOrderSessionToken();
+      const response = await fetch(`${this.baseUrl}/api/delete-upload/${orderId}/${uploadId}`, {
+        method: 'DELETE',
+        headers: {
+          'X-Order-Session': sessionToken || '',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return {
+          success: false,
+          error: errorData.error || `Server error: ${response.status} ${response.statusText}`,
+        };
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error deleting upload:', error);
+      return {
+        success: false,
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Get presigned download URL for an uploaded file
+   */
+  async getDownloadUrl(orderId: string, uploadId: string): Promise<DownloadUrlResponse> {
+    try {
+      const sessionToken = getCurrentOrderSessionToken();
+      const response = await fetch(`${this.baseUrl}/api/download-url/${orderId}/${uploadId}`, {
+        headers: {
+          'X-Order-Session': sessionToken || '',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return {
+          success: false,
+          error: errorData.error || `Server error: ${response.status} ${response.statusText}`,
+        };
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error getting download URL:', error);
+      return {
+        success: false,
         error: 'Network error',
       };
     }
@@ -507,14 +756,42 @@ class ApiClient {
   }
 
   /**
-   * Get order details with all uploads and texts
+   * Get order details with all uploads and texts (for normal users with session token)
    */
   async getOrderDetails(orderId: string): Promise<OrderDetailsResponse> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/order/${orderId}`);
+      const sessionToken = getCurrentOrderSessionToken();
+      const response = await fetch(`${this.baseUrl}/api/order/${orderId}`, {
+        headers: {
+          'X-Order-Session': sessionToken || '',
+        },
+      });
       return await response.json();
     } catch (error) {
       console.error('Error fetching order details:', error);
+      return {
+        success: false,
+        order: {} as any,
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Get order details with all uploads and texts (for admins with JWT token)
+   */
+  async getAdminOrderDetails(orderId: string): Promise<OrderDetailsResponse> {
+    try {
+      const authHeader = authManager.getAuthHeader();
+      const response = await fetch(`${this.baseUrl}/api/admin/order/${orderId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeader,
+        },
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching admin order details:', error);
       return {
         success: false,
         order: {} as any,

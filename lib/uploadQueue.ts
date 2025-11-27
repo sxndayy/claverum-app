@@ -27,6 +27,7 @@ class UploadQueue {
   private listeners: Set<UploadCallback> = new Set();
   private activeTasks: Set<string> = new Set();
   private maxConcurrentUploads = 3;
+  private processing = false;
 
   /**
    * Add file to upload queue
@@ -45,7 +46,8 @@ class UploadQueue {
     };
 
     this.queue.push(task);
-    this.notifyListeners(task);
+    // Don't notify listeners for 'pending' status - mapping might not exist yet
+    // Updates will be sent when status changes to 'compressing', 'uploading', etc.
     
     // Start processing if we have capacity
     this.processQueue();
@@ -143,6 +145,11 @@ class UploadQueue {
   }
 
   private async processQueue(): Promise<void> {
+    // Prevent concurrent processQueue calls
+    if (this.processing) return;
+    this.processing = true;
+    
+    try {
     // Start as many tasks as we can (up to maxConcurrentUploads)
     while (this.activeTasks.size < this.maxConcurrentUploads) {
       const pendingTask = this.queue.find(t => t.status === 'pending');
@@ -150,12 +157,17 @@ class UploadQueue {
 
       // Mark task as active and start processing
       this.activeTasks.add(pendingTask.id);
+        
       this.processTask(pendingTask).finally(() => {
         // Remove from active tasks when done (success or failure)
         this.activeTasks.delete(pendingTask.id);
         // Try to start next pending task
+          this.processing = false;
         this.processQueue();
       });
+      }
+    } finally {
+      this.processing = false;
     }
   }
 
@@ -163,8 +175,7 @@ class UploadQueue {
     try {
       // Step 1: Compress image
       this.updateTask(task.id, { status: 'compressing', progress: 10 });
-      
-      const compressedFile = await compressImage(task.file, {
+      const fileToUpload = await compressImage(task.file, {
         maxWidth: 1600,
         maxHeight: 1600,
         quality: 0.8,
@@ -176,8 +187,8 @@ class UploadQueue {
       const urlResponse = await apiClient.getUploadUrl(
         task.orderId,
         task.area,
-        compressedFile.name,
-        compressedFile.type
+        fileToUpload.name,
+        fileToUpload.type
       );
 
       if (!urlResponse.success) {
@@ -189,7 +200,7 @@ class UploadQueue {
       // Step 3: Upload to S3
       const uploadSuccess = await apiClient.uploadToS3(
         urlResponse.uploadUrl,
-        compressedFile
+        fileToUpload
       );
 
       if (!uploadSuccess) {
@@ -205,24 +216,34 @@ class UploadQueue {
         orderId: task.orderId,
         area: task.area,
         filePath: urlResponse.filePath,
-        mimeType: compressedFile.type,
-        fileSize: compressedFile.size,
+        mimeType: fileToUpload.type,
+        fileSize: fileToUpload.size,
       });
 
       if (!recordResponse.success) {
         throw new Error(recordResponse.error || 'Failed to record upload');
       }
 
-      // Success!
+      // Step 5: Get presigned download URL for display (bucket is private)
+      this.updateTask(task.id, { progress: 90 });
+      
+      const downloadUrlResponse = await apiClient.getDownloadUrl(
+        task.orderId,
+        recordResponse.uploadId
+      );
+
+      if (!downloadUrlResponse.success || !downloadUrlResponse.downloadUrl) {
+        console.warn('Failed to get download URL, using publicUrl as fallback');
+      }
+
+      // Success! Mark as completed with presigned URL
       this.updateTask(task.id, {
         status: 'completed',
         progress: 100,
-        publicUrl: recordResponse.publicUrl,
+        publicUrl: downloadUrlResponse.downloadUrl || recordResponse.publicUrl,
       });
 
     } catch (error) {
-      console.error(`Upload task ${task.id} failed:`, error);
-
       // Retry logic
       if (task.retries < this.maxRetries) {
         task.retries++;
@@ -231,7 +252,9 @@ class UploadQueue {
         
         // Wait before retry (exponential backoff)
         await new Promise(resolve => setTimeout(resolve, 1000 * task.retries));
+        // Task will be picked up by processQueue automatically
       } else {
+        // Max retries reached - mark as failed
         this.updateTask(task.id, {
           status: 'failed',
           error: error instanceof Error ? error.message : 'Upload failed',
@@ -243,5 +266,6 @@ class UploadQueue {
 
 // Export singleton instance
 export const uploadQueue = new UploadQueue();
+
 
 
