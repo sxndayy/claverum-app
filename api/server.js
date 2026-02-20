@@ -260,8 +260,18 @@ app.put('/api/update-order/:orderId', publicLimiter, requireOrderOwnership, asyn
       city,
       propertyType,
       buildYear,
-      note
+      note,
+      customerName,
+      customerEmail
     } = req.body;
+
+    // Validate email if provided
+    if (customerEmail !== undefined && customerEmail !== '' && !isValidEmail(customerEmail)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid email format'
+      });
+    }
 
     // Build dynamic update query
     const updates = [];
@@ -295,6 +305,14 @@ app.put('/api/update-order/:orderId', publicLimiter, requireOrderOwnership, asyn
     if (note !== undefined) {
       updates.push(`note = $${paramCount++}`);
       values.push(note);
+    }
+    if (customerName !== undefined) {
+      updates.push(`customer_name = $${paramCount++}`);
+      values.push(sanitizeString(customerName, 255));
+    }
+    if (customerEmail !== undefined) {
+      updates.push(`customer_email = $${paramCount++}`);
+      values.push(sanitizeString(customerEmail, 255));
     }
 
     if (updates.length === 0) {
@@ -862,7 +880,7 @@ app.get('/api/orders', adminLimiter, requireAuth, async (req, res) => {
     let paramCount = 1;
 
     if (safeSearch) {
-      filters.push(`(street ILIKE $${paramCount} OR city ILIKE $${paramCount} OR id::text ILIKE $${paramCount})`);
+      filters.push(`(street ILIKE $${paramCount} OR city ILIKE $${paramCount} OR id::text ILIKE $${paramCount} OR customer_name ILIKE $${paramCount} OR customer_email ILIKE $${paramCount})`);
       params.push(`%${safeSearch}%`);
       paramCount++;
     }
