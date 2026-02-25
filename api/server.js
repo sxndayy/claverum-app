@@ -9,6 +9,7 @@ import { generatePresignedUploadUrl, getPublicUrl, downloadFileFromS3, deleteFil
 import authRoutes from './routes/auth.js';
 import paymentRoutes from './routes/payments.js';
 import stripeWebhookRoutes from './routes/stripe-webhook.js';
+import auftragRoutes from './routes/auftrag.js';
 import { requireAuth, optionalAuth } from './middleware/auth.js';
 import { requireOrderOwnership } from './middleware/orderOwnership.js';
 import { requireCSRF, generateCSRFForUser } from './middleware/csrf.js';
@@ -38,6 +39,8 @@ dotenv.config();
 
 // Initialize Resend
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+// Expose resend client to routes via app.set (used by auftrag routes)
+// Will be set after app creation below
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -99,6 +102,12 @@ app.use('/api/auth', loginLimiter, authRoutes);
 
 // Payment routes
 app.use('/api/payments', paymentRoutes);
+
+// Auftrag routes (order submission + upload session)
+app.use('/api/auftrag', publicLimiter, auftragRoutes);
+
+// Expose Resend client to routes
+app.set('resend', resend);
 
 // Add CSRF token generation for authenticated requests
 app.use(generateCSRFForUser);
