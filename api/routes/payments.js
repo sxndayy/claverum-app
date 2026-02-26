@@ -164,6 +164,7 @@ router.post('/create-checkout-session', requireOrderOwnership, async (req, res) 
       success_url: 'https://bauklar.org/success/?session_id={CHECKOUT_SESSION_ID}',
       cancel_url: cancelUrl,
       customer_email: customerEmail,
+      allow_promotion_codes: true,
       metadata: {
         order_id: orderId,
         product_type: productType,
