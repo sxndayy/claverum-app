@@ -36,6 +36,8 @@ export async function sendUploadLinkEmail({
   const uploadUrl = `https://bauklar.org/upload?token=${uploadToken}`;
   const displayName = customerName && customerName.trim() ? customerName.trim() : 'Kunde/in';
   const addressLine = `${street}, ${postalCode} ${city}`;
+  const sampleReportUrl = 'https://www.bauklar.org/mustergutachten/mustergutachten-bauklar-analyse.pdf';
+  const sampleReportCoverUrl = 'https://www.bauklar.org/mustergutachten/mustergutachten-cover.png';
 
   const htmlContent = `
 <!DOCTYPE html>
@@ -90,6 +92,49 @@ export async function sendUploadLinkEmail({
       </a>
     </div>
 
+    <!-- Sample Report Section -->
+    <div style="background-color: #F9FAFB; border: 1px solid #DCE3E8; border-radius: 8px; padding: 24px; margin-bottom: 40px; text-align: center;">
+      <h2 style="font-size: 18px; font-weight: 600; color: #1A1A1A; margin-bottom: 12px;">
+        Interessiert, wie unser Gutachten aussieht?
+      </h2>
+      <p style="font-size: 14px; color: #6B7280; margin-bottom: 20px;">
+        Hier ein Mustergutachten zur Bauklar Analyse.
+      </p>
+
+      <!-- Content: Image and Bullet Points side by side -->
+      <div style="display: flex; align-items: center; justify-content: center; gap: 24px; margin-bottom: 20px; flex-wrap: wrap;">
+        <!-- Sample Report Image - Clickable -->
+        <a href="${sampleReportUrl}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; flex: 0 0 auto;">
+          <img 
+            src="${sampleReportCoverUrl}" 
+            alt="Mustergutachten Bauklar Analyse" 
+            style="width: 200px; height: auto; border: 1px solid #DCE3E8; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);" 
+          />
+        </a>
+
+        <!-- Bullet Points -->
+        <div style="flex: 1 1 200px; text-align: left; font-size: 14px; color: #374151;">
+          <div style="margin-bottom: 12px; display: flex; align-items: flex-start; gap: 8px;">
+            <span style="color: #0052A3; font-weight: 600; font-size: 16px;">✓</span>
+            <span>Strukturierte Analyse aller wichtigen Gebäudebereiche</span>
+          </div>
+          <div style="margin-bottom: 12px; display: flex; align-items: flex-start; gap: 8px;">
+            <span style="color: #0052A3; font-weight: 600; font-size: 16px;">✓</span>
+            <span>Bearbeitungszeit innerhalb von 48 Stunden</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 8px;">
+            <span style="color: #0052A3; font-weight: 600; font-size: 16px;">✓</span>
+            <span>Umfassender Bericht mit 14–16 Seiten</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Download Button -->
+      <a href="${sampleReportUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #FFFFFF; color: #0052A3; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 14px; border: 1px solid #0052A3;">
+        Mustergutachten herunterladen
+      </a>
+    </div>
+    
     <!-- Trust Elements -->
     <div style="margin-bottom: 32px; padding: 16px; text-align: center; font-size: 14px; color: #6B7280;">
       Transparente Bauzustandsanalyse &middot; Klare Handlungsempfehlung &middot; Geld-zurück-Garantie
@@ -216,6 +261,12 @@ ${uploadUrl}
 Transparente Bauzustandsanalyse · Klare Handlungsempfehlung · Geld-zurück-Garantie
 
 Bearbeitung startet nach Eingang der Unterlagen. Fertigstellung in der Regel innerhalb von 48 Stunden.
+
+--- Mustergutachten ansehen ---
+
+Wenn Sie sehen möchten, wie unser Bericht aufgebaut ist, können Sie hier ein Mustergutachten zur Bauklar Analyse aufrufen:
+
+${sampleReportUrl}
 
 --- Welche Variante passt zu Ihrer Situation? ---
 
