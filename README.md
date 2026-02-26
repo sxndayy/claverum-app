@@ -201,8 +201,54 @@ npm run build
 
 ### Storage (R2/S3)
 - CDN aktivieren
-- CORS konfigurieren
+- CORS konfigurieren (siehe unten)
 - Lifecycle Policies setzen
+
+#### S3 CORS Konfiguration
+
+Die S3 CORS-Konfiguration muss aktualisiert werden, damit der Frontend-Direct-Upload funktioniert. Die CORS-Policy ist in `s3-cors-policy.json` definiert.
+
+**Wichtig:** Nach dem Hinzufügen neuer Frontend-Domains muss die CORS-Konfiguration im S3-Bucket aktualisiert werden.
+
+**Methode 1: Via AWS CLI (Empfohlen)**
+
+```bash
+# Voraussetzungen:
+# - AWS CLI installiert: https://aws.amazon.com/cli/
+# - AWS Credentials konfiguriert: aws configure
+# - Bucket-Name bekannt (z.B. aus api/.env: S3_BUCKET_NAME)
+
+# CORS-Konfiguration anwenden
+./scripts/apply-s3-cors.sh <bucket-name>
+
+# Beispiel:
+./scripts/apply-s3-cors.sh claverum-bucket
+```
+
+**Methode 2: Via AWS Console (Manuell)**
+
+1. Öffne AWS S3 Console → Wähle deinen Bucket
+2. Gehe zu "Permissions" → "Cross-origin resource sharing (CORS)"
+3. Klicke "Edit"
+4. Kopiere den Inhalt von `s3-cors-policy.json` in das Textfeld
+5. Speichere die Änderungen
+
+**Aktuelle erlaubte Domains:**
+- `https://bauklar.org` (Production)
+- `http://bauklar.org` (Production HTTP)
+- `https://www.bauklar.org` (Production WWW)
+- `http://www.bauklar.org` (Production WWW HTTP)
+- `https://test-johannes.netlify.app` (Testing)
+- `http://localhost:3000` (Development)
+- `http://localhost:8080` (Development)
+
+**Troubleshooting:**
+
+Wenn Uploads mit 403 CORS-Fehlern fehlschlagen:
+1. Prüfe, ob die Frontend-Domain in `s3-cors-policy.json` enthalten ist
+2. Wende die CORS-Konfiguration erneut an (siehe oben)
+3. Prüfe Browser-Console auf CORS-Fehler
+4. Stelle sicher, dass `AllowedMethods` `PUT` enthält
 
 ## 🔒 Sicherheit
 

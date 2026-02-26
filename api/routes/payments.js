@@ -2,19 +2,61 @@ import express from 'express';
 import Stripe from 'stripe';
 import { query } from '../db.js';
 import { requireOrderOwnership } from '../middleware/orderOwnership.js';
-import { paymentLimiter } from '../middleware/rateLimiter.js';
 import { isValidUUID } from '../utils/validation.js';
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+// Per-order rate limiting: 3 requests per minute per order ID
+const orderCheckoutAttempts = new Map();
+const ORDER_RATE_LIMIT = 3;
+const ORDER_RATE_WINDOW = 60 * 1000; // 1 minute
+
+function checkOrderRateLimit(orderId) {
+  const now = Date.now();
+  const attempts = orderCheckoutAttempts.get(orderId) || [];
+
+  // Remove expired entries
+  const valid = attempts.filter(ts => now - ts < ORDER_RATE_WINDOW);
+  orderCheckoutAttempts.set(orderId, valid);
+
+  if (valid.length >= ORDER_RATE_LIMIT) {
+    return false;
+  }
+
+  valid.push(now);
+  orderCheckoutAttempts.set(orderId, valid);
+  return true;
+}
+
+// Cleanup stale entries every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [orderId, attempts] of orderCheckoutAttempts.entries()) {
+    const valid = attempts.filter(ts => now - ts < ORDER_RATE_WINDOW);
+    if (valid.length === 0) {
+      orderCheckoutAttempts.delete(orderId);
+    } else {
+      orderCheckoutAttempts.set(orderId, valid);
+    }
+  }
+}, 5 * 60 * 1000);
+
+// Price ID mapping from environment variables
+const PRICE_MAP = {
+  analyse: process.env.STRIPE_PRICE_ANALYSE,
+  intensiv: process.env.STRIPE_PRICE_INTENSIV
+};
+
 /**
  * POST /api/payments/create-checkout-session
  * Create Stripe Checkout Session for order payment
+ * Headers: X-Order-Session: <sessionToken>
+ * Body: { orderId, productType: 'analyse' | 'intensiv' }
  */
-router.post('/create-checkout-session', paymentLimiter, requireOrderOwnership, async (req, res) => {
+router.post('/create-checkout-session', requireOrderOwnership, async (req, res) => {
   try {
-    const { orderId } = req.body;
+    const { orderId, productType = 'analyse' } = req.body;
 
     // Validate orderId
     if (!orderId || !isValidUUID(orderId)) {
@@ -24,9 +66,36 @@ router.post('/create-checkout-session', paymentLimiter, requireOrderOwnership, a
       });
     }
 
-    // Check if order exists
+    // Validate productType
+    if (!['analyse', 'intensiv'].includes(productType)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid productType. Must be "analyse" or "intensiv".'
+      });
+    }
+
+    // Per-order rate limiting
+    if (!checkOrderRateLimit(orderId)) {
+      res.set('Retry-After', '60');
+      return res.status(429).json({
+        success: false,
+        error: 'rate_limit'
+      });
+    }
+
+    // Get price ID for product type
+    const priceId = PRICE_MAP[productType];
+    if (!priceId) {
+      console.error(`Missing Stripe price ID for product type: ${productType}`);
+      return res.status(500).json({
+        success: false,
+        error: 'Payment configuration error'
+      });
+    }
+
+    // Load order data
     const orderResult = await query(
-      'SELECT id, stripe_checkout_session_id, paid FROM orders WHERE id = $1',
+      'SELECT id, customer_email, email, stripe_checkout_session_id, paid FROM orders WHERE id = $1',
       [orderId]
     );
 
@@ -63,37 +132,58 @@ router.post('/create-checkout-session', paymentLimiter, requireOrderOwnership, a
       }
     }
 
-    // Get frontend URL from environment
-    const frontendUrl = process.env.FRONTEND_URL || 'https://test-johannes.netlify.app';
+    // Get session token from header (used in metadata for webhook)
+    const sessionToken = req.headers['x-order-session'] || '';
+
+    // Load upload token for cancel_url
+    let uploadToken = '';
+    try {
+      const tokenResult = await query(
+        'SELECT token FROM upload_tokens WHERE order_id = $1 AND expires_at > NOW() AND used_at IS NULL ORDER BY created_at DESC LIMIT 1',
+        [orderId]
+      );
+      if (tokenResult.rows.length > 0) {
+        uploadToken = tokenResult.rows[0].token;
+      }
+    } catch (err) {
+      console.warn('Could not load upload token for cancel URL:', err.message);
+    }
+
+    // Determine customer email
+    const customerEmail = order.customer_email || order.email || undefined;
+
+    // Build cancel URL
+    const cancelUrl = uploadToken
+      ? `https://bauklar.org/upload/?token=${uploadToken}&cancelled=true`
+      : 'https://bauklar.org/upload/?cancelled=true';
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
+      line_items: [{ price: priceId, quantity: 1 }],
       mode: 'payment',
-      line_items: [{
-        price: process.env.STRIPE_PRICE_ID,
-        quantity: 1
-      }],
-      // Collect customer information (email and name)
-      // billing_address_collection: 'required' forces Stripe to collect billing address (including name)
-      // This should always show the name field, not just when coupon is entered
-      billing_address_collection: 'required', // Require billing address (includes name field)
-      // Don't set customer_email - let Stripe collect it (this ensures name field is shown)
+      success_url: 'https://bauklar.org/success/?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url: cancelUrl,
+      customer_email: customerEmail,
       metadata: {
-        orderId: orderId
+        order_id: orderId,
+        product_type: productType,
+        session_token: sessionToken
       },
-      allow_promotion_codes: true, // Aktiviert Coupon-Feld im Checkout
-      success_url: `${frontendUrl}/evaluation?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${frontendUrl}/evaluation`,
-      expires_at: Math.floor(Date.now() / 1000) + (30 * 60) // 30 minutes
+      payment_intent_data: {
+        metadata: {
+          order_id: orderId,
+          product_type: productType
+        }
+      }
     });
 
-    // Save checkout session ID to database
+    // Save product_type and stripe_checkout_session_id to order
     await query(
-      'UPDATE orders SET stripe_checkout_session_id = $1 WHERE id = $2',
-      [session.id, orderId]
+      'UPDATE orders SET product_type = $1, stripe_checkout_session_id = $2 WHERE id = $3',
+      [productType, session.id, orderId]
     );
 
-    console.log(`Created checkout session ${session.id} for order ${orderId}`);
+    console.log(`Created checkout session ${session.id} for order ${orderId} (product: ${productType})`);
 
     res.json({
       success: true,
@@ -111,7 +201,8 @@ router.post('/create-checkout-session', paymentLimiter, requireOrderOwnership, a
 
 /**
  * GET /api/payments/session
- * Retrieve Stripe Checkout Session details
+ * Retrieve Stripe Checkout Session details (for success page)
+ * Query: ?session_id=cs_xxx
  */
 router.get('/session', async (req, res) => {
   try {
@@ -129,11 +220,15 @@ router.get('/session', async (req, res) => {
 
     res.json({
       success: true,
-      orderId: session.metadata?.orderId,
-      amount_total: session.amount_total,
-      currency: session.currency,
-      payment_status: session.payment_status,
-      customer_email: session.customer_details?.email
+      session: {
+        amount_total: session.amount_total,
+        payment_status: session.payment_status,
+        customer_email: session.customer_details?.email || session.customer_email,
+        metadata: {
+          order_id: session.metadata?.order_id || session.metadata?.orderId,
+          product_type: session.metadata?.product_type
+        }
+      }
     });
 
   } catch (error) {

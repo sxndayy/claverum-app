@@ -3,6 +3,10 @@
     "AllowedHeaders": ["*"],
     "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
     "AllowedOrigins": [
+      "https://bauklar.org",
+      "http://bauklar.org",
+      "https://www.bauklar.org",
+      "http://www.bauklar.org",
       "https://test-johannes.netlify.app",
       "http://localhost:3000",
       "http://localhost:8080"

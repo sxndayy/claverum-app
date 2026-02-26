@@ -126,7 +126,7 @@ const BlogHauskaufBeratung = () => {
     "dateModified": "2025-01-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `${SITE_URL}/blog/hauskauf-beratung`
+      "@id": `${SITE_URL}/blog/hauskauf-beratung/`
     },
     "image": {
       "@type": "ImageObject",
@@ -139,7 +139,7 @@ const BlogHauskaufBeratung = () => {
       <SEO 
         title="Hauskauf Beratung: Wann sie sinnvoll ist, Kosten und Leistungen"
         description="Hauskauf Beratung schützt vor versteckten Mängeln. Erfahren Sie, wann ein Gutachter sinnvoll ist, was er kostet und wie Sie bis zu 40.000 € beim Immobilienkauf sparen."
-        canonical="https://bauklar.org/blog/hauskauf-beratung"
+        canonical="https://bauklar.org/blog/hauskauf-beratung/"
         ogType="article"
         noindex={false}
       />

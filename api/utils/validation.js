@@ -43,7 +43,11 @@ export function isValidPropertyType(propertyType) {
     'Bungalow',
     'Mehrfamilienhaus',
     'Doppelhaushälfte',
-    'Eigentumswohnung'
+    'Eigentumswohnung',
+    // Additional types for broader compatibility
+    'Zweifamilienhaus',
+    'Gewerbeobjekt',
+    'Sonstiges'
   ];
   
   return allowedTypes.includes(propertyType);
@@ -77,7 +81,12 @@ export function isValidArea(area) {
     'Keller',
     'Heizung',
     'Elektro',
-    'Innenräume'
+    'Innenräume',
+    // New areas for unified upload funnel
+    'Bad',
+    'Fenster',
+    'Elektrik',
+    'Sonstiges'
   ];
   
   return allowedAreas.includes(area);

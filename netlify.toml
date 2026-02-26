@@ -98,107 +98,99 @@
   status = 301
   force = false
 
-# Blog path normalization (trailing slash removal)
-# IMPORTANT: Static HTML files are served automatically by Netlify BEFORE redirects
-# With pretty_urls = true, /blog/hauskauf-beratung/index.html is automatically served as /blog/hauskauf-beratung/
-# This redirect handles the case where someone explicitly requests /blog/hauskauf-beratung/ with trailing slash
-# Redirects to /blog/hauskauf-beratung (without slash) for SEO best practice
-# We use force = false to ensure static files take precedence
+# City pages: Redirect /city to /city/ for consistency
+# IMPORTANT: Static files are generated as /city/index.html which Netlify serves as /city/
+# Sitemap.xml lists city pages WITH trailing slashes: /berlin/, /hamburg/, etc.
+# SEO component sets canonical URLs WITH trailing slashes for city pages
+# We redirect /city (without slash) to /city/ (with slash) to ensure consistency
+# This prevents duplicate content issues and ensures canonical URLs match the actual URL
 [[redirects]]
-  from = "/blog/hauskauf-beratung/"
-  to = "/blog/hauskauf-beratung"
-  status = 301
-  force = false
-
-# City pages: Remove trailing slash for SEO best practice
-# Redirects /city/ to /city (without trailing slash)
-[[redirects]]
-  from = "/berlin/"
-  to = "/berlin"
+  from = "/berlin"
+  to = "/berlin/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/hamburg/"
-  to = "/hamburg"
+  from = "/hamburg"
+  to = "/hamburg/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/muenchen/"
-  to = "/muenchen"
+  from = "/muenchen"
+  to = "/muenchen/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/bremen/"
-  to = "/bremen"
+  from = "/bremen"
+  to = "/bremen/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/dortmund/"
-  to = "/dortmund"
+  from = "/dortmund"
+  to = "/dortmund/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/dresden/"
-  to = "/dresden"
+  from = "/dresden"
+  to = "/dresden/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/duesseldorf/"
-  to = "/duesseldorf"
+  from = "/duesseldorf"
+  to = "/duesseldorf/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/essen/"
-  to = "/essen"
+  from = "/essen"
+  to = "/essen/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/frankfurt/"
-  to = "/frankfurt"
+  from = "/frankfurt"
+  to = "/frankfurt/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/hannover/"
-  to = "/hannover"
+  from = "/hannover"
+  to = "/hannover/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/koeln/"
-  to = "/koeln"
+  from = "/koeln"
+  to = "/koeln/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/leipzig/"
-  to = "/leipzig"
+  from = "/leipzig"
+  to = "/leipzig/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/mannheim/"
-  to = "/mannheim"
+  from = "/mannheim"
+  to = "/mannheim/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/nuernberg/"
-  to = "/nuernberg"
+  from = "/nuernberg"
+  to = "/nuernberg/"
   status = 301
   force = false
 
 [[redirects]]
-  from = "/stuttgart/"
-  to = "/stuttgart"
+  from = "/stuttgart"
+  to = "/stuttgart/"
   status = 301
   force = false
 

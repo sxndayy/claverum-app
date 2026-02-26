@@ -93,7 +93,7 @@ app.use(cors({
 
 // Stripe webhook must be registered BEFORE express.json() middleware
 // because it needs raw body for signature verification
-app.use('/api/stripe', stripeWebhookRoutes);
+app.use('/api/payments', stripeWebhookRoutes);
 
 app.use(express.json({ limit: '10mb' })); // Limit request body size
 

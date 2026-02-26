@@ -13,10 +13,10 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 /**
- * POST /api/stripe/webhook
+ * POST /api/payments/webhook
  * Stripe webhook endpoint for payment events
  * Must use raw body (express.raw()) to verify signature
- * 
+ *
  * Note: CORS is handled by server.js, but webhooks come from Stripe servers
  */
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
@@ -43,7 +43,9 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
   // Handle checkout.session.completed event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    const orderId = session.metadata?.orderId;
+    // Support both new (order_id) and legacy (orderId) metadata keys
+    const orderId = session.metadata?.order_id || session.metadata?.orderId;
+    const productType = session.metadata?.product_type || null;
     const paymentIntentId = session.payment_intent;
 
     if (!orderId) {
@@ -166,23 +168,27 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
         }
       }
 
-      // Update order with payment status and confirmation number
+      // Update order with payment status, confirmation number, and product_type
       await query(
-        `UPDATE orders 
-         SET paid = true, 
-             paid_at = NOW(), 
+        `UPDATE orders
+         SET paid = true,
+             paid_at = NOW(),
              payment_status = $1,
              stripe_payment_intent_id = $2,
              payment_amount = $3,
              email = COALESCE($4, email),
-             confirmation_number = COALESCE(confirmation_number, $5)
-         WHERE id = $6`,
+             confirmation_number = COALESCE(confirmation_number, $5),
+             product_type = COALESCE($6, product_type),
+             stripe_checkout_session_id = COALESCE($7, stripe_checkout_session_id)
+         WHERE id = $8`,
         [
           session.payment_status || 'paid',
           paymentIntentId,
           amountInCents,
           customerEmail,
           confirmationNumber,
+          productType,
+          session.id,
           orderId
         ]
       );
@@ -219,14 +225,14 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
       }
     } catch (error) {
       console.error('Error updating order payment status:', error);
-      return res.status(500).json({ error: 'Failed to update order' });
+      // Always return 200 so Stripe doesn't retry
     }
   }
 
   // Handle other events (optional)
   if (event.type === 'checkout.session.async_payment_succeeded') {
     const session = event.data.object;
-    const orderId = session.metadata?.orderId;
+    const orderId = session.metadata?.order_id || session.metadata?.orderId;
     
     if (orderId) {
       try {

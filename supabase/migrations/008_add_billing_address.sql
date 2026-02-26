@@ -10,3 +10,4 @@ ADD COLUMN IF NOT EXISTS billing_address_country VARCHAR(2); -- ISO country code
 -- Add index for faster queries
 CREATE INDEX IF NOT EXISTS idx_orders_billing_country ON orders(billing_address_country);
 
+

@@ -26,10 +26,10 @@ const normalizeCanonicalUrl = (url: string, siteUrl: string): string => {
       if (path.includes('?') || path.includes('#')) {
         return url;
       }
-      // Blog posts should NOT have trailing slash
+      // Blog posts should have trailing slash (consistent with other pages)
       if (path.startsWith('/blog/')) {
-        // Remove trailing slash if present
-        return url.endsWith('/') ? url.slice(0, -1) : url;
+        // Add trailing slash if not already present
+        return url.endsWith('/') ? url : `${url}/`;
       }
       // Add trailing slash if not already present (for other pages)
       if (!path.endsWith('/')) {
@@ -56,9 +56,10 @@ const normalizeCanonicalUrl = (url: string, siteUrl: string): string => {
     return `${siteUrl}${url}`;
   }
   
-  // Blog posts should NOT have trailing slash
+  // Blog posts should have trailing slash (consistent with other pages)
   if (url.startsWith('/blog/')) {
-    return `${siteUrl}${url}`;
+    // Add trailing slash if not already present
+    return url.endsWith('/') ? `${siteUrl}${url}` : `${siteUrl}${url}/`;
   }
   
   // Add trailing slash if not already present (for other pages)
@@ -99,7 +100,7 @@ export function SEO({
   title, 
   description, 
   canonical, 
-  ogImage = '/og-image.png',
+  ogImage = '/logo-final.png',
   ogType = 'website',
   noindex = false
 }: SEOProps) {
