@@ -53,7 +53,7 @@ export async function sendUploadLinkEmail({
     <!-- Logo Area -->
     <div style="margin-bottom: 32px; text-align: center;">
       <div style="font-size: 24px; font-weight: 700; color: #0052A3; letter-spacing: -0.5px;">
-        Bauklar
+        Bauklar.org
       </div>
     </div>
 
