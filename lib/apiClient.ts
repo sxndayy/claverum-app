@@ -49,6 +49,8 @@ export interface UpdateOrderRequest {
   city?: string;
   propertyType?: string;
   buildYear?: string;
+  customerName?: string;
+  customerEmail?: string;
   note?: string;
 }
 
@@ -171,6 +173,7 @@ export interface OrdersListParams {
   propertyType?: string;
   city?: string;
   paid?: string; // 'true', 'false', or undefined for all
+  orderType?: string; // 'evaluation', 'auftrag', or undefined for all
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }
@@ -583,6 +586,47 @@ class ApiClient {
   }
 
   /**
+   * Create Stripe checkout session with explicit token (for upload page)
+   */
+  async createCheckoutSessionWithToken(
+    orderId: string,
+    sessionToken: string,
+    productType: 'analyse' | 'intensiv' = 'analyse'
+  ): Promise<{ success: boolean; url?: string; error?: string; statusCode?: number; retryAfter?: number }> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/payments/create-checkout-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Order-Session': sessionToken,
+        },
+        body: JSON.stringify({ orderId, productType }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          const retryAfterHeader = response.headers.get('Retry-After');
+          const retryAfter = retryAfterHeader ? parseInt(retryAfterHeader, 10) : 60;
+          return { success: false, error: 'rate_limit', statusCode: 429, retryAfter };
+        }
+
+        let errorMessage = `Server error: ${response.status} ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {}
+
+        return { success: false, error: errorMessage, statusCode: response.status };
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating checkout session with token:', error);
+      return { success: false, error: 'Network error' };
+    }
+  }
+
+  /**
    * Get Stripe session details
    */
   async getStripeSession(sessionId: string): Promise<{ success: boolean; session?: any; error?: string }> {
@@ -814,6 +858,7 @@ class ApiClient {
       if (params.propertyType) searchParams.append('propertyType', params.propertyType);
       if (params.city) searchParams.append('city', params.city);
       if (params.paid) searchParams.append('paid', params.paid);
+      if (params.orderType) searchParams.append('orderType', params.orderType);
       if (params.sortBy) searchParams.append('sortBy', params.sortBy);
       if (params.sortOrder) searchParams.append('sortOrder', params.sortOrder);
 
@@ -960,6 +1005,240 @@ class ApiClient {
       console.error('Error fetching admin stats:', error);
       return {
         success: false,
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Send contact form message
+   */
+  /**
+   * Update order with explicit session token (for Auftrag funnel)
+   */
+  async updateOrderWithToken(
+    orderId: string,
+    data: UpdateOrderRequest,
+    sessionToken: string
+  ): Promise<{ success: boolean; error?: string }> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/update-order/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Order-Session': sessionToken,
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error updating order with token:', error);
+      return {
+        success: false,
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Submit Auftrag (finalize order + trigger email)
+   */
+  async submitAuftrag(
+    orderId: string,
+    data: {
+      propertyType: string;
+      buildYear?: string;
+      customerName: string;
+      customerEmail: string;
+      street: string;
+      postalCode: string;
+      city: string;
+    },
+    sessionToken: string
+  ): Promise<{ success: boolean; uploadToken?: string; error?: string }> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/auftrag/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Order-Session': sessionToken,
+        },
+        body: JSON.stringify({ orderId, ...data }),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error submitting auftrag:', error);
+      return {
+        success: false,
+        error: 'Netzwerkfehler. Bitte versuchen Sie es erneut.',
+      };
+    }
+  }
+
+  /**
+   * Validate upload token from email link
+   */
+  async validateUploadToken(
+    token: string
+  ): Promise<{ success: boolean; orderId?: string; sessionToken?: string; error?: string }> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/auftrag/upload-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error validating upload token:', error);
+      return {
+        success: false,
+        error: 'Netzwerkfehler. Bitte versuchen Sie es erneut.',
+      };
+    }
+  }
+
+  /**
+   * Get upload URL with explicit session token (for upload page)
+   */
+  async getUploadUrlWithToken(
+    sessionToken: string,
+    orderId: string,
+    area: string,
+    filename: string,
+    mimeType: string
+  ): Promise<UploadUrlResponse> {
+    try {
+      const params = new URLSearchParams({
+        orderId,
+        area,
+        filename,
+        mimeType,
+      });
+
+      const response = await fetch(`${this.baseUrl}/api/upload-url?${params}`, {
+        headers: {
+          'X-Order-Session': sessionToken,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return {
+          success: false,
+          uploadUrl: '',
+          filePath: '',
+          publicUrl: '',
+          error: errorData.error || `Server error: ${response.status} ${response.statusText}`,
+        };
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error getting upload URL with token:', error);
+      return {
+        success: false,
+        uploadUrl: '',
+        filePath: '',
+        publicUrl: '',
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Record upload with explicit session token (for upload page)
+   */
+  async recordUploadWithToken(
+    data: RecordUploadRequest,
+    sessionToken: string
+  ): Promise<RecordUploadResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/record-upload`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Order-Session': sessionToken,
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error recording upload with token:', error);
+      return {
+        success: false,
+        uploadId: '',
+        createdAt: '',
+        publicUrl: '',
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Delete upload with explicit session token (for upload page)
+   */
+  async deleteUploadWithToken(
+    orderId: string,
+    uploadId: string,
+    sessionToken: string
+  ): Promise<DeleteUploadResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/delete-upload/${orderId}/${uploadId}`, {
+        method: 'DELETE',
+        headers: {
+          'X-Order-Session': sessionToken,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return {
+          success: false,
+          error: errorData.error || `Server error: ${response.status} ${response.statusText}`,
+        };
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error deleting upload with token:', error);
+      return {
+        success: false,
+        error: 'Network error',
+      };
+    }
+  }
+
+  /**
+   * Save texts with explicit session token (for upload page)
+   */
+  async saveTextsWithToken(
+    data: SaveTextsRequest,
+    sessionToken: string
+  ): Promise<SaveTextsResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/save-texts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Order-Session': sessionToken,
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error saving texts with token:', error);
+      return {
+        success: false,
+        textId: '',
+        createdAt: '',
+        updatedAt: '',
         error: 'Network error',
       };
     }

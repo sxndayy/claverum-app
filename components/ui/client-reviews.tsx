@@ -95,7 +95,7 @@ const ClientReviews = React.forwardRef<HTMLDivElement, ClientReviewsProps>(
         {...props}
       >
         <div className="flex items-baseline justify-between text-lg font-semibold mb-4">
-          <h3>Client Reviews</h3>
+          <h3>Erfahrungen mit bauklar.org</h3>
           <div className="flex items-center gap-2 pr-4">
             <span>{totalRating}</span>
             <span className="relative flex items-center gap-1 text-foreground/80">

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import SuccessClient from './SuccessClient';
 import { SITE_URL } from '@/lib/config';
 
@@ -12,5 +13,16 @@ export const metadata: Metadata = {
 };
 
 export default function SuccessPage() {
-  return <SuccessClient />;
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-text-200">Lade...</p>
+        </div>
+      </div>
+    }>
+      <SuccessClient />
+    </Suspense>
+  );
 }

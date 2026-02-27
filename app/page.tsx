@@ -1,23 +1,28 @@
 import { Metadata } from "next";
-import Header from '@/components/layout/Header';
-import HeroSection from '@/components/sections/HeroSection';
-import ServicesSection from '@/components/sections/ServicesSection';
-import HowItWorksSection from '@/components/sections/HowItWorksSection';
-import PricingSection from '@/components/sections/PricingSection';
-import ReferencesSection from '@/components/sections/ReferencesSection';
-import AboutSection from '@/components/sections/AboutSection';
-import FAQSection from '@/components/sections/FAQSection';
-import CTASection from '@/components/sections/CTASection';
-import ContactSection from '@/components/sections/ContactSection';
-import Footer from '@/components/layout/Footer';
-import CookieBanner from '@/components/layout/CookieBanner';
-import { Toaster } from '@/components/ui/toaster';
-import { WebSiteSchema } from '@/components/seo/WebSiteSchema';
-import { SITE_URL } from '@/lib/config';
+import MainHeader from "@/components/main/layout/MainHeader";
+import MainHeroSection from "@/components/main/sections/MainHeroSection";
+import MainProblemSection from "@/components/main/sections/MainProblemSection";
+import MainServicesSection from "@/components/main/sections/MainServicesSection";
+import MainHowItWorksSection from "@/components/main/sections/MainHowItWorksSection";
+import MainPricingSection from "@/components/main/sections/MainPricingSection";
+import MainMustergutachtenSection from "@/components/main/sections/MainMustergutachtenSection";
+import MainReferencesSection from "@/components/main/sections/MainReferencesSection";
+import MainAboutSection from "@/components/main/sections/MainAboutSection";
+import MainFAQSection from "@/components/main/sections/MainFAQSection";
+import MainCTASection from "@/components/main/sections/MainCTASection";
+import MainContactSection from "@/components/main/sections/MainContactSection";
+import MainFooter from "@/components/main/layout/MainFooter";
+import CookieBanner from "@/components/layout/CookieBanner";
+import { Toaster } from "@/components/ui/toaster";
+import ChatWidget from "@/components/start/ChatWidget";
+import ScrollTracker from "@/components/start/ScrollTracker";
+import { WebSiteSchema } from "@/components/seo/WebSiteSchema";
+import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Professionelle Bauschadensbewertung - schnell, transparent, verlässlich",
-  description: "Professionelle Bauschadensbewertung. Upload in Minuten, Ergebnis innerhalb von 48 Stunden. Schnell, transparent, verlässlich.",
+  description:
+    "Professionelle Bauschadensbewertung. Upload in Minuten, Ergebnis innerhalb von 48 Stunden. Schnell, transparent, verlässlich.",
   alternates: {
     canonical: `${SITE_URL}/`,
   },
@@ -28,21 +33,25 @@ export default function HomePage() {
     <>
       <WebSiteSchema />
       <div className="min-h-screen bg-background">
-        <Header />
+        <MainHeader />
         <main>
-          <HeroSection />
-          <ServicesSection />
-          <HowItWorksSection />
-          <PricingSection />
-          <ReferencesSection />
-          <AboutSection />
-          <FAQSection />
-          <CTASection />
-          <ContactSection />
+          <MainHeroSection />
+          <MainProblemSection />
+          <MainPricingSection />
+          <MainMustergutachtenSection />
+          <MainHowItWorksSection />
+          <MainServicesSection />
+          <MainReferencesSection />
+          <MainAboutSection />
+          <MainFAQSection />
+          <MainCTASection />
+          <MainContactSection />
         </main>
-        <Footer />
+        <MainFooter />
         <CookieBanner />
         <Toaster />
+        <ChatWidget />
+        <ScrollTracker />
       </div>
     </>
   );

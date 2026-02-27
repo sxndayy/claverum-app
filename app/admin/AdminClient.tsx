@@ -48,6 +48,8 @@ interface User {
 
 interface Order {
   id: string;
+  customer_name?: string;
+  customer_email?: string;
   street: string;
   house_number: string;
   postal_code: string;
@@ -55,6 +57,7 @@ interface Order {
   property_type: string;
   build_year: string;
   note: string;
+  order_type?: string;
   created_at: string;
   updated_at: string;
   upload_count: number;
@@ -64,6 +67,7 @@ interface Order {
   payment_status?: string;
   payment_amount?: number;
   stripe_payment_intent_id?: string;
+  product_type?: 'analyse' | 'intensiv';
 }
 
 export default function AdminClient() {
@@ -83,6 +87,7 @@ export default function AdminClient() {
   const [propertyType, setPropertyType] = useState('');
   const [city, setCity] = useState('');
   const [paidFilter, setPaidFilter] = useState('');
+  const [orderTypeFilter, setOrderTypeFilter] = useState('');
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [systemStats, setSystemStats] = useState<any>(null);
@@ -121,6 +126,7 @@ export default function AdminClient() {
         propertyType: propertyType || undefined,
         city: city || undefined,
         paid: paidFilter || undefined,
+        orderType: orderTypeFilter || undefined,
         sortBy,
         sortOrder,
       };
@@ -162,7 +168,7 @@ export default function AdminClient() {
       loadOrders();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, search, propertyType, city, paidFilter, sortBy, sortOrder]);
+  }, [currentPage, search, propertyType, city, paidFilter, orderTypeFilter, sortBy, sortOrder]);
 
   const handleSearch = (value: string) => {
     setSearch(value);
@@ -426,6 +432,31 @@ export default function AdminClient() {
           </CardContent>
         </Card>
 
+        {/* Order Type Tabs */}
+        <div className="flex gap-2 mb-4">
+          <Button
+            variant={orderTypeFilter === '' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => { setOrderTypeFilter(''); setCurrentPage(1); }}
+          >
+            Alle
+          </Button>
+          <Button
+            variant={orderTypeFilter === 'evaluation' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => { setOrderTypeFilter('evaluation'); setCurrentPage(1); }}
+          >
+            Bewertungen
+          </Button>
+          <Button
+            variant={orderTypeFilter === 'auftrag' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => { setOrderTypeFilter('auftrag'); setCurrentPage(1); }}
+          >
+            Anfragen (Auftrag)
+          </Button>
+        </div>
+
         {/* Filters */}
         <Card className="mb-6">
           <CardHeader>
@@ -521,11 +552,14 @@ export default function AdminClient() {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Order ID</TableHead>
+                        <TableHead>Typ</TableHead>
+                        <TableHead>Kunde</TableHead>
                         <TableHead>Address</TableHead>
                         <TableHead>Property Type</TableHead>
                         <TableHead>Build Year</TableHead>
                         <TableHead>Created</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead>Produkt</TableHead>
                         <TableHead>Actions</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -534,6 +568,19 @@ export default function AdminClient() {
                         <TableRow key={order.id}>
                           <TableCell className="font-mono text-sm">
                             {order.id.substring(0, 8)}...
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant={order.order_type === 'auftrag' ? 'outline' : 'default'} className={order.order_type === 'auftrag' ? 'border-blue-400 text-blue-700 bg-blue-50' : ''}>
+                              {order.order_type === 'auftrag' ? 'Anfrage' : 'Bewertung'}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <div className="text-sm">
+                              <span className="font-medium">{order.customer_name || '—'}</span>
+                              {order.customer_email && (
+                                <p className="text-xs text-gray-500">{order.customer_email}</p>
+                              )}
+                            </div>
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
@@ -568,6 +615,22 @@ export default function AdminClient() {
                                 </Badge>
                               )}
                             </div>
+                          </TableCell>
+                          <TableCell>
+                            {order.product_type ? (
+                              <Badge
+                                variant="outline"
+                                className={
+                                  order.product_type === 'intensiv'
+                                    ? 'border-blue-500 text-blue-700 bg-blue-50'
+                                    : 'border-gray-300 text-gray-600'
+                                }
+                              >
+                                {order.product_type === 'intensiv' ? 'Intensiv' : 'Analyse'}
+                              </Badge>
+                            ) : (
+                              <span className="text-gray-400">—</span>
+                            )}
                           </TableCell>
                           <TableCell>
                             <div className="flex gap-2">

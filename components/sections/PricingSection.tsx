@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,27 +10,8 @@ const PricingSection: React.FC = () => {
   const router = useRouter();
   
   const handleStartEvaluation = () => {
-    router.push('/evaluation');
+    router.push('/auftrag');
   };
-
-  // Liste aller Städte mit Namen und Slugs
-  const cities = [
-    { name: 'Berlin', slug: 'berlin' },
-    { name: 'Hamburg', slug: 'hamburg' },
-    { name: 'München', slug: 'muenchen' },
-    { name: 'Köln', slug: 'koeln' },
-    { name: 'Düsseldorf', slug: 'duesseldorf' },
-    { name: 'Dortmund', slug: 'dortmund' },
-    { name: 'Essen', slug: 'essen' },
-    { name: 'Frankfurt', slug: 'frankfurt' },
-    { name: 'Stuttgart', slug: 'stuttgart' },
-    { name: 'Nürnberg', slug: 'nuernberg' },
-    { name: 'Leipzig', slug: 'leipzig' },
-    { name: 'Dresden', slug: 'dresden' },
-    { name: 'Hannover', slug: 'hannover' },
-    { name: 'Bremen', slug: 'bremen' },
-    { name: 'Mannheim', slug: 'mannheim' },
-  ];
 
   const packages = [
     {
@@ -185,33 +165,6 @@ const PricingSection: React.FC = () => {
               </div>
             </div>
           </div>
-
-          {/* Wo wir vertreten sind */}
-          <div className="text-center">
-            <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">
-              Wo wir vertreten sind:
-            </h3>
-            <p className="text-text-200 mb-8 max-w-2xl mx-auto">
-              Hier finden Sie uns und noch weitere Informationen zu den jeweiligen Städten.
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-5xl mx-auto">
-              {cities.map((city) => (
-                <Link
-                  key={city.slug}
-                  href={`/${city.slug}`}
-                  onClick={() => {
-                    // Scroll zur oberen Position nach Navigation
-                    setTimeout(() => {
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }, 100);
-                  }}
-                  className="inline-flex items-center justify-center px-4 py-3 rounded-md font-medium text-sm transition-all duration-200 bg-primary hover:bg-primary/90 text-primary-foreground shadow-soft hover:shadow-strong hover-lift"
-                >
-                  {city.name}
-                </Link>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -219,5 +172,7 @@ const PricingSection: React.FC = () => {
 };
 
 export default PricingSection;
+
+
 
 

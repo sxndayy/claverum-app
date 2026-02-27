@@ -5,7 +5,7 @@
   "seo": {
     "title": "Gutachter Hauskauf Leipzig – In 2 Tagen Klarheit | ab 350€ | bauklar.org",
     "metaDescription": "Unabhängige Bauschadensanalyse für Hauskauf in Leipzig. Gründerzeit-Boom, DDR-Nachlass, Plattenbau, post-1990 Renovierung – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
-    "canonical": "/leipzig",
+    "canonical": "/leipzig/",
     "robots": "index, follow",
     "openGraph": {
       "type": "website",
@@ -187,7 +187,7 @@
       "content": "Eine fundierte Bauschadensanalyse gibt Ihnen Sicherheit vor dem Immobilienkauf. Sie erhalten objektive Einschätzungen durch qualifizierte Sachverständige, realistische Kostenrahmen für erkannte Mängel und verständliche Handlungsempfehlungen. Die digitale Bewertung ist zeitlich flexibel, transparent und erfolgt ohne Vor-Ort-Termine.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und haben damit Klarheit für Ihre Kaufentscheidung. Sie können ihn für Verhandlungen mit Verkäufern nutzen, Ihrer Bank vorlegen oder als Grundlage für die Sanierungsplanung verwenden. Starten Sie jetzt die Bewertung und treffen Sie Ihre Kaufentscheidung auf fundierter Basis.",
       "primaryCTA": {
         "text": "Jetzt Bewertung starten",
-        "link": "/evaluation"
+        "link": "/auftrag"
       },
       "secondaryCTA": {
         "text": "So funktioniert's ansehen",

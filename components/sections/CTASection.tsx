@@ -11,7 +11,7 @@ const CTASection = () => {
   const router = useRouter();
 
   const handleStartEvaluation = () => {
-    router.push('/evaluation');
+    router.push('/auftrag');
   };
 
   return (
@@ -71,5 +71,7 @@ const CTASection = () => {
 };
 
 export default CTASection;
+
+
 
 

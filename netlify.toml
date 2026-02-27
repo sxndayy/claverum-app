@@ -117,6 +117,37 @@
   to = "/mannheim/"
   status = 200
 
+[[redirects]]
+  from = "/berlin-baugutachten"
+  to = "/berlin-baugutachten/"
+  status = 200
+
+# Auftrag Funnel Routes
+[[redirects]]
+  from = "/auftrag"
+  to = "/auftrag/"
+  status = 200
+
+[[redirects]]
+  from = "/auftrag/1"
+  to = "/auftrag/1/"
+  status = 200
+
+[[redirects]]
+  from = "/auftrag/2"
+  to = "/auftrag/2/"
+  status = 200
+
+[[redirects]]
+  from = "/auftrag/3"
+  to = "/auftrag/3/"
+  status = 200
+
+[[redirects]]
+  from = "/upload"
+  to = "/upload/"
+  status = 200
+
 # Static Pages
 [[redirects]]
   from = "/impressum"
@@ -138,11 +169,9 @@
   to = "/widerruf/"
   status = 200
 
-# SPA Fallback (MUSS am Ende!)
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Note: No SPA fallback needed for static export
+# Netlify's pretty_urls automatically serves /mannheim/index.html for /mannheim/
+# Static pages are served directly without redirects
 
 # Headers for better SEO and security
 [[headers]]
@@ -151,6 +180,11 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/mustergutachten/*.pdf"
+  [headers.values]
+    Content-Type = "application/pdf"
 
 # Cache headers for blog pages
 [[headers]]

@@ -5,7 +5,7 @@
   "seo": {
     "title": "Gutachter Hauskauf Frankfurt – In 2 Tagen Klarheit | ab 350€ | bauklar.org",
     "metaDescription": "Unabhängige Bauschadensanalyse für Hauskauf in Frankfurt. Skyline, Bankenviertel, Westend-Villen, rekonstruierte Altstadt – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
-    "canonical": "/frankfurt",
+    "canonical": "/frankfurt/",
     "robots": "index, follow",
     "openGraph": {
       "type": "website",
@@ -179,7 +179,7 @@
       {
         "id": "lokale-besonderheiten",
         "h2": "Lokale Besonderheiten des Frankfurter Immobilienmarkts",
-        "content": "Frankfurt unterscheidet sich als Immobilienmarkt durch sein hohes Preisniveau und die damit verbundenen Erwartungen an Bauqualität. Die Kaufpreise gehören zu den höchsten in Deutschland. Eine fundierte Prüfung vor dem Kauf ist daher besonders wichtig, um finanzielle Fehlentscheidungen zu vermeiden.\n\nDer Untergrund im Frankfurter Raum ist geprägt von Sand, Kies und stellenweise Lehm. Die Bodenbeschaffenheit beeinflusst Gründungsarten und Setzungsverhalten. In tiefliegenden Stadtteilen spielen Grundwasserstände eine wichtige Rolle. Gebäude in Nähe zum Main müssen auf Hochwasserschutz ausgelegt sein.\n\nDie hohe Luftfeuchtigkeit in vielen Stadtteilen belastet Bausubstanz stärker als in Binnenlandregionen. Fassaden, Fenster und Dächer sind erhöhter Witterungsbelastung ausgesetzt. Frostperioden im Winter mit anschließendem Tauwetter setzen Bauteilen zu und können Frostschäden verursachen.\n\nDer Denkmalschutz spielt in Frankfurt eine wichtige Rolle, besonders in der rekonstruierten Altstadt und den Gründerzeitvierteln. Sanierungen erfordern Genehmigungen und müssen denkmalpflegerischen Anforderungen genügen. Dies kann Mehrkosten verursachen, sichert aber den Erhalt des kulturellen Erbes.\n\nDie kontinuierliche Stadtentwicklung schafft neue Wohnquartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne prägt Frankfurt. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die sich an der umgebenden Bebauung orientieren.\n\nWeitere Informationen zum Frankfurter Immobilienmarkt und baurechtliche Hinweise finden Sie beim <a href='https://www.frankfurt.de/themen/umwelt/stadtplanung' rel='nofollow'>Stadtplanungsamt Frankfurt</a> sowie beim <a href='https://www.mieterverein-frankfurt.de' rel='nofollow'>Mieterverein Frankfurt</a>."
+        "content": "Frankfurt unterscheidet sich als Immobilienmarkt durch sein hohes Preisniveau und die damit verbundenen Erwartungen an Bauqualität. Die Kaufpreise gehören zu den höchsten in Deutschland. Eine fundierte Prüfung vor dem Kauf ist daher besonders wichtig, um finanzielle Fehlentscheidungen zu vermeiden.\n\nDer Untergrund im Frankfurter Raum ist geprägt von Sand, Kies und stellenweise Lehm. Die Bodenbeschaffenheit beeinflusst Gründungsarten und Setzungsverhalten. In tiefliegenden Stadtteilen spielen Grundwasserstände eine wichtige Rolle. Gebäude in Nähe zum Main müssen auf Hochwasserschutz ausgelegt sein.\n\nDie hohe Luftfeuchtigkeit in vielen Stadtteilen belastet Bausubstanz stärker als in Binnenlandregionen. Fassaden, Fenster und Dächer sind erhöhter Witterungsbelastung ausgesetzt. Frostperioden im Winter mit anschließendem Tauwetter setzen Bauteilen zu und können Frostschäden verursachen.\n\nDer Denkmalschutz spielt in Frankfurt eine wichtige Rolle, besonders in der rekonstruierten Altstadt und den Gründerzeitvierteln. Sanierungen erfordern Genehmigungen und müssen denkmalpflegerischen Anforderungen genügen. Dies kann Mehrkosten verursachen, sichert aber den Erhalt des kulturellen Erbes.\n\nDie kontinuierliche Stadtentwicklung schafft neue Wohnquartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne prägt Frankfurt. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die sich an der umgebenden Bebauung orientieren.\n\nWeitere Informationen zum Frankfurter Immobilienmarkt und baurechtliche Hinweise finden Sie beim <a href='https://www.stadtplanungsamt-frankfurt.de' rel='nofollow'>Stadtplanungsamt Frankfurt</a>."
       }
     ],
     "ctaSection": {
@@ -187,7 +187,7 @@
       "content": "Eine fundierte Bauschadensanalyse gibt Ihnen Sicherheit vor dem Immobilienkauf. Sie erhalten objektive Einschätzungen durch qualifizierte Sachverständige, realistische Kostenrahmen für erkannte Mängel und verständliche Handlungsempfehlungen. Die digitale Bewertung ist zeitlich flexibel, transparent und erfolgt ohne Vor-Ort-Termine.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und haben damit Klarheit für Ihre Kaufentscheidung. Sie können ihn für Verhandlungen mit Verkäufern nutzen, Ihrer Bank vorlegen oder als Grundlage für die Sanierungsplanung verwenden. Starten Sie jetzt die Bewertung und treffen Sie Ihre Kaufentscheidung auf fundierter Basis.",
       "primaryCTA": {
         "text": "Jetzt Bewertung starten",
-        "link": "/evaluation"
+        "link": "/auftrag"
       },
       "secondaryCTA": {
         "text": "So funktioniert's ansehen",

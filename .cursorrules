@@ -1,0 +1,24 @@
+// .cursorrules im Root
+// Globale Instructions die IMMER gelten
+
+Code Style:
+- TypeScript strict mode
+- Tailwind for styling (no custom CSS unless needed)
+- Component structure: /components/[name]/[Name].tsx
+
+Design Principles:
+- Professional, not startup-y
+- Clean borders over shadows
+- Consistent spacing (multiples of 4px)
+- Mobile-first responsive
+
+Colors (always use):
+- Primary: #0052A3
+- Primary Hover: #003D7A
+- Borders: #e5e7eb
+- Text: #1a1a1a (headers), #374151 (body)
+
+Never:
+- Use emojis in professional UI
+- Add unnecessary animations
+- Overcomplicate simple tasks

@@ -5,7 +5,7 @@
   "seo": {
     "title": "Gutachter Hauskauf Dortmund – In 2 Tagen Klarheit | ab 350€ | bauklar.org",
     "metaDescription": "Unabhängige Bauschadensanalyse für Hauskauf in Dortmund. Industrielles Erbe, Zechensiedlungen, post-industrielle Transformation – digitale Prüfung mit verständlichem Bericht innerhalb von 2 Werktagen.",
-    "canonical": "/dortmund",
+    "canonical": "/dortmund/",
     "robots": "index, follow",
     "openGraph": {
       "type": "website",
@@ -179,7 +179,7 @@
       {
         "id": "lokale-besonderheiten",
         "h2": "Lokale Besonderheiten des Dortmunder Immobilienmarkts",
-        "content": "Dortmund unterscheidet sich als Immobilienmarkt durch sein industrielles Erbe und die damit verbundenen Herausforderungen. Die Stadt ist geprägt von ihrer Geschichte als Zentrum der Kohle- und Stahlindustrie. Nach dem Niedergang der Schwerindustrie in den 1980er Jahren begann ein Strukturwandel, der bis heute andauert.\n\nDer Untergrund im Dortmunder Raum ist geprägt von Sand, Lehm und stellenweise Kies. Die Bodenbeschaffenheit beeinflusst Gründungsarten und Setzungsverhalten. In tiefliegenden Stadtteilen spielen Grundwasserstände eine wichtige Rolle. Gebäude in Nähe zu ehemaligen Industriegebieten müssen auf mögliche Altlasten geprüft werden.\n\nDie hohe Luftfeuchtigkeit in vielen Stadtteilen belastet Bausubstanz stärker als in Binnenlandregionen. Fassaden, Fenster und Dächer sind erhöhter Witterungsbelastung ausgesetzt. Frostperioden im Winter mit anschließendem Tauwetter setzen Bauteilen zu und können Frostschäden verursachen.\n\nDer Denkmalschutz spielt in Dortmund eine wichtige Rolle, besonders in den Zechensiedlungen und Arbeiterkolonien. Sanierungen erfordern Genehmigungen und müssen denkmalpflegerischen Anforderungen genügen. Dies kann Mehrkosten verursachen, sichert aber den Erhalt des kulturellen Erbes.\n\nDie kontinuierliche Stadtentwicklung schafft neue Wohnquartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne prägt Dortmund. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die sich an der umgebenden Bebauung orientieren.\n\nWeitere Informationen zum Dortmunder Immobilienmarkt und baurechtliche Hinweise finden Sie bei der <a href='https://www.dortmund.de/de/rathaus/planen_bauen_wohnen/stadtplanung/' rel='nofollow'>Stadt Dortmund - Stadtplanung</a> sowie beim <a href='https://www.mieterverein-dortmund.de' rel='nofollow'>Mieterverein Dortmund</a>."
+        "content": "Dortmund unterscheidet sich als Immobilienmarkt durch sein industrielles Erbe und die damit verbundenen Herausforderungen. Die Stadt ist geprägt von ihrer Geschichte als Zentrum der Kohle- und Stahlindustrie. Nach dem Niedergang der Schwerindustrie in den 1980er Jahren begann ein Strukturwandel, der bis heute andauert.\n\nDer Untergrund im Dortmunder Raum ist geprägt von Sand, Lehm und stellenweise Kies. Die Bodenbeschaffenheit beeinflusst Gründungsarten und Setzungsverhalten. In tiefliegenden Stadtteilen spielen Grundwasserstände eine wichtige Rolle. Gebäude in Nähe zu ehemaligen Industriegebieten müssen auf mögliche Altlasten geprüft werden.\n\nDie hohe Luftfeuchtigkeit in vielen Stadtteilen belastet Bausubstanz stärker als in Binnenlandregionen. Fassaden, Fenster und Dächer sind erhöhter Witterungsbelastung ausgesetzt. Frostperioden im Winter mit anschließendem Tauwetter setzen Bauteilen zu und können Frostschäden verursachen.\n\nDer Denkmalschutz spielt in Dortmund eine wichtige Rolle, besonders in den Zechensiedlungen und Arbeiterkolonien. Sanierungen erfordern Genehmigungen und müssen denkmalpflegerischen Anforderungen genügen. Dies kann Mehrkosten verursachen, sichert aber den Erhalt des kulturellen Erbes.\n\nDie kontinuierliche Stadtentwicklung schafft neue Wohnquartiere, während historische Stadtteile bewahrt werden. Dieser Kontrast zwischen Tradition und Moderne prägt Dortmund. Bei Neubauten in historischer Umgebung sind oft gestalterische Auflagen zu beachten, die sich an der umgebenden Bebauung orientieren.\n\nWeitere Informationen zum Dortmunder Immobilienmarkt und baurechtliche Hinweise finden Sie bei der <a href='https://www.dortmund.de/rathaus/verwaltung/stadtplanungs-und-bauordnungsamt/stadtplanung/' rel='nofollow'>Stadt Dortmund - Stadtplanung</a>."
       }
     ],
     "ctaSection": {
@@ -187,7 +187,7 @@
       "content": "Eine fundierte Bauschadensanalyse gibt Ihnen Sicherheit vor dem Immobilienkauf. Sie erhalten objektive Einschätzungen durch qualifizierte Sachverständige, realistische Kostenrahmen für erkannte Mängel und verständliche Handlungsempfehlungen. Die digitale Bewertung ist zeitlich flexibel, transparent und erfolgt ohne Vor-Ort-Termine.\n\nSie erhalten den Bericht per E-Mail als PDF innerhalb von 2 Werktagen und haben damit Klarheit für Ihre Kaufentscheidung. Sie können ihn für Verhandlungen mit Verkäufern nutzen, Ihrer Bank vorlegen oder als Grundlage für die Sanierungsplanung verwenden. Starten Sie jetzt die Bewertung und treffen Sie Ihre Kaufentscheidung auf fundierter Basis.",
       "primaryCTA": {
         "text": "Jetzt Bewertung starten",
-        "link": "/evaluation"
+        "link": "/auftrag"
       },
       "secondaryCTA": {
         "text": "So funktioniert's ansehen",

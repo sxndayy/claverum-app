@@ -35,7 +35,7 @@ const CityPageClient: React.FC<CityPageClientProps> = ({ cityData }) => {
   }
 
   const handleStartEvaluation = () => {
-    router.push('/evaluation');
+    router.push('/auftrag');
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -376,7 +376,7 @@ const CityPageClient: React.FC<CityPageClientProps> = ({ cityData }) => {
                   <Button
                     onClick={handleStartEvaluation}
                     size="lg"
-                    className="bg-white hover:bg-gray-50 text-text-100 px-8 py-4 text-lg font-semibold border-2 border-primary"
+                    className="bg-white hover:bg-bg-200 text-text-100 px-8 py-4 text-lg font-semibold border-2 border-primary"
                   >
                     {cityData.content.ctaSection?.primaryCTA?.text || 'Jetzt Bewertung starten'}
                   </Button>

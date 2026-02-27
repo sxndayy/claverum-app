@@ -8,21 +8,29 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Brand Colors */
-    --primary-100: 202 70% 88%; /* #d4eaf7 */
-    --primary-200: 203 32% 73%; /* #b6ccd8 */
-    --primary-300: 180 3% 24%; /* #3b3c3d */
-    --accent-100: 199 82% 69%; /* #71c4ef */
-    --accent-200: 200 100% 27%; /* #00668c */
+    /* Primary Blues - Professional */
+    --primary-100: 210 30% 96%; /* #f3f6f9 - sehr subtiles grau-blau */
+    --primary-200: 210 20% 88%; /* #dce3e8 - für borders */
+    --primary-300: 210 40% 20%; /* #1e3a52 - dunkel, seriös */
+    
+    /* Accent Blues - Innovation */
+    --accent-100: 200 100% 60%; /* #33b5ff - hell, digital */
+    --accent-200: 210 100% 32%; /* #0052a3 - HAUPT CTA */
+    --accent-300: 210 100% 24%; /* #003d7a - hover/dark */
+    
+    /* Success Green */
+    --success-100: 160 84% 20%; /* #059669 - professionell */
+    --success-200: 160 84% 39%; /* #10b981 - hover */
     
     /* Text Colors */
-    --text-100: 0 0% 11%; /* #1d1c1c */
-    --text-200: 198 15% 26%; /* #313d44 */
+    --text-100: 0 0% 10%; /* #1a1a1a - headlines */
+    --text-200: 220 13% 22%; /* #374151 - body */
+    --text-300: 220 9% 46%; /* #6b7280 - subtle */
     
     /* Background Colors */
-    --bg-100: 48 100% 99%; /* #fffefb */
-    --bg-200: 46 25% 96%; /* #f5f4f1 */
-    --bg-300: 60 4% 79%; /* #cccbc8 */
+    --bg-100: 0 0% 100%; /* #ffffff - weiß */
+    --bg-200: 210 20% 98%; /* #f9fafb - sehr subtil */
+    --bg-300: 210 100% 97%; /* #f0f7ff - subtil blau */
     
     /* System Colors mapped to brand */
     --background: var(--bg-100);
@@ -149,7 +157,7 @@ All colors MUST be HSL.
     height: 2px;
     z-index: 1;
     pointer-events: none;
-    background: linear-gradient(90deg, #9dbad3 0%, #2e6aa3 50%, #9dbad3 100%);
+    background: linear-gradient(90deg, hsl(var(--primary-200)) 0%, hsl(var(--accent-200)) 50%, hsl(var(--primary-200)) 100%);
     border-radius: 2px;
   }
 
@@ -161,7 +169,7 @@ All colors MUST be HSL.
     transform: translateY(-50%);
     width: 18px;
     height: 14px;
-    background: linear-gradient(90deg, #9dbad3 0%, #2e6aa3 100%);
+    background: linear-gradient(90deg, hsl(var(--primary-200)) 0%, hsl(var(--accent-200)) 100%);
     clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
   }
 
@@ -169,6 +177,61 @@ All colors MUST be HSL.
     .steps-connector {
       display: none !important;
     }
+  }
+
+  /* Expert Sidebar (Right) */
+  .funnel-sidebar {
+    @apply bg-white border-2 border-primary-200 rounded-xl;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  @media (min-width: 1280px) {
+    .funnel-sidebar {
+      position: sticky;
+      top: 100px;
+      width: 280px;
+    }
+  }
+
+  @media (max-width: 1279px) {
+    .funnel-sidebar {
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  /* Process Sidebar (Left) */
+  .process-sidebar {
+    @apply bg-white border-2 border-primary-200 rounded-xl;
+    padding: 28px 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  @media (min-width: 1280px) {
+    .process-sidebar {
+      position: sticky;
+      top: 100px;
+      width: 280px;
+    }
+  }
+
+  /* Step number circles (replaces emoji numbers) */
+  .step-number {
+    @apply inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex-shrink-0;
+  }
+
+  /* Customer Quote Box */
+  .quote-box {
+    @apply rounded-lg;
+    font-size: 0.9375rem;
+    color: #1a1a1a;
+    line-height: 1.6;
+    font-style: italic;
+    padding: 16px;
+    background: #f0f7ff;
+    border-left: 3px solid #0066CC;
   }
 }
 
@@ -216,10 +279,59 @@ All colors MUST be HSL.
   /* Prefer two balanced lines for the hero heading */
   .hero-title {
     text-wrap: balance;
-    max-width: 22ch;
+    max-width: 28ch;
     margin-left: auto;
     margin-right: auto;
     line-height: 1.15;
   }
+}
+
+/* Year slider styles */
+.year-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #d1d5db 0%, #0066CC 100%);
+  outline: none;
+}
+.year-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #d1d5db 0%, #0066CC 100%);
+}
+.year-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 3px solid #0066CC;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  margin-top: -8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.year-slider::-webkit-slider-thumb:active {
+  transform: scale(1.04);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+.year-slider::-moz-range-track {
+  height: 8px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #d1d5db 0%, #0066CC 100%);
+}
+.year-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 3px solid #0066CC;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.year-slider::-moz-range-thumb:active {
+  transform: scale(1.04);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
 }
 

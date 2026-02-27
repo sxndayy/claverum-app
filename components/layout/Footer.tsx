@@ -31,21 +31,21 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="text-black bg-gradient-to-tl from-blue-50 via-blue-100 to-blue-300">
+    <footer className="bg-primary-300 text-white">
       <div className="container mx-auto px-4 py-16">
         <h2 className="sr-only">Footer Navigation</h2>
         <div className="grid md:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-black">Bauklar.org</h3>
-            <p className="text-black text-sm leading-relaxed">
+            <h3 className="text-xl font-bold text-white">Bauklar.org</h3>
+            <p className="text-white/70 text-sm leading-relaxed">
               Professionelle Bauschadensbewertung für private Immobilienkäufer. 
               Schnell, zuverlässig, digital.
             </p>
             <div className="flex gap-3">
               <a 
                 href="https://linkedin.com/in/dr-johannes-stankiewicz-63b5ba55/" 
-                className="w-8 h-8 bg-bg-100/10 rounded-full flex items-center justify-center hover:bg-bg-100/20 transition-smooth"
+                className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-smooth"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn Profil von Dr. Johannes Stankiewicz"
@@ -55,31 +55,24 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Services */}
+          {/* Navigation */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-black">Leistungen</h3>
-            <ul className="space-y-2 text-sm text-black">
+            <h3 className="font-semibold text-white">Navigation</h3>
+            <ul className="space-y-2 text-sm text-white/70">
               <li>
                 <a 
                   href="/#leistungen"
                   onClick={(e) => handleSectionClick(e, 'leistungen')}
-                  className="hover:text-black transition-smooth"
+                  className="hover:text-white transition-smooth"
                 >
                   Bauschadensbewertung
                 </a>
               </li>
-            </ul>
-          </div>
-
-          {/* Navigation */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-black">Navigation</h3>
-            <ul className="space-y-2 text-sm text-black">
               <li>
                 <a 
                   href="/#so-funktioniert"
                   onClick={(e) => handleSectionClick(e, 'so-funktioniert')}
-                  className="hover:text-black transition-smooth"
+                  className="hover:text-white transition-smooth"
                 >
                   So funktioniert's
                 </a>
@@ -88,7 +81,7 @@ const Footer: React.FC = () => {
                 <a 
                   href="/#preise"
                   onClick={(e) => handleSectionClick(e, 'preise')}
-                  className="hover:text-black transition-smooth"
+                  className="hover:text-white transition-smooth"
                 >
                   Preise
                 </a>
@@ -97,7 +90,7 @@ const Footer: React.FC = () => {
                 <a 
                   href="/#faq"
                   onClick={(e) => handleSectionClick(e, 'faq')}
-                  className="hover:text-black transition-smooth"
+                  className="hover:text-white transition-smooth"
                 >
                   FAQ
                 </a>
@@ -106,7 +99,7 @@ const Footer: React.FC = () => {
                 <a 
                   href="/#kontakt"
                   onClick={(e) => handleSectionClick(e, 'kontakt')}
-                  className="hover:text-black transition-smooth"
+                  className="hover:text-white transition-smooth"
                 >
                   Kontakt
                 </a>
@@ -114,53 +107,70 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
+          {/* Blog */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-white">Blog</h3>
+            <ul className="space-y-2 text-sm text-white/70">
+              <li>
+                <Link href="/blog/hauskauf-beratung" className="hover:text-white transition-smooth">
+                  Hauskauf Beratung
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog/schimmel-bauschaden" className="hover:text-white transition-smooth">
+                  Schimmel als Bauschaden
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* Städte */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-black">Städte</h3>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-black">
-              <Link href="/berlin" className="hover:text-black transition-smooth">
+            <h3 className="font-semibold text-white">Städte</h3>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-white/70">
+              <Link href="/berlin" className="hover:text-white transition-smooth">
                 Berlin
               </Link>
-              <Link href="/essen" className="hover:text-black transition-smooth">
+              <Link href="/essen" className="hover:text-white transition-smooth">
                 Essen
               </Link>
-              <Link href="/hamburg" className="hover:text-black transition-smooth">
+              <Link href="/hamburg" className="hover:text-white transition-smooth">
                 Hamburg
               </Link>
-              <Link href="/frankfurt" className="hover:text-black transition-smooth">
+              <Link href="/frankfurt" className="hover:text-white transition-smooth">
                 Frankfurt
               </Link>
-              <Link href="/muenchen" className="hover:text-black transition-smooth">
+              <Link href="/muenchen" className="hover:text-white transition-smooth">
                 München
               </Link>
-              <Link href="/stuttgart" className="hover:text-black transition-smooth">
+              <Link href="/stuttgart" className="hover:text-white transition-smooth">
                 Stuttgart
               </Link>
-              <Link href="/koeln" className="hover:text-black transition-smooth">
+              <Link href="/koeln" className="hover:text-white transition-smooth">
                 Köln
               </Link>
-              <Link href="/nuernberg" className="hover:text-black transition-smooth">
+              <Link href="/nuernberg" className="hover:text-white transition-smooth">
                 Nürnberg
               </Link>
-              <Link href="/duesseldorf" className="hover:text-black transition-smooth">
+              <Link href="/duesseldorf" className="hover:text-white transition-smooth">
                 Düsseldorf
               </Link>
-              <Link href="/leipzig" className="hover:text-black transition-smooth">
+              <Link href="/leipzig" className="hover:text-white transition-smooth">
                 Leipzig
               </Link>
-              <Link href="/dortmund" className="hover:text-black transition-smooth">
+              <Link href="/dortmund" className="hover:text-white transition-smooth">
                 Dortmund
               </Link>
-              <Link href="/dresden" className="hover:text-black transition-smooth">
+              <Link href="/dresden" className="hover:text-white transition-smooth">
                 Dresden
               </Link>
-              <Link href="/hannover" className="hover:text-black transition-smooth">
+              <Link href="/hannover" className="hover:text-white transition-smooth">
                 Hannover
               </Link>
-              <Link href="/bremen" className="hover:text-black transition-smooth">
+              <Link href="/bremen" className="hover:text-white transition-smooth">
                 Bremen
               </Link>
-              <Link href="/mannheim" className="hover:text-black transition-smooth">
+              <Link href="/mannheim" className="hover:text-white transition-smooth">
                 Mannheim
               </Link>
             </div>
@@ -168,13 +178,13 @@ const Footer: React.FC = () => {
 
           {/* Contact */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-black">Kontakt</h3>
-            <div className="space-y-3 text-sm text-black">
+            <h3 className="font-semibold text-white">Kontakt</h3>
+            <div className="space-y-3 text-sm text-white/70">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 <a 
                   href="mailto:kontakt@bauklar.org"
-                  className="hover:text-black transition-smooth"
+                  className="hover:text-white transition-smooth"
                 >
                   kontakt@bauklar.org
                 </a>
@@ -183,7 +193,7 @@ const Footer: React.FC = () => {
                 <Phone className="w-4 h-4" />
                 <a 
                   href="tel:+4932221804909"
-                  className="hover:text-black transition-smooth"
+                  className="hover:text-white transition-smooth"
                 >
                   +49 322 21804909
                 </a>
@@ -201,32 +211,32 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-bg-100/20 mt-12 pt-8">
+        <div className="border-t border-white/20 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-black">
-              © 2025 Claverum GmbH. Alle Rechte vorbehalten.
+            <div className="text-sm text-white/60">
+              © {new Date().getFullYear()} Claverum GmbH. Alle Rechte vorbehalten.
             </div>
-            <div className="flex flex-wrap gap-6 text-sm text-black">
-              <Link href="/impressum" className="hover:text-black transition-smooth">
+            <div className="flex flex-wrap gap-6 text-sm text-white/70">
+              <Link href="/impressum" className="hover:text-white transition-smooth">
                 Impressum
               </Link>
-              <Link href="/agb" className="hover:text-black transition-smooth">
+              <Link href="/agb" className="hover:text-white transition-smooth">
                 AGB
               </Link>
-              <Link href="/datenschutz" className="hover:text-black transition-smooth">
+              <Link href="/datenschutz" className="hover:text-white transition-smooth">
                 Datenschutz
               </Link>
-              <Link href="/widerruf" className="hover:text-black transition-smooth">
+              <Link href="/widerruf" className="hover:text-white transition-smooth">
                 Widerruf
               </Link>
-              <Link href="/admin" className="hover:text-black transition-smooth">
+              <Link href="/admin" className="hover:text-white transition-smooth">
                 Admin
               </Link>
             </div>
           </div>
           
           {/* Legal Note */}
-          <div className="mt-6 text-xs text-black leading-relaxed max-w-4xl">
+          <div className="mt-6 text-xs text-white/50 leading-relaxed max-w-4xl">
             <strong>Haftungsausschluss:</strong> Unsere Bauschadensbewertung dient als fundierte Entscheidungsgrundlage. Sie basiert auf den bereitgestellten Unterlagen und Informationen und erfolgt nach bestem Wissen und Gewissen. Eine rechtliche Gewährleistung oder Haftung, insbesondere für Vollständigkeit, Richtigkeit oder etwaige Folgeschäden, kann nicht übernommen werden.
           </div>
         </div>
@@ -236,5 +246,7 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+
+
 
 

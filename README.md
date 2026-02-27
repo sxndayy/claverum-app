@@ -14,8 +14,10 @@ bauklar-nextjs/
 │   ├── not-found.tsx    # 404 Page
 │   └── globals.css      # Global Styles + Tailwind
 ├── components/
-│   ├── layout/          # Header, Footer
-│   ├── sections/        # Homepage Sections
+│   ├── layout/          # (ältere gemeinsame Layout-Komponenten)
+│   ├── sections/        # (ältere gemeinsame Homepage-Sections)
+│   ├── start/           # Start-Landingpage (/start) – Header, Sections, Layout
+│   ├── main/            # Haupt-Landingpage (/) – Header, Sections, Layout
 │   ├── forms/           # Forms (Client Components)
 │   ├── seo/             # SEO Schema Components
 │   └── ui/              # UI Components (shadcn/ui)
@@ -61,8 +63,16 @@ npm run build
 npx serve out
 ```
 
-## Migration Notes
+## Mustergutachten-Assets
 
-Siehe `MIGRATION_ANALYSIS.md` für vollständige Analyse.
+Die Beispiel-Gutachten-Dateien, auf die das Backend in Upload-E-Mails verweist, liegen im Frontend-Repo unter:
 
+- `public/mustergutachten/mustergutachten-bauklar-analyse.pdf`
+- `public/mustergutachten/mustergutachten-cover.png`
 
+Sie sind in Produktion unter folgenden URLs abrufbar:
+
+- `https://www.bauklar.org/mustergutachten/mustergutachten-bauklar-analyse.pdf`
+- `https://www.bauklar.org/mustergutachten/mustergutachten-cover.png`
+
+Netlify liefert das PDF mit dem Content-Type `application/pdf` aus (zusätzliche Header-Regel in `netlify.toml` für `/mustergutachten/*.pdf`), sodass Browser es inline öffnen können.

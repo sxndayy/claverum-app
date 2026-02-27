@@ -468,7 +468,7 @@ const ServiceInfoOverlay: React.FC<ServiceInfoOverlayProps> = ({
   const titleId = 'service-info-title';
 
   const handleNavigateToEvaluation = () => {
-    pendingActionRef.current = () => router.push('/evaluation');
+    pendingActionRef.current = () => router.push('/auftrag');
     startClose();
   };
 
@@ -563,5 +563,7 @@ const ServiceInfoOverlay: React.FC<ServiceInfoOverlayProps> = ({
 };
 
 export default ServiceInfoOverlay;
+
+
 
 

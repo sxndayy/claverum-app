@@ -15,21 +15,22 @@ const Header: React.FC = () => {
   // Check if we're on a subpage (not homepage)
   const isNotHomePage = pathname !== '/';
   
-  // Pages where the CTA button should NOT be shown (admin, evaluation, success)
+  // Pages where the CTA button should NOT be shown (admin, evaluation, success, auftrag, upload)
   const pagesWithoutCTA = [
-    '/evaluation',
     '/success',
     '/admin',
     '/admin/login'
   ];
-  
+
   // Show CTA button on homepage, city pages, blog pages, and legal pages (but not on pagesWithoutCTA)
   // City pages are single-level paths like /berlin, /hamburg, etc.
   const pathSegments = pathname.split('/').filter(Boolean);
-  const isCityPage = pathSegments.length === 1 && !pagesWithoutCTA.includes(pathname);
+  const isAuftragPage = pathname.startsWith('/auftrag');
+  const isUploadPage = pathname.startsWith('/upload');
+  const isCityPage = pathSegments.length === 1 && !pagesWithoutCTA.includes(pathname) && !isAuftragPage && !isUploadPage;
   const isLegalPage = ['/impressum', '/agb', '/datenschutz', '/widerruf'].includes(pathname);
   const isBlogPage = pathname.startsWith('/blog/');
-  const shouldShowCTA = pathname === '/' || isCityPage || isLegalPage || isBlogPage;
+  const shouldShowCTA = (pathname === '/' || isCityPage || isLegalPage || isBlogPage) && !isAuftragPage && !isUploadPage;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +42,7 @@ const Header: React.FC = () => {
   }, []);
 
   const handleStartEvaluation = () => {
-    router.push('/evaluation');
+    router.push('/auftrag');
     setIsMenuOpen(false);
   };
 
@@ -129,7 +130,7 @@ const Header: React.FC = () => {
                 onClick={handleStartEvaluation}
                 className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6"
               >
-                Jetzt Bewertung starten
+                Jetzt Objekt prüfen lassen
               </Button>
             </div>
           )}
@@ -141,7 +142,7 @@ const Header: React.FC = () => {
                 className="bg-transparent hover:bg-transparent text-transparent font-medium px-6 pointer-events-none"
                 disabled
               >
-                Jetzt Bewertung starten
+                Jetzt Objekt prüfen lassen
               </Button>
             </div>
           )}
@@ -178,7 +179,7 @@ const Header: React.FC = () => {
                 onClick={handleStartEvaluation}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium mt-4"
               >
-                Jetzt Bewertung starten
+                Jetzt Objekt prüfen lassen
               </Button>
             </nav>
           </div>
@@ -189,5 +190,7 @@ const Header: React.FC = () => {
 };
 
 export default Header;
+
+
 
 

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -35,22 +34,12 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body className={inter.className}>
-        {/* Privacy-friendly analytics by Plausible */}
-        <Script
-          async
-          src="https://plausible.io/js/pa-dxnaangqDBk53sRMher7b.js"
-          strategy="afterInteractive"
-        />
-        <Script id="plausible-init" strategy="afterInteractive">
-          {`
-            window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-            plausible.init()
-          `}
-        </Script>
         {children}
       </body>
     </html>
   );
 }
+
+
 
 

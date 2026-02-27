@@ -2,11 +2,10 @@
 # Next.js generates static HTML files
 # Netlify's pretty_urls processing handles /blog/hauskauf-beratung.html → /blog/hauskauf-beratung/ automatically
 
-# Exclude static files from SPA redirect - they should be served directly
+# Exclude static files from redirects - they should be served directly
 /sitemap.xml               /sitemap.xml              200
 /robots.txt                /robots.txt               200
 /image-sitemap.xml         /image-sitemap.xml        200
 
-# SPA fallback - must be last
-# This handles client-side routing for dynamic routes
-/*                         /index.html               200
+# Note: Static pages are served directly by Netlify's pretty_urls
+# No SPA fallback needed for static export - pages exist as /city/index.html

@@ -62,12 +62,74 @@ export default function AGPage() {
                     </div>
 
                     <div>
-                      <h2 className="text-2xl font-semibold text-text-100 mb-4">3. Preis und Zahlung</h2>
-                      <ul className="list-disc list-inside mb-4 space-y-2 ml-4">
-                        <li>Das Honorar beträgt 350 € brutto pro Analyse.</li>
-                        <li>Mit Beauftragung sind 25% des Honorars fällig. Nach Lieferung des Gutachtens sind die restlichen 75% fällig.</li>
-                        <li>Die Rechnung ist innerhalb von 10 Tagen nach Erhalt ohne Abzug zu zahlen.</li>
+                      <h2 className="text-2xl font-semibold text-text-100 mb-4">3. Preis &amp; Zahlung</h2>
+
+                      <h3 className="text-xl font-semibold text-text-100 mb-2">3.1 Preise</h3>
+                      <p className="mb-2">
+                        (1) Die Leistungen der Anbieterin werden zu folgenden Endpreisen angeboten (inklusive gesetzlicher
+                        Umsatzsteuer):
+                      </p>
+                      <ul className="list-disc list-inside mb-2 space-y-1 ml-4">
+                        <li>Bauklar Analyse: 350,00 € brutto</li>
+                        <li>Bauklar Intensiv: 790,00 € brutto</li>
                       </ul>
+                      <p className="mb-4">
+                        (2) Alle Preisangaben verstehen sich als Endpreise inklusive der jeweils gültigen gesetzlichen
+                        Umsatzsteuer.
+                      </p>
+
+                      <h3 className="text-xl font-semibold text-text-100 mb-2">3.2 Zahlungsbedingungen</h3>
+                      <p className="mb-2">
+                        (1) Die Zahlung des Honorars erfolgt über einen im Bestellprozess angegebenen Zahlungsdienstleister
+                        (z. B. Stripe) und kann mit PayPal, Kreditkarte, Apple Pay oder Google Pay geleistet werden.
+                      </p>
+                      <p className="mb-2">
+                        (2) Mit Upload der erforderlichen Fotos und der verbindlichen Beauftragung des jeweiligen Produkts
+                        wird der vollständige Kaufpreis sofort fällig und zur Zahlung über den ausgewählten
+                        Zahlungsdienstleister ausgelöst.
+                      </p>
+                      <p className="mb-2">
+                        (3) Eine gesonderte Rechnung wird in Textform (z. B. per E-Mail) übermittelt. Der Kunde verpflichtet
+                        sich, den ausgewählten Zahlungsweg korrekt bereitzustellen und etwaige erforderliche Informationen
+                        vollständig anzugeben.
+                      </p>
+                      <p className="mb-4">
+                        (4) Gerät der Kunde mit der Zahlung in Verzug, gelten die gesetzlichen Regelungen zum Verzugszins
+                        (§ 288 BGB).
+                      </p>
+
+                      <h3 className="text-xl font-semibold text-text-100 mb-2">
+                        3.3 Vertragsschluss, Leistungsbeginn und Widerrufsrecht (für Verbraucher)
+                      </h3>
+                      <p className="mb-2">
+                        (1) Der Vertrag zwischen der Anbieterin und dem Kunden kommt mit erfolgreicher Zahlung und
+                        Bestätigung im Bestellprozess zustande.
+                      </p>
+                      <p className="mb-2">
+                        (2) Verbrauchern steht grundsätzlich ein gesetzliches Widerrufsrecht von 14 Tagen gem. §§ 312d, 355
+                        BGB zu. Die Widerrufsfrist beginnt mit Vertragsschluss.
+                      </p>
+                      <p className="mb-2">
+                        (3) Eine Information über das Widerrufsrecht in klarer, verständlicher Form wird im Rahmen des
+                        Bestellprozesses bereitgestellt (Widerrufsbelehrung).
+                      </p>
+                      <p className="mb-2">
+                        (4) <span className="font-semibold">Erlöschen des Widerrufsrechts bei vorzeitigem Leistungsbeginn:</span>{' '}
+                        Vertragsgegenstand sind digitale Dienstleistungen. Sofern der Kunde ausdrücklich zustimmt, dass die
+                        Anbieterin mit der Leistungserbringung vor Ablauf der Widerrufsfrist beginnt (z. B. sofortige Analyse
+                        nach Upload), und er gleichzeitig bestätigt, dass ihm bekannt ist, dass damit sein Widerrufsrecht mit
+                        vollständiger Leistungserbringung erlischt, erlischt das Widerrufsrecht bereits mit vollständiger
+                        Erbringung der Leistung.
+                      </p>
+                      <p className="mb-2">
+                        (5) Im Fall wirksamer Ausübung des Widerrufsrechts werden bereits geleistete Zahlungen unverzüglich,
+                        spätestens jedoch binnen 14 Tagen nach Eingang des Widerrufs erstattet.
+                      </p>
+                      <p className="mb-0">
+                        (6) Das Widerrufsrecht besteht nicht bei vollständig erbrachten digitalen Inhalten, wenn mit der
+                        Ausführung der Leistung vor Ablauf der Widerrufsfrist begonnen wurde und der Kunde dem ausdrücklich
+                        zugestimmt hat.
+                      </p>
                     </div>
 
                     <div>
@@ -92,7 +154,7 @@ export default function AGPage() {
                         Für einfache oder leichte Fahrlässigkeit übernehmen wir keine Haftung.
                       </p>
                       <p className="mb-4">
-                        Außerdem ist – außer bei Verletzung von Leben, Körper oder Gesundheit – die Höhe der möglichen Haftung auf den Betrag der jeweiligen Vergütung (350 €) begrenzt.
+                        Außerdem ist – außer bei Verletzung von Leben, Körper oder Gesundheit – die Höhe der möglichen Haftung auf den Betrag der jeweiligen Vergütung (350 € bzw. 790 €) begrenzt.
                       </p>
                       <p className="mb-2 font-semibold">Keine Haftung übernehmen wir insbesondere für:</p>
                       <ul className="list-disc list-inside mb-4 space-y-2 ml-4">
@@ -142,5 +204,7 @@ export default function AGPage() {
     </>
   );
 }
+
+
 
 

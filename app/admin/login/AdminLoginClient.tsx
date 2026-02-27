@@ -25,16 +25,19 @@ export default function AdminLoginClient() {
     try {
       const response = await apiClient.login(username, password);
       
-      if (response.success) {
-        authManager.setToken(response.token!);
-        authManager.setUser(response.user!);
+      if (response.success && response.token && response.user) {
+        authManager.setToken(response.token);
+        authManager.setUser(response.user);
         router.push('/admin');
       } else {
-        setError(response.error || 'Login failed');
+        // Show error message
+        const errorMessage = response.error || 'Login failed. Please check your credentials.';
+        setError(errorMessage);
+        console.error('Login failed:', response);
       }
     } catch (error) {
       console.error('Login error:', error);
-      setError('Network error. Please try again.');
+      setError(error instanceof Error ? error.message : 'Network error. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -96,5 +99,6 @@ export default function AdminLoginClient() {
     </div>
   );
 }
+
 
 

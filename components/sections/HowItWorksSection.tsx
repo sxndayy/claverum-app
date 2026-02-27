@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import { Upload, Bot, CheckCircle, Shield, Clock, Zap } from 'lucide-react';
+import { Upload, Bot, CheckCircle } from 'lucide-react';
 
 const HowItWorksSection: React.FC = () => {
   const steps = [
@@ -42,24 +42,6 @@ const HowItWorksSection: React.FC = () => {
         'Plausible Kostenrahmen',
         'Handlungs- und Wartungsempfehlungen'
       ]
-    }
-  ];
-
-  const securityFeatures = [
-    {
-      icon: Shield,
-      title: 'DSGVO-konform',
-      description: 'Ihre Daten werden nach höchsten Datenschutzstandards verarbeitet'
-    },
-    {
-      icon: Clock,
-      title: 'TLS-Verschlüsselung',
-      description: 'Alle Uploads sind mit 256-Bit-Verschlüsselung gesichert'
-    },
-    {
-      icon: Zap,
-      title: 'Automatische Löschung',
-      description: 'Daten werden nach Projektabschluss automatisch gelöscht'
     }
   ];
 
@@ -136,7 +118,7 @@ const HowItWorksSection: React.FC = () => {
   }, []);
 
   return (
-    <section id="so-funktioniert" className="py-20 bg-background">
+    <section id="so-funktioniert" className="py-20 bg-bg-200">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-text-100 mb-4">
@@ -225,28 +207,6 @@ const HowItWorksSection: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* Security & Trust */}
-          <div className="text-center">
-            <h3 className="text-xl font-semibold text-text-100 mb-8">
-              Sicherheit & Datenschutz
-            </h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              {securityFeatures.map((feature, index) => (
-                <div key={index} className="flex flex-col items-center p-4">
-                  <feature.icon className="w-8 h-8 text-primary mb-3" />
-                  <h4 className="font-medium text-text-100 mb-2">{feature.title}</h4>
-                  <p className="text-sm text-text-200 text-center">{feature.description}</p>
-                </div>
-              ))}
-            </div>
-            
-            <p className="text-xs text-text-200 mt-8 max-w-2xl mx-auto leading-relaxed">
-              Micro-Copy zur Sicherheit: Alle Daten werden verschlüsselt übertragen und DSGVO-konform verarbeitet. 
-              Nach Abschluss Ihres Auftrags werden alle hochgeladenen Dateien automatisch gelöscht. 
-              Ihre Privatsphäre ist unser höchstes Gut.
-            </p>
           </div>
         </div>
       </div>

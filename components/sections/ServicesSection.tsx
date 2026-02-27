@@ -27,14 +27,33 @@ const ServicesSection: React.FC = () => {
   } | null>(null);
 
   const handleStartEvaluation = () => {
-    router.push('/evaluation');
+    router.push('/auftrag');
   };
+
+  // Liste aller Städte mit Namen und Slugs
+  const cities = [
+    { name: 'Berlin', slug: 'berlin' },
+    { name: 'Hamburg', slug: 'hamburg' },
+    { name: 'München', slug: 'muenchen' },
+    { name: 'Köln', slug: 'koeln' },
+    { name: 'Düsseldorf', slug: 'duesseldorf' },
+    { name: 'Dortmund', slug: 'dortmund' },
+    { name: 'Essen', slug: 'essen' },
+    { name: 'Frankfurt', slug: 'frankfurt' },
+    { name: 'Stuttgart', slug: 'stuttgart' },
+    { name: 'Nürnberg', slug: 'nuernberg' },
+    { name: 'Leipzig', slug: 'leipzig' },
+    { name: 'Dresden', slug: 'dresden' },
+    { name: 'Hannover', slug: 'hannover' },
+    { name: 'Bremen', slug: 'bremen' },
+    { name: 'Mannheim', slug: 'mannheim' },
+  ];
 
   const services: ServiceCard[] = [
     {
       icon: Search,
-      title: 'Bauschadensbewertung',
-      description: 'Detaillierte Zustandsanalyse mit realistischen Kosten- und Risikoabschätzungen',
+      title: 'Digitale Bauzustandsbewertung',
+      description: 'Professionelle Schadensanalyse durch Diplom-Sachverständigen (DIA)',
       features: [
         'Strukturierte Bewertung aller Gebäudebereiche',
         'Risikoeinstufung nach Priorität',
@@ -43,31 +62,33 @@ const ServicesSection: React.FC = () => {
       ],
       info: {
         tagline:
-          'Präzise Analyse sichtbarer Mängel und potenzieller Risiken – ideal für Käufer:innen und Eigentümer:innen, die eine fundierte Einschätzung des baulichen Zustands benötigen.',
+          'Traditionelle Vor-Ort-Gutachten kosten 800-1.500€, erfordern Verkäufer-Zustimmung und dauern Wochen. Unsere digitale Lösung liefert die gleiche Expertise in 48h für nur 350€ – komplett online.',
         sections: [
           {
             title: 'Sie erhalten',
             items: [
-              'Detaillierte Auswertung aller eingereichten Fotos und Objektinformationen',
-              'Priorisierte Einschätzung nach Dringlichkeit mit klaren Handlungsvorschlägen',
-              'Realistische Kostenspannen mit transparenter Aufschlüsselung nach Gewerken',
-              'Abschlussbericht als übersichtlich strukturiertes PDF mit Empfehlungen und Zusammenfassung',
+              'Bewertung durch Diplom-Sachverständigen (DIA) mit 15+ Jahren Erfahrung',
+              'Priorisierung aller Mängel nach Dringlichkeit',
+              'Kostenschätzungen für Reparaturen pro Gewerk',
+              '14-16 Seiten PDF-Bericht mit Handlungsempfehlungen',
             ],
           },
           {
             title: 'Ideal, wenn',
             items: [
-              'Sie Schäden dokumentieren und deren Relevanz objektiv bewerten lassen möchten',
-              'Sanierungs-, Kauf- oder Modernisierungsentscheidungen anstehen',
-              'Sie eine unabhängige Zweitmeinung für Versicherer, Banken oder Partner benötigen',
+              'Sie bei "wie gesehen"-Verkäufen keine Gewährleistung erhalten',
+              'Die Kaufentscheidung unter Zeitdruck steht',
+              'Sie 800€+ für traditionelle Gutachten sparen wollen',
+              'Der Verkäufer keinen Gutachter-Termin ermöglicht',
+              'Sie eine zweite Meinung benötigen',
             ],
           },
           {
             title: 'Ablauf in 3 Schritten',
             items: [
-              'Fotos und Objektinformationen direkt im Browser hochladen',
-              'Analyse und Plausibilitätsprüfung durch unsere Sachverständigen',
-              'Ergebnisbericht mit Bewertung und Handlungsempfehlung innerhalb von 2 Werktagen',
+              'Fotos hochladen (10 Min mit Smartphone)',
+              'Sachverständiger analysiert (48h Bearbeitungszeit garantiert)',
+              'Gutachten als PDF erhalten (rechtlich verwertbar)',
             ],
           },
         ],
@@ -99,14 +120,14 @@ const ServicesSection: React.FC = () => {
   return (
     <>
       <ServiceSchema />
-      <section id="leistungen" className="bg-bg-200 py-20">
+      <section id="leistungen" className="bg-background py-20">
       <div className="container mx-auto px-4">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-bold text-text-100 md:text-4xl">
-            Unser Service
+            Warum digital?
           </h2>
           <p className="mx-auto max-w-2xl text-xl text-text-200">
-            personalisierte Bauschadensbewertung für jeden Bedarf
+            Die moderne Alternative zum traditionellen Gutachter
           </p>
         </div>
 
@@ -191,6 +212,33 @@ const ServicesSection: React.FC = () => {
                 <br />
                 Präzise Einschätzung ohne Aufwand und zu einem fairen Preis.
               </div>
+            </div>
+          </div>
+
+          {/* Wo wir vertreten sind */}
+          <div className="mt-16 text-center">
+            <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">
+              Wo wir vertreten sind:
+            </h3>
+            <p className="text-text-200 mb-8 max-w-2xl mx-auto">
+              Hier finden Sie uns und noch weitere Informationen zu den jeweiligen Städten.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-5xl mx-auto">
+              {cities.map((city) => (
+                <Link
+                  key={city.slug}
+                  href={`/${city.slug}`}
+                  onClick={() => {
+                    // Scroll zur oberen Position nach Navigation
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 100);
+                  }}
+                  className="inline-flex items-center justify-center px-4 py-3 rounded-md font-medium text-sm transition-all duration-200 bg-primary hover:bg-primary/90 text-primary-foreground shadow-soft hover:shadow-strong hover-lift"
+                >
+                  {city.name}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

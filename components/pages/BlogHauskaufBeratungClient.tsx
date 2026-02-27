@@ -72,7 +72,7 @@ const BlogHauskaufBeratungClient = () => {
     },
     {
       question: "Was kostet eine professionelle Hauskauf Beratung?",
-      answer: "Kurzgutachten vor Ort: 350–500 €. Gerichtsverwertbare Vollgutachten: 1.500–3.000 €. Digitale Bauschadensanalysen: ab 350 € für Bestandsimmobilien."
+      answer: "Mündliche Beratung vor Ort: ca. 450–650 €. Gerichtsverwertbare Vollgutachten: 1.500–3.000 €. Digitale Bauschadensanalysen: ab 350 € für Bestandsimmobilien."
     },
     {
       question: "Brauche ich eine Hauskauf Beratung, wenn der Verkäufer schon ein Gutachten hat?",
@@ -84,15 +84,15 @@ const BlogHauskaufBeratungClient = () => {
     },
     {
       question: "Kann ich mit dem Gutachten den Kaufpreis senken?",
-      answer: "Ja. Fundierte Gutachten ermöglichen Käufern durchschnittliche Preisnachlässe von 15.000 bis 40.000 €. Dokumentierte Mängel schaffen eine objektive Verhandlungsbasis. Verkäufer können schriftlich fixierte Schäden nicht mehr bestreiten."
+      answer: "Ja. Fundierte Gutachten ermöglichen Käufern beachtenswerte Preisnachlässe. Dokumentierte Mängel schaffen eine objektive Verhandlungsbasis. Verkäufer können schriftlich fixierte Schäden nicht mehr bestreiten."
     },
     {
       question: "Was ist der Unterschied zwischen Bankgutachter und Hauskauf Beratung?",
-      answer: "Der Bankgutachter ermittelt ausschließlich den Beleihungswert für die Kreditabsicherung – meist nur durch oberflächliche Außenbetrachtung. Verborgene Mängel interessieren ihn nicht. Eine Kaufberatung hingegen schützt Ihre Interessen und deckt alle Risikofaktoren auf."
+      answer: "Der Bankgutachter ermittelt ausschließlich den Beleihungswert für die Kreditabsicherung – meist nur durch oberflächliche Außenbetrachtung. Verborgene Mängel interessieren ihn nicht. Eine Kaufberatung hingegen schützt Ihre Interessen und deckt alle Risikofaktoren auf. Üblicherweise hat nur die Bank als Auftraggeber Einsicht in das Beleihungswertgutachten."
     },
     {
       question: "Lohnt sich eine Hauskauf Beratung auch bei Neubauten?",
-      answer: "Ja. Auch Neubauten weisen Baufehler auf: unsachgemäße Ausführungen, mangelnde Abdichtungen oder fehlende Gewährleistungsansprüche bei Bauträgerin solvenzen. Eine Abnahmebegleitung durch Sachverständige ist auch hier sinnvoll."
+      answer: "Ja – auch Neubauten können Bauschäden aufweisen. Selbst in neuen Gebäuden treten immer wieder Fehler auf, etwa undichte Wasserleitungen, mangelhafte Abdichtungen oder Ausführungsfehler verschiedener Gewerke. Kommt es zusätzlich zu Problemen bei der Gewährleistung – etwa durch die Insolvenz des Bauträgers – können diese Schäden schnell teuer werden. Eine begleitende Prüfung durch einen Sachverständigen ist daher auch bei Neubauten absolut sinnvoll."
     },
     {
       question: "Was passiert, wenn das Gutachten schwere Mängel aufdeckt?",
@@ -179,7 +179,7 @@ const BlogHauskaufBeratungClient = () => {
                 </div>
                 
                 {/* Summary Box */}
-                <div className="bg-[#f8f9fa] border-l-4 border-primary rounded-lg p-6 md:p-8 mb-12">
+                <div className="bg-bg-200 border-l-4 border-primary rounded-lg p-6 md:p-8 mb-12">
                   <h2 className="text-xl md:text-2xl font-semibold text-text-100 mb-4">
                     Das Wichtigste in Kürze
                   </h2>
@@ -189,7 +189,7 @@ const BlogHauskaufBeratungClient = () => {
                       "Digitale Bauschadensanalysen starten ab 350 €, traditionelle Gutachten kosten 500-1.500 €",
                       "Besonders bei Bestandsimmobilien über 20 Jahren ist eine Beratung ratsam",
                       "Die Neutralität ist gewährleistet, wenn Sie selbst einen unabhängigen Sachverständigen beauftragen",
-                      "Mit einem Gutachten lässt sich der Kaufpreis durchschnittlich um 15.000-40.000 € senken"
+                      "Mit einem Gutachten lässt sich der Kaufpreis in vielen Fällen spürbar reduzieren."
                     ].map((item, index) => (
                       <li key={index} className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
@@ -200,7 +200,7 @@ const BlogHauskaufBeratungClient = () => {
                 </div>
 
                 {/* Table of Contents */}
-                <div className="bg-white border border-[#e0e0e0] rounded-lg p-6 md:p-8 mb-12">
+                <div className="bg-white border border-primary-200 rounded-lg p-6 md:p-8 mb-12">
                   <h2 className="text-xl md:text-2xl font-semibold text-text-100 mb-4">
                     Inhalt der Seite
                   </h2>
@@ -280,18 +280,18 @@ const BlogHauskaufBeratungClient = () => {
                       Unabhängigkeit und Neutralität
                     </h3>
                     <p className="text-text-200 leading-relaxed mb-6">
-                      Eine unabhängige fachkundige Einschätzung setzt nicht nur Fachwissen, sondern auch Neutralität voraus. Seriöse Gutachter verpflichten sich auf einen Berufskodex, der ihre Unparteilichkeit sichert. Der <strong>Bundesverband Deutscher Bausachverständiger e.V.</strong>, der <strong>Bundesverband Freier Sachverständiger e.V.</strong> sowie der <strong>Deutsche Gutachter und Sachverständigen Verband e.V.</strong> führen Verzeichnisse qualifizierter Gutachter und bieten Orientierung bei der Suche nach kompetenten Fachleuten.
+                      Eine unabhängige und fachkundige Einschätzung erfordert nicht nur umfassendes Know-how, sondern auch absolute Neutralität. Seriöse Gutachter halten sich an klare berufliche Grundsätze, die ihre Unparteilichkeit sicherstellen.
                     </p>
                     <p className="text-text-200 leading-relaxed mb-8">
-                      Für die Begutachtung beim Immobilienkauf benötigen Sie einen zertifizierten Bausachverständigen, der speziell auf Wohngebäude und deren Bewertung spezialisiert ist.
+                      Für die Begutachtung beim Immobilienkauf sollten Sie darauf achten, dass die beauftragte Person als diplomierter Bauschadensbewerter qualifiziert ist und über besondere Expertise im Bereich von Wohngebäuden und deren Bewertung verfügt.
                     </p>
 
                     {/* Expert Bio Section */}
-                    <div className="bg-[#f8f9fa] border-l-4 border-primary rounded-lg p-6 md:p-8 my-8">
+                    <div className="bg-bg-200 border-l-4 border-primary rounded-lg p-6 md:p-8 my-8">
                       <div className="flex flex-col md:flex-row gap-6">
                         <div className="flex-shrink-0">
                           <Image
-                            src="/Johannes-foto.png"
+                            src="/Johannes-foto.jpeg"
                             alt="Bausachverständiger Johannes – zertifizierter Gutachter für Hauskauf Beratung"
                             width={192}
                             height={192}
@@ -300,13 +300,10 @@ const BlogHauskaufBeratungClient = () => {
                         </div>
                         <div className="flex-1">
                           <h4 className="text-xl font-semibold text-text-100 mb-2">
-                            Johannes
+                            Dr. Johannes Stankiewicz
                           </h4>
-                          <p className="text-text-200 font-medium mb-3">
-                            Zertifizierter Bausachverständiger
-                          </p>
                           <p className="text-text-200 leading-relaxed mb-4">
-                            Johannes ist seit über 10 Jahren als unabhängiger Bausachverständiger tätig und hat über 500 Immobilienbegutachtungen durchgeführt. Er ist Mitglied im Bundesverband Deutscher Bausachverständiger e.V. und spezialisiert auf die Bewertung von Bestandsimmobilien in deutschen Großstädten. Seine Schwerpunkte liegen in der Erkennung von versteckten Mängeln und der sachlichen Einschätzung von Sanierungskosten.
+                            Dr. Johannes Stankiewicz verfügt über mehr als 15 Jahre Erfahrung in der Immobilienbranche und hat in dieser Zeit über 500 Bauschäden analysiert. Als diplomierter Sachverständiger für Bauschäden ist er auf die Bewertung von Bestandsimmobilien spezialisiert. Sein Fokus liegt auf der zuverlässigen Erkennung versteckter Mängel sowie der realistischen Einschätzung notwendiger Sanierungsmaßnahmen.
                           </p>
                           <Link
                             href="/#ueber-uns"
@@ -327,7 +324,7 @@ const BlogHauskaufBeratungClient = () => {
                       Was prüft ein Hauskauf-Berater?
                     </h2>
                     <p className="text-text-200 leading-relaxed mb-4">
-                      Die zentrale Aufgabe eines Bausachverständigen besteht darin zu bewerten, ob der geforderte Kaufpreis angemessen ist. Dazu analysiert er die Bausubstanz, vergleicht die Immobilie mit aktuellen Marktpreisen vergleichbarer Objekte und erstellt eine fundierte Werteinschätzung.
+                      Die zentrale Aufgabe eines Bauschadensbewerters besteht darin, eine präzise Zustandsanalyse der Immobilie vorzunehmen. Dazu gehören die Beurteilung von Schadensursachen, die Ableitung geeigneter Maßnahmen zur Instandhaltung oder Modernisierung sowie realistische Kostenschätzungen. Auf dieser Basis entsteht eine klare und fachlich fundierte Einschätzung des baulichen Gesamtzustands.
                     </p>
                     
                     <h3 className="text-xl md:text-2xl font-semibold text-text-100 mt-6 mb-3">
@@ -347,49 +344,49 @@ const BlogHauskaufBeratungClient = () => {
                     <ul className="space-y-4 mb-6 list-none">
                       <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          <strong className="text-text-100">Substanzschäden:</strong> Zu den schwerwiegendsten Bauschäden zählen Risse im Mauerwerk, Feuchtigkeitsschäden durch defekte Horizontalsperren und echter Hausschwamm. Schädlinge wie Holzwürmer oder Hausbockkäfer befallen häufig Dachstühle, Holztreppen und Deckenbalken. Eine vollständige Dachsanierung mit neuem Dachstuhl, Eindeckung und Dämmung verursacht Kosten ab 30.000 Euro aufwärts.
+                          <strong className="text-text-100">Substanzschäden:</strong> Zu den gravierendsten Bauschäden zählen Risse im Mauerwerk, insbesondere wenn sie die Statik beeinträchtigen, sowie Feuchtigkeitsschäden durch defekte Horizontalsperren und echter Hausschwamm. Auch Schädlinge wie Holzwürmer oder Hausbockkäfer befallen häufig Dachstühle, Holztreppen und Deckenbalken. Eine umfassende Dachsanierung inklusive neuem Dachstuhl, Eindeckung und Dämmung schlägt in der Regel erst ab etwa 50.000 Euro zu Buche.
                         </p>
                       </li>
                       
                       <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          <strong className="text-text-100">Schimmel:</strong> Schimmelbefall ist nicht immer direkt erkennbar. Manchmal deuten nur muffiger Geruch oder vereinzelte Flecken auf ein größeres Problem hin. Bausachverständige nutzen Feuchtigkeitsmessgeräte, um das Ausmaß zu ermitteln und zu bewerten, ob lediglich oberflächliche Behandlung ausreicht oder größere Sanierungen nötig sind. Die Kosten variieren stark je nach Befallsgrad.
+                          <strong className="text-text-100">Schimmel:</strong> Schimmelbefall ist nicht immer sofort sichtbar. Oft weisen nur muffiger Geruch oder vereinzelte Verfärbungen auf ein größeres Problem hin. Die Ursachen können vielfältig sein - von Restbaufeuchte, Wasserschäden und Trocknungsfehlern über Wärmebrücken und unzureichende Dämmung bis hin zu fehlerhafter Wasserdampfdiffusion oder ungünstigem Wohnverhalten. In manchen Fällen liegt auch eine Kombination mehrerer Faktoren vor oder es versteckt sich Schimmel im Estrich, der nicht direkt wahrnehmbar ist. Je nach Ursache und Ausmaß können die notwendigen Maßnahmen stark variieren. <Link href="/blog/schimmel-bauschaden" className="text-primary hover:underline font-medium">Mehr über Schimmel als Bauschaden erfahren</Link>.
                         </p>
                       </li>
                       
                       <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          <strong className="text-text-100">Alte Heizungsanlagen:</strong> Die Energieeinsparverordnung (EnEV) schreibt den Austausch von Heizkesseln vor, die vor 1984 installiert wurden. Auch neuere Anlagen dürfen nur 30 Jahre betrieben werden – ausgenommen sind Brennwert- und Niedertemperaturkessel. Der Austausch einer veralteten Heizung schlägt mit 12.000 bis 16.000 Euro zu Buche. Eine fundierte Kostenprognose durch einen Gutachter hilft bei der Finanzierungsplanung.
+                          <strong className="text-text-100">Alte Heizungsanlagen:</strong> Das Gebäudeenergiegesetz (GEG) regelt sowohl die Austauschpflicht für alte Heizkessel als auch die Anforderungen an neue Heizungen. Standard- bzw. Konstanttemperaturkessel müssen in der Regel nach 30 Jahren außer Betrieb genommen werden, während Brennwert- und Niedertemperaturkessel sowie bestimmte Bestandsfälle ausgenommen sind. Beim Einbau neuer Heizungen gilt zudem schrittweise die Vorgabe, dass diese zu 65 % erneuerbare Energien nutzen müssen – abhängig von Wärmeplanung, Übergangsfristen und zahlreichen technischen Optionen. Da ein Heizungstausch damit komplex sein kann, bietet ein qualifizierter Gutachter wertvolle Orientierung, indem er die Gebäudesituation bewertet, rechtliche Vorgaben einordnet und passende technische Lösungswege aufzeigt.
                         </p>
                       </li>
                       
                       <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          <strong className="text-text-100">Asbest:</strong> Bis Anfang der 1990er-Jahre war Asbest als Baumaterial zugelassen. In verwittertem Zustand setzt es gesundheitsgefährdende Fasern frei. Ein Gutachter kann Asbestverdacht durch Materialproben klären. Die professionelle Asbestsanierung durch zertifizierte Fachfirmen kostet mehrere tausend Euro.
+                          <strong className="text-text-100">Asbest:</strong> Asbest wurde in Deutschland erst 1993 vollständig verboten und zuvor in zahlreichen Bauprodukten verarbeitet. Es kann unter anderem in Fliesenklebern, Bodenbelägen wie alten Vinyl-Asbest-Platten, Spachtelmassen, Dachpappen, Faserzementplatten, Rohrummantelungen oder Putzen auftreten. In fest gebundenem Zustand gilt Asbest meist als unkritisch. Gesundheitsgefährdend wird es vor allem dann, wenn Fasern durch Renovierungen, Beschädigungen oder unsachgemäße Eingriffe freigesetzt werden. Ein Gutachter kann potenzielle Asbestfundstellen erkennen, das Risiko einschätzen und geeignete Beratungsempfehlungen für den sicheren weiteren Umgang geben.
                         </p>
                       </li>
                       
                       <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          <strong className="text-text-100">Wasserleitungen:</strong> Kalkablagerungen an Armaturen signalisieren oft verkalkte Rohrleitungen. Besonders problematisch wird es, wenn zusätzlich Korrosion vorliegt – dann droht Rohrbruch. Auch alte Bleirohre müssen zwingend ersetzt werden. Bei Installationen über 50 Jahren ist eine Komplettsanierung ratsam. Die Kosten belaufen sich auf mindestens 25 Euro pro Meter Leitung.
+                          <strong className="text-text-100">Wasserleitungen:</strong> Sichtbare Kalkablagerungen an Armaturen deuten häufig auf stark verkalkte oder gealterte Rohrleitungen hin. Kritisch wird es, wenn zusätzlich Korrosion vorliegt - dann steigt das Risiko für Rohrbrüche deutlich. Alte Bleileitungen müssen grundsätzlich ersetzt werden. Kommt es zu einem Schaden, können umfangreiche Folgeschäden entstehen, etwa durchfeuchtete Bauteile, die Trocknungen erfordern, oder beschädigte Bodenbeläge, die vollständig entfernt werden müssen. In Gebäuden mit Leitungsnetzen von rund 40 Jahren oder älter ist eine umfassende Strangsanierung in vielen Fällen empfehlenswert, um technische Defekte und teure Folgeschäden zu vermeiden.
                         </p>
                       </li>
                       
                       <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          <strong className="text-text-100">Veraltete Elektroinstallationen:</strong> Elektroinstallationen haben eine Lebensdauer von 30 bis 40 Jahren. Bei der Überprüfung sollte kontrolliert werden, ob ausreichend Stromkreise vorhanden sind und moderne Sicherungen (FI-Schutzschalter) installiert wurden. Eine Elektrosanierung kostet typischerweise 3 bis 5 Prozent des Gebäudewerts.
+                          <strong className="text-text-100">Veraltete Elektroinstallationen:</strong> Elektroanlagen haben in der Regel eine Lebensdauer von rund 30 bis 40 Jahren. Bei einer Überprüfung sollte insbesondere geprüft werden, ob genügend Stromkreise vorhanden sind und ob zeitgemäße Sicherheitsstandards – wie etwa FI-Schutzschalter – eingehalten werden. Eine umfassende Erneuerung der Elektroinstallation kann je nach Gebäudegröße und Zustand mit einem Aufwand im Bereich mehrerer Tausend Euro verbunden sein.
                         </p>
                       </li>
                       
                       <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          <strong className="text-text-100">Chemikalien und Holzschutzmittel:</strong> Früher verwendete Holzschutzmittel gelten heute vielfach als gesundheitsschädlich. Lässt sich die Schadstoffbelastung nicht beseitigen, bleibt oft nur intensives Lüften als Kompensationsmaßnahme.
+                          <strong className="text-text-100">Chemikalien und Holzschutzmittel:</strong> Früher eingesetzte Holzschutzmittel gelten heute in vielen Fällen als gesundheitsschädlich. Werden belastete Bauteile festgestellt, kann ein Rückbau sowie eine fachgerechte Sanierung kostenintensiv sein. Ein erfahrener Bauschadensbewerter kann wertvolle Hinweise zur Bewertung des Schadensausmaßes und zu möglichen Sanierungswegen geben.
                         </p>
                       </li>
                       
                       <li className="border-l-4 border-primary pl-4">
                         <p className="text-text-200 leading-relaxed">
-                          <strong className="text-text-100">Schwarzbauten:</strong> Nicht genehmigte An- oder Umbauten stellen ein erhebliches Risiko dar. Werden solche Schwarzbauten vom Bauamt entdeckt, muss der Eigentümer diese nachträglich genehmigen lassen oder auf eigene Kosten an aktuelle Bauvorschriften anpassen. Allein die nachträgliche Legalisierung eines Dachgeschossausbaus kann fünfstellige Beträge verschlingen. Qualifizierte Gutachter erkennen solche Probleme und beraten zu möglichen Lösungsansätzen.
+                          <strong className="text-text-100">Schwarzbauten:</strong> Nicht genehmigte An- oder Umbauten stellen ein erhebliches Risiko dar. Werden solche Schwarzbauten vom Bauamt entdeckt, muss der Eigentümer diese nachträglich genehmigen lassen oder auf eigene Kosten an die geltenden Bauvorschriften anpassen. Eine nachträgliche Genehmigung kann dabei sehr kostspielig werden, insbesondere wenn umfangreiche Ertüchtigungen – etwa im Brandschutzbereich – notwendig sind. In bestimmten Fällen kann das Bauamt sogar eine Nutzungsuntersagung für die betroffenen Bereiche aussprechen, bis der rechtmäßige Zustand wiederhergestellt ist. Qualifizierte Gutachter erkennen solche Problempunkte frühzeitig und beraten zu geeigneten Lösungsansätzen.
                         </p>
                       </li>
                     </ul>
@@ -398,10 +395,7 @@ const BlogHauskaufBeratungClient = () => {
                       Prüfung von Umbaumaßnahmen und Exposé-Angaben
                     </h3>
                     <p className="text-text-200 leading-relaxed mb-4">
-                      Neben der Schadensbewertung kann ein Bausachverständiger auch die Machbarkeit geplanter Umbauten beurteilen. Er prüft beispielsweise, ob tragende Wände entfernt werden dürfen, ob die Statik eine Photovoltaikanlage trägt oder ob baurechtlich ein Anbau oder eine Garage möglich ist.
-                    </p>
-                    <p className="text-text-200 leading-relaxed mb-4">
-                      Zweifeln Sie an den Angaben im Exposé, kann der Gutachter die Wohnfläche präzise nachmessen. Auch die Durchsicht von Bauunterlagen, Genehmigungen und Verträgen gehört zum Leistungsspektrum und deckt potenzielle Ungereimtheiten auf.
+                      Zusätzlich zur Schadensbewertung kann ein Bauschadensbewerter auch eine erste Einschätzung zur Machbarkeit geplanter Umbauten geben. Er kann Hinweise darauf liefern, welche Bereiche grundsätzlich veränderbar erscheinen und wo potenzielle technische oder rechtliche Hürden bestehen könnten. Eine verbindliche statische Beurteilung oder die rechtliche Prüfung, ob beispielsweise ein Anbau oder eine Garage tatsächlich genehmigungsfähig ist, gehört jedoch nicht zu seinem Aufgabenbereich. Dennoch kann er frühzeitig wertvolle Orientierung geben und aufzeigen, welche Fachplaner oder Behörden im nächsten Schritt eingebunden werden sollten.
                     </p>
                     
                     <h3 className="text-xl md:text-2xl font-semibold text-text-100 mt-6 mb-3">
@@ -435,7 +429,7 @@ const BlogHauskaufBeratungClient = () => {
                       Preisverhandlungen mit Gutachten
                     </h3>
                     <p className="text-text-200 leading-relaxed mb-4">
-                      Ein qualifiziertes Gutachten verschafft Ihnen Verhandlungsmacht. Der Sachverständige bewertet, ob der geforderte Kaufpreis angemessen ist, und beziffert notwendige Sanierungen. Mit diesen Fakten lässt sich der Kaufpreis verhandeln – Erfahrungswerte zeigen Preisnachlässe von 15.000 bis 40.000 Euro.
+                      Ein qualifiziertes Gutachten verschafft Ihnen Sicherheit und eine starke Position in den Verhandlungen. Der Sachverständige analysiert den baulichen Zustand der Immobilie, identifiziert versteckte Mängel und beziffert kommende Instandhaltungs- und Sanierungskosten. Auf Basis dieser belastbaren Fakten können Sie realistisch einschätzen, welche finanziellen Aufwendungen in den nächsten Jahren auf Sie zukommen – und genau mit diesen Informationen fundiert in Preis- oder Vertragsverhandlungen treten.
                     </p>
                     
                     <h3 className="text-xl md:text-2xl font-semibold text-text-100 mt-6 mb-3">
@@ -471,13 +465,14 @@ const BlogHauskaufBeratungClient = () => {
                       </ul>
                     </div>
                     
-                    <div className="bg-[#fff8e6] border-l-4 border-[#ff9500] rounded-lg p-4 mb-6">
+                    <div className="bg-bg-200 border-l-4 border-accent-200 rounded-lg p-4 mb-6">
                       <p className="font-semibold text-text-100 mb-2">Nachteile:</p>
                       <ul className="list-disc list-inside space-y-1 text-text-200 ml-4">
-                        <li>Verkäufer kann den Ortstermin ablehnen (geschieht häufig)</li>
-                        <li>Terminabstimmung benötigt oft mehrere Wochen Vorlauf</li>
-                        <li>Schriftliche Gutachten kosten 500–1.500 €</li>
-                        <li>Analyse muss unter Zeitdruck während der Besichtigung erfolgen</li>
+                        <li>Verkäufer kann den Ortstermin ablehnen (kommt häufig vor)</li>
+                        <li>Die Terminabstimmung erfordert oft mehrere Wochen Vorlauf</li>
+                        <li>Schriftliche Gutachten kosten ca. 750 – 1'500 €</li>
+                        <li>Während der Ortsbesichtigung findet ausschließlich eine Sichtprüfung statt; Bauteile werden nicht geöffnet</li>
+                        <li>Die Analyse muss in der Regel unter Zeitdruck während des Besichtigungstermins erfolgen</li>
                       </ul>
                     </div>
                     
@@ -499,7 +494,7 @@ const BlogHauskaufBeratungClient = () => {
                       </ul>
                     </div>
                     
-                    <div className="bg-[#fff8e6] border-l-4 border-[#ff9500] rounded-lg p-4 mb-6">
+                    <div className="bg-bg-200 border-l-4 border-accent-200 rounded-lg p-4 mb-6">
                       <p className="font-semibold text-text-100 mb-2">Nachteile:</p>
                       <ul className="list-disc list-inside space-y-1 text-text-200 ml-4">
                         <li>Kein persönlicher Kontakt vor Ort</li>
@@ -522,20 +517,20 @@ const BlogHauskaufBeratungClient = () => {
                     </p>
                     
                     <h3 className="text-xl md:text-2xl font-semibold text-text-100 mt-6 mb-3">
-                      Vollständiges Wertgutachten
+                      Vollständiges Baugutachten
                     </h3>
                     <p className="text-text-200 leading-relaxed mb-4">
-                      Gerichtsverwertbare Vollgutachten sind kostenintensiv. Bei einer Immobilie im Wert von 150.000 Euro fallen etwa 1.500 Euro an. Viele Sachverständige orientieren sich an der HOAI (Honorarordnung für Architekten und Ingenieure), die sich am Objektwert ausrichtet und bei 225 Euro für einfache Objekte startet.
+                      Umfassende, gerichtsverwertbare Baugutachten sind deutlich kostenintensiver als einfache Kurzexpertisen. In vielen Fällen können die Kosten schnell über 1.500 € liegen, abhängig vom Umfang der Untersuchung und der Komplexität des Objekts.
                     </p>
                     <p className="text-text-200 leading-relaxed mb-6">
-                      Der zeitliche Aufwand ist beträchtlich: Rechnen Sie mit 6 bis 8 Wochen Bearbeitungsdauer – für zeitkritische Kaufentscheidungen ungeeignet.
+                      Auch der zeitliche Aufwand ist erheblich: Für ein vollständiges Baugutachten müssen Sie häufig mit mehreren Wochen bis hin zu mehreren Monaten Bearbeitungszeit rechnen – für zeitkritische Kaufentscheidungen daher meist ungeeignet.
                     </p>
                     
                     <h3 className="text-xl md:text-2xl font-semibold text-text-100 mt-6 mb-3">
-                      Kurzgutachten vor Ort
+                      Mündliche Bauzustandsberatung vor Ort
                     </h3>
                     <p className="text-text-200 leading-relaxed mb-6">
-                      Die kompakte Alternative: Sie nehmen einen Sachverständigen zur Besichtigung mit. Dieser bewertet vor Ort und gibt Ihnen eine Einschätzung zur Preisangemessenheit. Der Pauschalpreis liegt üblicherweise zwischen 350 und 500 Euro (inkl. MwSt.), wobei meist kein schriftlicher Bericht entsteht.
+                      Die kompakte Alternative: Sie nehmen einen Sachverständigen zur Besichtigung mit. Vor Ort beurteilt er den Bauzustand, weist auf erkennbare Mängel hin und schätzt ab, welche Instandhaltungs- oder Sanierungskosten zukünftig anfallen können. Der Pauschalpreis liegt üblicherweise ab etwa 450 bis 600 Euro (inkl. MwSt.). Ein schriftlicher Bericht wird dabei in der Regel nicht erstellt.
                     </p>
                     
                     <h3 className="text-xl md:text-2xl font-semibold text-text-100 mt-6 mb-3">
@@ -568,16 +563,9 @@ const BlogHauskaufBeratungClient = () => {
                       </div>
                       
                       <div>
-                        <h4 className="font-semibold text-text-100 mb-2">Qualifizierte Anlaufstellen kontaktieren</h4>
-                        <p className="text-text-200 leading-relaxed">
-                          Der Bundesverband Deutscher Bausachverständiger (BBAUSV) sowie der Verband Privater Bauherren (VPB) vermitteln kurzfristig geprüfte Gutachter. Zeitgemäße Alternativen wie die <Link href="/#leistungen" onClick={(e) => scrollToHomeSection(e, 'leistungen')} className="text-primary hover:underline">Online-Immobilienbewertung von bauklar.org</Link> bieten zudem diskrete und zügige Lösungen.
-                        </p>
-                      </div>
-                      
-                      <div>
                         <h4 className="font-semibold text-text-100 mb-2">Regionale Kenntnisse des Immobilienmarktes</h4>
                         <p className="text-text-200 leading-relaxed">
-                          Achten Sie auf lokale Marktkenntnis: Gutachter sollten mit regionalen Besonderheiten und Preisgefügen vertraut sein, um die Immobilie im Marktkontext richtig bewerten zu können.
+                          Achten Sie auf regionale Baukompetenz: Ein Bauschadensbewerter sollte mit den örtlichen Bauweisen, typischen Schadensbildern und regionalen Besonderheiten vertraut sein. Nur so kann der Zustand des Gebäudes fachgerecht eingeordnet und realistisch bewertet werden.
                         </p>
                       </div>
                       
@@ -605,7 +593,7 @@ const BlogHauskaufBeratungClient = () => {
                       <div>
                         <h4 className="font-semibold text-text-100 mb-2">Kosten einkalkulieren</h4>
                         <p className="text-text-200 leading-relaxed">
-                          350-500 Euro für eine Bauschadensanalyse oder ein Kurzgutachten einplanen. Bei vollständigen Wertgutachten bis zu 1.500 Euro.
+                          Für ein hochwertiges schriftliches Gutachten sollten Sie bei Bauklar.org mit einem All-inclusive-Preis von 350 € rechnen. Umfangreiche, vollständige Wertgutachten können hingegen bis zu 1.500 € kosten.
                         </p>
                       </div>
                       
@@ -613,13 +601,6 @@ const BlogHauskaufBeratungClient = () => {
                         <h4 className="font-semibold text-text-100 mb-2">Gutachter-Honorar immer vorab vereinbaren</h4>
                         <p className="text-text-200 leading-relaxed">
                           Kosten immer vor der Beauftragung aushandeln und schriftlich festhalten, bevor der Gutachter seine Dienste aufnimmt.
-                        </p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold text-text-100 mb-2">Verkehrswert statt Stundensätze</h4>
-                        <p className="text-text-200 leading-relaxed">
-                          Das Gutachterhonorar sollte sich immer am Verkehrswert der Immobilie orientieren. Akzeptieren Sie keine Stundensätze, weil Sie nie wissen können, wie viel Zeit der Gutachter neben der Besichtigung tatsächlich noch in die Bewertung der Immobilie investiert hat.
                         </p>
                       </div>
                     </div>
@@ -664,7 +645,7 @@ const BlogHauskaufBeratungClient = () => {
                       <li><Link href="/koeln" className="text-primary hover:underline">Köln</Link>: Kriegsschäden und provisorische Nachkriegsreparaturen sind weitverbreitet.</li>
                     </ul>
                     <p className="text-text-200 leading-relaxed">
-                      Ungeachtet des Standorts bleibt eine qualifizierte Immobilienbewertung die beste Absicherung vor Fehlinvestitionen.
+                      Ungeachtet des Standorts bleibt eine qualifizierte Bauschadenanalyse die beste Absicherung vor Fehlinvestitionen.
                     </p>
                   </section>
 
@@ -712,7 +693,7 @@ const BlogHauskaufBeratungClient = () => {
                   </section>
 
                   {/* CTA Section */}
-                  <div className="bg-[#f0f8ff] rounded-lg p-8 md:p-10 text-center mb-12">
+                  <div className="bg-bg-300 rounded-lg p-8 md:p-10 text-center mb-12">
                     <h3 className="text-xl md:text-2xl font-semibold text-text-100 mb-4">
                       Interessiert an einer professionellen Bauschadensanalyse?
                     </h3>

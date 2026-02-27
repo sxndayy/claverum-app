@@ -51,10 +51,13 @@ interface Order {
   payment_amount?: number;
   stripe_payment_intent_id?: string;
   stripe_checkout_session_id?: string;
+  product_type?: 'analyse' | 'intensiv';
 }
 
 interface OrderDetail {
   id: string;
+  customer_name?: string;
+  customer_email?: string;
   street: string;
   house_number: string;
   postal_code: string;
@@ -70,6 +73,7 @@ interface OrderDetail {
   payment_amount?: number;
   stripe_payment_intent_id?: string;
   stripe_checkout_session_id?: string;
+  product_type?: 'analyse' | 'intensiv';
   uploads: Array<{
     id: string;
     order_id: string;
@@ -268,6 +272,27 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                {(orderDetail.customer_name || orderDetail.customer_email) && (
+                  <div className="bg-blue-50 rounded-lg p-3 space-y-1">
+                    {orderDetail.customer_name && (
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">Kunde</label>
+                        <p className="mt-0.5 font-medium">{orderDetail.customer_name}</p>
+                      </div>
+                    )}
+                    {orderDetail.customer_email && (
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">E-Mail</label>
+                        <p className="mt-0.5">
+                          <a href={`mailto:${orderDetail.customer_email}`} className="text-blue-600 hover:underline">
+                            {orderDetail.customer_email}
+                          </a>
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div>
                   <label className="text-sm font-medium text-gray-600">Address</label>
                   <div className="flex items-center gap-2 mt-1">
@@ -360,7 +385,7 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
             </Card>
 
             {/* Payment Information */}
-            {(orderDetail.paid !== undefined || orderDetail.payment_status) && (
+            {(orderDetail.paid !== undefined || orderDetail.payment_status || orderDetail.product_type) && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -390,6 +415,25 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
                       )}
                     </div>
                   </div>
+
+                  {orderDetail.product_type && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Produkt</label>
+                      <div className="mt-1">
+                        <Badge
+                          className={
+                            orderDetail.product_type === 'intensiv'
+                              ? 'bg-blue-600 hover:bg-blue-700'
+                              : 'bg-gray-500 hover:bg-gray-600'
+                          }
+                        >
+                          {orderDetail.product_type === 'intensiv'
+                            ? 'Bauklar Intensiv (790 €)'
+                            : 'Bauklar Analyse (350 €)'}
+                        </Badge>
+                      </div>
+                    </div>
+                  )}
 
                   {orderDetail.paid && orderDetail.paid_at && (
                     <div>
@@ -511,6 +555,7 @@ const AdminOrderDetail: React.FC<AdminOrderDetailProps> = ({
 };
 
 export default AdminOrderDetail;
+
 
 
 
