@@ -125,5 +125,31 @@ export async function deleteFileFromS3(filePath) {
   }
 }
 
+/**
+ * Read the first N bytes of a file from S3 (for magic byte validation)
+ * @param {string} filePath - S3 key/path
+ * @param {number} bytes - Number of bytes to read (default: 8)
+ * @returns {Promise<Buffer>} First N bytes
+ */
+export async function readFileHeadFromS3(filePath, bytes = 8) {
+  const command = new GetObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: filePath,
+    Range: `bytes=0-${bytes - 1}`,
+  });
+
+  try {
+    const response = await s3Client.send(command);
+    const chunks = [];
+    for await (const chunk of response.Body) {
+      chunks.push(chunk);
+    }
+    return Buffer.concat(chunks);
+  } catch (error) {
+    console.error(`Error reading file head from S3: ${filePath}`, error);
+    throw error;
+  }
+}
+
 export default s3Client;
 

@@ -77,11 +77,11 @@ export const orderCreationLimiter = rateLimit({
 
 /**
  * Rate limiter for payment endpoints
- * 5 payment requests per 15 minutes per IP
+ * 10 payment requests per hour per IP
  */
 export const paymentLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 requests per window
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10, // 10 requests per hour
   message: {
     success: false,
     error: 'Too many payment requests, please try again later.'

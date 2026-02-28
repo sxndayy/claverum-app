@@ -1,9 +1,51 @@
-import { 
-  isValidImageMimeType, 
+import {
+  isValidImageMimeType,
   isValidUploadMimeType,
-  isValidFileSize, 
-  sanitizeFilename 
+  isValidFileSize,
+  sanitizeFilename
 } from '../utils/validation.js';
+
+/**
+ * Magic byte signatures for allowed file types.
+ * Each entry maps a MIME type to an array of possible magic byte prefixes.
+ */
+const MAGIC_BYTES = {
+  'image/jpeg': [Buffer.from([0xFF, 0xD8, 0xFF])],
+  'image/jpg':  [Buffer.from([0xFF, 0xD8, 0xFF])],
+  'image/png':  [Buffer.from([0x89, 0x50, 0x4E, 0x47])],
+  'application/pdf': [Buffer.from([0x25, 0x50, 0x44, 0x46])], // %PDF
+};
+
+/**
+ * Validate file content against its declared MIME type using magic bytes.
+ * Returns true if the magic bytes match OR if the MIME type has no magic byte check
+ * (e.g. WebP, GIF, HEIC — which are validated by MIME type only).
+ * @param {Buffer} headBytes - First few bytes of the file
+ * @param {string} mimeType - Declared MIME type
+ * @returns {{ valid: boolean, error?: string }}
+ */
+export function validateMagicBytes(headBytes, mimeType) {
+  const signatures = MAGIC_BYTES[mimeType];
+
+  // No magic byte check for this type — allow (e.g. webp, gif, heic)
+  if (!signatures) {
+    return { valid: true };
+  }
+
+  if (!headBytes || headBytes.length === 0) {
+    return { valid: false, error: 'File is empty or unreadable' };
+  }
+
+  const matches = signatures.some(sig =>
+    headBytes.length >= sig.length && headBytes.subarray(0, sig.length).equals(sig)
+  );
+
+  if (!matches) {
+    return { valid: false, error: `File content does not match declared type (${mimeType})` };
+  }
+
+  return { valid: true };
+}
 
 /**
  * Validate file upload parameters
@@ -37,7 +79,7 @@ export function validateFileUpload(mimeType, fileSize, filename) {
  * Check upload limits for an order (non-atomic, for quick validation)
  * Use checkAndReserveUploadSlot for atomic operations
  */
-export async function checkUploadLimits(query, orderId, maxUploads = 100) {
+export async function checkUploadLimits(query, orderId, maxUploads = 50) {
   try {
     const uploadCount = await query(
       'SELECT COUNT(*) as count FROM uploads WHERE order_id = $1',
@@ -74,7 +116,7 @@ export async function checkUploadLimits(query, orderId, maxUploads = 100) {
  * @param {number} maxUploads - Maximum uploads allowed
  * @returns {Promise<{allowed: boolean, currentCount?: number, error?: string}>}
  */
-export async function checkAndReserveUploadSlot(client, orderId, maxUploads = 100) {
+export async function checkAndReserveUploadSlot(client, orderId, maxUploads = 50) {
   try {
     // First, verify order exists and lock it to prevent concurrent modifications
     const orderCheck = await client.query(

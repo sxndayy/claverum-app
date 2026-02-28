@@ -2,6 +2,7 @@ import express from 'express';
 import crypto from 'crypto';
 import { query, transaction } from '../db.js';
 import { validateOrderSessionToken, generateOrderSessionToken } from '../middleware/orderOwnership.js';
+import { requireCSRF, generateCSRFToken } from '../middleware/csrf.js';
 import { sanitizeString, isValidUUID, isValidPropertyType, isValidBuildYear, isValidPostalCode, isValidEmail } from '../utils/validation.js';
 import { sendUploadLinkEmail } from '../utils/uploadEmail.js';
 
@@ -17,7 +18,7 @@ const router = express.Router();
  * Body: { orderId, propertyType, buildYear?, customerName, customerEmail, street, postalCode, city }
  * Response: { success: true, uploadToken } or { success: false, error }
  */
-router.post('/submit', async (req, res) => {
+router.post('/submit', requireCSRF, async (req, res) => {
   try {
     const {
       orderId,
@@ -74,9 +75,10 @@ router.post('/submit', async (req, res) => {
     }
 
     // --- Validate session token ---
-    const sessionToken = req.get('X-Order-Session') || req.headers['x-order-session'];
+    const rawToken = req.get('X-Order-Session') || req.headers['x-order-session'];
+    const sessionToken = typeof rawToken === 'string' ? rawToken.trim() : '';
 
-    if (!sessionToken) {
+    if (!sessionToken || sessionToken === 'undefined' || sessionToken === 'null') {
       return res.status(401).json({
         success: false,
         error: 'Order session token required'
@@ -183,7 +185,7 @@ router.post('/submit', async (req, res) => {
  * Body: { token: "<uploadToken>" }
  * Response: { success: true, orderId, sessionToken } or { success: false, error }
  */
-router.post('/upload-session', async (req, res) => {
+router.post('/upload-session', requireCSRF, async (req, res) => {
   try {
     const { token } = req.body;
 
@@ -243,6 +245,10 @@ router.post('/upload-session', async (req, res) => {
 
     // --- Generate a new session token compatible with order_sessions system ---
     const sessionToken = await generateOrderSessionToken(orderId);
+
+    // Generate CSRF token tied to the new session token
+    const csrfToken = generateCSRFToken(sessionToken);
+    res.setHeader('X-CSRF-Token', csrfToken);
 
     res.json({
       success: true,

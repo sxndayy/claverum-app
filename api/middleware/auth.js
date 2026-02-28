@@ -66,18 +66,26 @@ export async function authenticateUser(username, password) {
 
 /**
  * Middleware to protect admin routes
+ * Reads JWT from HttpOnly cookie first, then falls back to Authorization header
  */
 export function requireAuth(req, res, next) {
-  const authHeader = req.headers.authorization;
-  
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  // Try HttpOnly cookie first, then Authorization header
+  let token = req.cookies?.admin_token;
+
+  if (!token) {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7);
+    }
+  }
+
+  if (!token) {
     return res.status(401).json({
       success: false,
       error: 'Authentication required'
     });
   }
 
-  const token = authHeader.substring(7); // Remove 'Bearer ' prefix
   const decoded = verifyToken(token);
 
   if (!decoded) {
@@ -101,19 +109,25 @@ export function requireAuth(req, res, next) {
 
 /**
  * Middleware for optional authentication (for public endpoints)
+ * Reads JWT from HttpOnly cookie first, then falls back to Authorization header
  */
 export function optionalAuth(req, res, next) {
-  const authHeader = req.headers.authorization;
-  
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    const token = authHeader.substring(7);
+  let token = req.cookies?.admin_token;
+
+  if (!token) {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7);
+    }
+  }
+
+  if (token) {
     const decoded = verifyToken(token);
-    
     if (decoded) {
       req.user = decoded;
     }
   }
-  
+
   next();
 }
 

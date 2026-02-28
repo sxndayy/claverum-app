@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import { query } from '../db.js';
+import { generateCSRFToken } from './csrf.js';
 
 /**
  * Database-backed order ownership validation
@@ -42,7 +43,7 @@ export async function generateOrderSessionToken(orderId, clientOrQuery = query) 
  * Validate order session token and return order ID
  */
 export async function validateOrderSessionToken(token) {
-  if (!token) return null;
+  if (!token || typeof token !== 'string' || !token.trim()) return null;
   
   try {
     const result = await query(
@@ -117,9 +118,10 @@ export function requireOrderOwnership(req, res, next) {
   const orderId = String(rawOrderId);
 
   // Read header robustly
-  const sessionToken = req.get('X-Order-Session') || req.headers['x-order-session'] || req.body.sessionToken;
-  
-  if (!sessionToken) {
+  const rawToken = req.get('X-Order-Session') || req.headers['x-order-session'] || req.body.sessionToken;
+  const sessionToken = typeof rawToken === 'string' ? rawToken.trim() : '';
+
+  if (!sessionToken || sessionToken === 'undefined' || sessionToken === 'null') {
     return res.status(401).json({
       success: false,
       error: 'Order session token required'
@@ -135,8 +137,13 @@ export function requireOrderOwnership(req, res, next) {
           error: 'Invalid or expired order session'
         });
       }
-      
+
       req.orderId = orderId;
+      // Set CSRF identity for token generation/validation in downstream middleware
+      req.csrfIdentity = sessionToken;
+      // Generate CSRF token for the response (global generateCSRFForUser runs too early)
+      const csrfToken = generateCSRFToken(sessionToken);
+      res.setHeader('X-CSRF-Token', csrfToken);
       next();
     })
     .catch(error => {

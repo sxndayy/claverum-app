@@ -1,7 +1,8 @@
 import express from 'express';
 import Stripe from 'stripe';
 import { query } from '../db.js';
-import { requireOrderOwnership } from '../middleware/orderOwnership.js';
+import { requireOrderOwnership, validateOrderSessionToken } from '../middleware/orderOwnership.js';
+import { requireCSRF } from '../middleware/csrf.js';
 import { isValidUUID } from '../utils/validation.js';
 
 const router = express.Router();
@@ -54,7 +55,7 @@ const PRICE_MAP = {
  * Headers: X-Order-Session: <sessionToken>
  * Body: { orderId, productType: 'analyse' | 'intensiv' }
  */
-router.post('/create-checkout-session', requireOrderOwnership, async (req, res) => {
+router.post('/create-checkout-session', requireOrderOwnership, requireCSRF, async (req, res) => {
   try {
     const { orderId, productType = 'analyse' } = req.body;
 
@@ -204,6 +205,7 @@ router.post('/create-checkout-session', requireOrderOwnership, async (req, res) 
  * GET /api/payments/session
  * Retrieve Stripe Checkout Session details (for success page)
  * Query: ?session_id=cs_xxx
+ * Header: X-Order-Session: <sessionToken>
  */
 router.get('/session', async (req, res) => {
   try {
@@ -216,8 +218,35 @@ router.get('/session', async (req, res) => {
       });
     }
 
+    // Require X-Order-Session header
+    const sessionToken = req.get('X-Order-Session') || req.headers['x-order-session'];
+    if (!sessionToken || !sessionToken.trim()) {
+      return res.status(401).json({
+        success: false,
+        error: 'Order session token required'
+      });
+    }
+
+    // Validate session token and get associated order ID
+    const validOrderId = await validateOrderSessionToken(sessionToken.trim());
+    if (!validOrderId) {
+      return res.status(403).json({
+        success: false,
+        error: 'Invalid or expired order session'
+      });
+    }
+
     // Retrieve session from Stripe
     const session = await stripe.checkout.sessions.retrieve(session_id);
+
+    // Verify that the Stripe session belongs to the order associated with the session token
+    const stripeOrderId = session.metadata?.order_id || session.metadata?.orderId;
+    if (!stripeOrderId || String(stripeOrderId) !== String(validOrderId)) {
+      return res.status(403).json({
+        success: false,
+        error: 'Session does not belong to this order'
+      });
+    }
 
     res.json({
       success: true,
@@ -226,7 +255,7 @@ router.get('/session', async (req, res) => {
         payment_status: session.payment_status,
         customer_email: session.customer_details?.email || session.customer_email,
         metadata: {
-          order_id: session.metadata?.order_id || session.metadata?.orderId,
+          order_id: stripeOrderId,
           product_type: session.metadata?.product_type
         }
       }

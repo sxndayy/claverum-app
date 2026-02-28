@@ -1,24 +1,26 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import archiver from 'archiver';
 import helmet from 'helmet';
 import { Resend } from 'resend';
 import { query, transaction, getPoolStats, isPoolExhaustionError } from './db.js';
-import { generatePresignedUploadUrl, getPublicUrl, downloadFileFromS3, deleteFileFromS3, generatePresignedDownloadUrl } from './s3-client.js';
+import { generatePresignedUploadUrl, getPublicUrl, downloadFileFromS3, deleteFileFromS3, generatePresignedDownloadUrl, readFileHeadFromS3 } from './s3-client.js';
 import authRoutes from './routes/auth.js';
 import paymentRoutes from './routes/payments.js';
 import stripeWebhookRoutes from './routes/stripe-webhook.js';
 import auftragRoutes from './routes/auftrag.js';
 import { requireAuth, optionalAuth } from './middleware/auth.js';
 import { requireOrderOwnership } from './middleware/orderOwnership.js';
-import { requireCSRF, generateCSRFForUser } from './middleware/csrf.js';
-import { 
-  publicLimiter, 
-  loginLimiter, 
-  adminLimiter, 
-  uploadLimiter, 
+import { requireCSRF, generateCSRFForUser, generateCSRFToken } from './middleware/csrf.js';
+import {
+  publicLimiter,
+  loginLimiter,
+  adminLimiter,
+  uploadLimiter,
   orderCreationLimiter,
+  paymentLimiter,
   contactLimiter
 } from './middleware/rateLimiter.js';
 import { 
@@ -32,7 +34,7 @@ import {
   isValidSortOrder,
   isValidEmail
 } from './utils/validation.js';
-import { validateFileUpload, checkUploadLimits, checkAndReserveUploadSlot } from './middleware/fileValidation.js';
+import { validateFileUpload, checkUploadLimits, checkAndReserveUploadSlot, validateMagicBytes } from './middleware/fileValidation.js';
 import { generateOrderSessionToken } from './middleware/orderOwnership.js';
 
 dotenv.config();
@@ -80,7 +82,7 @@ app.use(cors({
       'http://localhost:8080',
       'http://localhost:3001'
     ];
-    
+
     // Allow Netlify preview domains (e.g., *.netlify.app, *.netlify.app/*)
     if (!origin || allowedOrigins.includes(origin) || origin.includes('.netlify.app')) {
       callback(null, true);
@@ -88,7 +90,8 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true,
+  exposedHeaders: ['X-CSRF-Token']
 }));
 
 // Stripe webhook must be registered BEFORE express.json() middleware
@@ -96,12 +99,13 @@ app.use(cors({
 app.use('/api/payments', stripeWebhookRoutes);
 
 app.use(express.json({ limit: '10mb' })); // Limit request body size
+app.use(cookieParser()); // Parse cookies (for HttpOnly JWT auth)
 
 // Auth routes
 app.use('/api/auth', loginLimiter, authRoutes);
 
-// Payment routes
-app.use('/api/payments', paymentRoutes);
+// Payment routes (rate limited to 10/hour per IP)
+app.use('/api/payments', paymentLimiter, paymentRoutes);
 
 // Auftrag routes (order submission + upload session)
 app.use('/api/auftrag', publicLimiter, auftragRoutes);
@@ -171,7 +175,7 @@ app.get('/api/admin/stats', adminLimiter, requireAuth, async (req, res) => {
  * Creates a new order and returns order_id
  * Body: { street?, houseNumber?, postalCode?, city?, propertyType?, buildYear?, note? }
  */
-app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
+app.post('/api/create-order', orderCreationLimiter, requireCSRF, async (req, res) => {
   try {
     const {
       street,
@@ -240,6 +244,10 @@ app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
       return { order, sessionToken };
     });
 
+    // Generate CSRF token tied to the new session token
+    const csrfToken = generateCSRFToken(sessionToken);
+    res.setHeader('X-CSRF-Token', csrfToken);
+
     res.status(201).json({
       success: true,
       orderId: order.id,
@@ -259,7 +267,7 @@ app.post('/api/create-order', orderCreationLimiter, async (req, res) => {
  * PUT /api/update-order/:orderId
  * Updates order details (address, property info, etc.)
  */
-app.put('/api/update-order/:orderId', publicLimiter, requireOrderOwnership, async (req, res) => {
+app.put('/api/update-order/:orderId', publicLimiter, requireOrderOwnership, requireCSRF, async (req, res) => {
   try {
     const { orderId } = req.params;
     const {
@@ -429,7 +437,7 @@ app.get('/api/upload-url', uploadLimiter, requireOrderOwnership, async (req, res
       success: true,
       uploadUrl,
       filePath,
-      remainingUploads: 100 - uploadLimits.currentCount
+      remainingUploads: 50 - uploadLimits.currentCount
     });
   } catch (error) {
     console.error('Error generating upload URL:', error);
@@ -445,7 +453,7 @@ app.get('/api/upload-url', uploadLimiter, requireOrderOwnership, async (req, res
  * Records successful upload metadata in database
  * Body: { orderId, area, filePath, mimeType, fileSize }
  */
-app.post('/api/record-upload', uploadLimiter, requireOrderOwnership, async (req, res) => {
+app.post('/api/record-upload', uploadLimiter, requireOrderOwnership, requireCSRF, async (req, res) => {
   try {
     const { orderId, area, filePath, mimeType, fileSize } = req.body;
 
@@ -498,6 +506,26 @@ app.post('/api/record-upload', uploadLimiter, requireOrderOwnership, async (req,
       });
     }
 
+    // Validate magic bytes: read first bytes from S3 and verify file content
+    try {
+      const headBytes = await readFileHeadFromS3(sanitizedFilePath, 8);
+      const magicCheck = validateMagicBytes(headBytes, mimeType);
+      if (!magicCheck.valid) {
+        // Delete the invalid file from S3
+        try { await deleteFileFromS3(sanitizedFilePath); } catch (_) { /* best effort */ }
+        return res.status(400).json({
+          success: false,
+          error: magicCheck.error
+        });
+      }
+    } catch (s3Error) {
+      // If we can't read the file, it may not have been uploaded yet — reject
+      return res.status(400).json({
+        success: false,
+        error: 'File not found in storage. Please upload the file first.'
+      });
+    }
+
     // Use transaction to atomically check upload limits and record upload
     // This prevents race conditions when multiple uploads happen simultaneously
     const upload = await transaction(async (client) => {
@@ -546,7 +574,7 @@ app.post('/api/record-upload', uploadLimiter, requireOrderOwnership, async (req,
  * DELETE /api/delete-upload/:orderId/:uploadId
  * Deletes an upload from database and S3 storage
  */
-app.delete('/api/delete-upload/:orderId/:uploadId', uploadLimiter, requireOrderOwnership, async (req, res) => {
+app.delete('/api/delete-upload/:orderId/:uploadId', uploadLimiter, requireOrderOwnership, requireCSRF, async (req, res) => {
   try {
     const { orderId, uploadId } = req.params;
 
@@ -667,7 +695,7 @@ app.get('/api/download-url/:orderId/:uploadId', publicLimiter, requireOrderOwner
  * Saves area text description
  * Body: { orderId, area, content }
  */
-app.post('/api/save-texts', publicLimiter, requireOrderOwnership, async (req, res) => {
+app.post('/api/save-texts', publicLimiter, requireOrderOwnership, requireCSRF, async (req, res) => {
   try {
     const { orderId, area, content } = req.body;
 
@@ -1131,7 +1159,7 @@ Statistiken:
  * Send contact form message via email
  * Body: { name, email, phone?, message }
  */
-app.post('/api/contact', contactLimiter, async (req, res) => {
+app.post('/api/contact', contactLimiter, requireCSRF, async (req, res) => {
   try {
     const { name, email, phone, message } = req.body;
 
