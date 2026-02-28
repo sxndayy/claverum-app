@@ -437,7 +437,7 @@ app.get('/api/upload-url', uploadLimiter, requireOrderOwnership, async (req, res
       success: true,
       uploadUrl,
       filePath,
-      remainingUploads: 50 - uploadLimits.currentCount
+      remainingUploads: 100 - uploadLimits.currentCount
     });
   } catch (error) {
     console.error('Error generating upload URL:', error);

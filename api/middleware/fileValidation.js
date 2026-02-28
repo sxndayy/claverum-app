@@ -79,7 +79,7 @@ export function validateFileUpload(mimeType, fileSize, filename) {
  * Check upload limits for an order (non-atomic, for quick validation)
  * Use checkAndReserveUploadSlot for atomic operations
  */
-export async function checkUploadLimits(query, orderId, maxUploads = 50) {
+export async function checkUploadLimits(query, orderId, maxUploads = 100) {
   try {
     const uploadCount = await query(
       'SELECT COUNT(*) as count FROM uploads WHERE order_id = $1',
@@ -116,7 +116,7 @@ export async function checkUploadLimits(query, orderId, maxUploads = 50) {
  * @param {number} maxUploads - Maximum uploads allowed
  * @returns {Promise<{allowed: boolean, currentCount?: number, error?: string}>}
  */
-export async function checkAndReserveUploadSlot(client, orderId, maxUploads = 50) {
+export async function checkAndReserveUploadSlot(client, orderId, maxUploads = 100) {
   try {
     // First, verify order exists and lock it to prevent concurrent modifications
     const orderCheck = await client.query(
